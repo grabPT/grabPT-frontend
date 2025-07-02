@@ -2,9 +2,14 @@ import { type RouteObject, RouterProvider, createBrowserRouter } from 'react-rou
 
 import ROUTES from '@/constants/routes';
 import Layout from '@/layout/Layout';
+import { Signup } from '@/pages/Signup';
 
 // 라우터
 const routes: RouteObject[] = [
+    {
+    path: ROUTES.SIGNUP,
+    element: <Signup />,
+  },
   {
     path: ROUTES.HOME,
     element: <Layout />,
@@ -14,6 +19,10 @@ const routes: RouteObject[] = [
         index: true,
         element: <>홈페이지</>,
       },
+      {
+        path: ROUTES.SIGNUP,
+        element: <Signup />
+      }
     ],
   },
 ];
