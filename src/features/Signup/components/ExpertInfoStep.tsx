@@ -1,5 +1,5 @@
 import BackBtn from '@/features/Signup/assets/BackBtn.png';
-import Signup_LogoIcon from '@/features/Signup/assets/Signup_LogoIcon.png';
+import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
 import SignupBtn from '@/features/Signup/components/SignupBtn';
 
 interface IExpertInfoStep {
@@ -12,9 +12,9 @@ export const ExpertInfoStep = ({ onNext, onPrev }: IExpertInfoStep) => {
     <div className="flex flex-col items-center justify-center">
       {/* 로고 */}
       <div className="mt-[6.5rem] flex justify-center">
-        <img src={Signup_LogoIcon} alt="로고" className="h-[2.3125rem] w-[6.25rem]" />
+        <img src={SignupLogo} alt="로고" className="h-[2.3125rem] w-[6.25rem]" />
       </div>
-      <div className="mt-[2.06rem] flex h-[42.25rem] w-[34.375rem] flex-col items-center rounded-[1.25rem] border border-white bg-white shadow-lg">
+      <div className="mt-[2.06rem] flex h-[42.25rem] w-[34.375rem] flex-col items-center rounded-[1.25rem] border border-white bg-white shadow-2xl">
         <div className="relative flex h-full w-full flex-col">
           <div className="mt-[2.56rem] ml-[1.87rem] flex gap-4">
             <button>
