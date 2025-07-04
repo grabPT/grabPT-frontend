@@ -1,27 +1,21 @@
-import BackBtn from '@/features/Signup/assets/BackBtn.png';
+import SignupEvidence from '@/features/Signup/assets/SignupEvidence.svg';
 import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
 import SignupBtn from '@/features/Signup/components/SignupBtn';
 
 interface IExpertInfoStep {
   onNext: () => void;
-  onPrev: () => void;
 }
 
-export const ExpertInfoStep = ({ onNext, onPrev }: IExpertInfoStep) => {
+export const ExpertInfoStep = ({ onNext }: IExpertInfoStep) => {
   return (
     <div className="flex flex-col items-center justify-center">
       {/* 로고 */}
-      <div className="mt-[6.5rem] flex justify-center">
+      <div className="mt-6 flex justify-center">
         <img src={SignupLogo} alt="로고" className="h-[2.3125rem] w-[6.25rem]" />
       </div>
-      <div className="mt-[2.06rem] flex h-[42.25rem] w-[34.375rem] flex-col items-center rounded-[1.25rem] border border-white bg-white shadow-2xl">
+      <div className="mt-14 flex h-[42.25rem] w-[34.375rem] flex-col items-center rounded-[1.25rem] border border-white bg-white shadow-2xl">
         <div className="relative flex h-full w-full flex-col">
-          <div className="mt-[2.56rem] ml-[1.87rem] flex gap-4">
-            <button>
-              <img src={BackBtn} alt="뒤로가기" onClick={onPrev} />
-            </button>
-          </div>
-          <div className="mx-[6.5rem] mt-[2.06rem] flex flex-col gap-2">
+          <div className="mx-[6.5rem] mt-16 flex flex-col gap-2">
             <div className="flex flex-col">
               <span className="font-semibold">활동센터</span>
               <input
@@ -50,10 +44,28 @@ export const ExpertInfoStep = ({ onNext, onPrev }: IExpertInfoStep) => {
                 </div>
               </div>
             </div>
-           <div className="flex flex-col">
+            <div className="flex flex-col">
               <span className="font-semibold">경력</span>
               <div className="flex items-center justify-between rounded-[0.625rem] border border-[#BDBDBD]">
                 <input placeholder="경력을 입력해주세요" className="py-[0.88rem] pl-4"></input>
+              </div>
+            </div>
+          </div>
+          <div className="mx-auto mt-6 flex w-80 flex-col">
+            <div className="text-center text-base font-bold">자격 증빙 자료 첨부</div>
+
+            <div className="mt-4 flex w-full flex-col items-center rounded-[0.625rem] border border-[#BDBDBD] bg-white px-4 py-4">
+              <img src={SignupEvidence} alt="업로드 안내 아이콘" className="mb-4 h-10 w-10" />
+
+              <div className="flex w-full items-center gap-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-[0.3125rem] bg-gray-100">
+                  <img src={SignupEvidence} alt="증빙 자료 첨부란" className="h-6 w-6" />
+                </div>
+                <div className="font-roboto flex flex-col leading-tight">
+                  <span className="text-[0.625rem] text-gray-500">Description Top</span>
+                  <span className="text-[1.125rem] font-bold">Title</span>
+                  <span className="text-[0.625rem] text-gray-500">Description Bottom</span>
+                </div>
               </div>
             </div>
           </div>

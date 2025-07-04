@@ -1,6 +1,5 @@
 import { useState } from 'react';
 
-import BackBtn from '@/features/Signup/assets/BackBtn.png';
 import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
 import xBtn from '@/features/Signup/assets/xBtn.png';
 import SignupBtn from '@/features/Signup/components/SignupBtn';
@@ -8,30 +7,26 @@ import { type Location, type Province, regions } from '@/features/Signup/types/L
 
 interface ILocationStep {
   onNext: () => void;
-  onPrev: () => void;
 }
 
-export const LocationStep = ({ onNext, onPrev }: ILocationStep) => {
+export const LocationStep = ({ onNext }: ILocationStep) => {
   const [selectedProvince, setSelectedProvince] = useState<Province>();
   const [selectedLocation, setSelectedLocation] = useState<Location[]>([]);
   return (
     <div className="flex flex-col items-center justify-center">
       {/* 로고 */}
-      <div className="mt-[6.5rem] flex justify-center">
+      <div className="mt-6 flex justify-center">
         <img src={SignupLogo} alt="로고" className="h-[2.3125rem] w-[6.25rem]" />
       </div>
-      <div className="mt-[2.06rem] flex h-[42.25rem] w-[34.375rem] flex-col items-center rounded-[1.25rem] border border-white bg-white shadow-2xl">
+      <div className="mt-14 flex h-[42.25rem] w-[34.375rem] flex-col items-center rounded-[1.25rem] border border-white bg-white shadow-2xl">
         <div className="relative flex h-full w-full flex-col">
-          <div className="mt-[2.56rem] ml-[1.87rem] flex flex-col">
-            <div className="relative flex gap-4">
-              <button>
-                <img src={BackBtn} alt="뒤로가기" onClick={onPrev} />
-              </button>
-              <span className="absolute -top-1 left-6 text-[1.25rem] font-semibold">
+          <div className=" mt-9 mx-14 flex flex-col gap-2.5">
+            <div className="flex">
+              <span className=" text-[1.25rem] font-semibold">
                 거주지역을 설정해 주세요
               </span>
             </div>
-            <div className="my-[0.56rem] ml-7 text-[0.75rem] font-semibold text-[#D7D7D7]">
+            <div className=" text-[0.75rem] font-semibold text-[#D7D7D7]">
               <span>중복 선택 가능(최대 3개)</span>
             </div>
           </div>

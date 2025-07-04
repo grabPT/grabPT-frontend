@@ -6,10 +6,9 @@ import SignupBtn from '@/features/Signup/components/SignupBtn';
 
 interface IAgreementStep {
   onNext: () => void;
-  onPrev: () => void;
 }
 
-export const AgreementStep = ({ onNext, onPrev }: IAgreementStep) => {
+export const AgreementStep = ({ onNext }: IAgreementStep) => {
   const [checkedList, setCheckedList] = useState<boolean[]>([
     false,
     false,
@@ -35,15 +34,12 @@ export const AgreementStep = ({ onNext, onPrev }: IAgreementStep) => {
   return (
     <div className="flex flex-col items-center justify-center">
       {/* 로고 */}
-      <div className="mt-[6.5rem] flex justify-center">
+      <div className="mt-6 flex justify-center">
         <img src={SignupLogo} alt="로고" className="h-[2.3125rem] w-[6.25rem]" />
       </div>
-      <div className="mt-[2.06rem] flex h-[42.25rem] w-[34.375rem] flex-col items-center rounded-[1.25rem] border border-white bg-white shadow-2xl">
+      <div className="mt-14 flex h-[42.25rem] w-[34.375rem] flex-col items-center rounded-[1.25rem] border border-white bg-white shadow-2xl">
         <div className="relative flex h-full w-full flex-col">
           <div className="relative mx-[1.87rem] mt-[2.56rem] flex gap-4">
-            <button>
-              <img src={BackBtn} alt="뒤로가기" onClick={onPrev}/>
-            </button>
             <span className="absolute -top-1 left-6 text-[1.25rem] font-semibold">
               이용약관 동의
             </span>

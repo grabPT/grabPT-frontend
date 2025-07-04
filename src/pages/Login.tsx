@@ -4,7 +4,7 @@ import GoogleLogo from '@/features/Login/assets//GoogleLogo.svg';
 import KakaoLogo from '@/features/Login/assets//KakaoLogo.svg';
 import NaverLogo from '@/features/Login/assets//NaverLogo.svg';
 import { LoginBtn } from '@/features/Login/components/LoginBtn';
-import BackBtn from '@/features/Signup/assets/BackBtn.png';
+import BackBtn from '@/features/Signup/assets/BackBtn.svg';
 import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
 
 export type UserType = 'normal' | 'expert';
@@ -16,10 +16,10 @@ export const Login = () => {
 
       <div className="flex flex-col items-center justify-center">
         {/* 로고 */}
-        <div className="mt-[6.5rem] flex justify-center">
+        <div className="mt-6 flex justify-center">
           <img src={SignupLogo} alt="로고" className="h-[2.3125rem] w-[6.25rem]" />
         </div>
-        <div className="mt-[2.06rem] flex h-[42.25rem] w-[34.375rem] flex-col items-center rounded-[1.25rem] border border-white bg-white shadow-2xl">
+        <div className="mt-14 flex h-[42.25rem] w-[34.375rem] flex-col items-center rounded-[1.25rem] border border-white bg-white shadow-2xl">
           <div className="flex h-full w-full flex-col font-sans">
             <div className="mt-[2.56rem] ml-[1.87rem] flex gap-4">
               <button>

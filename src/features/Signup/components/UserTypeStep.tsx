@@ -6,17 +6,13 @@ import type { UserType } from '@/pages/Signup';
 
 interface IUserTypeStep {
   onNext: () => void;
-  onPrev: () => void;
   UserType: UserType | null;
   setUserType: (type: UserType) => void;
 }
 
-export const UserTypeStep = ({ onNext, onPrev, setUserType, UserType }: IUserTypeStep) => {
+export const UserTypeStep = ({ onNext, setUserType, UserType }: IUserTypeStep) => {
   return (
     <div className="flex flex-col">
-      <div className="mx-10 pt-4">
-        <img src={BackBtn} alt="뒤로가기" onClick={onPrev} />
-      </div>
       <div className="mt-32 mb-72 flex flex-col items-center justify-center">
         <div className="flex items-center justify-center text-5xl font-extrabold whitespace-pre">
           <span>어떤 유형의 </span>

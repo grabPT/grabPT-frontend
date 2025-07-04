@@ -6,6 +6,7 @@
   /* 폰트 패밀리 변수 */
   --font-sans: 'Pretendard Variable', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
   --font-inter: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  --font-roboto: 'Roboto', 'sans-serif';
 
   /* Button Scale */
   --color-button: #003efb;

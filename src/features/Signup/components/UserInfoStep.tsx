@@ -5,24 +5,18 @@ import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
 
 interface IUserInfoStep {
   onNext: () => void;
-  onPrev: () => void;
 }
 
-export const UserInfoStep = ({ onNext, onPrev }: IUserInfoStep) => {
+export const UserInfoStep = ({ onNext }: IUserInfoStep) => {
   return (
     <div className="flex flex-col items-center justify-center">
       {/* 로고 */}
-      <div className="mt-[6.5rem] flex justify-center">
+      <div className="mt-6 flex justify-center">
         <img src={SignupLogo} alt="로고" className="h-[2.3125rem] w-[6.25rem]" />
       </div>
-      <div className="mt-[2.06rem] flex h-[42.25rem] w-[34.375rem] flex-col items-center rounded-[1.25rem] border border-white bg-white shadow-2xl">
+      <div className="mt-14 flex h-[42.25rem] w-[34.375rem] flex-col items-center rounded-[1.25rem] border border-white bg-white shadow-2xl">
         <div className="relative flex h-full w-full flex-col">
-          <div className="mt-[2.56rem] ml-[1.87rem] flex gap-4">
-            <button>
-              <img src={BackBtn} alt="뒤로가기" onClick={onPrev} />
-            </button>
-          </div>
-          <div className="mx-[6.5rem] mt-[2.06rem] flex flex-col gap-2">
+          <div className="mx-[6.5rem] mt-16 flex flex-col gap-2">
             <div className="flex flex-col">
               <span className="font-semibold">이름</span>
               <input
@@ -51,13 +45,6 @@ export const UserInfoStep = ({ onNext, onPrev }: IUserInfoStep) => {
                     <option value="+81">+81</option>
                     <option value="+86">+86</option>
                   </select>
-                  {/* <button>
-                <img
-                  src={DropDownBtn}
-                  // onClick={}
-                />
-              </button> 
-              추가할 경우 상위 div에 gap-[0.45831rem]*/}
                 </div>
                 <input
                   placeholder="3334586492"
