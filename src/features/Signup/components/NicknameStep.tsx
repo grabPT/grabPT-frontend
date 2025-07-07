@@ -1,4 +1,3 @@
-import BackBtn from '@/features/Signup/assets/BackBtn.png';
 import SignupBtn from '@/features/Signup/components/SignupBtn';
 
 
@@ -20,7 +19,7 @@ export const NickNameStep = ({ onNext }: INicknameStep) => {
         className='w-full font-normal text-2xl text-black h-full px-6'
         />
       </div>
-      <div className=" mt-50 w-96">
+      <div className=" mt-50 w-[25.5625rem]">
         <SignupBtn children={'시작'} onClick={onNext} />
       </div>
     </div>

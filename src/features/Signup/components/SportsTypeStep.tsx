@@ -39,7 +39,7 @@ export const SportsTypeStep = ({ onNext}: ISportTypeStep) => {
           <SportsTypeBtn type={SportsType.CYCLE} img={Cycle} isSelected={selectedSportsType} onClick={()=>setSelectedSportsType(SportsType.CYCLE)}/>
           <SportsTypeBtn type={SportsType.TABLETENNIS} img={Tabletennis} isSelected={selectedSportsType} onClick={()=>setSelectedSportsType(SportsType.TABLETENNIS)}/>
         </div>
-        <div className="mx-[32rem] mt-24 w-96">
+        <div className="mx-[32rem] mt-24 w-[25.5625rem]">
           <SignupBtn children={'다음'} onClick={onNext} />
         </div>
       </div>

@@ -1,4 +1,3 @@
-import BackBtn from '@/features/Signup/assets/BackBtn.png';
 import SignupforTrainer from '@/features/Signup/assets/SignupforTrainer.png';
 import SignupforUser from '@/features/Signup/assets/SignupforUser.png';
 import SignupBtn from '@/features/Signup/components/SignupBtn';
@@ -25,7 +24,7 @@ export const UserTypeStep = ({ onNext, setUserType, UserType }: IUserTypeStep) =
 <div className="mx-auto mt-24 flex w-4xl justify-center gap-20">
   {/* 일반 이용자 카드 */}
   <div
-    className={`w-96 rounded-[1.25rem] shadow-2xl transform transition-transform duration-200 hover:scale-105 ${
+    className={`w-96 rounded-[1.25rem] shadow-2xl transform transition-transform duration-200 hover:scale-105 active:brightness-75 ${
       UserType === 'normal' ? 'brightness-100' : 'brightness-50'
     }`}
     onClick={() => setUserType('normal')}
@@ -47,7 +46,7 @@ export const UserTypeStep = ({ onNext, setUserType, UserType }: IUserTypeStep) =
 
   {/* 전문가 카드 */}
   <div
-    className={`w-96 rounded-[1.25rem] shadow-2xl transform transition-transform duration-200 hover:scale-105 ${
+    className={`w-96 rounded-[1.25rem] shadow-2xl transform transition-transform duration-200 hover:scale-105 active:brightness-75 ${
       UserType === 'expert' ? 'brightness-100' : 'brightness-50'
     }`}
     onClick={() => setUserType('expert')}
@@ -67,7 +66,7 @@ export const UserTypeStep = ({ onNext, setUserType, UserType }: IUserTypeStep) =
     </div>
   </div>
 </div>
-        <div className="mx-[32rem] mt-24 w-96">
+        <div className="mx-[32rem] mt-24 w-[25.5625rem]">
           <SignupBtn children={'다음'} onClick={onNext} />
         </div>
       </div>

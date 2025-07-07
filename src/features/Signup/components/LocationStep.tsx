@@ -3,7 +3,11 @@ import { useState } from 'react';
 import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
 import xBtn from '@/features/Signup/assets/xBtn.png';
 import SignupBtn from '@/features/Signup/components/SignupBtn';
-import { type Location, type Province, regions } from '@/features/Signup/types/Location';
+import {
+  type Location,
+  type Province,
+  regions,
+} from '@/features/Signup/types/Location';
 
 interface ILocationStep {
   onNext: () => void;
@@ -20,23 +24,21 @@ export const LocationStep = ({ onNext }: ILocationStep) => {
       </div>
       <div className="mt-14 flex h-[42.25rem] w-[34.375rem] flex-col items-center rounded-[1.25rem] border border-white bg-white shadow-2xl">
         <div className="relative flex h-full w-full flex-col">
-          <div className=" mt-9 mx-14 flex flex-col gap-2.5">
+          <div className="mx-14 mt-[2.38rem] flex flex-col gap-[0.62rem]">
             <div className="flex">
-              <span className=" text-[1.25rem] font-semibold">
-                거주지역을 설정해 주세요
-              </span>
+              <span className="text-[1.25rem] font-semibold">거주지역을 설정해 주세요</span>
             </div>
-            <div className=" text-[0.75rem] font-semibold text-[#D7D7D7]">
+            <div className="text-[0.75rem] font-semibold text-[#D7D7D7]">
               <span>중복 선택 가능(최대 3개)</span>
             </div>
           </div>
 
-          <div className="flex flex-col h-8 items-start justify-center">
-            <div className="mx-12 flex gap-8">
+          <div className="flex h-[3.4rem] flex-col items-start justify-center">
+            <div className="mx-12 flex gap-8 pt-7">
               {selectedLocation.map((locations) => (
                 <div className="relative">
                   <div
-                    className="font-inter flex h-8 w-32 items-center justify-center rounded-[3.125rem] bg-[#003EFB] font-semibold text-white"
+                    className="font-inter flex h-8 w-32 items-center justify-center rounded-[3.125rem] bg-[#003EFB] text-[0.75rem] font-semibold text-white"
                     key={`${locations.province}-${locations.city}`}
                   >
                     {locations.province}시 {locations.city}
@@ -58,14 +60,14 @@ export const LocationStep = ({ onNext }: ILocationStep) => {
               ))}
             </div>
           </div>
-          <div className="mx-12 mt-3 flex h-96 justify-center overflow-hidden rounded-[0.625rem] border">
+          <div className="mx-auto mt-3 flex h-[23rem] w-[28.5rem] justify-center overflow-hidden rounded-[0.625rem] border border-[#D7D7D7] text-[0.75rem]">
             {/* 왼쪽: 시/도 */}
-            <div className="w-24 overflow-y-auto bg-gray-100 font-semibold text-gray-600">
+            <div className="w-[6.25rem] overflow-y-auto bg-gray-100 font-semibold text-[#BFBFBF]">
               {(Object.keys(regions) as Province[]).map((province) => (
                 <div
                   key={province}
                   onClick={() => setSelectedProvince(province)}
-                  className={`cursor-pointer px-4 py-3 hover:bg-gray-200 ${
+                  className={`flex h-[3.125rem] cursor-pointer items-center justify-center hover:bg-gray-200 active:bg-gray-300 ${
                     selectedProvince === province ? 'bg-white font-bold text-black' : ''
                   }`}
                 >
@@ -75,12 +77,12 @@ export const LocationStep = ({ onNext }: ILocationStep) => {
             </div>
 
             {/* 오른쪽: 시/군/구 */}
-            <div className="w-full overflow-y-auto bg-white">
+            <div className="w-[22.5rem] overflow-y-auto bg-white">
               {selectedProvince &&
-                regions[selectedProvince].map((city) => (
+                regions[selectedProvince].map((city, index) => (
                   <div
                     key={city}
-                    className="cursor-pointer px-4 py-3 text-gray-800 hover:bg-gray-100"
+                    className={`flex h-[3.125rem] cursor-pointer items-center px-11 text-[0.75rem] font-semibold ${index !== regions[selectedProvince].length - 1 ? 'border-b border-gray-100' : ''} text-[#BFBFBF] hover:bg-gray-200 hover:text-black active:bg-gray-300`}
                     onClick={() => {
                       if (selectedProvince) {
                         const newLocation = { province: selectedProvince, city };
@@ -101,7 +103,7 @@ export const LocationStep = ({ onNext }: ILocationStep) => {
                 ))}
             </div>
           </div>
-          <div className="absolute bottom-12 left-1/2 w-96 -translate-x-1/2 transform">
+          <div className="absolute bottom-12 left-1/2 w-[25.5625rem] -translate-x-1/2 transform">
             <SignupBtn children={'인증하기'} onClick={onNext} />
           </div>
         </div>

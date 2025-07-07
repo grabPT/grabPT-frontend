@@ -1,7 +1,6 @@
-import BackBtn from '@/features/Signup/assets/BackBtn.png';
+import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
 import VerifyCheck from '@/features/Signup/assets/VerifyCheck.png';
 import SignupBtn from '@/features/Signup/components/SignupBtn';
-import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
 
 interface IUserInfoStep {
   onNext: () => void;
@@ -16,7 +15,7 @@ export const UserInfoStep = ({ onNext }: IUserInfoStep) => {
       </div>
       <div className="mt-14 flex h-[42.25rem] w-[34.375rem] flex-col items-center rounded-[1.25rem] border border-white bg-white shadow-2xl">
         <div className="relative flex h-full w-full flex-col">
-          <div className="mx-[6.5rem] mt-16 flex flex-col gap-2">
+          <div className="mx-[4.375rem] mt-16 flex flex-col gap-2">
             <div className="flex flex-col">
               <span className="font-semibold">이름</span>
               <input
@@ -36,7 +35,7 @@ export const UserInfoStep = ({ onNext }: IUserInfoStep) => {
                 <span>국가</span>
                 <span>전화번호</span>
               </div>
-              <div className="flex items-center rounded-[0.625rem] border border-[#BDBDBD]">
+              <div className="relative flex items-center rounded-[0.625rem] border border-[#BDBDBD]">
                 <div className="inline-flex border-r border-[#BDBDBD] px-3 py-[0.88rem]">
                   <label htmlFor="country-code"></label>
                   <select id="country-code" name="countryCode" className="text-[#707070]">
@@ -51,6 +50,9 @@ export const UserInfoStep = ({ onNext }: IUserInfoStep) => {
                   // onSubmit={}
                   className="ml-[1.25rem]"
                 />
+                <button className='active:bg-[color:var(--color-button-pressed)]" absolute top-1/2 right-4 flex h-7 w-[4.375rem] -translate-y-1/2 items-center justify-center rounded-[3.125rem] bg-[color:var(--color-button)] text-[0.625rem] font-semibold text-white hover:bg-[color:var(--color-button-hover)]'>
+                  인증요청
+                </button>
               </div>
             </div>
             <div className="flex flex-col">
@@ -61,9 +63,8 @@ export const UserInfoStep = ({ onNext }: IUserInfoStep) => {
               </div>
             </div>
           </div>
-          <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 w-96">
-            <SignupBtn
-              children={'인증하기'} onClick={onNext} />
+          <div className="absolute bottom-12 left-1/2 w-[25.5625rem] -translate-x-1/2 transform">
+            <SignupBtn children={'인증하기'} onClick={onNext} />
           </div>
         </div>
       </div>

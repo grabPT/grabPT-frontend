@@ -8,7 +8,7 @@ function SignupBtn({ label, children, ...rest }: PropsWithChildren<ButtonProps>)
   return (
     <button
       aria-label={label}
-      className=" w-full py-3.5 flex items-center justify-center rounded-[1.25rem] bg-[color:var(--color-button)] text-[1.25rem] font-semibold text-white hover:bg-[color:var(--color-button-hover)] active:bg-[color:var(--color-button-pressed)]"
+      className=" w-full h-[3.25rem] flex items-center justify-center rounded-[1.25rem] bg-[color:var(--color-button)] text-[1.25rem] font-semibold text-white hover:bg-[color:var(--color-button-hover)] active:bg-[color:var(--color-button-pressed)]"
       {...rest}
     >
       {children}

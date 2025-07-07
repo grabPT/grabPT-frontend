@@ -11,13 +11,13 @@ export const SportsTypeBtn = ({type, img,isSelected, onClick}:ISportsTypeBtn) =>
 <div
   className={`
     relative w-32 h-32 overflow-hidden rounded-[0.625rem]
-    cursor-pointer transform transition duration-200 ease-in-out ${isSelected === type ? 'scale-105' : 'hover:scale-105'}
+    cursor-pointer transform transition duration-200 ease-in-out ${isSelected === type ? 'scale-105' : 'hover:scale-105 active:brightness-75'}
   `}
   onClick={onClick}
 >
   <div className={`
     absolute inset-0 z-0 w-full h-full
-    ${isSelected === type ? 'brightness-100' : 'brightness-50'}
+    ${isSelected === type ? 'brightness-100' : 'brightness-70'}
   `}>
     <img
       src={img}

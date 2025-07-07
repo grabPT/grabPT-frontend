@@ -15,7 +15,7 @@ const colorMap = {
 export const LoginBtn = ({ children, color = 'basic', className = '' }: LoginButtonProps) => {
   return (
     <button
-      className={`w-full h-12 py-3.5 flex items-center justify-center cursor-pointer rounded-[1.25rem] text-[1rem] font-semibold transition ${colorMap[color]} ${className}`}
+      className={`w-[25.5625rem]  h-[3.25rem] flex items-center justify-center cursor-pointer rounded-[1.25rem] text-[1.25rem] font-semibold transition ${colorMap[color]} ${className}`}
     >
       {children}
     </button>

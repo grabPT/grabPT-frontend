@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import BackBtn from '@/features/Signup/assets/BackBtn.png';
 import FrontBtn from '@/features/Signup/assets/FrontBtn.png';
 import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
 import SignupBtn from '@/features/Signup/components/SignupBtn';
@@ -49,7 +48,7 @@ export const AgreementStep = ({ onNext }: IAgreementStep) => {
             <input
               type="checkbox"
               checked={checkedList[0]}
-              onChange={(e) => toggleAllCheckbox()}
+              onChange={() => toggleAllCheckbox()}
               className="h-5 w-5 rounded-sm border border-[#BABABA] checked:border-transparent checked:bg-blue-500"
             />
             <span className="font-medium"> 전체 이용약관에 동의합니다.</span>
@@ -61,7 +60,7 @@ export const AgreementStep = ({ onNext }: IAgreementStep) => {
                 <input
                   type="checkbox"
                   checked={checkedList[1]}
-                  onChange={(e) => toggleCheckbox(1)}
+                  onChange={() => toggleCheckbox(1)}
                   className="h-5 w-5 rounded-sm border border-[#BABABA] checked:border-transparent checked:bg-blue-500"
                 />
                 <span className="font-medium">(필수) 개인정보 수집, 이용에 동의합니다.</span>
@@ -78,7 +77,7 @@ export const AgreementStep = ({ onNext }: IAgreementStep) => {
                 <input
                   type="checkbox"
                   checked={checkedList[2]}
-                  onChange={(e) => toggleCheckbox(2)}
+                  onChange={() => toggleCheckbox(2)}
                   className="h-5 w-5 rounded-sm border border-[#BABABA] checked:border-transparent checked:bg-blue-500"
                 />
                 <span className="font-medium">(필수) 이용약관에 동의합니다.</span>
@@ -95,7 +94,7 @@ export const AgreementStep = ({ onNext }: IAgreementStep) => {
                 <input
                   type="checkbox"
                   checked={checkedList[3]}
-                  onChange={(e) => toggleCheckbox(3)}
+                  onChange={() => toggleCheckbox(3)}
                   className="h-5 w-5 rounded-sm border border-[#BABABA] checked:border-transparent checked:bg-blue-500"
                 />
                 <span className="font-medium">(필수) 위치기반 서비스 약관에 동의합니다.</span>
@@ -111,7 +110,7 @@ export const AgreementStep = ({ onNext }: IAgreementStep) => {
               <input
                 type="checkbox"
                 checked={checkedList[4]}
-                onChange={(e) => toggleCheckbox(4)}
+                onChange={() => toggleCheckbox(4)}
                 className="h-5 w-5 rounded-sm border border-[#BABABA] checked:border-transparent checked:bg-blue-500"
               />
               <span className="font-medium">(필수) 만 14세 이상입니다.</span>
@@ -120,7 +119,7 @@ export const AgreementStep = ({ onNext }: IAgreementStep) => {
               <input
                 type="checkbox"
                 checked={checkedList[5]}
-                onChange={(e) => toggleCheckbox(5)}
+                onChange={() => toggleCheckbox(5)}
                 className="h-5 w-5 rounded-sm border border-[#BABABA] checked:border-transparent checked:bg-blue-500"
               />
               <span className="font-medium text-[#BABABA]">
@@ -128,7 +127,7 @@ export const AgreementStep = ({ onNext }: IAgreementStep) => {
               </span>
             </label>
           </div>
-          <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 w-96">
+          <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 w-[25.5625rem]">
             <SignupBtn children={'동의하기'} onClick={onNext}  />
           </div>
         </div>

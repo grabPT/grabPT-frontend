@@ -19,6 +19,8 @@ export const Signup = () => {
   const handleBackClick = () => {
     if (step <= 0) {
       nav('/'); // step이 0 이하일 때 홈으로 이동
+    } else if (userType == 'normal' && step == 4) {
+      setStep((prev) => prev - 2);
     } else {
       setStep((prev) => prev - 1); // 그 외에는 한 단계 뒤로
     }
