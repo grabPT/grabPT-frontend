@@ -3,18 +3,16 @@ import { useState } from 'react';
 import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
 import xBtn from '@/features/Signup/assets/xBtn.png';
 import SignupBtn from '@/features/Signup/components/SignupBtn';
-import {
-  type Location,
-  type Province,
-  regions,
-} from '@/features/Signup/types/Location';
+import { type Location, type Province, regions } from '@/features/Signup/types/Location';
 
 interface ILocationStep {
   onNext: () => void;
 }
 
 export const LocationStep = ({ onNext }: ILocationStep) => {
+  // 선택된 시/도
   const [selectedProvince, setSelectedProvince] = useState<Province>();
+  // 선택된 지역 목록
   const [selectedLocation, setSelectedLocation] = useState<Location[]>([]);
   return (
     <div className="flex flex-col items-center justify-center">
@@ -32,7 +30,7 @@ export const LocationStep = ({ onNext }: ILocationStep) => {
               <span>중복 선택 가능(최대 3개)</span>
             </div>
           </div>
-
+          {/* 선택한 지역 보여주기 */}
           <div className="flex h-[3.4rem] flex-col items-start justify-center">
             <div className="mx-12 flex gap-8 pt-7">
               {selectedLocation.map((locations) => (
@@ -54,7 +52,7 @@ export const LocationStep = ({ onNext }: ILocationStep) => {
                       )
                     }
                   >
-                    <img src={xBtn} />
+                    <img src={xBtn} className="h-3 w-3 overflow-hidden rounded-full bg-white" />
                   </div>
                 </div>
               ))}
@@ -83,6 +81,7 @@ export const LocationStep = ({ onNext }: ILocationStep) => {
                   <div
                     key={city}
                     className={`flex h-[3.125rem] cursor-pointer items-center px-11 text-[0.75rem] font-semibold ${index !== regions[selectedProvince].length - 1 ? 'border-b border-gray-100' : ''} text-[#BFBFBF] hover:bg-gray-200 hover:text-black active:bg-gray-300`}
+                    //  중복 선택 불가 + 최대 개수 3개
                     onClick={() => {
                       if (selectedProvince) {
                         const newLocation = { province: selectedProvince, city };
@@ -103,8 +102,18 @@ export const LocationStep = ({ onNext }: ILocationStep) => {
                 ))}
             </div>
           </div>
+          {/* 다음 버튼 */}
           <div className="absolute bottom-12 left-1/2 w-[25.5625rem] -translate-x-1/2 transform">
-            <SignupBtn children={'인증하기'} onClick={onNext} />
+            <SignupBtn
+              children={'다음'}
+              onClick={() => {
+                if (selectedLocation.length === 0) {
+                  alert('위치를 1곳 이상 선택해야 합니다');
+                  return;
+                }
+                onNext();
+              }}
+            />
           </div>
         </div>
       </div>

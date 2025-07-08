@@ -1,37 +1,28 @@
-import type { SportsType } from "@/features/Signup/types/SportsType";
+import type { SportsType } from '@/features/Signup/types/SportsType';
 
-interface ISportsTypeBtn{
-  type:SportsType;
-  img:string
-  onClick: ()=>void
-  isSelected:SportsType | null
+interface ISportsTypeBtn {
+  type: SportsType;
+  img: string;
+  onClick: () => void;
+  isSelected: SportsType | null;
 }
-export const SportsTypeBtn = ({type, img,isSelected, onClick}:ISportsTypeBtn) => {
+export const SportsTypeBtn = ({ type, img, isSelected, onClick }: ISportsTypeBtn) => {
+  // 선택된 운동 종목과 현재 버튼의 종목이 일치하는지 확인
   return (
-<div
-  className={`
-    relative w-32 h-32 overflow-hidden rounded-[0.625rem]
-    cursor-pointer transform transition duration-200 ease-in-out ${isSelected === type ? 'scale-105' : 'hover:scale-105 active:brightness-75'}
-  `}
-  onClick={onClick}
->
-  <div className={`
-    absolute inset-0 z-0 w-full h-full
-    ${isSelected === type ? 'brightness-100' : 'brightness-70'}
-  `}>
-    <img
-      src={img}
-      alt="운동 종목 사진"
-      className="w-full h-full object-cover"
-    />
-    {isSelected !== type && (
-      <div className="absolute inset-0 bg-gray-900/20" />
-    )}
-  </div>
+    <div
+      className={`relative h-32 w-32 transform cursor-pointer overflow-hidden rounded-[0.625rem] transition duration-200 ease-in-out ${isSelected === type ? 'scale-105' : 'hover:scale-105'} `}
+      onClick={onClick}
+    >
+      <div className={`absolute inset-0 z-0 h-full w-full`}>
+        <img src={img} alt="운동 종목 사진" className="h-full w-full object-cover" />
+        <div
+          className={`absolute inset-0 transition-colors duration-200 ease-in-out ${isSelected !== type ? 'bg-black/58' : 'bg-[#003EFBB2]'}`}
+        />
+      </div>
 
-  <div className="absolute top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2 text-2xl font-semibold text-white whitespace-nowrap drop-shadow-md">
-    {type}
-  </div>
-</div>
-  )
-}
+      <div className="absolute top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2 text-2xl font-semibold whitespace-nowrap text-white drop-shadow-md">
+        {type}
+      </div>
+    </div>
+  );
+};

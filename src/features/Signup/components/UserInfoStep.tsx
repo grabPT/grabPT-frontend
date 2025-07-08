@@ -1,5 +1,6 @@
+import { useState } from 'react';
+
 import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
-import VerifyCheck from '@/features/Signup/assets/VerifyCheck.png';
 import SignupBtn from '@/features/Signup/components/SignupBtn';
 
 interface IUserInfoStep {
@@ -7,6 +8,16 @@ interface IUserInfoStep {
 }
 
 export const UserInfoStep = ({ onNext }: IUserInfoStep) => {
+  const [VerifyNumberCheckResult, setVerifyNumberCheckResult] = useState<boolean | null>(null);
+  const [VerifyNumber, setVerifyNumber] = useState('');
+  const handleVerifyNumberCheck = () => {
+    //나중에 서버에서 인증번호 확인 로직 추가
+    if (VerifyNumber === '123456') {
+      setVerifyNumberCheckResult(true);
+    } else {
+      setVerifyNumberCheckResult(false);
+    }
+  };
   return (
     <div className="flex flex-col items-center justify-center">
       {/* 로고 */}
@@ -19,6 +30,7 @@ export const UserInfoStep = ({ onNext }: IUserInfoStep) => {
             <div className="flex flex-col">
               <span className="font-semibold">이름</span>
               <input
+                type="text"
                 placeholder="이름"
                 className="rounded-[0.625rem] border border-[#BDBDBD] py-[0.88rem] pl-4"
               />
@@ -26,6 +38,7 @@ export const UserInfoStep = ({ onNext }: IUserInfoStep) => {
             <div className="flex flex-col">
               <span className="font-semibold">이메일</span>
               <input
+                type="email"
                 placeholder="이메일"
                 className="rounded-[0.625rem] border border-[#BDBDBD] py-[0.88rem] pl-4"
               />
@@ -46,20 +59,43 @@ export const UserInfoStep = ({ onNext }: IUserInfoStep) => {
                   </select>
                 </div>
                 <input
+                  type="tel"
                   placeholder="3334586492"
                   // onSubmit={}
                   className="ml-[1.25rem]"
                 />
-                <button className='active:bg-[color:var(--color-button-pressed)]" absolute top-1/2 right-4 flex h-7 w-[4.375rem] -translate-y-1/2 items-center justify-center rounded-[3.125rem] bg-[color:var(--color-button)] text-[0.625rem] font-semibold text-white hover:bg-[color:var(--color-button-hover)]'>
+                <button className="absolute top-1/2 right-4 flex h-7 w-[4.375rem] -translate-y-1/2 items-center justify-center rounded-[3.125rem] bg-[color:var(--color-button)] text-[0.625rem] font-semibold text-white hover:bg-[color:var(--color-button-hover)] active:bg-[color:var(--color-button-pressed)]">
                   인증요청
                 </button>
               </div>
             </div>
             <div className="flex flex-col">
               <span className="font-semibold">인증번호</span>
-              <div className="flex items-center justify-between rounded-[0.625rem] border border-[#BDBDBD]">
-                <input placeholder="XXXXXX" className="py-[0.88rem] pl-4"></input>
-                <img src={VerifyCheck} alt="인증 완료 버튼" className="mr-4 h-6 w-6" />
+              <div className="relative flex items-center justify-between">
+                <input
+                  placeholder="XXXXXX"
+                  className={`w-full rounded-[0.625rem] border py-[0.88rem] pl-4 ${
+                    VerifyNumberCheckResult === true
+                      ? 'border-green-500'
+                      : VerifyNumberCheckResult === false
+                        ? 'border-red-500'
+                        : 'border-[#BDBDBD]'
+                  }`}
+                ></input>
+                <button
+                  className="absolute top-1/2 right-4 flex h-7 w-[4.375rem] -translate-y-1/2 items-center justify-center rounded-[3.125rem] bg-[color:var(--color-button)] text-[0.625rem] font-semibold text-white hover:bg-[color:var(--color-button-hover)] active:bg-[color:var(--color-button-pressed)]"
+                  onClick={handleVerifyNumberCheck}
+                >
+                  인증확인
+                </button>
+              </div>
+              <div className="mt-1 flex flex-col gap-2">
+                {VerifyNumberCheckResult === true && (
+                  <p className="mt-1 text-sm text-green-600">인증되었습니다</p>
+                )}
+                {VerifyNumberCheckResult === false && (
+                  <p className="mt-1 text-sm text-red-600">인증번호가 일치하지 않습니다</p>
+                )}
               </div>
             </div>
           </div>

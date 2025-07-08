@@ -1,3 +1,4 @@
+//운동 종목
 export const SportsType = {
   WEIGHT: '헬스',
   BOXING: '복싱',

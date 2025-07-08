@@ -1,31 +1,30 @@
 import { useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
-import BackBtn from '@/features/Signup/assets/BackBtn.svg';
+
 import GoogleLogo from '@/features/Login/assets//GoogleLogo.svg';
 import KakaoLogo from '@/features/Login/assets//KakaoLogo.svg';
 import NaverLogo from '@/features/Login/assets//NaverLogo.svg';
 import PasswordEye from '@/features/Login/assets/PasswordEye.png';
 import { LoginBtn } from '@/features/Login/components/LoginBtn';
+import BackBtn from '@/features/Signup/assets/BackBtn.svg';
 import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
 
 export type UserType = 'normal' | 'expert';
 export const Login = () => {
   const nav = useNavigate();
+  //비밀번호 숨김 여부 관리
   const [showPassword, setShowPassword] = useState(false);
-
   const togglePassword = () => {
     setShowPassword((prev) => !prev);
   };
   return (
     <div className="relative h-dvh w-full bg-gradient-to-bl from-[#8CAFFF] to-[#FFFFFF]">
-            <div className="mx-6">
-        <button onClick={()=>nav("/")}>
+      <div className="mx-6">
+        <button onClick={() => nav('/')}>
           <img src={BackBtn} />
         </button>
       </div>
-      {/* 본문 (약관/정보입력/거주지 선택 등) */}
-
       <div className="flex flex-col items-center justify-center">
         {/* 로고 */}
         <div className="mt-6 flex justify-center">
@@ -58,6 +57,7 @@ export const Login = () => {
                   </button>
                 </div>
               </div>
+              {/* 아이디 찾기/비밀번호 찾기 로직이 없음 */}
               <div className="flex justify-end gap-2 text-[0.8125rem] font-semibold whitespace-pre text-gray-400">
                 <span
                   className="cursor-pointer hover:underline"
@@ -73,6 +73,7 @@ export const Login = () => {
                 </span>
               </div>
             </div>
+            {/* 각 소셜 로그인 버튼 이건 나중에 로직 추가 에정 */}
             <div className="flex flex-col items-center justify-center rounded-[1.25rem]">
               <div className="mt-20 flex w-full items-center justify-center">
                 <LoginBtn children={'로그인'} />
@@ -120,6 +121,7 @@ export const Login = () => {
         </div>
       </div>
 
+      {/* 밑에 주석 */}
       <div className="absolute bottom-8 left-8 font-normal">
         <span className="text-gray-400">최초 로그인 시 이용약관과 </span>
         <span className="text-[#93A2EB]">개인정보 취급방침</span>,<br />

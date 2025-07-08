@@ -1,3 +1,4 @@
+//지역 타입(나중에 추가 예정)
 export type Province =
   | '서울'
   | '경기'

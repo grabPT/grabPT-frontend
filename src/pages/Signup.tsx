@@ -27,15 +27,17 @@ export const Signup = () => {
   };
   return (
     <div className="relative h-dvh w-full bg-gradient-to-bl from-[#8CAFFF] to-[#FFFFFF]">
+      {/* 뒤로 가기 버튼 */}
       <div className="mx-6">
         <button onClick={handleBackClick}>
           <img src={BackBtn} />
         </button>
       </div>
+
       {/* 본문 (약관/정보입력/거주지 선택 등) */}
       {step === 0 && <AgreementStep onNext={() => setStep(1)} />}
       {step === 1 && (
-        <UserTypeStep onNext={() => setStep(2)} UserType={userType} setUserType={setUserType} />
+        <UserTypeStep onNext={() => setStep(2)} userType={userType} setUserType={setUserType} />
       )}
       {step === 2 && (
         <UserInfoStep
