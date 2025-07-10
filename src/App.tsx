@@ -5,6 +5,7 @@ import Layout from '@/layout/Layout';
 import { Login } from '@/pages/Login';
 import { Signup } from '@/pages/Signup';
 
+import Category from './features/Category/pages/CategoryPage';
 import UserMainPage from './features/home/pages/UserMainPage';
 
 // 라우터
@@ -30,6 +31,10 @@ const routes: RouteObject[] = [
       {
         path: ROUTES.USER_PAGE, // 'user'
         element: <UserMainPage />,
+      },
+      {
+        path: ROUTES.CATEGORY,
+        element: <Category />,
       },
     ],
   },

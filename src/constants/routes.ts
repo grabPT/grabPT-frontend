@@ -6,6 +6,7 @@ const ROUTES = {
   MYPAGE: '/mypage',
   USER_PAGE: '/user',
   EXPERT_PAGE: '/expert',
+  CATEGORY: '/category/*', 
 };
 
 export default ROUTES;
