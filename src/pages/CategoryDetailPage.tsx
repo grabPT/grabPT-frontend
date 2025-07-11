@@ -1,10 +1,9 @@
 import { useParams } from 'react-router-dom';
 
 import Button from '@/components/Button';
-
-import MatchingStatusCard from '../components/MatchingStatusCard';
-import TrainerCardScroll from '../components/TrainerCardScroll';
-import { dummyMatchings, dummyTrainers } from '../data/dummy';
+import ExpertCardScroll from '@/features/Category/components/ExpertCardScroll';
+import MatchingStatusCard from '@/features/Category/components/MatchingStatusCard';
+import { dummyExperts, dummyMatchings } from '@/features/Category/data/dummy';
 
 export default function CategoryDetailPage() {
   const { slug } = useParams(); // ex) tennis
@@ -29,12 +28,12 @@ export default function CategoryDetailPage() {
 
       <section>
         <div className="mt-[17px]">
-          <TrainerCardScroll trainers={dummyTrainers} />
+          <ExpertCardScroll experts={dummyExperts} />
         </div>
       </section>
 
       {/* 실시간 매칭 현황 */}
-      <section className="mt-[156px] mb-[200px] h-374px">
+      <section className="h-374px mt-[156px] mb-[200px]">
         <h2 className="font-[Pretendard Variable] text-[40px] leading-[40px] font-extrabold text-black not-italic">
           실시간 매칭 현황
         </h2>

@@ -10,7 +10,7 @@ interface RequestCardProps {
   content: string;
 }
 
-function RequestCard({ name, location, center, category, content }: RequestCardProps) {
+const RequestCard = ({ name, location, center, category, content }: RequestCardProps) => {
   return (
     <div className="w-[800px]">
       <Box>
@@ -55,6 +55,6 @@ function RequestCard({ name, location, center, category, content }: RequestCardP
       </Box>
     </div>
   );
-}
+};
 
 export default RequestCard;

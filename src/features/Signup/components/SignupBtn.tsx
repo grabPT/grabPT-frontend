@@ -4,7 +4,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   label?: string; // 접근성 레이블
 }
 
-function SignupBtn({ label, children, ...rest }: PropsWithChildren<ButtonProps>) {
+const SignupBtn = ({ label, children, ...rest }: PropsWithChildren<ButtonProps>) => {
   return (
     <button
       aria-label={label}
@@ -14,6 +14,6 @@ function SignupBtn({ label, children, ...rest }: PropsWithChildren<ButtonProps>)
       {children}
     </button>
   );
-}
+};
 
 export default SignupBtn;

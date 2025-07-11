@@ -1,9 +1,11 @@
 // src/features/Category/pages/CategoryPage.tsx
-import { Routes, Route, useNavigate, useParams } from 'react-router-dom';
 import { useState } from 'react';
 
-import { SportsType } from '@/features/Signup/types/SportsType';
-import { SportsSelectSection } from '../components/SportsSelectSection';
+import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
+
+import SportsSelectSection from '@/features/Category/components/SportsSelectSection';
+import { SportsType } from '@/types/SportsType';
+
 import CategoryDetailPage from './CategoryDetailPage';
 
 export default function CategoryPage() {
@@ -17,10 +19,7 @@ export default function CategoryPage() {
 
   return (
     <Routes>
-      <Route
-        index
-        element={<SportsSelectSection selected={selected} onSelect={handleSelect} />}
-      />
+      <Route index element={<SportsSelectSection selected={selected} onSelect={handleSelect} />} />
       <Route path=":slug" element={<CategoryDetailPage />} />
     </Routes>
   );

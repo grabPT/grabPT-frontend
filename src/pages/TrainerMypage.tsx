@@ -5,7 +5,7 @@ import ReviewSlide from '@/components/ReviewSlide';
 import MypageSection from '@/features/Mypage/components/MypageSection';
 import ProfileCard from '@/layout/components/ProfileCard';
 
-function TrainerMypage() {
+const TrainerMypage = () => {
   const images = Array.from({ length: 7 }, () => MockImage);
 
   const review = {
@@ -63,6 +63,6 @@ function TrainerMypage() {
       </section>
     </section>
   );
-}
+};
 
 export default TrainerMypage;

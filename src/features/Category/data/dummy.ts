@@ -1,67 +1,65 @@
-// src/features/Category/data/dummy.ts
-
-import TrainerImage from '@/features/Category/assets/TrainerProfileDummy.png';
 import HeaderProfile from '@/assets/images/HeaderProfile.png';
+import ExpertImage from '@/features/Category/assets/ExpertProfileDummy.png';
 
-export const dummyTrainers = [
+export const dummyExperts = [
   {
-    imageUrl: TrainerImage,
+    imageUrl: ExpertImage,
     name: '박수민',
     center: '응암동헬스장 브라이언박 트레이닝 센터',
     rating: 4.4,
     pricePerSession: 30000,
   },
   {
-    imageUrl: TrainerImage,
+    imageUrl: ExpertImage,
     name: '김보라',
     center: '상암PT Zone 헬스퀸',
     rating: 2.3,
     pricePerSession: 28000,
   },
   {
-    imageUrl: TrainerImage,
+    imageUrl: ExpertImage,
     name: '이정후',
     center: '목동FC 짐',
     rating: 3.9,
     pricePerSession: 27000,
   },
   {
-    imageUrl: TrainerImage,
+    imageUrl: ExpertImage,
     name: '최현우',
     center: '방배 PT핏짐',
     rating: 4.7,
     pricePerSession: 35000,
   },
   {
-    imageUrl: TrainerImage,
+    imageUrl: ExpertImage,
     name: '정유진',
     center: '영등포 헬스존',
     rating: 4.2,
     pricePerSession: 29000,
   },
   {
-    imageUrl: TrainerImage,
+    imageUrl: ExpertImage,
     name: '배지현',
     center: '건대 PT Lab',
     rating: 4.8,
     pricePerSession: 31000,
   },
   {
-    imageUrl: TrainerImage,
+    imageUrl: ExpertImage,
     name: '하민수',
     center: '홍대 트레이너스',
     rating: 3.6,
     pricePerSession: 26000,
   },
   {
-    imageUrl: TrainerImage,
+    imageUrl: ExpertImage,
     name: '송유나',
     center: '이태원 헬스앤핏',
     rating: 4.5,
     pricePerSession: 32000,
   },
   {
-    imageUrl: TrainerImage,
+    imageUrl: ExpertImage,
     name: '김태경',
     center: '노원 바디업센터',
     rating: 4.0,

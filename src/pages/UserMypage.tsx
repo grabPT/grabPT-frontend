@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom';
 
 import Tabs from '@/components/Tabs';
 
-function UserMypage() {
+const UserMypage = () => {
   const tabs = [
     { label: '마이페이지', to: '/mypage/user' },
     { label: '요청서 작성 내역', to: '/mypage/user/requests' },
@@ -18,6 +18,6 @@ function UserMypage() {
       </div>
     </section>
   );
-}
+};
 
 export default UserMypage;

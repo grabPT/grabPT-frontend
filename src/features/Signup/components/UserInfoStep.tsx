@@ -3,11 +3,11 @@ import { useState } from 'react';
 import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
 import SignupBtn from '@/features/Signup/components/SignupBtn';
 
-interface IUserInfoStep {
+interface UserInfoStepProps {
   onNext: () => void;
 }
 
-export const UserInfoStep = ({ onNext }: IUserInfoStep) => {
+const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
   const [VerifyNumberCheckResult, setVerifyNumberCheckResult] = useState<boolean | null>(null);
   const [VerifyNumber, setVerifyNumber] = useState('');
   const handleVerifyNumberCheck = () => {
@@ -51,7 +51,12 @@ export const UserInfoStep = ({ onNext }: IUserInfoStep) => {
               <div className="relative flex items-center rounded-[0.625rem] border border-[#BDBDBD]">
                 <div className="inline-flex border-r border-[#BDBDBD] px-3 py-[0.88rem]">
                   <label htmlFor="country-code"></label>
-                  <select id="country-code" name="countryCode" className="text-[#707070]">
+                  <select
+                    aria-label="지역선택"
+                    id="country-code"
+                    name="countryCode"
+                    className="text-[#707070]"
+                  >
                     <option value="+82">+82</option>
                     <option value="+1">+1</option>
                     <option value="+81">+81</option>
@@ -107,3 +112,5 @@ export const UserInfoStep = ({ onNext }: IUserInfoStep) => {
     </div>
   );
 };
+
+export default UserInfoStep;

@@ -1,9 +1,9 @@
-interface IAgreementModal {
+interface AgreementModalProps {
   index: number;
   onClose: () => void;
 }
 
-export const AgreementModal = ({ index, onClose }: IAgreementModal) => {
+const AgreementModal = ({ index, onClose }: AgreementModalProps) => {
   //갹 상세 설명 배열로 관리
   const termsList = [
     {
@@ -106,3 +106,5 @@ export const AgreementModal = ({ index, onClose }: IAgreementModal) => {
     </div>
   );
 };
+
+export default AgreementModal;

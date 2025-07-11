@@ -5,11 +5,11 @@ import xBtn from '@/features/Signup/assets/xBtn.png';
 import SignupBtn from '@/features/Signup/components/SignupBtn';
 import { type Location, type Province, regions } from '@/features/Signup/types/Location';
 
-interface ILocationStep {
+interface LocationStepProps {
   onNext: () => void;
 }
 
-export const LocationStep = ({ onNext }: ILocationStep) => {
+const LocationStep = ({ onNext }: LocationStepProps) => {
   // 선택된 시/도
   const [selectedProvince, setSelectedProvince] = useState<Province>();
   // 선택된 지역 목록
@@ -52,7 +52,11 @@ export const LocationStep = ({ onNext }: ILocationStep) => {
                       )
                     }
                   >
-                    <img src={xBtn} className="h-3 w-3 overflow-hidden rounded-full bg-white" />
+                    <img
+                      alt="x버튼"
+                      src={xBtn}
+                      className="h-3 w-3 overflow-hidden rounded-full bg-white"
+                    />
                   </div>
                 </div>
               ))}
@@ -120,3 +124,5 @@ export const LocationStep = ({ onNext }: ILocationStep) => {
     </div>
   );
 };
+
+export default LocationStep;

@@ -1,4 +1,3 @@
-// src/features/Category/constants/sports.ts
 import Badminton from '@/features/Signup/assets/Badminton.png';
 import Boxing from '@/features/Signup/assets/Boxing.png';
 import Cycle from '@/features/Signup/assets/Cycle.png';
@@ -9,14 +8,14 @@ import Swimming from '@/features/Signup/assets/Swimming.png';
 import Tabletennis from '@/features/Signup/assets/Tabletennis.png';
 import Tennis from '@/features/Signup/assets/Tennis.png';
 import Weight from '@/features/Signup/assets/Weight.png';
-import { SportsType } from '@/features/Signup/types/SportsType';
+import { SportsType } from '@/types/SportsType';
 
-export interface SportItem {
+export type SportItem = {
   slug: string;
   label: string;
   type: SportsType;
   img: string;
-}
+};
 
 export const SPORTS: SportItem[] = [
   { slug: 'weight', label: '웨이트', type: SportsType.WEIGHT, img: Weight },

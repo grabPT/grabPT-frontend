@@ -5,11 +5,11 @@ import DefaultProfile from '@/features/Signup/assets/DefaultProfile.svg';
 import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
 import SignupBtn from '@/features/Signup/components/SignupBtn';
 
-interface INicknameStep {
+interface NicknameStepProps {
   onNext: () => void;
 }
 
-export const NickNameStep = ({ onNext }: INicknameStep) => {
+const NickNameStep = ({ onNext }: NicknameStepProps) => {
   // 프로필 사진 업로드 상태
   const [profileImage, setProfileImage] = useState<File | null>(null);
   // 프로필 사진 미리보기 URL
@@ -71,6 +71,7 @@ export const NickNameStep = ({ onNext }: INicknameStep) => {
                 />
               </div>
               <input
+                aria-label="프로필사진"
                 id="file-upload"
                 type="file"
                 accept="image/*"
@@ -128,3 +129,5 @@ export const NickNameStep = ({ onNext }: INicknameStep) => {
     </div>
   );
 };
+
+export default NickNameStep;

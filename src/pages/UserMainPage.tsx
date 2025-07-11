@@ -1,4 +1,3 @@
-// src/pages/UserMainPage.tsx
 import React, { useRef } from 'react';
 
 import RequestCardScroll from '@/features/home/components/RequestCardScroll';
@@ -18,7 +17,7 @@ const UserMainPage: React.FC = () => {
       <UserSearchSection />
 
       {/* 요청서 섹션 */}
-      <section className="mt-[109px] mx-[100px]" ref={sectionRef}>
+      <section className="mx-[100px] mt-[109px]" ref={sectionRef}>
         <h2 className="font-pretendard text-[30px] leading-[100%] font-extrabold tracking-[0%]">
           나의 요청서
         </h2>

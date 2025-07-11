@@ -2,14 +2,14 @@ import { useState } from 'react';
 
 import FrontBtn from '@/features/Signup/assets/FrontBtn.png';
 import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
-import { AgreementModal } from '@/features/Signup/components/AgreementModal';
+import AgreementModal from '@/features/Signup/components/AgreementModal';
 import SignupBtn from '@/features/Signup/components/SignupBtn';
 
-interface IAgreementStep {
+interface AgreementStepProps {
   onNext: () => void;
 }
 
-export const AgreementStep = ({ onNext }: IAgreementStep) => {
+const AgreementStep = ({ onNext }: AgreementStepProps) => {
   //상세 설명 모달
   const [isModalOpen, setIsModalOpen] = useState<number | null>(null);
   // 체크박스 상태 관리
@@ -159,3 +159,5 @@ export const AgreementStep = ({ onNext }: IAgreementStep) => {
     </div>
   );
 };
+
+export default AgreementStep;

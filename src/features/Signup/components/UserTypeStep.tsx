@@ -3,13 +3,13 @@ import SignupforUser from '@/features/Signup/assets/SignupforUser.png';
 import SignupBtn from '@/features/Signup/components/SignupBtn';
 import type { UserType } from '@/pages/Signup';
 
-interface IUserTypeStep {
+interface UserTypeStepProps {
   onNext: () => void;
   userType: UserType | null;
   setUserType: (type: UserType) => void;
 }
 
-export const UserTypeStep = ({ onNext, setUserType, userType }: IUserTypeStep) => {
+const UserTypeStep = ({ onNext, setUserType, userType }: UserTypeStepProps) => {
   return (
     <div className="flex flex-col">
       <div className="mt-32 mb-72 flex flex-col items-center justify-center">
@@ -90,3 +90,5 @@ export const UserTypeStep = ({ onNext, setUserType, userType }: IUserTypeStep) =
     </div>
   );
 };
+
+export default UserTypeStep;

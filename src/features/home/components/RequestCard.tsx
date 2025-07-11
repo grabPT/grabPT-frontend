@@ -1,4 +1,5 @@
 import { X } from 'lucide-react';
+
 import ProfileIcon from '@/features/home/assets/icons/ProfileIcon.png';
 import type { RequestCardProps } from '@/features/home/types/request';
 
@@ -6,7 +7,7 @@ const RequestCard: React.FC<RequestCardProps> = ({ nickname, region, center_name
   return (
     <div className="relative flex h-[258px] w-[400px] flex-shrink-0 flex-col justify-between rounded-[10px] bg-white p-4 shadow-md">
       {/* 닫기 버튼 */}
-      <button className="absolute top-2 right-2 text-gray-400 hover:text-black">
+      <button className="absolute top-2 right-2 text-gray-400 hover:text-black" name="닫기버튼">
         <X size={18} />
       </button>
 

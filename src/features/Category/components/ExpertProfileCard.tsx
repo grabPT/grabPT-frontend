@@ -1,6 +1,6 @@
 import StarRating from '@/components/StarRating';
 
-interface TrainerProfileCardProps {
+interface ExpertProfileCardProps {
   imageUrl: string;
   name: string;
   center: string;
@@ -8,13 +8,13 @@ interface TrainerProfileCardProps {
   pricePerSession: number;
 }
 
-export default function TrainerProfileCard({
+const ExpertProfileCard = ({
   imageUrl,
   name,
   center,
   rating,
   pricePerSession,
-}: TrainerProfileCardProps) {
+}: ExpertProfileCardProps) => {
   return (
     <div className="h-[370px] w-[280px] overflow-hidden rounded-2xl bg-white shadow-[4px_4px_10px_rgba(0,0,0,0.25)]">
       {/* 상단 이미지 영역 */}
@@ -40,11 +40,13 @@ export default function TrainerProfileCard({
         {/* 별점 + 점수 */}
         <div className="flex items-center gap-[2px]">
           <StarRating rating={rating} size={20} />
-          <p className="font-[Pretendard Variable] text-[6px] leading-[8.4px] font-semibold text-black not-italic">
+          <p className="text-[6px] leading-[8.4px] font-semibold text-black not-italic">
             ({rating.toFixed(1)})
           </p>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default ExpertProfileCard;

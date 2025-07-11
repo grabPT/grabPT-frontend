@@ -7,7 +7,7 @@ function Layout() {
   const location = useLocation();
 
   // 전체화면으로 보여야 할 경로 리스트
-  const fullWidthRoutes = ['/user'];
+  const fullWidthRoutes = ['/'];
   const isFullWidthPage = fullWidthRoutes.includes(location.pathname);
 
   return (

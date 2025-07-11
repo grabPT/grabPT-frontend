@@ -6,7 +6,7 @@ interface PaginationProps {
   onChange: (page: number) => void;
 }
 
-function Pagination({ total, page, onChange }: PaginationProps) {
+const Pagination = ({ total, page, onChange }: PaginationProps) => {
   // 유효성 보호
   if (total < 1) return null;
 
@@ -71,6 +71,6 @@ function Pagination({ total, page, onChange }: PaginationProps) {
       </ul>
     </nav>
   );
-}
+};
 
 export default Pagination;

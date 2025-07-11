@@ -6,12 +6,13 @@ import GoogleLogo from '@/features/Login/assets//GoogleLogo.svg';
 import KakaoLogo from '@/features/Login/assets//KakaoLogo.svg';
 import NaverLogo from '@/features/Login/assets//NaverLogo.svg';
 import PasswordEye from '@/features/Login/assets/PasswordEye.png';
-import { LoginBtn } from '@/features/Login/components/LoginBtn';
+import LoginButton from '@/features/Login/components/LoginButton';
 import BackBtn from '@/features/Signup/assets/BackBtn.svg';
 import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
 
 export type UserType = 'normal' | 'expert';
-export const Login = () => {
+
+const Login = () => {
   const nav = useNavigate();
   //비밀번호 숨김 여부 관리
   const [showPassword, setShowPassword] = useState(false);
@@ -22,7 +23,7 @@ export const Login = () => {
     <div className="relative h-dvh w-full bg-gradient-to-bl from-[#8CAFFF] to-[#FFFFFF]">
       <div className="mx-6">
         <button onClick={() => nav('/')}>
-          <img src={BackBtn} />
+          <img alt="뒤로가기" src={BackBtn} />
         </button>
       </div>
       <div className="flex flex-col items-center justify-center">
@@ -76,11 +77,11 @@ export const Login = () => {
             {/* 각 소셜 로그인 버튼 이건 나중에 로직 추가 에정 */}
             <div className="flex flex-col items-center justify-center rounded-[1.25rem]">
               <div className="mt-20 flex w-full items-center justify-center">
-                <LoginBtn children={'로그인'} />
+                <LoginButton children={'로그인'} />
               </div>
               <div className="mt-14 flex w-full flex-col gap-2 whitespace-pre">
                 <div className="flex items-center justify-center">
-                  <LoginBtn color="kakao">
+                  <LoginButton color="kakao">
                     <div className="flex items-center gap-2">
                       <img
                         src={KakaoLogo}
@@ -89,10 +90,10 @@ export const Login = () => {
                       />
                       <span>카카오로 시작</span>
                     </div>
-                  </LoginBtn>
+                  </LoginButton>
                 </div>
                 <div className="flex items-center justify-center">
-                  <LoginBtn color="naver">
+                  <LoginButton color="naver">
                     <div className="flex items-center gap-2">
                       <img
                         src={NaverLogo}
@@ -101,10 +102,10 @@ export const Login = () => {
                       />
                       <span>네이버로 시작</span>
                     </div>
-                  </LoginBtn>
+                  </LoginButton>
                 </div>
                 <div className="flex items-center justify-center">
-                  <LoginBtn color="google">
+                  <LoginButton color="google">
                     <div className="flex items-center gap-2">
                       <img
                         src={GoogleLogo}
@@ -113,7 +114,7 @@ export const Login = () => {
                       />
                       <span>구글로 시작</span>
                     </div>
-                  </LoginBtn>
+                  </LoginButton>
                 </div>
               </div>
             </div>
@@ -131,3 +132,5 @@ export const Login = () => {
     </div>
   );
 };
+
+export default Login;

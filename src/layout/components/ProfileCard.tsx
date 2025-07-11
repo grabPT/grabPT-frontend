@@ -1,7 +1,7 @@
 import Profile from '@/assets/images/HeaderProfile.png';
 import StarRating from '@/components/StarRating';
 
-function ProfileCard() {
+const ProfileCard = () => {
   return (
     // 좌우패딩불일치, 일단34로 작업함
     <div className="flex h-[115px] w-[926px] items-center justify-between rounded-[30px] border-[1.5px] border-[#b8b8b8] px-[34px]">
@@ -31,6 +31,6 @@ function ProfileCard() {
       </div>
     </div>
   );
-}
+};
 
 export default ProfileCard;

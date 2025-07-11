@@ -1,7 +1,7 @@
 import Profile from '@/assets/images/HeaderProfile.png';
 import Button from '@/components/Button';
 
-function UserDashboard() {
+const UserDashboard = () => {
   const FIELDS = ['이름', '닉네임', '이메일'] as const;
 
   return (
@@ -31,6 +31,6 @@ function UserDashboard() {
       </div>
     </div>
   );
-}
+};
 
 export default UserDashboard;

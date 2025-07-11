@@ -1,37 +1,45 @@
 import { type RouteObject, RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import ROUTES from '@/constants/routes';
-import UserSettings from '@/features/UserMypage/UserSettings';
 import UserDashboard from '@/features/UserMypage/components/UserDashboard';
 import UserRequests from '@/features/UserMypage/components/UserRequests';
 import UserReviews from '@/features/UserMypage/components/UserReviews';
+import UserSettings from '@/features/UserMypage/components/UserSettings';
 import Layout from '@/layout/Layout';
-import { Login } from '@/pages/Login';
-import { Signup } from '@/pages/Signup';
+import CategoryPage from '@/pages/CategoryPage';
+import Login from '@/pages/Login';
+import Signup from '@/pages/Signup';
 import TrainerMypage from '@/pages/TrainerMypage';
+import UserMainPage from '@/pages/UserMainPage';
 import UserMypage from '@/pages/UserMypage';
 
-import Category from './features/Category/pages/CategoryPage';
-import UserMainPage from './features/home/pages/UserMainPage';
-
-// 라우터
+/* ───────── 라우트 테이블 ───────── */
 const routes: RouteObject[] = [
+  /* 인증 */
+  { path: ROUTES.AUTH.LOGIN, element: <Login /> },
+  { path: ROUTES.AUTH.SIGNUP, element: <Signup /> },
+
+  /* 공통 레이아웃 (Header‧Footer 포함) */
   {
-    path: ROUTES.SIGNUP,
-    element: <Signup />,
-  },
-  { path: ROUTES.LOGIN, element: <Login /> },
-  {
-    path: ROUTES.HOME,
+    path: ROUTES.HOME.ROOT,
     element: <Layout />,
     errorElement: <>없는 페이지입니다.</>,
-    children: [
-      { index: true, element: <>홈페이지</> },
 
+    children: [
+      /* 기본 화면 → UserMainPage  */
+      { index: true, element: <UserMainPage /> },
+
+      /* 카테고리 */
+      {
+        path: ROUTES.CATEGORY.WILDCARD.slice(1), // "category/*"
+        element: <CategoryPage />,
+      },
+
+      /* 마이페이지 */
       {
         path: 'mypage',
         children: [
-          { path: 'trainer', element: <TrainerMypage /> },
+          { path: 'expert', element: <TrainerMypage /> },
 
           {
             path: 'user',
@@ -45,42 +53,12 @@ const routes: RouteObject[] = [
           },
         ],
       },
-      {
-        path: ROUTES.SIGNUP,
-        element: <Signup />,
-      },
-      {
-        path: ROUTES.USER_PAGE, // 'user'
-        element: <UserMainPage />,
-      },
-      {
-        path: ROUTES.CATEGORY_ROUTE, // 'category/*'
-        element: <Category />, 
-      },
     ],
   },
 ];
 
-// 프로텍트 라우팅
-// const protectedRoutes = createBrowserRouter([
-//   {
-//     path: ROUTES.HOME,
-//     element: (
-//       <ProtectedLayout>
-//         <Layout />
-//       </ProtectedLayout>
-//     ),
-//     children: [
-//       { path: ROUTES.MYPAGE, element: <Mypage /> },
-//     ],
-//   },
-// ]);
+const router = createBrowserRouter(routes);
 
-// protectedRoutes 사용 시 ...protectedRoutes 추가
-const router = createBrowserRouter([...routes]);
-
-function App() {
+export default function App() {
   return <RouterProvider router={router} />;
 }
-
-export default App;

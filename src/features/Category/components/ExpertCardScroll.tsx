@@ -1,15 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import type { TrainerCardProps } from '@/features/Category/types/TrainerCardProps';
+import ExpertProfileCard from '@/features/Category/components/ExpertProfileCard';
+import type { ExpertCardProps } from '@/features/Category/types/ExpertCardProps';
 import ArrowRight from '@/features/home/assets/icons/ArrowRight';
 
-import TrainerProfileCard from './TrainerProfileCard';
-
-interface Props {
-  trainers: TrainerCardProps[];
+interface ExpertCardScrollProps {
+  experts: ExpertCardProps[];
 }
 
-const TrainerCardScroll: React.FC<Props> = ({ trainers }) => {
+// 디자인 변경되면 적용해주세요
+const ExpertCardScroll: React.FC<ExpertCardScrollProps> = ({ experts }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
 
@@ -47,11 +47,11 @@ const TrainerCardScroll: React.FC<Props> = ({ trainers }) => {
       {/* 트레이너 카드 리스트 */}
       <div
         ref={scrollRef}
-        className="scrollbar-hide flex h-full w-full gap-[45px] overflow-x-auto scroll-smooth "
+        className="scrollbar-hide flex h-full w-full gap-[45px] overflow-x-auto scroll-smooth"
       >
-        {trainers.map((trainer, idx) => (
+        {experts.map((expert, idx) => (
           <div key={idx} className="flex h-full flex-shrink-0 items-center">
-            <TrainerProfileCard {...trainer} />
+            <ExpertProfileCard {...expert} />
           </div>
         ))}
       </div>
@@ -67,4 +67,4 @@ const TrainerCardScroll: React.FC<Props> = ({ trainers }) => {
   );
 };
 
-export default TrainerCardScroll;
+export default ExpertCardScroll;

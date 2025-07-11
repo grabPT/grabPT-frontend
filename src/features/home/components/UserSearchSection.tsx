@@ -1,13 +1,13 @@
 import { useState } from 'react';
 
+import arrowIcon from '@/features/home/assets/icons/NextArrow.svg';
 import img1 from '@/features/home/assets/images/Usermain1.png';
 import img2 from '@/features/home/assets/images/Usermain2.png';
 import img3 from '@/features/home/assets/images/Usermain3.png';
-import arrowIcon from '@/features/home/assets/icons/NextArrow.svg';
 
 const images = [img1, img2, img3];
 
-export default function UserSearchSection() {
+const UserSearchSection = () => {
   const [current, setCurrent] = useState(0);
   const [keyword, setKeyword] = useState('');
 
@@ -21,11 +21,11 @@ export default function UserSearchSection() {
 
   return (
     <section
-      className="relative h-[552px] w-full bg-cover bg-center transition-all duration-700"
-      style={{ backgroundImage: `url(${images[current]})` }}
+      className="relative z-50 h-[552px] w-full bg-cover bg-center transition-all duration-700"
+      style={{ backgroundImage: `url(${img1})` }}
     >
       {/* 어두운 오버레이 */}
-      <div className="absolute inset-0 bg-black bg-opacity-40 z-10" />
+      <div className="absolute inset-0 z-10 bg-transparent" />
 
       {/* 텍스트 및 검색 UI */}
       <div className="absolute inset-0 z-20 flex flex-col justify-center px-[120px] text-white">
@@ -75,4 +75,6 @@ export default function UserSearchSection() {
       </button>
     </section>
   );
-}
+};
+
+export default UserSearchSection;

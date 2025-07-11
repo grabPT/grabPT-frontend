@@ -1,14 +1,25 @@
 const ROUTES = {
-  HOME: '/',
-  LOGIN: '/login',
-  SIGNUP: '/signup',
-  MYPAGE: '/mypage',
-  USERMYPAGE: '/mypage/user',
-  TRAINERMYPAGE: '/mypage/trainer',
-  USER_PAGE: '/user',
-  EXPERT_PAGE: '/expert',
-  CATEGORY: '/category',       
-  CATEGORY_ROUTE: '/category/*',  
-};
+  HOME: {
+    ROOT: '/',
+    USER: '/user',
+    EXPERT: '/expert',
+  },
+
+  AUTH: {
+    LOGIN: '/login',
+    SIGNUP: '/signup',
+  },
+
+  MYPAGE: {
+    ROOT: '/mypage',
+    USER: '/mypage/user',
+    EXPERT: '/mypage/expert',
+  },
+
+  CATEGORY: {
+    ROOT: '/category',
+    WILDCARD: '/category/*',
+  },
+} as const;
 
 export default ROUTES;

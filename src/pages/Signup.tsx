@@ -3,16 +3,17 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import BackBtn from '@/features/Signup/assets/BackBtn.svg';
-import { AgreementStep } from '@/features/Signup/components/AgreementStep';
-import { ExpertInfoStep } from '@/features/Signup/components/ExpertInfoStep';
-import { LocationStep } from '@/features/Signup/components/LocationStep';
-import { NickNameStep } from '@/features/Signup/components/NicknameStep';
-import { SportsTypeStep } from '@/features/Signup/components/SportsTypeStep';
-import { UserInfoStep } from '@/features/Signup/components/UserInfoStep';
-import { UserTypeStep } from '@/features/Signup/components/UserTypeStep';
+import AgreementStep from '@/features/Signup/components/AgreementStep';
+import ExpertInfoStep from '@/features/Signup/components/ExpertInfoStep';
+import LocationStep from '@/features/Signup/components/LocationStep';
+import NickNameStep from '@/features/Signup/components/NicknameStep';
+import SportsTypeStep from '@/features/Signup/components/SportsTypeStep';
+import UserInfoStep from '@/features/Signup/components/UserInfoStep';
+import UserTypeStep from '@/features/Signup/components/UserTypeStep';
 
 export type UserType = 'normal' | 'expert';
-export const Signup = () => {
+
+const Signup = () => {
   const [step, setStep] = useState<number>(0);
   const [userType, setUserType] = useState<UserType | null>(null);
   const nav = useNavigate();
@@ -30,7 +31,7 @@ export const Signup = () => {
       {/* 뒤로 가기 버튼 */}
       <div className="mx-6">
         <button onClick={handleBackClick}>
-          <img src={BackBtn} />
+          <img alt="뒤로가기" src={BackBtn} />
         </button>
       </div>
 
@@ -58,3 +59,5 @@ export const Signup = () => {
     </div>
   );
 };
+
+export default Signup;
