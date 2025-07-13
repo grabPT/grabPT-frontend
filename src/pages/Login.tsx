@@ -76,7 +76,7 @@ export const Login = () => {
             {/* 각 소셜 로그인 버튼 이건 나중에 로직 추가 에정 */}
             <div className="flex flex-col items-center justify-center rounded-[1.25rem]">
               <div className="mt-20 flex w-full items-center justify-center">
-                <LoginBtn children={'로그인'} />
+                <LoginBtn color='basic'>로그인</LoginBtn>
               </div>
               <div className="mt-14 flex w-full flex-col gap-2 whitespace-pre">
                 <div className="flex items-center justify-center">
@@ -87,7 +87,7 @@ export const Login = () => {
                         className="h-[1.875rem] w-[1.8765rem]"
                         alt="Kakao Logo"
                       />
-                      <span>카카오로 시작</span>
+                      카카오로 시작
                     </div>
                   </LoginBtn>
                 </div>
@@ -99,7 +99,7 @@ export const Login = () => {
                         className="h-[1.875rem] w-[1.8765rem]"
                         alt="Naver Logo"
                       />
-                      <span>네이버로 시작</span>
+                      네이버로 시작
                     </div>
                   </LoginBtn>
                 </div>
@@ -111,7 +111,7 @@ export const Login = () => {
                         className="h-[1.875rem] w-[1.8765rem]"
                         alt="Google Logo"
                       />
-                      <span>구글로 시작</span>
+                      구글로 시작
                     </div>
                   </LoginBtn>
                 </div>

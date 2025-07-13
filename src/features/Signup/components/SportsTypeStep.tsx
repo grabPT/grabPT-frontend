@@ -19,6 +19,19 @@ interface ISportTypeStep {
 }
 
 export const SportsTypeStep = ({ onNext }: ISportTypeStep) => {
+  //운동종목 배열
+  const sportsOptions = [
+  { type: SportsType.WEIGHT, img: Weight },
+  { type: SportsType.PILATES, img: Pilates },
+  { type: SportsType.GOLF, img: Golf },
+  { type: SportsType.TENNIS, img: Tennis },
+  { type: SportsType.SWIMMING, img: Swimming },
+  { type: SportsType.BOXING, img: Boxing },
+  { type: SportsType.BADMINTON, img: Badminton },
+  { type: SportsType.RUNNING, img: Running },
+  { type: SportsType.CYCLE, img: Cycle },
+  { type: SportsType.TABLETENNIS, img: Tabletennis },
+];
   const [selectedSportsType, setSelectedSportsType] = useState<SportsType | null>(null);
   return (
     <div className="flex flex-col">
@@ -30,71 +43,20 @@ export const SportsTypeStep = ({ onNext }: ISportTypeStep) => {
         </div>
 
         {/* 운동 종목 나열 */}
-        <div className="mx-auto mt-24 grid h-72 w-3xl grid-cols-5 place-items-center">
-          <SportsTypeBtn
-            type={SportsType.WEIGHT}
-            img={Weight}
-            isSelected={selectedSportsType}
-            onClick={() => setSelectedSportsType(SportsType.WEIGHT)}
-          />
-          <SportsTypeBtn
-            type={SportsType.PILATES}
-            img={Pilates}
-            isSelected={selectedSportsType}
-            onClick={() => setSelectedSportsType(SportsType.PILATES)}
-          />
-          <SportsTypeBtn
-            type={SportsType.GOLF}
-            img={Golf}
-            isSelected={selectedSportsType}
-            onClick={() => setSelectedSportsType(SportsType.GOLF)}
-          />
-          <SportsTypeBtn
-            type={SportsType.TENNIS}
-            img={Tennis}
-            isSelected={selectedSportsType}
-            onClick={() => setSelectedSportsType(SportsType.TENNIS)}
-          />
-          <SportsTypeBtn
-            type={SportsType.SWIMMING}
-            img={Swimming}
-            isSelected={selectedSportsType}
-            onClick={() => setSelectedSportsType(SportsType.SWIMMING)}
-          />
-          <SportsTypeBtn
-            type={SportsType.BOXING}
-            img={Boxing}
-            isSelected={selectedSportsType}
-            onClick={() => setSelectedSportsType(SportsType.BOXING)}
-          />
-          <SportsTypeBtn
-            type={SportsType.BADMINTON}
-            img={Badminton}
-            isSelected={selectedSportsType}
-            onClick={() => setSelectedSportsType(SportsType.BADMINTON)}
-          />
-          <SportsTypeBtn
-            type={SportsType.RUNNING}
-            img={Running}
-            isSelected={selectedSportsType}
-            onClick={() => setSelectedSportsType(SportsType.RUNNING)}
-          />
-          <SportsTypeBtn
-            type={SportsType.CYCLE}
-            img={Cycle}
-            isSelected={selectedSportsType}
-            onClick={() => setSelectedSportsType(SportsType.CYCLE)}
-          />
-          <SportsTypeBtn
-            type={SportsType.TABLETENNIS}
-            img={Tabletennis}
-            isSelected={selectedSportsType}
-            onClick={() => setSelectedSportsType(SportsType.TABLETENNIS)}
-          />
-        </div>
+       <div className="mx-auto mt-24 grid h-72 w-3xl grid-cols-5 place-items-center">
+  {sportsOptions.map(({ type, img }) => (
+    <SportsTypeBtn
+      key={type}
+      type={type}
+      img={img}
+      isSelected={selectedSportsType}
+      onClick={() => setSelectedSportsType(type)}
+    />
+  ))}
+</div>
         {/* 다음 버튼 */}
         <div className="mx-[32rem] mt-[8.3rem] w-[25.5625rem]">
-          <SignupBtn children={'다음'} onClick={onNext} />
+          <SignupBtn onClick={onNext}>다음</SignupBtn>
         </div>
       </div>
     </div>

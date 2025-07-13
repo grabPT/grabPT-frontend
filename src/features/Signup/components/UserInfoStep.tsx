@@ -36,14 +36,6 @@ export const UserInfoStep = ({ onNext }: IUserInfoStep) => {
               />
             </div>
             <div className="flex flex-col">
-              <span className="font-semibold">이메일</span>
-              <input
-                type="email"
-                placeholder="이메일"
-                className="rounded-[0.625rem] border border-[#BDBDBD] py-[0.88rem] pl-4"
-              />
-            </div>
-            <div className="flex flex-col">
               <div className="flex gap-12 font-semibold">
                 <span>국가</span>
                 <span>전화번호</span>
@@ -100,7 +92,7 @@ export const UserInfoStep = ({ onNext }: IUserInfoStep) => {
             </div>
           </div>
           <div className="absolute bottom-12 left-1/2 w-[25.5625rem] -translate-x-1/2 transform">
-            <SignupBtn children={'인증하기'} onClick={onNext} />
+            <SignupBtn onClick={onNext}>다음</SignupBtn>
           </div>
         </div>
       </div>

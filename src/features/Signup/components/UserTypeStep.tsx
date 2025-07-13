@@ -76,7 +76,6 @@ export const UserTypeStep = ({ onNext, setUserType, userType }: IUserTypeStep) =
         {/* 다음 버튼 */}
         <div className="mx-[32rem] mt-[8.5rem] w-[25.5625rem]">
           <SignupBtn
-            children={'다음'}
             onClick={() => {
               if (userType) {
                 onNext();
@@ -84,7 +83,9 @@ export const UserTypeStep = ({ onNext, setUserType, userType }: IUserTypeStep) =
                 alert('사용자 유형을 선택해주세요.');
               }
             }}
-          />
+          >
+            다음
+          </SignupBtn>
         </div>
       </div>
     </div>

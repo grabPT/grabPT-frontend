@@ -1,9 +1,9 @@
 interface IAgreementModal {
-  index: number;
+  modalKey: keyof typeof checked;
   onClose: () => void;
 }
 
-export const AgreementModal = ({ index, onClose }: IAgreementModal) => {
+export const AgreementModal = ({ modalKey, onClose }: IAgreementModal) => {
   //갹 상세 설명 배열로 관리
   const termsList = [
     {
@@ -86,6 +86,17 @@ export const AgreementModal = ({ index, onClose }: IAgreementModal) => {
 `,
     },
   ];
+    const modalKeyToIndexMap: Record<keyof typeof checked, number> = {
+    all: -1, // 사용할 일 없음
+    privacy: 0,
+    terms: 1,
+    location: 2,
+    age: 3,
+    marketing: 4,
+  };
+
+  const index = modalKeyToIndexMap[modalKey];
+
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20">

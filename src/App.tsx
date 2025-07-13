@@ -42,10 +42,6 @@ const routes: RouteObject[] = [
           },
         ],
       },
-      {
-        path: ROUTES.SIGNUP,
-        element: <Signup />,
-      },
     ],
   },
 ];
