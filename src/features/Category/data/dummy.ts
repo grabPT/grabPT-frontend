@@ -1,0 +1,137 @@
+// src/features/Category/data/dummy.ts
+
+import TrainerImage from '@/features/Category/assets/TrainerProfileDummy.png';
+import HeaderProfile from '@/assets/images/HeaderProfile.png';
+
+export const dummyTrainers = [
+  {
+    imageUrl: TrainerImage,
+    name: '박수민',
+    center: '응암동헬스장 브라이언박 트레이닝 센터',
+    rating: 4.4,
+    pricePerSession: 30000,
+  },
+  {
+    imageUrl: TrainerImage,
+    name: '김보라',
+    center: '상암PT Zone 헬스퀸',
+    rating: 2.3,
+    pricePerSession: 28000,
+  },
+  {
+    imageUrl: TrainerImage,
+    name: '이정후',
+    center: '목동FC 짐',
+    rating: 3.9,
+    pricePerSession: 27000,
+  },
+  {
+    imageUrl: TrainerImage,
+    name: '최현우',
+    center: '방배 PT핏짐',
+    rating: 4.7,
+    pricePerSession: 35000,
+  },
+  {
+    imageUrl: TrainerImage,
+    name: '정유진',
+    center: '영등포 헬스존',
+    rating: 4.2,
+    pricePerSession: 29000,
+  },
+  {
+    imageUrl: TrainerImage,
+    name: '배지현',
+    center: '건대 PT Lab',
+    rating: 4.8,
+    pricePerSession: 31000,
+  },
+  {
+    imageUrl: TrainerImage,
+    name: '하민수',
+    center: '홍대 트레이너스',
+    rating: 3.6,
+    pricePerSession: 26000,
+  },
+  {
+    imageUrl: TrainerImage,
+    name: '송유나',
+    center: '이태원 헬스앤핏',
+    rating: 4.5,
+    pricePerSession: 32000,
+  },
+  {
+    imageUrl: TrainerImage,
+    name: '김태경',
+    center: '노원 바디업센터',
+    rating: 4.0,
+    pricePerSession: 28000,
+  },
+];
+
+export const dummyMatchings = [
+  {
+    imageUrl: HeaderProfile,
+    name: '이소정',
+    address: '서울시 마포구 상암동',
+    count: 8,
+    price: 240000,
+    matched: true,
+  },
+  {
+    imageUrl: HeaderProfile,
+    name: '장우진',
+    address: '서울시 서대문구 홍은동',
+    count: 5,
+    price: 180000,
+    matched: false,
+  },
+  {
+    imageUrl: HeaderProfile,
+    name: '박민정',
+    address: '서울시 동작구 사당동',
+    count: 10,
+    price: 300000,
+    matched: true,
+  },
+  {
+    imageUrl: HeaderProfile,
+    name: '유재윤',
+    address: '서울시 관악구 봉천동',
+    count: 6,
+    price: 210000,
+    matched: true,
+  },
+  {
+    imageUrl: HeaderProfile,
+    name: '김하늘',
+    address: '서울시 강남구 논현동',
+    count: 3,
+    price: 90000,
+    matched: false,
+  },
+  {
+    imageUrl: HeaderProfile,
+    name: '최지훈',
+    address: '서울시 송파구 방이동',
+    count: 7,
+    price: 245000,
+    matched: true,
+  },
+  {
+    imageUrl: HeaderProfile,
+    name: '이예림',
+    address: '서울시 영등포구 문래동',
+    count: 4,
+    price: 140000,
+    matched: true,
+  },
+  {
+    imageUrl: HeaderProfile,
+    name: '윤준혁',
+    address: '서울시 강서구 등촌동',
+    count: 2,
+    price: 60000,
+    matched: false,
+  },
+];

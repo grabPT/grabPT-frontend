@@ -155,3 +155,13 @@
     @apply text-[12px] leading-[18px] font-normal;
   }
 }
+
+/* 스크롤바 숨김 유틸리티 */
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE 및 Edge */
+  scrollbar-width: none;    /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;            /* Chrome, Safari */
+}
