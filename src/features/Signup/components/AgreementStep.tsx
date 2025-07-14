@@ -1,10 +1,9 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 
 import FrontBtn from '@/features/Signup/assets/FrontBtn.png';
 import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
 import AgreementModal from '@/features/Signup/components/AgreementModal';
 import SignupBtn from '@/features/Signup/components/SignupBtn';
-import { AGREEMENT_TYPE, type CheckedState, } from '@/features/Signup/types/Agreeement';
 
 interface AgreementStepProps {
   onNext: () => void;
@@ -12,49 +11,32 @@ interface AgreementStepProps {
 
 const AgreementStep = ({ onNext }: AgreementStepProps) => {
   //상세 설명 모달
-    const [isModalOpen, setIsModalOpen] = useState<keyof typeof checked | null>(null);
-
-const agreementList = [
-  { ...AGREEMENT_TYPE.privacy, required: true },
-  { ...AGREEMENT_TYPE.terms, required: true },
-  { ...AGREEMENT_TYPE.location, required: true },
-  { ...AGREEMENT_TYPE.age, required: true },
-  { ...AGREEMENT_TYPE.marketing, required: false },
-] as const;
+  const [isModalOpen, setIsModalOpen] = useState<number | null>(null);
   // 체크박스 상태 관리
-
-const [checked, setChecked] = useState<CheckedState>({
-  all: false,
-  privacy: false,
-  terms: false,
-  location: false,
-  age: false,
-  marketing: false,
-});
+  const [checkedList, setCheckedList] = useState<boolean[]>([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
   //버튼 관리용
-const isAllRequiredChecked = checked.privacy && checked.terms && checked.location && checked.age;
-const toggleCheckbox = (key: keyof typeof checked) => {
-  setChecked(prev => ({
-    ...prev,
-    [key]: !prev[key],
-  }));
-};
+  const isAllRequiredChecked = checkedList[1] && checkedList[2] && checkedList[3] && checkedList[4];
+  // 체크박스 로직
+  const toggleCheckbox = (index: number) => {
+    const newList = [...checkedList];
+    newList[index] = !newList[index];
+    setCheckedList(newList);
+  };
   // 전체 동의 로직
-const toggleAllCheckbox = () => {
-  const newValue = !checked.all;
-    setChecked({
-      all: newValue,
-      privacy: newValue,
-      terms: newValue,
-      location: newValue,
-      age: newValue,
-      marketing: newValue,
-    });
-};
-  //모달 다딕 로직
-  const onCloseModal = useCallback(() => {
-    setIsModalOpen(null);
-  }, []);
+  const toggleAllCheckbox = () => {
+    const allTrueList = [true, true, true, true, true, true];
+    const allFalseList = [false, false, false, false, false, false];
+    if (checkedList[0] === false) {
+      setCheckedList(allTrueList);
+    } else setCheckedList(allFalseList);
+  };
 
   return (
     <div className="relative flex flex-col items-center justify-center">
@@ -74,7 +56,7 @@ const toggleAllCheckbox = () => {
           <label className="mx-12 mt-[3.69rem] flex cursor-pointer items-center gap-3 rounded-[0.625rem] bg-[#E7EBFF] px-[0.81rem] py-[1rem]">
             <input
               type="checkbox"
-              checked={checked['all']}
+              checked={checkedList[0]}
               onChange={() => toggleAllCheckbox()}
               className="h-5 w-5 rounded-sm border border-[#BABABA] checked:border-transparent checked:bg-blue-500"
             />
@@ -82,28 +64,83 @@ const toggleAllCheckbox = () => {
           </label>
           {/* 각 동의 문항 */}
           <div className="mt-[1.37rem] flex flex-col gap-[1.56rem] font-sans">
-            {agreementList.map(({ key, label, required }) => (
-              <div key={key} className="mx-12 flex justify-between">
-                <label className="flex cursor-pointer items-center gap-3 px-[0.81rem]">
-                  <input
-                    type="checkbox"
-                    checked={checked[key]}
-                    onChange={() => toggleCheckbox(key)}
-                    className="h-5 w-5 rounded-sm border border-[#BABABA] checked:border-transparent checked:bg-blue-500"
-                  />
-                  <span className={`font-medium ${!required ? 'text-[#BABABA]' : ''}`}>
-                    {label}
-                  </span>
-                </label>
-                <button type="button" onClick={() => setIsModalOpen(key)}>
-                  <img src={FrontBtn} alt="자세히 보기" />
-                </button>
-              </div>
-            ))}{' '}
+            <div className="mx-12 flex justify-between">
+              <label className="flex cursor-pointer items-center gap-3 px-[0.81rem]">
+                <input
+                  type="checkbox"
+                  checked={checkedList[1]}
+                  onChange={() => toggleCheckbox(1)}
+                  className="h-5 w-5 rounded-sm border border-[#BABABA] checked:border-transparent checked:bg-blue-500"
+                />
+                <span className="font-medium">(필수) 개인정보 수집, 이용에 동의합니다.</span>
+              </label>
+              <button type="button" onClick={() => setIsModalOpen(0)}>
+                <img src={FrontBtn} alt="자세히 보기" />
+              </button>
+            </div>
+            <div className="mx-12 flex justify-between">
+              <label className="flex cursor-pointer items-center gap-3 px-[0.81rem]">
+                <input
+                  type="checkbox"
+                  checked={checkedList[2]}
+                  onChange={() => toggleCheckbox(2)}
+                  className="h-5 w-5 rounded-sm border border-[#BABABA] checked:border-transparent checked:bg-blue-500"
+                />
+                <span className="font-medium">(필수) 이용약관에 동의합니다.</span>
+              </label>
+              <button type="button" onClick={() => setIsModalOpen(1)}>
+                <img src={FrontBtn} alt="자세히 보기" />
+              </button>
+            </div>
+            <div className="mx-12 flex justify-between">
+              <label className="flex cursor-pointer items-center gap-3 px-[0.81rem]">
+                <input
+                  type="checkbox"
+                  checked={checkedList[3]}
+                  onChange={() => toggleCheckbox(3)}
+                  className="h-5 w-5 rounded-sm border border-[#BABABA] checked:border-transparent checked:bg-blue-500"
+                />
+                <span className="font-medium">(필수) 위치기반 서비스 약관에 동의합니다.</span>
+              </label>
+              <button type="button" onClick={() => setIsModalOpen(2)}>
+                <img src={FrontBtn} alt="자세히 보기" />
+              </button>
+            </div>
+            <div className="mx-12 flex justify-between">
+              <label className="flex cursor-pointer items-center gap-3 px-[0.81rem]">
+                <input
+                  type="checkbox"
+                  checked={checkedList[4]}
+                  onChange={() => toggleCheckbox(3)}
+                  className="h-5 w-5 rounded-sm border border-[#BABABA] checked:border-transparent checked:bg-blue-500"
+                />
+                <span className="font-medium">(필수) 만 14세 이상입니다.</span>
+              </label>
+              <button type="button" onClick={() => setIsModalOpen(4)}>
+                <img src={FrontBtn} alt="자세히 보기" />
+              </button>
+            </div>
+            <div className="mx-12 flex justify-between">
+              <label className="flex cursor-pointer items-center gap-3 px-[0.81rem]">
+                <input
+                  type="checkbox"
+                  checked={checkedList[5]}
+                  onChange={() => toggleCheckbox(5)}
+                  className="h-5 w-5 rounded-sm border border-[#BABABA] checked:border-transparent checked:bg-blue-500"
+                />
+                <span className="font-medium text-[#BABABA]">
+                  (선택) 마케팅 정보 수신에 동의합니다.
+                </span>
+              </label>
+              <button type="button" onClick={() => setIsModalOpen(4)}>
+                <img src={FrontBtn} alt="자세히 보기" />
+              </button>
+            </div>
           </div>
           {/* 다음 버튼 */}
           <div className="absolute bottom-12 left-1/2 w-[25.5625rem] -translate-x-1/2 transform">
             <SignupBtn
+              children={'동의하기'}
               onClick={() => {
                 if (isAllRequiredChecked) {
                   onNext();
@@ -111,13 +148,13 @@ const toggleAllCheckbox = () => {
                   alert('필수 약관에 모두 동의해 주세요.');
                 }
               }}
-            >
-              동의하기
-            </SignupBtn>
+            />
           </div>
         </div>
         {/* 상세 설명 모달 */}
-        {isModalOpen !== null && <AgreementModal modalKey={isModalOpen} onClose={onCloseModal} />}
+        {isModalOpen !== null && (
+          <AgreementModal index={isModalOpen} onClose={() => setIsModalOpen(null)} />
+        )}
       </div>
     </div>
   );

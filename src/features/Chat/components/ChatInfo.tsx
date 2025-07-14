@@ -1,6 +1,6 @@
 import { MenuIcon, SearchIcon } from 'lucide-react';
 
-import Profile from '@/assets/images/Profile.png';
+import DefaultProfile from '@/features/Signup/assets/DefaultProfile.svg';
 import { ChatText } from '@/features/Chat/components/ChatText';
 import { dummyMessages } from '@/features/Chat/types/chat';
 
@@ -16,11 +16,11 @@ export const ChatInfo = ({ id, name, location, img }: ChatInfoProps) => {
   const messageResponse = dummyMessages;
 
   return (
-    <div className="flex h-full flex-col">
-      <div className="flex h-14 items-center justify-between bg-gradient-to-r from-[#003EFB] to-[#FF00B2] px-5">
+    <div className="flex h-full flex-col pb-40">
+      <div className="flex h-14 items-center justify-between bg-[#1F56FF]  px-5">
         <div className="flex items-center justify-start gap-3">
-          <img src={Profile} alt={name} className="h-12 w-12 rounded-full" />
-          <span className="text-[1rem] font-extrabold">
+          <img src={DefaultProfile} alt={name} className="h-9 w-9 rounded-full" />
+          <span className="text-[1rem] font-extrabold text-white">
             {location} {name}
           </span>
         </div>
@@ -38,6 +38,7 @@ export const ChatInfo = ({ id, name, location, img }: ChatInfoProps) => {
               message={message.message}
               timestamp={new Date(message.timestamp)}
               type={message.type}
+              isRead={message.isRead}
             />
           </div>
         ))}

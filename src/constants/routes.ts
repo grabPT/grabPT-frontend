@@ -4,6 +4,10 @@ const ROUTES = {
     USER: '/user',
     EXPERT: '/expert',
   },
+  
+  CHAT:{
+    ROOT:'/chat'
+  },
 
   AUTH: {
     LOGIN: '/login',

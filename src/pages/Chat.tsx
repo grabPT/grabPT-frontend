@@ -10,6 +10,7 @@ import type { ChatType } from '@/features/Chat/types/chat';
 import Header from '@/layout/components/Header';
 
 export const Chat = () => {
+  //나중에 API 에서 받아온 걸로 수정 예정
   const [chatList, setChatList] = useState<ChatType[]>([
     {
       id: '1',
@@ -196,7 +197,7 @@ export const Chat = () => {
             {chatList.map((chat) => (
               <div
                 key={chat.id}
-                className={`${selectedChat == chat && "bg-white"} flex h-20 w-full cursor-pointer items-center bg-[#EDEDED] px-3 hover:bg-gray-300`}
+                className={`${selectedChat == chat && 'bg-white'} flex h-20 w-full cursor-pointer items-center bg-[#EDEDED] px-3 hover:bg-gray-300`}
                 onClick={() => handleChatSelect(chat)}
               >
                 <ChatCard
@@ -219,15 +220,18 @@ export const Chat = () => {
                 location={selectedChat.location}
                 img={selectedChat.img}
               />
-
-              <div className="sticky bottom-0 z-10 rounded-t-4xl bg-white px-4 py-4">
+              
+              <div
+                className="sticky bottom-0 z-10 rounded-t-4xl bg-white px-4 py-4"
+                style={{ boxShadow: '4px 4px 18px 10px rgba(0, 0, 0, 0.15)' }}
+              >
                 <div className="flex items-center gap-3">
                   <div className="flex h-[3.75rem] flex-1 items-center rounded-full bg-gradient-to-r from-[#003EFB] to-[#FF00B2] p-[3px]">
-                    <div className="flex h-full w-full items-center rounded-full bg-white px-4 gap-3">
+                    <div className="flex h-full w-full items-center gap-3 rounded-full bg-white px-4">
                       <input
                         type="text"
                         placeholder="메시지를 입력하세요"
-                        className="font-inter w-full text-[13px] leading-[16px] font-semibold text-black placeholder-[#CCCCCC] outline-none"
+                        className="font-inter w-full h-full text-xl leading-[16px] font-semibold text-black placeholder-[#CCCCCC] outline-none"
                       />
                       <img src={ClipIcon} alt="클립 아이콘" className="h-6 w-6 cursor-pointer" />
                       <img

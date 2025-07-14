@@ -12,13 +12,14 @@ import Signup from '@/pages/Signup';
 import TrainerMypage from '@/pages/TrainerMypage';
 import UserMainPage from '@/pages/UserMainPage';
 import UserMypage from '@/pages/UserMypage';
+import { Chat } from '@/pages/Chat';
 
 /* ───────── 라우트 테이블 ───────── */
 const routes: RouteObject[] = [
   /* 인증 */
   { path: ROUTES.AUTH.LOGIN, element: <Login /> },
   { path: ROUTES.AUTH.SIGNUP, element: <Signup /> },
-
+  
   /* 공통 레이아웃 (Header‧Footer 포함) */
   {
     path: ROUTES.HOME.ROOT,
@@ -55,6 +56,8 @@ const routes: RouteObject[] = [
       },
     ],
   },
+  /* 채팅 */
+  { path: ROUTES.CHAT.ROOT, element: <Chat/>},
 ];
 
 const router = createBrowserRouter(routes);

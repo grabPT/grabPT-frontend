@@ -86,17 +86,6 @@ const AgreementModal = ({ index, onClose }: AgreementModalProps) => {
 `,
     },
   ];
-    const modalKeyToIndexMap: Record<keyof typeof checked, number> = {
-    all: -1, // 사용할 일 없음
-    privacy: 0,
-    terms: 1,
-    location: 2,
-    age: 3,
-    marketing: 4,
-  };
-
-  const index = modalKeyToIndexMap[modalKey];
-
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20">

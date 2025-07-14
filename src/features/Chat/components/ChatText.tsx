@@ -1,5 +1,6 @@
 import { formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
+import ReadIcon from '@/features/Chat/assets/ReadIcon.svg'
 
 import DefaultProfile from '@/features/Signup/assets/DefaultProfile.svg'
 interface ChatTextProps {
@@ -8,9 +9,10 @@ interface ChatTextProps {
   message: string;
   timestamp: Date;
   type: 'text' | 'image';
+  isRead:boolean;
 }
 
-export const ChatText = ({ senderId, message, timestamp, type }: ChatTextProps) => {
+export const ChatText = ({ senderId, message, timestamp, type, isRead }: ChatTextProps) => {
   const isMe = senderId === 'me';
   const timeAgo = formatDistanceToNow(timestamp, {
     addSuffix: true,
@@ -26,7 +28,7 @@ export const ChatText = ({ senderId, message, timestamp, type }: ChatTextProps) 
 <div
   className={`flex w-fit max-w-[70%] flex-col p-4 shadow-md ${
     isMe
-      ? 'bg-gradient-to-r from-[#003EFB] to-[#FF00B2] text-white rounded-t-xl rounded-bl-xl rounded-br-none'
+      ? 'bg-[#1F56FF] text-white rounded-t-xl rounded-bl-xl rounded-br-none'
       : 'bg-[#EDEDED] text-black rounded-t-xl rounded-br-xl rounded-bl-none'
   }`}
 >
@@ -35,7 +37,10 @@ export const ChatText = ({ senderId, message, timestamp, type }: ChatTextProps) 
     ) : (
       <span>{message}</span>
     )}
-    <span className="mt-2.5 font-normal text-right text-xs">{timeAgo}</span>
+    <div className='flex mt-2.5 items-center justify-end gap-2 '>
+    <span className="font-normal text-xs">{timeAgo}</span>
+    {isRead && <span> <img src={ReadIcon} alt='읽음 표시'/></span>}
+    </div>
   </div>
 </div>
   );
