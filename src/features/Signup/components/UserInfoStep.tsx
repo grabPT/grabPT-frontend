@@ -9,7 +9,7 @@ interface UserInfoStepProps {
 
 const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
   const [VerifyNumberCheckResult, setVerifyNumberCheckResult] = useState<boolean | null>(null);
-  const [VerifyNumber, setVerifyNumber] = useState('');
+  const [VerifyNumber, _setVerifyNumber] = useState(''); //사용하지 않는 setVerifyNumber _처리
   const handleVerifyNumberCheck = () => {
     //나중에 서버에서 인증번호 확인 로직 추가
     if (VerifyNumber === '123456') {

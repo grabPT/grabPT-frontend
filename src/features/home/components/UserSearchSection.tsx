@@ -8,7 +8,7 @@ import img3 from '@/features/home/assets/images/Usermain3.png';
 const images = [img1, img2, img3];
 
 const UserSearchSection = () => {
-  const [current, setCurrent] = useState(0);
+  const [_current, setCurrent] = useState(0); // 사용하지 않는 변수 _처리
   const [keyword, setKeyword] = useState('');
 
   const handleNext = () => {

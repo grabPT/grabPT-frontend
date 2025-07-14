@@ -7,9 +7,9 @@ import mockRequests from '@/features/home/data/dummy';
 const UserMainPage: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
 
-  const handleScroll = () => {
-    sectionRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
+  // const handleScroll = () => {
+  //   sectionRef.current?.scrollIntoView({ behavior: 'smooth' });
+  // };
 
   return (
     <div className="flex flex-col">

@@ -1,7 +1,7 @@
 // src/features/Category/pages/CategoryPage.tsx
 import { useState } from 'react';
 
-import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 
 import SportsSelectSection from '@/features/Category/components/SportsSelectSection';
 import { SportsType } from '@/types/SportsType';

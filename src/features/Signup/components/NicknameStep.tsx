@@ -11,7 +11,7 @@ interface NicknameStepProps {
 
 const NickNameStep = ({ onNext }: NicknameStepProps) => {
   // 프로필 사진 업로드 상태
-  const [profileImage, setProfileImage] = useState<File | null>(null);
+  const [, setProfileImage] = useState<File | null>(null); //사용하지 않는 변수 임시 제거
   // 프로필 사진 미리보기 URL
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   // 닉네임 중복 확인 결과 상태
