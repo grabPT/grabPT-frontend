@@ -4,50 +4,32 @@ import FrontBtn from '@/features/Signup/assets/FrontBtn.png';
 import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
 import { AgreementModal } from '@/features/Signup/components/AgreementModal';
 import SignupBtn from '@/features/Signup/components/SignupBtn';
+import { AGREEMENT_TYPE, type CheckedState, } from '@/features/Signup/types/Agreeement';
 
 interface IAgreementStep {
   onNext: () => void;
 }
-
 export const AgreementStep = ({ onNext }: IAgreementStep) => {
   //상세 설명 모달
     const [isModalOpen, setIsModalOpen] = useState<keyof typeof checked | null>(null);
-  const agreementList = [
-    {
-      key: 'privacy',
-      label: '(필수) 개인정보 수집, 이용에 동의합니다.',
-      required: true,
-    },
-    {
-      key: 'terms',
-      label: '(필수) 이용약관에 동의합니다.',
-      required: true,
-    },
-    {
-      key: 'location',
-      label: '(필수) 위치기반 서비스 약관에 동의합니다.',
-      required: true,
-    },
-    {
-      key: 'age',
-      label: '(필수) 만 14세 이상입니다.',
-      required: true,
-    },
-    {
-      key: 'marketing',
-      label: '(선택) 마케팅 정보 수신에 동의합니다.',
-      required: false,
-    },
-  ] as const;
+
+const agreementList = [
+  { ...AGREEMENT_TYPE.privacy, required: true },
+  { ...AGREEMENT_TYPE.terms, required: true },
+  { ...AGREEMENT_TYPE.location, required: true },
+  { ...AGREEMENT_TYPE.age, required: true },
+  { ...AGREEMENT_TYPE.marketing, required: false },
+] as const;
   // 체크박스 상태 관리
-  const [checked, setChecked] = useState({
-    all: false,
-    privacy: false,
-    terms: false,
-    location: false,
-    age: false,
-    marketing: false,
-  });
+
+const [checked, setChecked] = useState<CheckedState>({
+  all: false,
+  privacy: false,
+  terms: false,
+  location: false,
+  age: false,
+  marketing: false,
+});
   //버튼 관리용
 const isAllRequiredChecked = checked.privacy && checked.terms && checked.location && checked.age;
 const toggleCheckbox = (key: keyof typeof checked) => {

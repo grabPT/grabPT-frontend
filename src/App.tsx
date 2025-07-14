@@ -6,6 +6,7 @@ import UserDashboard from '@/features/UserMypage/components/UserDashboard';
 import UserRequests from '@/features/UserMypage/components/UserRequests';
 import UserReviews from '@/features/UserMypage/components/UserReviews';
 import Layout from '@/layout/Layout';
+import { Chat } from '@/pages/Chat';
 import { Login } from '@/pages/Login';
 import { Signup } from '@/pages/Signup';
 import TrainerMypage from '@/pages/TrainerMypage';
@@ -21,6 +22,10 @@ const routes: RouteObject[] = [
     element: <Signup />,
   },
   { path: ROUTES.LOGIN, element: <Login /> },
+  {
+    path: ROUTES.CHAT, // 'chat'
+    element: <Chat />,
+  },
   {
     path: ROUTES.HOME,
     element: <Layout />,
@@ -46,16 +51,12 @@ const routes: RouteObject[] = [
         ],
       },
       {
-        path: ROUTES.SIGNUP,
-        element: <Signup />,
-      },
-      {
         path: ROUTES.USER_PAGE, // 'user'
         element: <UserMainPage />,
       },
       {
         path: ROUTES.CATEGORY_ROUTE, // 'category/*'
-        element: <Category />, 
+        element: <Category />,
       },
     ],
   },

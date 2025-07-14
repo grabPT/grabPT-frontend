@@ -8,7 +8,8 @@ const ROUTES = {
   USER_PAGE: '/user',
   EXPERT_PAGE: '/expert',
   CATEGORY: '/category',       
-  CATEGORY_ROUTE: '/category/*',  
+  CATEGORY_ROUTE: '/category/*', 
+  CHAT: '/chat',
 };
 
 export default ROUTES;
