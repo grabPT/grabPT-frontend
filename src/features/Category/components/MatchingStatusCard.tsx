@@ -7,14 +7,14 @@ interface MatchingStatusCardProps {
   matched: boolean;
 }
 
-export default function MatchingStatusCard({
+const MatchingStatusCard = ({
   imageUrl,
   name,
   address,
   count,
   price,
   matched,
-}: MatchingStatusCardProps) {
+}: MatchingStatusCardProps) => {
   return (
     <div className="flex h-[48px] w-[334px] items-center">
       {/* 왼쪽 프로필 사진 */}
@@ -47,4 +47,6 @@ export default function MatchingStatusCard({
       </p>
     </div>
   );
-}
+};
+
+export default MatchingStatusCard;

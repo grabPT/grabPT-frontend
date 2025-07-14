@@ -1,9 +1,9 @@
-interface IAgreementModal {
-  modalKey: keyof typeof checked;
+interface AgreementModalProps {
+  index: number;
   onClose: () => void;
 }
 
-export const AgreementModal = ({ modalKey, onClose }: IAgreementModal) => {
+const AgreementModal = ({ index, onClose }: AgreementModalProps) => {
   //갹 상세 설명 배열로 관리
   const termsList = [
     {
@@ -117,3 +117,5 @@ export const AgreementModal = ({ modalKey, onClose }: IAgreementModal) => {
     </div>
   );
 };
+
+export default AgreementModal;

@@ -1,11 +1,11 @@
 import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
 import SignupBtn from '@/features/Signup/components/SignupBtn';
 
-interface IExpertInfoStep {
+interface ExpertInfoStepProps {
   onNext: () => void;
 }
 
-export const ExpertInfoStep = ({ onNext }: IExpertInfoStep) => {
+const ExpertInfoStep = ({ onNext }: ExpertInfoStepProps) => {
   return (
     <div className="flex flex-col items-center justify-center">
       {/* 로고 */}
@@ -66,3 +66,5 @@ export const ExpertInfoStep = ({ onNext }: IExpertInfoStep) => {
     </div>
   );
 };
+
+export default ExpertInfoStep;

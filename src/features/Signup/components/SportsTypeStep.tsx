@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import SportsTypeSelector from '@/components/SportsTypeSelector';
+// ← 변경
 import Badminton from '@/features/Signup/assets/Badminton.png';
 import Boxing from '@/features/Signup/assets/Boxing.png';
 import Cycle from '@/features/Signup/assets/Cycle.png';
@@ -11,16 +13,13 @@ import Tabletennis from '@/features/Signup/assets/Tabletennis.png';
 import Tennis from '@/features/Signup/assets/Tennis.png';
 import Weight from '@/features/Signup/assets/Weight.png';
 import SignupBtn from '@/features/Signup/components/SignupBtn';
-import { SportsTypeBtn } from '@/features/Signup/components/SportsTypeBtn';
-import { SportsType } from '@/features/Signup/types/SportsType';
+import { SportsType } from '@/types/SportsType';
 
-interface ISportTypeStep {
+interface SportTypeStepProps {
   onNext: () => void;
 }
 
-export const SportsTypeStep = ({ onNext }: ISportTypeStep) => {
-  //운동종목 배열
-  const sportsOptions = [
+const options: ReadonlyArray<{ type: SportsType; img: string }> = [
   { type: SportsType.WEIGHT, img: Weight },
   { type: SportsType.PILATES, img: Pilates },
   { type: SportsType.GOLF, img: Golf },
@@ -32,33 +31,31 @@ export const SportsTypeStep = ({ onNext }: ISportTypeStep) => {
   { type: SportsType.CYCLE, img: Cycle },
   { type: SportsType.TABLETENNIS, img: Tabletennis },
 ];
-  const [selectedSportsType, setSelectedSportsType] = useState<SportsType | null>(null);
+
+const SportsTypeStep = ({ onNext }: SportTypeStepProps) => {
+  const [selected, setSelected] = useState<SportsType | null>(null);
+
   return (
     <div className="flex flex-col">
       <div className="mt-32 mb-72 flex flex-col items-center justify-center">
         <div className="flex items-center justify-center text-5xl font-extrabold whitespace-pre">
           <span>원하는 </span>
-          <span className="text-[#003EFB]">운동 종목</span>
+          <span className="text-[color:var(--color-button)]">운동 종목</span>
           <span>을 선택해주세요</span>
         </div>
 
-        {/* 운동 종목 나열 */}
-       <div className="mx-auto mt-24 grid h-72 w-3xl grid-cols-5 place-items-center">
-  {sportsOptions.map(({ type, img }) => (
-    <SportsTypeBtn
-      key={type}
-      type={type}
-      img={img}
-      isSelected={selectedSportsType}
-      onClick={() => setSelectedSportsType(type)}
-    />
-  ))}
-</div>
-        {/* 다음 버튼 */}
+        {/* 공용 셀렉터 컴포넌트 */}
+        <SportsTypeSelector options={options} value={selected} onChange={setSelected} />
+
         <div className="mx-[32rem] mt-[8.3rem] w-[25.5625rem]">
-          <SignupBtn onClick={onNext}>다음</SignupBtn>
+          {/* 아무 것도 안 골랐을 때는 비활성화 */}
+          <SignupBtn disabled={!selected} onClick={onNext}>
+            다음
+          </SignupBtn>
         </div>
       </div>
     </div>
   );
 };
+
+export default SportsTypeStep;

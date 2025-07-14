@@ -2,6 +2,7 @@ import { useRef } from 'react';
 
 import ArrowRight from '@/assets/images/Arrow-Right.png';
 
+// 디자인 변경 시 일괄적으로 변경예정
 interface ImageSlideProps {
   title: string;
   images: string[]; // 썸네일 URL 배열
@@ -21,10 +22,10 @@ const ImageSlide = ({ title, images }: ImageSlideProps) => {
       <h2 className="mb-4 text-[33px] font-semibold">{title}</h2>
       <hr className="mb-6 border-t border-[#d9d9d9]" />
 
-      {/* 이미지 슬라이더 */}
+      {/* 슬라이더 - 추후 변경 */}
       <div className="relative">
         <div ref={scrollRef} className="overflow-hidden scroll-smooth">
-          {/* ② 트랙 — 카드 총합만큼 가로 길이 확장 */}
+          {/* 트랙 — 카드 총합만큼 가로 길이 확장 */}
           <div className="flex w-max gap-[31px]">
             {images.map((src, idx) => (
               <img

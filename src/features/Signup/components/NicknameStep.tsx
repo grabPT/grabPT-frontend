@@ -5,13 +5,13 @@ import HeaderProfile from '@/assets/images/HeaderProfile.png';
 import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
 import SignupBtn from '@/features/Signup/components/SignupBtn';
 
-interface INicknameStep {
+interface NicknameStepProps {
   onNext: () => void;
 }
 
-export const NickNameStep = ({ onNext }: INicknameStep) => {
+const NickNameStep = ({ onNext }: NicknameStepProps) => {
   // 프로필 사진 업로드 상태
-  const [profileImage, setProfileImage] = useState<File | null>(null);
+  const [, setProfileImage] = useState<File | null>(null); //사용하지 않는 변수 임시 제거
   // 프로필 사진 미리보기 URL
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   // 닉네임 중복 확인 결과 상태
@@ -71,6 +71,7 @@ export const NickNameStep = ({ onNext }: INicknameStep) => {
                 />
               </div>
               <input
+                aria-label="프로필사진"
                 id="file-upload"
                 type="file"
                 accept="image/*"
@@ -129,3 +130,5 @@ export const NickNameStep = ({ onNext }: INicknameStep) => {
     </div>
   );
 };
+
+export default NickNameStep;

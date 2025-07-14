@@ -2,14 +2,15 @@ import { useCallback, useState } from 'react';
 
 import FrontBtn from '@/features/Signup/assets/FrontBtn.png';
 import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
-import { AgreementModal } from '@/features/Signup/components/AgreementModal';
+import AgreementModal from '@/features/Signup/components/AgreementModal';
 import SignupBtn from '@/features/Signup/components/SignupBtn';
 import { AGREEMENT_TYPE, type CheckedState, } from '@/features/Signup/types/Agreeement';
 
-interface IAgreementStep {
+interface AgreementStepProps {
   onNext: () => void;
 }
-export const AgreementStep = ({ onNext }: IAgreementStep) => {
+
+const AgreementStep = ({ onNext }: AgreementStepProps) => {
   //상세 설명 모달
     const [isModalOpen, setIsModalOpen] = useState<keyof typeof checked | null>(null);
 
@@ -121,3 +122,5 @@ const toggleAllCheckbox = () => {
     </div>
   );
 };
+
+export default AgreementStep;

@@ -2,19 +2,17 @@ import Profile from '@/assets/images/HeaderProfile.png';
 import XIcon from '@/assets/images/x.png';
 import StarRating from '@/components/StarRating';
 
-// Heroicons 사용 시
-
-interface Props {
+interface ReviewCardProps {
   name: string;
   location: string;
   rating: number; // 0‒5
   content: string;
 }
 
-export const ReviewCard = ({ name, location, rating, content }: Props) => {
+const ReviewCard = ({ name, location, rating, content }: ReviewCardProps) => {
   return (
     <div className="relative flex h-[180px] w-full flex-col rounded-[10px] bg-white p-[10px] pt-[15px] shadow-[4px_4px_10px_rgba(0,0,0,0.25)]">
-      {/* 닫기 (기능 없음) */}
+      {/* 삭제버튼 */}
       <img src={XIcon} alt="close" className="absolute top-2 right-2 h-4 w-4" />
 
       {/* 상단 정보 */}
@@ -40,3 +38,5 @@ export const ReviewCard = ({ name, location, rating, content }: Props) => {
     </div>
   );
 };
+
+export default ReviewCard;

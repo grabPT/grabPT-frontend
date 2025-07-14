@@ -1,10 +1,9 @@
 import { useRef } from 'react';
 
 import ArrowRight from '@/assets/images/Arrow-Right.png';
+import ReviewCard from '@/components/ReviewCard';
 
-import { ReviewCard } from './ReviewCard';
-
-type Review = {
+export type Review = {
   name: string;
   location: string;
   rating: number;
@@ -16,11 +15,11 @@ interface ReviewSlideProps {
   reviews: Review[];
 }
 
-const CARD_WIDTH = 310;
-const GAP = 30; // 예: gap-6
-const STEP = CARD_WIDTH + GAP;
+const ReviewSlide = ({ title, reviews }: ReviewSlideProps) => {
+  const CARD_WIDTH = 310;
+  const GAP = 30;
+  const STEP = CARD_WIDTH + GAP;
 
-function ReviewSlide({ title, reviews }: ReviewSlideProps) {
   const trackRef = useRef<HTMLDivElement>(null);
 
   const next = () => trackRef.current?.scrollBy({ left: STEP, behavior: 'smooth' });
@@ -38,8 +37,8 @@ function ReviewSlide({ title, reviews }: ReviewSlideProps) {
           {/* 트랙 */}
           <div className="flex w-max gap-[30px]">
             {reviews.map((rv, idx) => (
-              <div className="w-[310px]">
-                <ReviewCard key={idx} {...rv} />
+              <div className="w-[310px]" key={idx}>
+                <ReviewCard {...rv} />
               </div>
             ))}
           </div>
@@ -55,6 +54,6 @@ function ReviewSlide({ title, reviews }: ReviewSlideProps) {
       </div>
     </section>
   );
-}
+};
 
 export default ReviewSlide;

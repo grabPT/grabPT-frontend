@@ -2,12 +2,12 @@ import type { ButtonHTMLAttributes, PropsWithChildren } from 'react';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   label?: string;
-  width?: string; // Tailwind 폭 클래스
-  height?: string; // Tailwind 높이 클래스
-  text?: string; // Tailwind 텍스트·폰트 클래스
+  width?: string;
+  height?: string;
+  text?: string;
 }
 
-function Button({
+const Button = ({
   label = '버튼',
   width = 'w-[98px]',
   height = 'h-[42px]',
@@ -15,8 +15,7 @@ function Button({
   className = '',
   children,
   ...rest
-}: PropsWithChildren<ButtonProps>) {
-  // 각 문자열 뒤에 공백 추가
+}: PropsWithChildren<ButtonProps>) => {
   const base =
     'flex items-center justify-center rounded-[10px] ' +
     'bg-[color:var(--color-button)] hover:bg-[color:var(--color-button-hover)] ' +
@@ -29,6 +28,6 @@ function Button({
       {children}
     </button>
   );
-}
+};
 
 export default Button;

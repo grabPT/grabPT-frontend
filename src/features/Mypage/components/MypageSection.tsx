@@ -4,7 +4,7 @@ interface MypageSectionProps {
   title: string;
 }
 
-function MypageSection({ title }: MypageSectionProps) {
+const MypageSection = ({ title }: MypageSectionProps) => {
   return (
     <section className="w-full">
       {/* 타이틀 */}
@@ -13,6 +13,6 @@ function MypageSection({ title }: MypageSectionProps) {
       <CommentBox />
     </section>
   );
-}
+};
 
 export default MypageSection;

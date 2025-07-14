@@ -1,12 +1,12 @@
-import type { SportsType } from '@/features/Signup/types/SportsType';
+import type { SportsType } from '@/types/SportsType';
 
-interface ISportsTypeBtn {
+interface SportsTypeBtnProps {
   type: SportsType;
   img: string;
   onClick: () => void;
   isSelected: SportsType | null;
 }
-export const SportsTypeBtn = ({ type, img, isSelected, onClick }: ISportsTypeBtn) => {
+const SportsTypeBtn = ({ type, img, isSelected, onClick }: SportsTypeBtnProps) => {
   // 선택된 운동 종목과 현재 버튼의 종목이 일치하는지 확인
   return (
     <div
@@ -26,3 +26,5 @@ export const SportsTypeBtn = ({ type, img, isSelected, onClick }: ISportsTypeBtn
     </div>
   );
 };
+
+export default SportsTypeBtn;

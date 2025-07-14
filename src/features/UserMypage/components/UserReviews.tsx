@@ -1,6 +1,6 @@
-import { ReviewCard } from '@/components/ReviewCard';
+import ReviewCard from '@/components/ReviewCard';
 
-function UserReviews() {
+const UserReviews = () => {
   const review = {
     name: '날다람주날닮았쥐',
     location: '서울시 강서구 화곡동',
@@ -27,6 +27,6 @@ function UserReviews() {
       </div>
     </div>
   );
-}
+};
 
 export default UserReviews;

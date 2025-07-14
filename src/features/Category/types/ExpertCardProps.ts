@@ -1,4 +1,4 @@
-export interface TrainerCardProps {
+export interface ExpertCardProps {
   imageUrl: string;
   name: string;
   center: string;
