@@ -1,3 +1,5 @@
+//최종 결정 후 삭제 예정
+
 import { useState } from 'react';
 
 import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
