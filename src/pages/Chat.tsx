@@ -176,8 +176,8 @@ export const Chat = () => {
       <Header />
 
       <div className="flex h-full flex-1">
-        <div className="flex h-full w-[26.125rem] flex-col items-center bg-[#EDEDED]">
-          <div className="sticky top-[70px] z-10 w-[22rem] bg-[#EDEDED] pt-3">
+        <div className="flex h-full w-[26.125rem] flex-col items-center bg-white border-r-1 border-t-1 border-gray-300">
+          <div className="sticky top-[70px] z-10 w-[22rem] bg-white pt-3">
             <div className="h-10 w-full rounded-full bg-gradient-to-r from-[#003EFB] to-[#FF00B2] p-[3px]">
               <div className="flex h-full w-full items-center rounded-full bg-white px-[16px] pr-[15px]">
                 <input
@@ -197,7 +197,7 @@ export const Chat = () => {
             {chatList.map((chat) => (
               <div
                 key={chat.id}
-                className={`${selectedChat == chat && 'bg-white'} flex h-20 w-full cursor-pointer items-center bg-[#EDEDED] px-3 hover:bg-gray-300`}
+                className={`${selectedChat == chat && 'bg-white'} flex h-20 w-full cursor-pointer items-center bg-white px-3 hover:bg-gray-300 hover:ease-in-out duration-150`}
                 onClick={() => handleChatSelect(chat)}
               >
                 <ChatCard

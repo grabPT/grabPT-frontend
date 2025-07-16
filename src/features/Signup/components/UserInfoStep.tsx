@@ -65,35 +65,35 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
         <img src={SignupLogo} alt="로고" className="h-[2.3125rem] w-[6.25rem]" />
       </div>
       <div className="mt-14 flex h-[42.25rem] w-[34.375rem] flex-col items-center rounded-[1.25rem] border border-white bg-white shadow-2xl">
-        <div className="relative flex h-full w-full flex-col">
-          <div className="mx-[4.375rem] mt-16 flex flex-col gap-2">
-            <div className="flex flex-col">
+        <div className="relative flex h-full w-full flex-col items-center">
+          <div className="mx-[4.375rem] mt-16 flex flex-col gap-5">
+            <div className="flex flex-col gap-1">
               <span className="font-semibold">이메일</span>
               <input
                 type="text"
                 placeholder="이메일"
-                className="rounded-[0.625rem] border border-[#BDBDBD] py-[0.88rem] pl-4"
+                className="rounded-[0.625rem] border border-[#BDBDBD] py-[0.8rem] pl-4"
               />
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col gap-1">
               <span className="font-semibold">주소</span>
               <div className="flex flex-col gap-2.5">
-                <div className="flex w-[25.625rem] items-center justify-between">
+                <div className="flex w-[25.625rem] h-[3.125rem] items-center justify-between">
                   <input
                     type="text"
                     placeholder="주소"
                     value={address}
-                    className="w-[18.25rem] rounded-[0.625rem] border border-[#BDBDBD] py-[0.88rem] pl-4"
+                    className="w-[18.25rem] rounded-[0.625rem] border border-[#BDBDBD] py-[0.8rem] pl-4"
                   />
                   <Button className="h-full text-white" onClick={handleAddressSearch}>
                     주소 검색
                   </Button>
                 </div>
-                <div className="flex w-[25.625rem] items-center justify-between">
+                <div className="flex w-[25.625rem] h-[3.125rem] items-center justify-between">
                   <input
                     type="text"
                     placeholder="상세 주소"
-                    className="w-[18.25rem] rounded-[0.625rem] border border-[#BDBDBD] py-[0.88rem] pl-4"
+                    className="w-[18.25rem] rounded-[0.625rem] border border-[#BDBDBD] py-[0.8rem] pl-4"
                   />
                   <div className="text-[15px] w-[98px] flex items-center justify-center rounded-[0.625rem] font-semibold">
                     {location && `(${location})`}
@@ -101,13 +101,13 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
                 </div>
               </div>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col gap-1">
               <div className="flex gap-13 font-semibold">
                 <span>국가</span>
                 <span>전화번호</span>
               </div>
               <div className="relative flex items-center rounded-[0.625rem] border border-[#BDBDBD]">
-                <div className="inline-flex border-r border-[#BDBDBD] px-3 py-[0.88rem]">
+                <div className="inline-flex border-r border-[#BDBDBD] px-3 py-[0.8rem]">
                   <label htmlFor="country-code"></label>
                   <select
                     aria-label="지역선택"
@@ -132,12 +132,12 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
                 </button>
               </div>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col gap-1">
               <span className="font-semibold">인증번호</span>
               <div className="relative flex items-center justify-between">
                 <input
                   placeholder="XXXXXX"
-                  className={`w-full rounded-[0.625rem] border py-[0.88rem] pl-4 ${
+                  className={`w-full rounded-[0.625rem] border py-[0.8rem] pl-4 ${
                     VerifyNumberCheckResult === true
                       ? 'border-green-500'
                       : VerifyNumberCheckResult === false
@@ -174,7 +174,7 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
             />
             <button
               onClick={() => setPostModalOpen(false)}
-              className="absolute top-[16rem] right-[19.5rem] text-gray-500 hover:text-gray-800 cursor-pointer"
+              className="absolute top-[16rem] right-[19.5rem] w-6 h-6 text-gray-500 hover:bg-gray-400 hover:text-white rounded-full cursor-pointer"
             >
               ✕
             </button>
