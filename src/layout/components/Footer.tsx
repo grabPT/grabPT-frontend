@@ -1,25 +1,50 @@
 import FooterIcons from '@/assets/images/Footer-Icons.png';
-import LogoIcon from '@/assets/images/LogoIcon.png';
+import FooterImage from '@/assets/images/FooterImage.jpg';
+import LogoIcon from '@/assets/images/LogoIcon.svg';
 
-function Footer() {
+const Footer = () => {
   return (
-    //
-    <footer>
-      <div className="flex h-[37px] items-center justify-between bg-[#5D6483] px-[40px]">
-        <div className="flex items-center gap-5">
-          <img src={LogoIcon} alt="푸터로고" className="h-[22px] w-[17px]" />
-          <p className="h-[17px] text-[12px] leading-[1.4] font-normal text-white">
-            grabPT @ 2025. All rights reserved.
-          </p>
-        </div>
+    <footer className="relative">
+      {/* 푸터이미지 & 오버레이 */}
+      <img src={FooterImage} alt="푸터배경" className="h-[320px] w-full object-cover" />
+      <div className="absolute inset-0 bg-[#000000D9]"></div>
 
-        {/* 추후 변경. 이미지로 넣어버림 */}
-        <div>
-          <img src={FooterIcons} alt="푸터아이콘" className="h-[15px] w-auto" />
+      {/* 내용들 */}
+      <div className="absolute inset-0 flex justify-between p-12 pr-28 text-[11px] leading-[140%] font-normal text-white">
+        <div className="flex gap-[30px]">
+          <div className="w-[30px]">
+            <img src={LogoIcon} alt="푸터로고" className="object-cover" />
+          </div>
+          <div className="mt-1.5 flex w-[541px] flex-col gap-[66px]">
+            <header className="text-xl">grabPT @ 2025. All rights reserved.</header>
+            <p>
+              By building a user-centric online matching system, <br />
+              <br />
+              through a trainer's proposal in accordance with a user-centered request.
+              <br />
+              We want to realize PT service at a reasonable price that users want for personalized
+              trainers.
+              <br />
+              In addition, experts who have difficulty in securing new students will be given
+              opportunities to secure studentsIt aims to provide a win-win matching system by
+              providing a platform environment.
+            </p>
+          </div>
+        </div>
+        <div className="flex gap-[223px]">
+          <div className="flex flex-col gap-[66px]">
+            <header className="text-xl">Contact us</header>
+            <p>GrabPT@.gmail.com</p>
+          </div>
+          <div className="flex flex-col gap-[66px]">
+            <header className="text-xl">Follow us</header>
+            <p>Yes, We are social</p>
+            <img src={FooterIcons} alt="아이콘들" className="h-5 object-cover" />
+          </div>
         </div>
       </div>
     </footer>
   );
-}
+};
 
 export default Footer;

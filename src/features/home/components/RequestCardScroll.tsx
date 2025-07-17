@@ -40,7 +40,7 @@ const RequestCardScroll: React.FC<RequestCardScrollProps> = ({ requests }) => {
   };
 
   return (
-    <div className="pw-[132px] relative mt-6 mb-100 flex h-[500px] items-center overflow-hidden bg-[linear-gradient(90deg,#F0F2F7_0%,#A0B8FF_108.09%)]">
+    <div className="pw-[132px] relative flex h-[500px] items-center overflow-hidden bg-[linear-gradient(90deg,#F0F2F7_0%,#A0B8FF_108.09%)]">
       {/* 왼쪽 Fade */}
       <div className="pointer-events-none absolute top-0 left-0 z-10 h-full w-[80px] bg-gradient-to-r from-[#F0F2F7] to-transparent" />
 

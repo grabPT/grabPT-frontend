@@ -12,7 +12,7 @@ interface TabsProps {
 
 const Tabs = ({ items }: TabsProps) => {
   return (
-    <div className="flex items-end">
+    <div className="flex w-full justify-center">
       {items.map(({ label, to }) => (
         <NavLink
           key={to}
@@ -20,7 +20,7 @@ const Tabs = ({ items }: TabsProps) => {
           end
           className={({ isActive }) =>
             clsx(
-              'h-[25px] border-b-2 border-[#B3B3B3] px-[25px] pb-[8px] text-[14px] font-medium whitespace-nowrap',
+              'h-[25px] w-36 border-b-2 border-[#B3B3B3] pb-7 text-center text-[14px] font-medium whitespace-nowrap',
               isActive ? 'border-black text-black' : 'text-[#B3B3B3]',
             )
           }
