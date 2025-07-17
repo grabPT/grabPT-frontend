@@ -1,48 +1,61 @@
 import { type RouteObject, RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import ROUTES from '@/constants/routes';
+import ExpertCredentials from '@/features/ExpertMypage/components/ExpertCredentials';
+import ExpertDashboard from '@/features/ExpertMypage/components/ExpertDashboard';
+import ExpertProfile from '@/features/ExpertMypage/components/ExpertProfile';
+import ExpertReviews from '@/features/ExpertMypage/components/ExpertReviews';
 import UserDashboard from '@/features/UserMypage/components/UserDashboard';
 import UserRequests from '@/features/UserMypage/components/UserRequests';
 import UserReviews from '@/features/UserMypage/components/UserReviews';
 import UserSettings from '@/features/UserMypage/components/UserSettings';
 import Layout from '@/layout/Layout';
 import CategoryPage from '@/pages/CategoryPage';
+import ExpertMypage from '@/pages/ExpertMypage';
 import Login from '@/pages/Login';
 import Signup from '@/pages/Signup';
-import TrainerMypage from '@/pages/TrainerMypage';
 import UserMainPage from '@/pages/UserMainPage';
 import UserMypage from '@/pages/UserMypage';
 
-/* ───────── 라우트 테이블 ───────── */
 const routes: RouteObject[] = [
-  /* 인증 */
   { path: ROUTES.AUTH.LOGIN, element: <Login /> },
   { path: ROUTES.AUTH.SIGNUP, element: <Signup /> },
 
-  /* 공통 레이아웃 (Header‧Footer 포함) */
   {
-    path: ROUTES.HOME.ROOT,
+    path: ROUTES.HOME.ROOT, // "/"
     element: <Layout />,
     errorElement: <>없는 페이지입니다.</>,
 
     children: [
-      /* 기본 화면 → UserMainPage  */
       { index: true, element: <UserMainPage /> },
 
-      /* 카테고리 */
-      {
-        path: ROUTES.CATEGORY.WILDCARD.slice(1), // "category/*"
-        element: <CategoryPage />,
-      },
+      { path: ROUTES.CATEGORY.ROOT.slice(1) + '/*', element: <CategoryPage /> },
 
-      /* 마이페이지 */
       {
-        path: 'mypage',
+        path: ROUTES.MYPAGE.ROOT.slice(1),
         children: [
-          { path: 'expert', element: <TrainerMypage /> },
+          {
+            path: ROUTES.MYPAGE_EXPERT.ROOT.replace(ROUTES.MYPAGE.ROOT, '').slice(1),
+            element: <ExpertMypage />,
+            children: [
+              { index: true, element: <ExpertDashboard /> },
+              {
+                path: ROUTES.MYPAGE_EXPERT.PROFILE.replace(ROUTES.MYPAGE_EXPERT.ROOT + '/', ''),
+                element: <ExpertProfile />,
+              },
+              {
+                path: ROUTES.MYPAGE_EXPERT.REVIEWS.replace(ROUTES.MYPAGE_EXPERT.ROOT + '/', ''),
+                element: <ExpertReviews />,
+              },
+              {
+                path: ROUTES.MYPAGE_EXPERT.CREDENTIALS.replace(ROUTES.MYPAGE_EXPERT.ROOT + '/', ''),
+                element: <ExpertCredentials />,
+              },
+            ],
+          },
 
           {
-            path: 'user',
+            path: ROUTES.MYPAGE.USER.replace(ROUTES.MYPAGE.ROOT, '').slice(1),
             element: <UserMypage />,
             children: [
               { index: true, element: <UserDashboard /> },

@@ -5,17 +5,16 @@ import { Link, useNavigate } from 'react-router-dom';
 import Alert from '@/assets/images/Alert.png';
 import Chat from '@/assets/images/Chat.png';
 import HeaderProfile from '@/assets/images/HeaderProfile.png';
-import Settings from '@/assets/images/Settings.png';
 import Button from '@/components/Button';
 import ROUTES from '@/constants/routes';
+import ProfileDropdown from '@/layout/components/ProfileDropdown';
 import { useUserRoleStore } from '@/store/useUserRoleStore';
 
 function AuthMenu() {
   const navigate = useNavigate();
-  const { isExpert, toggleExpert } = useUserRoleStore();
 
-  // 추후 전역 로그인 상태로 교체
-  const [isLoggedIn] = useState<boolean>(true);
+  const { isLoggedIn, isExpert, toggleExpert } = useUserRoleStore();
+  const [isOpenProfileDropdown, setIsOpenProfileDropdown] = useState<boolean>(false);
 
   return (
     <div className="flex items-center">
@@ -44,25 +43,30 @@ function AuthMenu() {
               className="cursor-pointer"
               onClick={() => navigate(ROUTES.HOME.ROOT)}
             />
-            <img
-              src={Settings}
-              alt="설정"
-              className="cursor-pointer"
-              onClick={() => navigate(ROUTES.HOME.ROOT)}
-            />
           </div>
-          <img
-            src={HeaderProfile}
-            alt="프로필"
-            className="h-[45px] w-[45px] cursor-pointer"
-            onClick={() => {
-              if (isExpert) {
-                navigate(ROUTES.MYPAGE.EXPERT);
-              } else {
-                navigate(ROUTES.MYPAGE.USER);
-              }
-            }}
-          />
+          <div
+            className="relative flex h-full items-center"
+            onMouseLeave={() => setIsOpenProfileDropdown(false)}
+          >
+            <img
+              src={HeaderProfile}
+              alt="프로필"
+              className="h-[45px] w-[45px] cursor-pointer"
+              onMouseEnter={() => setIsOpenProfileDropdown(true)}
+              onClick={() => {
+                if (isExpert) {
+                  navigate(ROUTES.MYPAGE.EXPERT);
+                } else {
+                  navigate(ROUTES.MYPAGE.USER);
+                }
+              }}
+            />
+            {isOpenProfileDropdown && (
+              <div className="absolute top-full right-0">
+                <ProfileDropdown />
+              </div>
+            )}
+          </div>
         </div>
       ) : (
         <>
@@ -72,7 +76,9 @@ function AuthMenu() {
             </Link>
           </div>
           <Button>
-            <Link to={ROUTES.AUTH.SIGNUP}>회원가입</Link>
+            <Link to={ROUTES.AUTH.SIGNUP} className="text-white">
+              회원가입
+            </Link>
           </Button>
         </>
       )}
