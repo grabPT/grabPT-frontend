@@ -59,7 +59,7 @@ const ExpertInfoStep = ({ onNext }: ExpertInfoStepProps) => {
           </div>
 
           <div className="absolute bottom-12 left-1/2 w-[25.5625rem] -translate-x-1/2 transform">
-            <SignupBtn children={'다음'} onClick={onNext} />
+            <SignupBtn onClick={onNext}>다음</SignupBtn>
           </div>
         </div>
       </div>

@@ -35,7 +35,7 @@ function AuthMenu() {
               src={Chat}
               alt="채팅"
               className="cursor-pointer"
-              onClick={() => navigate(ROUTES.HOME.ROOT)}
+              onClick={() => navigate(ROUTES.CHAT.ROOT)}
             />
             <img
               src={Alert}

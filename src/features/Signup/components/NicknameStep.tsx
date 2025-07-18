@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import ChangeProfile from '@/features/Signup/assets/ChangeProfile.png';
-import DefaultProfile from '@/features/Signup/assets/DefaultProfile.svg';
+import HeaderProfile from '@/assets/images/HeaderProfile.png';
 import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
 import SignupBtn from '@/features/Signup/components/SignupBtn';
 
@@ -57,7 +57,7 @@ const NickNameStep = ({ onNext }: NicknameStepProps) => {
               onClick={() => document.getElementById('file-upload')?.click()}
             >
               <img
-                src={previewUrl ?? DefaultProfile}
+                src={previewUrl ?? HeaderProfile}
                 alt="프로필"
                 className={`h-[11.25rem] w-[11.25rem] rounded-full ${
                   previewUrl ? 'object-cover' : ''
@@ -114,7 +114,6 @@ const NickNameStep = ({ onNext }: NicknameStepProps) => {
           {/* 다음 버튼 */}
           <div className="absolute bottom-12 left-1/2 w-[25.5625rem] -translate-x-1/2 transform">
             <SignupBtn
-              children={'완료'}
               onClick={() => {
                 if (nickname.length == 0) {
                   alert('닉네임을 설정해주세요');
@@ -122,7 +121,9 @@ const NickNameStep = ({ onNext }: NicknameStepProps) => {
                   onNext();
                 }
               }}
-            />
+            >
+              완료
+            </SignupBtn>
           </div>
         </div>
       </div>
