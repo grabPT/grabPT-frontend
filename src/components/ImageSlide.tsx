@@ -3,6 +3,7 @@ import { useLayoutEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import SlideArrow from '@/components/SlideArrow';
+import { TitleLine } from '@/components/TitleLine';
 
 interface ImageSlideProps {
   title: string;
@@ -57,9 +58,6 @@ const ImageSlide = ({ title, images }: ImageSlideProps) => {
 
   return (
     <section className="w-full">
-      <h2 className="mb-4 text-[33px] font-semibold">{title}</h2>
-      <hr className="mb-6 border-t border-[#d9d9d9]" />
-
       <div className="relative">
         {/* 뷰포트 마스크 */}
         <div className="overflow-hidden">
