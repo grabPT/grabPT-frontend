@@ -1,3 +1,5 @@
+//나중에 삭제 예정
+
 import { useState } from 'react';
 
 import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
@@ -39,7 +41,7 @@ const LocationStep = ({ onNext }: LocationStepProps) => {
                     className="font-inter flex h-8 w-32 items-center justify-center rounded-[3.125rem] bg-[#003EFB] text-[0.75rem] font-semibold text-white"
                     key={`${locations.province}-${locations.city}`}
                   >
-                    {locations.province}시 {locations.city}
+                    {locations.province} {locations.city}
                   </div>
                   <div
                     className="absolute top-0 right-0 h-3 w-3"
@@ -109,7 +111,6 @@ const LocationStep = ({ onNext }: LocationStepProps) => {
           {/* 다음 버튼 */}
           <div className="absolute bottom-12 left-1/2 w-[25.5625rem] -translate-x-1/2 transform">
             <SignupBtn
-              children={'다음'}
               onClick={() => {
                 if (selectedLocation.length === 0) {
                   alert('위치를 1곳 이상 선택해야 합니다');
@@ -117,7 +118,9 @@ const LocationStep = ({ onNext }: LocationStepProps) => {
                 }
                 onNext();
               }}
-            />
+            >
+              다음
+            </SignupBtn>
           </div>
         </div>
       </div>

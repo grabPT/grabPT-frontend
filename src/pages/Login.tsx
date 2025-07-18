@@ -88,7 +88,7 @@ const Login = () => {
                         className="h-[1.875rem] w-[1.8765rem]"
                         alt="Kakao Logo"
                       />
-                      <span>카카오로 시작</span>
+                      카카오로 시작
                     </div>
                   </LoginButton>
                 </div>
@@ -100,7 +100,7 @@ const Login = () => {
                         className="h-[1.875rem] w-[1.8765rem]"
                         alt="Naver Logo"
                       />
-                      <span>네이버로 시작</span>
+                      네이버로 시작
                     </div>
                   </LoginButton>
                 </div>
@@ -112,7 +112,7 @@ const Login = () => {
                         className="h-[1.875rem] w-[1.8765rem]"
                         alt="Google Logo"
                       />
-                      <span>구글로 시작</span>
+                      구글로 시작
                     </div>
                   </LoginButton>
                 </div>

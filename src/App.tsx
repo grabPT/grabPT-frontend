@@ -16,11 +16,12 @@ import Login from '@/pages/Login';
 import Signup from '@/pages/Signup';
 import UserMainPage from '@/pages/UserMainPage';
 import UserMypage from '@/pages/UserMypage';
+import { Chat } from '@/pages/Chat';
+import { ExpertDetail } from '@/pages/ExpertDetail';
 
 const routes: RouteObject[] = [
   { path: ROUTES.AUTH.LOGIN, element: <Login /> },
   { path: ROUTES.AUTH.SIGNUP, element: <Signup /> },
-
   {
     path: ROUTES.HOME.ROOT, // "/"
     element: <Layout />,
@@ -66,8 +67,12 @@ const routes: RouteObject[] = [
           },
         ],
       },
+      {path: `expert/:id`, element: <ExpertDetail/>} 
     ],
   },
+  /* 채팅 */
+  { path: ROUTES.CHAT.ROOT, element: <Chat/>},
+
 ];
 
 const router = createBrowserRouter(routes);

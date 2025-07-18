@@ -1,10 +1,6 @@
-interface LoginButtonProps {
-  children: React.ReactNode;
-  onClick?: () => void;
-  color?: 'basic' | 'kakao' | 'naver' | 'google';
-  className?: string;
+interface LoginButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+color?: 'basic' | 'kakao' | 'naver' | 'google';
 }
-
 const colorMap = {
   basic:
     'bg-[color:var(--color-button)] hover:bg-[color:var(--color-button-hover)] active:bg-[color:var(--color-button-pressed)] text-white hover:bg-blue-700 tex-white',
