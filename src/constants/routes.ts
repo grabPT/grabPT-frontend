@@ -31,6 +31,9 @@ const ROUTES = {
     ROOT: '/category',
     WILDCARD: '/category/*',
   },
+  EXPERTDETAIL:{
+    ROOT:'/'
+  }
 } as const;
 
 export default ROUTES;
