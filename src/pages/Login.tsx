@@ -1,11 +1,10 @@
-import { useState } from 'react';
-
 import { useNavigate } from 'react-router-dom';
 
+import AppLogo from '@/assets/images/AppLogo.png';
 import GoogleLogo from '@/features/Login/assets//GoogleLogo.svg';
 import KakaoLogo from '@/features/Login/assets//KakaoLogo.svg';
 import NaverLogo from '@/features/Login/assets//NaverLogo.svg';
-import PasswordEye from '@/features/Login/assets/PasswordEye.png';
+import LoginBgLogo from '@/features/Login/assets/LoginBgLogo.svg';
 import LoginButton from '@/features/Login/components/LoginButton';
 import BackBtn from '@/features/Signup/assets/BackBtn.svg';
 import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
@@ -14,11 +13,6 @@ export type UserType = 'normal' | 'expert';
 
 const Login = () => {
   const nav = useNavigate();
-  //비밀번호 숨김 여부 관리
-  const [showPassword, setShowPassword] = useState(false);
-  const togglePassword = () => {
-    setShowPassword((prev) => !prev);
-  };
   return (
     <div className="relative h-dvh w-full bg-gradient-to-bl from-[#8CAFFF] to-[#FFFFFF]">
       <div className="mx-6">
@@ -31,55 +25,30 @@ const Login = () => {
         <div className="mt-6 flex justify-center">
           <img src={SignupLogo} alt="로고" className="h-[2.3125rem] w-[6.25rem]" />
         </div>
-        <div className="mt-14 flex h-[42.25rem] w-[34.375rem] flex-col items-center rounded-[1.25rem] border border-white bg-white shadow-2xl">
+        <div className="relative mt-14 flex h-[42.25rem] w-[34.375rem] flex-col items-center rounded-[1.25rem] border border-white bg-white px-16 shadow-2xl">
+          <img
+            src={LoginBgLogo}
+            alt="배경 아이콘"
+            className="absolute top-[2.63rem] right-[-1px] h-[20.75rem] w-[13.565rem] object-cover"
+          />
           <div className="flex h-full w-full flex-col font-sans">
-            <div className="mx-[4.375rem] mt-[4.38rem] flex flex-col gap-2">
-              <div className="flex flex-col">
-                <span className="font-semibold">이메일</span>
-                <input
-                  placeholder="이메일을 입력해주세요."
-                  className="rounded-[0.625rem] border border-[#BDBDBD] py-[0.88rem] pl-4"
-                />
-              </div>
-              <div className="relative flex flex-col justify-between">
-                <span className="font-semibold">비밀번호</span>
-                <div className="relative">
-                  <input
-                    type={showPassword ? 'text' : 'password'}
-                    placeholder="비밀번호를 입력해주세요."
-                    className="w-full rounded-[0.625rem] border border-[#BDBDBD] py-[0.88rem] pr-10 pl-4"
-                  />
-                  <button
-                    type="button"
-                    onClick={togglePassword}
-                    className="absolute top-1/2 right-4 -translate-y-1/2"
-                  >
-                    <img src={PasswordEye} alt="비밀번호 보기" className="h-auto w-[1.125rem]" />
-                  </button>
-                </div>
-              </div>
-              {/* 아이디 찾기/비밀번호 찾기 로직이 없음 */}
-              <div className="flex justify-end gap-2 text-[0.8125rem] font-semibold whitespace-pre text-gray-400">
-                <span
-                  className="cursor-pointer hover:underline"
-                  //  onClick={}
-                >
-                  아이디 찾기
-                </span>
-                <span
-                  className="cursor-pointer hover:underline"
-                  // onClick={}
-                >
-                  비밀번호 찾기
-                </span>
-              </div>
+            <div className="mt-8 flex items-center justify-start">
+              <img src={AppLogo} alt="로고" className="h-fit w-[5.5625rem]" />
             </div>
+            <div className="mt-[5.38rem] flex flex-col items-start justify-center gap-2">
+              <h1 className="text-[2.375rem] font-bold leading-[2.5625rem]">
+                안녕하세요
+                <br />
+                Grab PT입니다
+              </h1>
+              <span className="text-[0.9375rem] font-semibold text-[#979797] leading-[2.375rem]">
+                원하는 가격에, 원하는 방식으로 시작하는 나만의 운동 플렛폼
+              </span>
+            </div>
+
             {/* 각 소셜 로그인 버튼 이건 나중에 로직 추가 에정 */}
-            <div className="flex flex-col items-center justify-center rounded-[1.25rem]">
-              <div className="mt-20 flex w-full items-center justify-center">
-                <LoginButton children={'로그인'} />
-              </div>
-              <div className="mt-14 flex w-full flex-col gap-2 whitespace-pre">
+            <div className="mt-[8.81rem] flex flex-col items-center justify-center rounded-[1.25rem]">
+              <div className="flex w-full flex-col gap-4 whitespace-pre">
                 <div className="flex items-center justify-center">
                   <LoginButton color="kakao">
                     <div className="flex items-center gap-2">
