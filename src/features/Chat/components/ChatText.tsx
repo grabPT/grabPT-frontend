@@ -1,4 +1,3 @@
-import ReadIcon from '@/features/Chat/assets/ReadIcon.svg';
 import DefaultProfile from '@/features/Signup/assets/DefaultProfile.svg';
 
 interface ChatTextProps {
@@ -13,9 +12,9 @@ interface ChatTextProps {
 export const ChatText = ({ senderId, message, timestamp, type, isRead }: ChatTextProps) => {
   const isMe = senderId === 'me';
   const timeAgo = new Date(timestamp).toLocaleTimeString('ko-KR', {
-  hour: '2-digit',
-  minute: '2-digit',
-})
+    hour: '2-digit',
+    minute: '2-digit',
+  });
   return (
     <div
       className={`mx-3 my-2 flex w-full items-center gap-4 px-5 font-semibold ${isMe ? 'justify-end' : 'justify-start'}`}
@@ -29,7 +28,13 @@ export const ChatText = ({ senderId, message, timestamp, type, isRead }: ChatTex
           />
         </div>
       )}
-      <div className="flex w-fit max-w-[70%] flex-col">
+      <div className="flex w-fit max-w-[70%] items-end gap-1">
+        {isMe && (
+          <div className="mt-2.5 flex flex-col items-end justify-end">
+            {!isRead && <span className="text-[1rem] font-bold text-[#1F56FF]">1</span>}
+            <span className="text-[0.875rem] font-semibold text-[#A5A5A5]">{timeAgo}</span>
+          </div>
+        )}
         <div
           className={`flex flex-col p-4 shadow-md ${
             isMe
@@ -43,15 +48,11 @@ export const ChatText = ({ senderId, message, timestamp, type, isRead }: ChatTex
             <span>{message}</span>
           )}
         </div>
-        <div className="mt-2.5 flex items-center justify-end gap-2">
-          <span className="text-xs font-normal">{timeAgo}</span>
-          {isMe && isRead && (
-            <span>
-              {' '}
-              <img src={ReadIcon} alt="읽음 표시" />
-            </span>
-          )}
-        </div>
+        {!isMe && (
+          <div className="mt-2.5 flex flex-col items-center justify-end gap-2">
+            <span className="text-[0.875rem] font-semibold text-[#A5A5A5]">{timeAgo}</span>
+          </div>
+        )}
       </div>
     </div>
   );

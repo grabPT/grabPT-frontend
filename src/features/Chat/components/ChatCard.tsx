@@ -25,10 +25,10 @@ export const ChatCard = ({ img, name, location, time, text }: ChatCardProps) => 
           {location} {name}
         </div>
         <div className="flex items-center justify-between gap-2">
-          <div className="truncate overflow-hidden text-[0.5rem] font-bold whitespace-nowrap text-[#A6A6A6]">
+          <div className="truncate overflow-hidden text-xs font-bold whitespace-nowrap text-[#A6A6A6]">
             {text}
           </div>
-          <div className="flex items-end text-[0.375rem] font-bold whitespace-nowrap text-[#A6A6A6]">
+          <div className="flex items-end text-xs font-bold whitespace-nowrap text-[#A6A6A6]">
             {timeAgo}
           </div>
         </div>
