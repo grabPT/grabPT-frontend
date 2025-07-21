@@ -2,7 +2,10 @@ import MockImage from '@/assets/images/동영상 등 대체 도형.png';
 import CommentBox from '@/components/CommentBox';
 import ImageSlide from '@/components/ImageSlide';
 import ProfileCard from '@/components/ProfileCard';
+import { TitleLine } from '@/components/TitleLine';
 import MypageSection from '@/features/Mypage/components/MypageSection';
+
+//스타일 통일 될 경우 TileLine 컴포넌트로 통일
 
 const ExpertProfile = () => {
   const images = Array.from({ length: 7 }, () => MockImage);
@@ -31,6 +34,7 @@ const ExpertProfile = () => {
       </div>
 
       {/* 소개 사진 슬라이드 */}
+      <TitleLine title='소개 사진'/>
       <ImageSlide title="소개 사진" images={images} />
 
       <MypageSection title="프로그램 가격" />

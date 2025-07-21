@@ -8,9 +8,10 @@ export type TabItem = {
 
 interface TabsProps {
   items: TabItem[];
+  width?: string;
 }
 
-const Tabs = ({ items }: TabsProps) => {
+const Tabs = ({ items, width = 'w-36' }: TabsProps) => {
   return (
     <div className="flex w-full justify-center">
       {items.map(({ label, to }) => (
@@ -20,8 +21,9 @@ const Tabs = ({ items }: TabsProps) => {
           end
           className={({ isActive }) =>
             clsx(
-              'h-[25px] w-36 border-b-2 border-[#B3B3B3] pb-7 text-center text-[14px] font-medium whitespace-nowrap',
+              'h-[25px] border-b-2 border-[#B3B3B3] pb-7 text-center text-[14px] font-medium whitespace-nowrap',
               isActive ? 'border-black text-black' : 'text-[#B3B3B3]',
+              width,
             )
           }
         >

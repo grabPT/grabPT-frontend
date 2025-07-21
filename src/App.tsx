@@ -1,6 +1,7 @@
 import { type RouteObject, RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import ROUTES from '@/constants/routes';
+import { ExpertDetailInfo } from '@/features/ExpertDetail/components/ExpertDetailInfo';
 import ExpertCredentials from '@/features/ExpertMypage/components/ExpertCredentials';
 import ExpertDashboard from '@/features/ExpertMypage/components/ExpertDashboard';
 import ExpertProfile from '@/features/ExpertMypage/components/ExpertProfile';
@@ -11,13 +12,14 @@ import UserReviews from '@/features/UserMypage/components/UserReviews';
 import UserSettings from '@/features/UserMypage/components/UserSettings';
 import Layout from '@/layout/Layout';
 import CategoryPage from '@/pages/CategoryPage';
+import { Chat } from '@/pages/Chat';
+import { ExpertDetail } from '@/pages/ExpertDetail';
 import ExpertMypage from '@/pages/ExpertMypage';
 import Login from '@/pages/Login';
 import Signup from '@/pages/Signup';
 import UserMainPage from '@/pages/UserMainPage';
 import UserMypage from '@/pages/UserMypage';
-import { Chat } from '@/pages/Chat';
-import { ExpertDetail } from '@/pages/ExpertDetail';
+import ExpertDetailReviews from '@/features/ExpertDetail/components/ExpertDetailReviews';
 
 const routes: RouteObject[] = [
   { path: ROUTES.AUTH.LOGIN, element: <Login /> },
@@ -67,12 +69,24 @@ const routes: RouteObject[] = [
           },
         ],
       },
-      {path: `expert/:id`, element: <ExpertDetail/>} 
+      {
+        path: ROUTES.EXPERTDETAIL.ROOT.slice(1),
+        element: <ExpertDetail />,
+        children: [
+          {
+            path: ROUTES.EXPERTDETAIL.INFO.replace(ROUTES.EXPERTDETAIL.ROOT + '/', ''),
+            element: <ExpertDetailInfo />,
+          },
+          {
+            path: ROUTES.EXPERTDETAIL.REVIEWS.replace(ROUTES.EXPERTDETAIL.ROOT + '/', ''),
+            element: <ExpertDetailReviews />,
+          },
+        ],
+      },
     ],
   },
   /* 채팅 */
-  { path: ROUTES.CHAT.ROOT, element: <Chat/>},
-
+  { path: ROUTES.CHAT.ROOT, element: <Chat /> },
 ];
 
 const router = createBrowserRouter(routes);

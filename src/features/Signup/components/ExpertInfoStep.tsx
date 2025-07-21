@@ -24,7 +24,7 @@ const ExpertInfoStep = ({ onNext }: ExpertInfoStepProps) => {
             </div>
             <div className="flex items-center gap-4">
               {/* 나이 */}
-              <div className="flex w-1/2 flex-col">
+              <div className="flex w-1/2 flex-col gap-1">
                 <span className="mb-1 font-semibold">나이</span>
                 <input
                   placeholder="나이"
@@ -33,7 +33,7 @@ const ExpertInfoStep = ({ onNext }: ExpertInfoStepProps) => {
               </div>
 
               {/* 성별 */}
-              <div className="flex w-1/2 flex-col">
+              <div className="flex w-1/2 flex-col gap-1">
                 <span className="mb-1 font-semibold">성별</span>
                 <div className="w-full rounded-[0.625rem] border border-[#BDBDBD] px-2 py-[0.88rem]">
                   <select id="sex" name="sex" className="w-full text-[#707070] outline-none">
@@ -44,16 +44,17 @@ const ExpertInfoStep = ({ onNext }: ExpertInfoStepProps) => {
               </div>
             </div>
             {/* 경력-화살표가 좀 조잡함 */}
-            <div className="flex flex-col">
+            <div className="flex flex-col gap-1">
               <span className="font-semibold">경력</span>
-              <div className="flex items-center justify-between rounded-[0.625rem] border border-[#BDBDBD]">
+              <div className="flex items-center justify-between rounded-[0.625rem] border border-[#BDBDBD] px-4 py-[0.88rem]">
                 <input
                   type="number"
                   min={0}
                   step={1}
                   placeholder="경력을 입력해주세요"
-                  className="w-full py-[0.88rem] pl-4"
-                ></input>
+                  className="w-full outline-none"
+                />
+                <span className="ml-2 text-[#707070]">년</span>
               </div>
             </div>
           </div>

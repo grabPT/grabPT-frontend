@@ -4,9 +4,9 @@ const ROUTES = {
     USER: '/user',
     EXPERT: '/expert',
   },
-  
-  CHAT:{
-    ROOT:'/chat'
+
+  CHAT: {
+    ROOT: '/chat',
   },
 
   AUTH: {
@@ -31,9 +31,11 @@ const ROUTES = {
     ROOT: '/category',
     WILDCARD: '/category/*',
   },
-  EXPERTDETAIL:{
-    ROOT:'/'
-  }
+  EXPERTDETAIL: {
+    ROOT: '/expert/:id',
+    INFO: '/expert/:id/info',
+    REVIEWS: '/expert/:id/reviews',
+  },
 } as const;
 
 export default ROUTES;
