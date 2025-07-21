@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 
-import Button from '@/components/Button';
 import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
 import SignupBtn from '@/features/Signup/components/SignupBtn';
 
@@ -72,32 +71,36 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
               <input
                 type="text"
                 placeholder="이메일"
-                className="rounded-[0.625rem] border border-[#BDBDBD] py-[0.8rem] pl-4"
+                className="rounded-[0.625rem] border border-[#BDBDBD] py-[0.8rem] pl-4 text-[#616161]"
               />
             </div>
             <div className="flex flex-col gap-1">
               <span className="font-semibold">주소</span>
               <div className="flex flex-col gap-2.5">
-                <div className="flex w-[25.625rem] h-[3.125rem] items-center justify-between">
+                <div className="relative flex h-[3.125rem] w-[25.625rem] items-center justify-between rounded-[0.625rem] border border-[#BDBDBD]">
                   <input
                     type="text"
                     placeholder="주소"
                     value={address}
-                    className="w-[18.25rem] rounded-[0.625rem] border border-[#BDBDBD] py-[0.8rem] pl-4"
+                    className="w-[18.25rem] py-[0.8rem] pl-4 text-[#616161]"
                   />
-                  <Button className="h-full text-white" onClick={handleAddressSearch}>
+                  <button
+                    className="absolute top-1/2 right-4 flex h-7 w-[4.375rem] -translate-y-1/2 items-center justify-center rounded-[3.125rem] bg-[color:var(--color-button)] text-[0.625rem] font-semibold text-white hover:bg-[color:var(--color-button-hover)] active:bg-[color:var(--color-button-pressed)]"
+                    onClick={handleAddressSearch}
+                  >
                     주소 검색
-                  </Button>
+                  </button>
                 </div>
-                <div className="flex w-[25.625rem] h-[3.125rem] items-center justify-between">
+                <div className="flex h-[3.125rem] w-[25.625rem] items-center justify-between">
                   <input
                     type="text"
                     placeholder="상세 주소"
-                    className="w-[18.25rem] rounded-[0.625rem] border border-[#BDBDBD] py-[0.8rem] pl-4"
+                    className="w-[17rem] rounded-[0.625rem] border border-[#BDBDBD] py-[0.8rem] pl-4 text-[#616161]"
                   />
-                  <div className="text-[15px] w-[98px] flex items-center justify-center rounded-[0.625rem] font-semibold">
-                    {location && `(${location})`}
-                  </div>
+                  <input
+                    className="flex h-full w-32 items-center justify-center rounded-[0.625rem] border border-[#BDBDBD] pl-4 text-[15px] text-[#616161]"
+                    value={location ? location : '동'}
+                  />
                 </div>
               </div>
             </div>
@@ -113,7 +116,7 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
                     aria-label="지역선택"
                     id="country-code"
                     name="countryCode"
-                    className="text-[#707070]"
+                    className="text-[#616161]"
                   >
                     <option value="+82">+82</option>
                     <option value="+1">+1</option>
@@ -125,7 +128,7 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
                   type="tel"
                   placeholder="3334586492"
                   // onSubmit={}
-                  className="ml-[1.25rem]"
+                  className="ml-[1.25rem] text-black"
                 />
                 <button className="absolute top-1/2 right-4 flex h-7 w-[4.375rem] -translate-y-1/2 items-center justify-center rounded-[3.125rem] bg-[color:var(--color-button)] text-[0.625rem] font-semibold text-white hover:bg-[color:var(--color-button-hover)] active:bg-[color:var(--color-button-pressed)]">
                   인증요청
@@ -137,7 +140,7 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
               <div className="relative flex items-center justify-between">
                 <input
                   placeholder="XXXXXX"
-                  className={`w-full rounded-[0.625rem] border py-[0.8rem] pl-4 ${
+                  className={`w-full rounded-[0.625rem] border py-[0.8rem] pl-4 text-[#616161] ${
                     VerifyNumberCheckResult === true
                       ? 'border-green-500'
                       : VerifyNumberCheckResult === false
@@ -157,7 +160,7 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
                   <p className="mt-1 text-sm text-green-600">인증되었습니다</p>
                 )}
                 {VerifyNumberCheckResult === false && (
-                  <p className="mt-1 text-sm text-red-600">인증번호가 일치하지 않습니다</p>
+                  <p className="mt-1 text-sm  text-red-600">인증번호가 일치하지 않습니다</p>
                 )}
               </div>
             </div>
@@ -170,11 +173,11 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20">
             <div
               id="daum-postcode"
-              className="relative flex items-center justify-center bg-white h-[600px] w-[600px] rounded-[0.625rem] shadow-lg"
+              className="relative flex h-[600px] w-[600px] items-center justify-center rounded-[0.625rem] bg-white shadow-lg"
             />
             <button
               onClick={() => setPostModalOpen(false)}
-              className="absolute top-[16rem] right-[19.5rem] w-6 h-6 text-gray-500 hover:bg-gray-400 hover:text-white rounded-full cursor-pointer"
+              className="absolute top-[16rem] right-[19.5rem] h-6 w-6 cursor-pointer rounded-full text-gray-500 hover:bg-gray-400 hover:text-white"
             >
               ✕
             </button>

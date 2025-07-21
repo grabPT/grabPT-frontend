@@ -88,7 +88,7 @@ const NickNameStep = ({ onNext }: NicknameStepProps) => {
               placeholder="닉네임을 등록해주세요"
               className={`rounded-[0.625rem] border py-[0.88rem] pl-4 ${
                 nicknameCheckResult === 'available'
-                  ? 'border-green-500'
+                  ? 'border-green-500 '
                   : nicknameCheckResult === 'duplicate'
                     ? 'border-red-500'
                     : 'border-gray-300'
@@ -102,7 +102,7 @@ const NickNameStep = ({ onNext }: NicknameStepProps) => {
               중복 확인
             </button>
           </div>
-          <div className="mx-[4.375rem] mt-2 flex flex-col gap-2">
+          <div className='mx-[4.375rem] mt-2 flex flex-col gap-2'>
             {nicknameCheckResult === 'available' && (
               <p className="mt-1 text-sm text-green-600">사용 가능한 닉네임입니다</p>
             )}
@@ -117,7 +117,10 @@ const NickNameStep = ({ onNext }: NicknameStepProps) => {
               onClick={() => {
                 if (nickname.length == 0) {
                   alert('닉네임을 설정해주세요');
-                } else {
+                }else if(nicknameCheckResult == 'duplicate'){
+                  alert('중복된 닉네임입니다!');
+                } 
+                else{
                   onNext();
                 }
               }}
