@@ -14,7 +14,7 @@ const Navbar = () => {
 
   // 페이지 생성 시 path 수정, memo도입 고려
   const menuList = [
-    { label: isExpert ? '요청 현황' : '요청서 작성', path: '/' },
+    { label: isExpert ? '요청 현황' : '요청서 작성', path: isExpert ? '/' : ROUTES.REQUEST.ROOT },
     { label: '트레이너 찾기', path: '/' },
     { label: '내지역 센터', path: '/' },
     { label: '카테고리', path: ROUTES.CATEGORY.ROOT },

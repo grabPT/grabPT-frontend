@@ -2,6 +2,7 @@ import { type RouteObject, RouterProvider, createBrowserRouter } from 'react-rou
 
 import ROUTES from '@/constants/routes';
 import { ExpertDetailInfo } from '@/features/ExpertDetail/components/ExpertDetailInfo';
+import ExpertDetailReviews from '@/features/ExpertDetail/components/ExpertDetailReviews';
 import ExpertCredentials from '@/features/ExpertMypage/components/ExpertCredentials';
 import ExpertDashboard from '@/features/ExpertMypage/components/ExpertDashboard';
 import ExpertProfile from '@/features/ExpertMypage/components/ExpertProfile';
@@ -16,10 +17,10 @@ import { Chat } from '@/pages/Chat';
 import { ExpertDetail } from '@/pages/ExpertDetail';
 import ExpertMypage from '@/pages/ExpertMypage';
 import Login from '@/pages/Login';
+import RequestPage from '@/pages/RequestPage';
 import Signup from '@/pages/Signup';
 import UserMainPage from '@/pages/UserMainPage';
 import UserMypage from '@/pages/UserMypage';
-import ExpertDetailReviews from '@/features/ExpertDetail/components/ExpertDetailReviews';
 
 const routes: RouteObject[] = [
   { path: ROUTES.AUTH.LOGIN, element: <Login /> },
@@ -83,6 +84,10 @@ const routes: RouteObject[] = [
           },
         ],
       },
+
+      { path: `expert/:id`, element: <ExpertDetail /> },
+
+      { path: ROUTES.REQUEST.ROOT, element: <RequestPage /> },
     ],
   },
   /* 채팅 */

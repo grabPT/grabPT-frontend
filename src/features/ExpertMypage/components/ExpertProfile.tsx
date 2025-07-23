@@ -10,12 +10,14 @@ import MypageSection from '@/features/Mypage/components/MypageSection';
 const ExpertProfile = () => {
   const images = Array.from({ length: 7 }, () => MockImage);
   return (
-    <div>
-      <div>
-        {/* 프로필 컴포넌트 */}
-        <div className="mt-[70px] flex justify-center px-[77px]">
-          <ProfileCard />
-        </div>
+    <div className="mt-16 flex flex-col items-center gap-12">
+      {/* 프로필 컴포넌트 */}
+      <div className="flex justify-center px-[77px]">
+        <ProfileCard />
+      </div>
+
+      {/* 전문가소개 */}
+      <div className="w-full">
         {/* 헤더 */}
         <header className="text-center text-[33px] font-extrabold">전문가 소개</header>
         <hr className="mt-[33px] border-t-2 border-[#B8B8B8]" />
@@ -37,8 +39,10 @@ const ExpertProfile = () => {
       <TitleLine title='소개 사진'/>
       <ImageSlide title="소개 사진" images={images} />
 
+      {/* 프로그램 가격 표 */}
       <MypageSection title="프로그램 가격" />
 
+      {/* 위치 등록 */}
       <MypageSection title="위치 등록" />
     </div>
   );

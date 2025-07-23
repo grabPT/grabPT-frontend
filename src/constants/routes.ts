@@ -36,6 +36,10 @@ const ROUTES = {
     INFO: '/expert/:id/info',
     REVIEWS: '/expert/:id/reviews',
   },
+
+  REQUEST: {
+    ROOT: '/request',
+  },
 } as const;
 
 export default ROUTES;

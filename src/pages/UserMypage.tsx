@@ -11,7 +11,7 @@ const UserMypage = () => {
   ];
 
   return (
-    <section className="my-[66px]">
+    <section className="py-[66px]">
       <div className="flex w-full flex-col items-center">
         <Tabs items={tabs} />
         <Outlet />
