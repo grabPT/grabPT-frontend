@@ -9,7 +9,7 @@ export default function CategoryDetailPage() {
   const { slug } = useParams(); // ex) tennis
 
   return (
-    <div className="flex flex-col pt-[155px]">
+    <div className="flex flex-col pt-[155px] w-[1480px] mx-auto">
       {/* 상단 제목 */}
 
       <div className="flex items-start gap-[10px]">
@@ -38,8 +38,8 @@ export default function CategoryDetailPage() {
           실시간 매칭 현황
         </h2>
 
-        <div className="mt-[94px] grid grid-cols-3 gap-x-[20px] gap-y-[16px]">
-          {dummyMatchings.slice(0, 6).map((match, idx) => (
+        <div className="mt-[94px] grid grid-cols-4 gap-x-[20px] gap-y-[16px]">
+          {dummyMatchings.slice(0, 8).map((match, idx) => (
             <MatchingStatusCard key={idx} {...match} />
           ))}
         </div>

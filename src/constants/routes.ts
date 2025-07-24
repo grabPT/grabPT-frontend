@@ -31,6 +31,7 @@ const ROUTES = {
     ROOT: '/category',
     WILDCARD: '/category/*',
   },
+
   EXPERTDETAIL: {
     ROOT: '/expert/:id',
     INFO: '/expert/:id/info',
@@ -39,6 +40,11 @@ const ROUTES = {
 
   REQUEST: {
     ROOT: '/request',
+  },
+
+  REQUESTS: {
+    ROOT: '/requests', // 요청 현황
+    ID: '/requests/:id', // 요청서 상세 페이지
   },
 } as const;
 

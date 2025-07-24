@@ -12,6 +12,8 @@
   --color-button: #003efb;
   --color-button-hover: #1537d9;
   --color-button-pressed: #1231c1;
+  --color-button-nonSelected: #E6ECFF;
+  --color-button-nonSelected-hover: #D9E2FE;
 
   /* Purple Scale */
   --color-purple-light: #e8ecfe;

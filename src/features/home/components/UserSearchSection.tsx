@@ -26,9 +26,8 @@ const UserSearchSection = () => {
     >
       {/* 어두운 오버레이 */}
       <div className="absolute inset-0 z-10 bg-transparent" />
-
       {/* 텍스트 및 검색 UI */}
-      <div className="absolute inset-0 z-20 flex flex-col justify-center px-[120px] text-white">
+      <div className="absolute inset-0 z-20 mx-auto flex w-[1477px] flex-col justify-center text-white">
         <h1 className="w-[747px] text-left text-[60px] leading-[74px] font-extrabold whitespace-pre-line">
           <span className="text-[#ACBEFF]">운동</span>
           <span className="text-white">이 필요한 순간,{'\n'}딱 맞는 전문가를 찾아보세요</span>
@@ -65,7 +64,6 @@ const UserSearchSection = () => {
           </div>
         </div>
       </div>
-
       {/* 오른쪽 아래 화살표 버튼 */}
       <button
         onClick={handleNext}
