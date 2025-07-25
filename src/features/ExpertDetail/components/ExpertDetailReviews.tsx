@@ -30,7 +30,7 @@ const ExpertDetailReviews = () => {
       <Pagination
         total={0}
         page={0}
-        onChange={function (page: number): void {
+        onChange={function (_page: number): void { //미사용
           throw new Error('Function not implemented.');
         }}
       />

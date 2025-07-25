@@ -34,7 +34,7 @@ const Banner = () => {
   };
 
   return (
-    <div className="relative w-full overflow-hidden rounded-[10px]">
+    <div className="relative w-[1477px] mx-auto overflow-hidden rounded-[10px]">
       {/* 슬라이드 래퍼 */}
       <div className={clsx('flex transition-transform duration-500 ease-in-out', translateClass)}>
         {images.map((src, idx) => (

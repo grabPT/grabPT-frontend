@@ -12,14 +12,16 @@ import UserReviews from '@/features/UserMypage/components/UserReviews';
 import UserSettings from '@/features/UserMypage/components/UserSettings';
 import Layout from '@/layout/Layout';
 import CategoryPage from '@/pages/CategoryPage';
-import { Chat } from '@/pages/Chat';
-import { ExpertDetail } from '@/pages/ExpertDetail';
 import ExpertMypage from '@/pages/ExpertMypage';
 import Login from '@/pages/Login';
+import RequestPage from '@/pages/RequestPage';
 import Signup from '@/pages/Signup';
 import UserMainPage from '@/pages/UserMainPage';
 import UserMypage from '@/pages/UserMypage';
 import ExpertDetailReviews from '@/features/ExpertDetail/components/ExpertDetailReviews';
+import { Chat } from '@/pages/Chat';
+import { ExpertDetail } from '@/pages/ExpertDetail';
+import RequestsForTrainer from './pages/RequestsForTrainer';
 
 const routes: RouteObject[] = [
   { path: ROUTES.AUTH.LOGIN, element: <Login /> },
@@ -83,6 +85,19 @@ const routes: RouteObject[] = [
           },
         ],
       },
+
+      { path: `expert/:id`, element: <ExpertDetail /> },
+
+      { path: ROUTES.REQUEST.ROOT, element: <RequestPage /> },
+      {path: `expert/:id`, element: <ExpertDetail/>}, 
+
+      /* 요청서 관련 */
+      {
+        path: ROUTES.REQUESTS.ROOT.slice(1),
+        children: [
+          { index: true, element: <RequestsForTrainer /> },
+        ],
+      }
     ],
   },
   /* 채팅 */

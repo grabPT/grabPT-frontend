@@ -12,7 +12,7 @@ const ExpertMypage = () => {
   ];
 
   return (
-    <section className="mb-28">
+    <section className="py-[66px]">
       {/* 탭 */}
       <Tabs items={tabs} />
       <Outlet />

@@ -2,7 +2,7 @@ import Profile from '@/assets/images/HeaderProfile.png';
 import Button from '@/components/Button';
 
 const Dashboard = () => {
-  const FIELDS = ['이름', '닉네임', '이메일'] as const;
+  const FIELDS = ['이름', '닉네임', '이메일', '주소'] as const;
   return (
     <div className="flex w-[812px]">
       <div className="ml-[16px] flex flex-col items-center gap-[30px]">

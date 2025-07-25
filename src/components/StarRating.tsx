@@ -10,7 +10,7 @@ interface StarRatingProps {
 const StarRating = ({ rating, size, fontSize }: StarRatingProps) => {
   const fontSizeClass = `text-[${fontSize}px]`;
   return (
-    <div className="flex items-end gap-[5px] leading-0">
+    <div className="flex items-center gap-[5px] leading-0">
       <Rating
         value={rating}
         readOnly
@@ -21,7 +21,7 @@ const StarRating = ({ rating, size, fontSize }: StarRatingProps) => {
           '& .MuiRating-iconFilled': { color: '#E3E32D' },
         }}
       />
-      <p className={clsx('text-[8px] leading-none font-bold', fontSizeClass)}>{rating}</p>
+      <p className={clsx('text-[12px] leading-none font-bold', fontSizeClass)}>{rating.toFixed(1)}</p>
     </div>
   );
 };
