@@ -36,6 +36,11 @@ export default tseslint.config(
       globals: globals.browser,
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
+    rules: {
+      'react/prop-types': 'off',
+      'react/react-in-jsx-scope': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
+    },
   },
 
   // Prettier 충돌 제거
