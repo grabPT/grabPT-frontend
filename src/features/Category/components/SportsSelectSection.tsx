@@ -1,5 +1,4 @@
 import SportsTypeSelector from '@/components/SportsTypeSelector';
-import { SPORTS } from '@/constants/sports';
 import type { SportsType } from '@/types/SportsType';
 
 interface SportsSelectSectionProps {
@@ -8,8 +7,6 @@ interface SportsSelectSectionProps {
 }
 
 const SportsSelectSection = ({ selected, onSelect }: SportsSelectSectionProps) => {
-  const options = SPORTS.map(({ type, img }) => ({ type, img }));
-
   return (
     <section className="w-full px-6 py-20">
       <div className="mx-auto w-[calc(120px*5+27px*4)]">
@@ -20,13 +17,7 @@ const SportsSelectSection = ({ selected, onSelect }: SportsSelectSectionProps) =
           원하는 운동을 선택해 보세요. 트레이너를 추천해 드립니다.
         </p>
 
-        {/* 공용 선택 컴포넌트 – UI 100 % 공유, 행동은 콜백으로 분기 */}
-        <SportsTypeSelector
-          options={options}
-          value={selected}
-          onChange={onSelect}
-          onSelectEnd={onSelect}
-        />
+        <SportsTypeSelector value={selected} onChange={onSelect} onSelectEnd={onSelect} />
       </div>
     </section>
   );

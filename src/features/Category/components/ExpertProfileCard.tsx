@@ -16,7 +16,7 @@ const ExpertProfileCard = ({
   pricePerSession,
 }: ExpertProfileCardProps) => {
   return (
-    <div className="h-[370px] w-[280px] overflow-hidden rounded-2xl bg-white shadow-[4px_4px_10px_rgba(0,0,0,0.25)]">
+    <div className="h-[370px] w-[280px] overflow-hidden rounded-2xl bg-white shadow-[4px_4px_10px_rgba(0,0,0,0.25)] cursor-pointer scale-[1] transition-transform duration-200 hover:scale-[1.02]">
       {/* 상단 이미지 영역 */}
       <img src={imageUrl} alt={`${name} 프로필`} className="h-[270px] w-full object-cover" />
 
@@ -32,7 +32,7 @@ const ExpertProfileCard = ({
             </p>
           </div>
 
-          <p className="font-[Pretendard Variable] h-[22px] w-[108px] text-[8px] leading-[11.2px] font-semibold whitespace-pre-line text-[#003EFB]">
+          <p className="font-[Pretendard Variable] h-[22px] w-[108px] text-[12px] leading-[14.2px] font-semibold whitespace-pre-line text-[#003EFB] line-height-[1]">
             {center}
           </p>
         </div>
@@ -40,9 +40,9 @@ const ExpertProfileCard = ({
         {/* 별점 + 점수 */}
         <div className="flex items-center gap-[2px]">
           <StarRating rating={rating} size={20} />
-          <p className="text-[6px] leading-[8.4px] font-semibold text-black not-italic">
+          {/* <p className="text-[6px] leading-[8.4px] font-semibold text-black not-italic">
             ({rating.toFixed(1)})
-          </p>
+          </p> */}
         </div>
       </div>
     </div>

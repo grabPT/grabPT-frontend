@@ -40,18 +40,18 @@ const RequestCardScroll: React.FC<RequestCardScrollProps> = ({ requests }) => {
   };
 
   return (
-    <div className="pw-[132px] relative flex h-[500px] items-center overflow-hidden bg-[linear-gradient(90deg,#F0F2F7_0%,#A0B8FF_108.09%)]">
+    <div className="pw-[132px] relative mx-auto flex h-[500px] w-[1477px] items-center overflow-hidden">
       {/* 왼쪽 Fade */}
-      <div className="pointer-events-none absolute top-0 left-0 z-10 h-full w-[80px] bg-gradient-to-r from-[#F0F2F7] to-transparent" />
+      <div className="pointer-events-none absolute top-0 left-0 z-10 h-full w-[80px]" />
 
       {/* 오른쪽 Fade */}
-      <div className="pointer-events-none absolute top-0 right-0 z-10 h-full w-[80px] bg-gradient-to-l from-[#A0B8FF] to-transparent" />
+      <div className="pointer-events-none absolute top-0 right-0 z-10 h-full w-[80px]" />
 
       {/* 왼쪽 버튼 (조건부 렌더링) */}
       {showLeftArrow && (
         <button
-          className="absolute left-3 z-20 m-0 border-none bg-transparent p-0"
-          onClick={() => scrollBy(-420)}
+          className="absolute left-3 z-20 m-0 flex h-[60px] w-[60px] items-center justify-center rounded-full border border-gray-300 bg-white p-0 shadow hover:shadow-lg transition-transform duration-200 hover:scale-105"
+          onClick={() => scrollBy(-800)}
         >
           <ArrowRight className="aspect-square h-[60px] w-[60px] flex-shrink-0 rotate-180" />
         </button>
@@ -69,8 +69,8 @@ const RequestCardScroll: React.FC<RequestCardScrollProps> = ({ requests }) => {
 
       {/* 오른쪽 버튼 */}
       <button
-        className="absolute right-3 z-20 m-0 border-none bg-transparent p-0"
-        onClick={() => scrollBy(420)}
+        className="absolute right-3 z-20 m-0 flex h-[60px] w-[60px] items-center justify-center rounded-full border border-gray-300 bg-white p-0 shadow hover:shadow-lg transition-transform duration-200 hover:scale-105"
+        onClick={() => scrollBy(800)}
       >
         <ArrowRight className="aspect-square h-[60px] w-[60px] flex-shrink-0" />
       </button>
