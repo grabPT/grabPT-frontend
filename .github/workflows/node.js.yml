@@ -10,23 +10,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
+      - name: Use Node.js 18
         uses: actions/setup-node@v3
         with:
           node-version: 18
           cache: 'pnpm'
 
-      - name: Install pnpm
-        run: npm install -g pnpm
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8 # 프로젝트에 맞는 pnpm 버전
 
       - name: Install dependencies
         run: pnpm install
 
-      - name: Run Lint
+      - name: Lint
         run: pnpm lint
 
-      - name: Run Build
+      - name: Build
         run: pnpm build
