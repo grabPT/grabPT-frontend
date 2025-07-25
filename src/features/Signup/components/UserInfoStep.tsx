@@ -47,16 +47,19 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
     }
   }, [postModalOpen]);
 
+  const [shakeKey, setShakeKey] = useState('initial');
   const [VerifyNumberCheckResult, setVerifyNumberCheckResult] = useState<boolean | null>(null);
-  const [VerifyNumber, _setVerifyNumber] = useState(''); //사용하지 않는 setVerifyNumber _처리
+  const [VerifyNumber, setVerifyNumber] = useState('');
+
   const handleVerifyNumberCheck = () => {
-    //나중에 서버에서 인증번호 확인 로직 추가
     if (VerifyNumber === '123456') {
       setVerifyNumberCheckResult(true);
     } else {
       setVerifyNumberCheckResult(false);
+      setShakeKey(`shake-${Date.now()}`);
     }
   };
+
   return (
     <div className="flex flex-col items-center justify-center">
       {/* 로고 */}
@@ -71,6 +74,7 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
               <input
                 type="text"
                 placeholder="이메일"
+                // value={email}
                 className="rounded-[0.625rem] border border-[#BDBDBD] py-[0.8rem] pl-4 text-[#616161]"
               />
             </div>
@@ -139,15 +143,18 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
               <span className="font-semibold">인증번호</span>
               <div className="relative flex items-center justify-between">
                 <input
+                  key={shakeKey}
+                  value={VerifyNumber}
+                  onChange={(e) => setVerifyNumber(e.target.value)}
                   placeholder="XXXXXX"
                   className={`w-full rounded-[0.625rem] border py-[0.8rem] pl-4 text-[#616161] ${
                     VerifyNumberCheckResult === true
                       ? 'border-green-500'
                       : VerifyNumberCheckResult === false
-                        ? 'border-red-500'
+                        ? 'animate-[var(--animate-shake)] border-red-500'
                         : 'border-[#BDBDBD]'
                   }`}
-                ></input>
+                />
                 <button
                   className="absolute top-1/2 right-4 flex h-7 w-[4.375rem] -translate-y-1/2 items-center justify-center rounded-[3.125rem] bg-[color:var(--color-button)] text-[0.625rem] font-semibold text-white hover:bg-[color:var(--color-button-hover)] active:bg-[color:var(--color-button-pressed)]"
                   onClick={handleVerifyNumberCheck}
@@ -160,7 +167,7 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
                   <p className="mt-1 text-sm text-green-600">인증되었습니다</p>
                 )}
                 {VerifyNumberCheckResult === false && (
-                  <p className="mt-1 text-sm  text-red-600">인증번호가 일치하지 않습니다</p>
+                  <p className="mt-1 text-sm text-red-600">인증번호가 일치하지 않습니다</p>
                 )}
               </div>
             </div>

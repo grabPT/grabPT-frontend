@@ -19,7 +19,7 @@ const Login = () => {
         <button onClick={() => nav('/')}>
           <img alt="뒤로가기" src={BackBtn} />
         </button>
-      </div>
+      </div> 
       <div className="flex flex-col items-center justify-center">
         {/* 로고 */}
         <div className="mt-6 flex justify-center">
@@ -36,7 +36,7 @@ const Login = () => {
               <img src={AppLogo} alt="로고" className="h-fit w-[5.5625rem]" />
             </div>
             <div className="mt-[5.38rem] flex flex-col items-start justify-center gap-2">
-              <h1 className="text-[2.375rem] font-bold leading-[2.5625rem]">
+              <h1 className="text-[2.375rem] font-bold leading-[2.5625rem]}">
                 안녕하세요
                 <br />
                 Grab PT입니다

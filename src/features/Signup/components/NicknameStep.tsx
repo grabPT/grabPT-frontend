@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import ChangeProfile from '@/features/Signup/assets/ChangeProfile.png';
 import HeaderProfile from '@/assets/images/HeaderProfile.png';
+import ChangeProfile from '@/features/Signup/assets/ChangeProfile.png';
 import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
 import SignupBtn from '@/features/Signup/components/SignupBtn';
 
@@ -35,6 +35,17 @@ const NickNameStep = ({ onNext }: NicknameStepProps) => {
       setNicknameCheckResult('available');
     }
   };
+
+  const [shouldShake, setShouldShake] = useState(false);
+
+useEffect(() => {
+  if (nicknameCheckResult === 'duplicate') {
+    setShouldShake(false);
+    setTimeout(() => setShouldShake(true), 10);
+  }
+}, [nicknameCheckResult]);
+
+
   return (
     <div className="flex flex-col items-center justify-center">
       {/* 로고 */}
@@ -82,19 +93,20 @@ const NickNameStep = ({ onNext }: NicknameStepProps) => {
           </div>
           {/* 닉네임 설정 */}
           <div className="relative mx-[4.375rem] mt-[5.06rem] flex flex-col gap-2">
-            <input
-              value={nickname}
-              onChange={(e) => setNickname(e.target.value)}
-              placeholder="닉네임을 등록해주세요"
-              className={`rounded-[0.625rem] border py-[0.88rem] pl-4 ${
-                nicknameCheckResult === 'available'
-                  ? 'border-green-500 '
-                  : nicknameCheckResult === 'duplicate'
-                    ? 'border-red-500'
-                    : 'border-gray-300'
-              }`}
-            />
-
+           <input
+  key={shouldShake ? 'shake' : 'no-shake'}
+  value={nickname}
+  onChange={(e) => setNickname(e.target.value)}
+  placeholder="닉네임을 등록해주세요"
+  className={`rounded-[0.625rem] border py-[0.88rem] pl-4 
+    ${
+      nicknameCheckResult === 'available'
+        ? 'border-green-500'
+        : nicknameCheckResult === 'duplicate' && shouldShake
+          ? 'border-red-500 animate-[var(--animate-shake)]'
+          : 'border-gray-300'
+    }`}
+/>
             <button
               className="absolute top-1/2 right-4 flex h-7 w-[4.375rem] -translate-y-1/2 items-center justify-center rounded-[3.125rem] bg-[color:var(--color-button)] text-[0.625rem] font-semibold text-white hover:bg-[color:var(--color-button-hover)] active:bg-[color:var(--color-button-pressed)]"
               onClick={handleCheckNickname}
@@ -102,9 +114,9 @@ const NickNameStep = ({ onNext }: NicknameStepProps) => {
               중복 확인
             </button>
           </div>
-          <div className='mx-[4.375rem] mt-2 flex flex-col gap-2'>
+          <div className="mx-[4.375rem] mt-2 flex flex-col gap-2">
             {nicknameCheckResult === 'available' && (
-              <p className="mt-1 text-sm text-green-600">사용 가능한 닉네임입니다</p>
+              <p className="mt-1 text-sm  text-green-600">사용 가능한 닉네임입니다</p>
             )}
 
             {nicknameCheckResult === 'duplicate' && (
@@ -115,12 +127,9 @@ const NickNameStep = ({ onNext }: NicknameStepProps) => {
           <div className="absolute bottom-12 left-1/2 w-[25.5625rem] -translate-x-1/2 transform">
             <SignupBtn
               onClick={() => {
-                if (nickname.length == 0) {
-                  alert('닉네임을 설정해주세요');
-                }else if(nicknameCheckResult == 'duplicate'){
-                  alert('중복된 닉네임입니다!');
-                } 
-                else{
+                if (nickname.length == 0 || nicknameCheckResult == 'duplicate') {
+                  alert('올바른 닉네임을 설정해주세요');
+                } else {
                   onNext();
                 }
               }}
