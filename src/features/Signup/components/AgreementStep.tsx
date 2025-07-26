@@ -140,7 +140,6 @@ const AgreementStep = ({ onNext }: AgreementStepProps) => {
           {/* 다음 버튼 */}
           <div className="absolute bottom-12 left-1/2 w-[25.5625rem] -translate-x-1/2 transform">
             <SignupBtn
-              children={'동의하기'}
               onClick={() => {
                 if (isAllRequiredChecked) {
                   onNext();
@@ -148,7 +147,9 @@ const AgreementStep = ({ onNext }: AgreementStepProps) => {
                   alert('필수 약관에 모두 동의해 주세요.');
                 }
               }}
-            />
+            >
+              동의하기
+            </SignupBtn>
           </div>
         </div>
         {/* 상세 설명 모달 */}

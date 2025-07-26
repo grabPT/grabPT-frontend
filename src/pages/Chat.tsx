@@ -11,7 +11,7 @@ import Header from '@/layout/components/Header';
 
 export const Chat = () => {
   //나중에 API 에서 받아온 걸로 수정 예정
-  const [chatList, setChatList] = useState<ChatType[]>([
+  const [chatList, _setChatList] = useState<ChatType[]>([
     {
       id: '1',
       location: '서울',
@@ -215,7 +215,6 @@ export const Chat = () => {
           {selectedChat ? (
             <>
               <ChatInfo
-                id={selectedChat.id}
                 name={selectedChat.name}
                 location={selectedChat.location}
                 img={selectedChat.img}
