@@ -1,5 +1,4 @@
 //나중에 삭제 예정
-
 import { useState } from 'react';
 
 import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
@@ -36,11 +35,8 @@ const LocationStep = ({ onNext }: LocationStepProps) => {
           <div className="flex h-[3.4rem] flex-col items-start justify-center">
             <div className="mx-12 flex gap-8 pt-7">
               {selectedLocation.map((locations) => (
-                <div className="relative">
-                  <div
-                    className="font-inter flex h-8 w-32 items-center justify-center rounded-[3.125rem] bg-[#003EFB] text-[0.75rem] font-semibold text-white"
-                    key={`${locations.province}-${locations.city}`}
-                  >
+                <div className="relative" key={`${locations.province}-${locations.city}`}>
+                  <div className="font-inter flex h-8 w-32 items-center justify-center rounded-[3.125rem] bg-[#003EFB] text-[0.75rem] font-semibold text-white">
                     {locations.province} {locations.city}
                   </div>
                   <div

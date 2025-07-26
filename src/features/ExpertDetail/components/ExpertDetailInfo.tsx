@@ -51,12 +51,13 @@ export const ExpertDetailInfo = () => {
         </div>
         <div className="mt-10 flex items-end justify-end">
           <Button
-            children="채팅 상담"
             width="w-[17.5rem]"
             height="h-[2.625rem]"
             text="text-white text-[15px] font-semibold"
             onClick={handleChatButton}
-          />
+          >
+            채팅 상담
+          </Button>
         </div>
       </div>
       <div className="mt-[4.06rem] flex w-full flex-col items-center justify-center gap-18">
@@ -74,8 +75,12 @@ export const ExpertDetailInfo = () => {
         <div className="flex w-full flex-col items-center justify-center">
           <TitleLine title="자격 사항" />
           <div className="flex w-full flex-col items-center justify-center gap-5">
-            {credentialList.map((credential) => (
-              <Credential type={credential.type} content={credential.content} />
+            {credentialList.map((credential, index) => (
+              <Credential
+                key={`${credential.type}-${index}`}
+                type={credential.type}
+                content={credential.content}
+              />
             ))}
           </div>
         </div>

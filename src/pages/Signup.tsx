@@ -9,7 +9,7 @@ import NickNameStep from '@/features/Signup/components/NicknameStep';
 import SportsTypeStep from '@/features/Signup/components/SportsTypeStep';
 import UserInfoStep from '@/features/Signup/components/UserInfoStep';
 import UserTypeStep from '@/features/Signup/components/UserTypeStep';
-import type { AddressRequest } from '@/features/Signup/types/Auth';
+
 
 
 export type UserType = 'normal' | 'expert';

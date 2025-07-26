@@ -3,13 +3,13 @@ import { ChatText } from '@/features/Chat/components/ChatText';
 import { dummyMessages } from '@/features/Chat/types/chat';
 
 interface ChatInfoProps {
-  id: string;
+  // id: string; 사용하지 않아서 우선 주셕 처리
   name: string;
   location: string;
   img: string;
 }
 
-export const ChatInfo = ({ id, name, location, img }: ChatInfoProps) => {
+export const ChatInfo = ({  name, location, img }: ChatInfoProps) => {
   //선택된 채팅 정보로 세부 채팅 기록 받아오는 로직 추가 예정
   const messageResponse = dummyMessages;
 
@@ -25,7 +25,7 @@ export const ChatInfo = ({ id, name, location, img }: ChatInfoProps) => {
     <div className="flex h-full flex-col pb-40">
       <div className="flex h-14 items-center justify-between bg-[#1F56FF]  px-5">
         <div className="flex items-center justify-start gap-3">
-          <img src={DefaultProfile} alt={name} className="h-9 w-9 rounded-full" />
+          <img src={img ? img : DefaultProfile} alt={name} className="h-9 w-9 rounded-full" />
           <span className="text-[1rem] font-extrabold text-white">
             {location} {name}
           </span>
