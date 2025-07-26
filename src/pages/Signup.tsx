@@ -10,11 +10,16 @@ import SportsTypeStep from '@/features/Signup/components/SportsTypeStep';
 import UserInfoStep from '@/features/Signup/components/UserInfoStep';
 import UserTypeStep from '@/features/Signup/components/UserTypeStep';
 
+
+
 export type UserType = 'normal' | 'expert';
 
 const Signup = () => {
   const [step, setStep] = useState<number>(0);
   const [userType, setUserType] = useState<UserType | null>(null);
+//타입 따라 상태 만들 예정
+
+
   const nav = useNavigate();
   const handleBackClick = () => {
     if (step <= 0) {
@@ -25,6 +30,7 @@ const Signup = () => {
       setStep((prev) => prev - 1); // 그 외에는 한 단계 뒤로
     }
   };
+
   return (
     <div className="relative h-dvh w-full bg-gradient-to-bl from-[#8CAFFF] to-[#FFFFFF]">
       {/* 뒤로 가기 버튼 */}
