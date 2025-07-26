@@ -12,8 +12,8 @@
   --color-button: #003efb;
   --color-button-hover: #1537d9;
   --color-button-pressed: #1231c1;
-  --color-button-nonSelected: #E6ECFF;
-  --color-button-nonSelected-hover: #D9E2FE;
+  --color-button-nonSelected: #e6ecff;
+  --color-button-nonSelected-hover: #d9e2fe;
 
   /* Purple Scale */
   --color-purple-light: #e8ecfe;
@@ -158,10 +158,11 @@
   }
 }
 
+/* 이거 쓰나요? 없으면 삭제하겠습니다 */
 /* 스크롤바 숨김 유틸리티 */
 .scrollbar-hide {
   -ms-overflow-style: none; /* IE 및 Edge */
-  scrollbar-width: none; /* Firefox */
+  /* scrollbar-width: none; Firefox */
 }
 
 .scrollbar-hide::-webkit-scrollbar {

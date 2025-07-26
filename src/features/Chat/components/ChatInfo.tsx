@@ -24,7 +24,7 @@ export const ChatInfo = ({ name, location, img }: ChatInfoProps) => {
     <div className="flex h-full flex-col pb-40">
       <div className="flex h-14 items-center justify-between bg-[#1F56FF] px-5">
         <div className="flex items-center justify-start gap-3">
-          <img src={img ? img : DefaultProfile} alt={name} className="h-9 w-9 rounded-full" />
+          <img src={DefaultProfile} alt={name} className="h-9 w-9 rounded-full" />
           <span className="text-[1rem] font-extrabold text-white">
             {location} {name}
           </span>

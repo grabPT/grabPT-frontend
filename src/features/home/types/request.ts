@@ -1,5 +1,3 @@
-
-
 export type RequestCardProps = {
   nickname: string;
   region: string;

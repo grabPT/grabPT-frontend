@@ -21,7 +21,9 @@ const StarRating = ({ rating, size, fontSize }: StarRatingProps) => {
           '& .MuiRating-iconFilled': { color: '#E3E32D' },
         }}
       />
-      <p className={clsx('text-[12px] leading-none font-bold', fontSizeClass)}>{rating.toFixed(1)}</p>
+      <p className={clsx('text-[12px] leading-none font-bold', fontSizeClass)}>
+        {rating.toFixed(1)}
+      </p>
     </div>
   );
 };

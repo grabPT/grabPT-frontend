@@ -78,7 +78,7 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
             <div className="flex flex-col gap-1">
               <span className="font-semibold">주소</span>
               <div className="flex flex-col gap-2.5">
-                <div className="flex w-[25.625rem] h-[3.125rem] items-center justify-between">
+                <div className="flex h-[3.125rem] w-[25.625rem] items-center justify-between">
                   <input
                     type="text"
                     placeholder="주소"
@@ -89,13 +89,13 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
                     주소 검색
                   </Button>
                 </div>
-                <div className="flex w-[25.625rem] h-[3.125rem] items-center justify-between">
+                <div className="flex h-[3.125rem] w-[25.625rem] items-center justify-between">
                   <input
                     type="text"
                     placeholder="상세 주소"
                     className="w-[18.25rem] rounded-[0.625rem] border border-[#BDBDBD] py-[0.8rem] pl-4"
                   />
-                  <div className="text-[15px] w-[98px] flex items-center justify-center rounded-[0.625rem] font-semibold">
+                  <div className="flex w-[98px] items-center justify-center rounded-[0.625rem] text-[15px] font-semibold">
                     {location && `(${location})`}
                   </div>
                 </div>
@@ -170,11 +170,11 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20">
             <div
               id="daum-postcode"
-              className="relative flex items-center justify-center bg-white h-[600px] w-[600px] rounded-[0.625rem] shadow-lg"
+              className="relative flex h-[600px] w-[600px] items-center justify-center rounded-[0.625rem] bg-white shadow-lg"
             />
             <button
               onClick={() => setPostModalOpen(false)}
-              className="absolute top-[16rem] right-[19.5rem] w-6 h-6 text-gray-500 hover:bg-gray-400 hover:text-white rounded-full cursor-pointer"
+              className="absolute top-[16rem] right-[19.5rem] h-6 w-6 cursor-pointer rounded-full text-gray-500 hover:bg-gray-400 hover:text-white"
             >
               ✕
             </button>

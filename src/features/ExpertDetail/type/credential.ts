@@ -7,6 +7,6 @@ export const CredentialType = {
 export type CredentialType = (typeof CredentialType)[keyof typeof CredentialType];
 
 export type credentialListItem = {
-  type: CredentialType,
-  content: string|null,
+  type: CredentialType;
+  content: string | null;
 };

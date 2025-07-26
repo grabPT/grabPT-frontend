@@ -59,10 +59,7 @@ const RequestsForTrainer = () => {
       {/* 카드 목록 */}
       <div className="flex flex-col gap-[30px]">
         {paginatedRequests.map((request) => (
-          <RequestsStatusCard
-            key={request.id}
-            {...request}
-          />
+          <RequestsStatusCard key={request.id} {...request} />
         ))}
       </div>
 

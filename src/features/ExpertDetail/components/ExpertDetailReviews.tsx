@@ -1,7 +1,8 @@
 import Pagination from '@/components/Pagination';
 import ReviewCard from '@/components/ReviewCard';
+
 //이 부분은 기존에 있던 ExpertReviews와 동일한데 어느 부분이 달라야하는지 잘 모르겠어서 나중에 수정 예정
-//수정할 부분-> ReviewCard에서 x버튼 권한에 따라 부여 필요 
+//수정할 부분-> ReviewCard에서 x버튼 권한에 따라 부여 필요
 const ExpertDetailReviews = () => {
   const review = {
     name: '날다람주날닮았쥐',
@@ -30,7 +31,8 @@ const ExpertDetailReviews = () => {
       <Pagination
         total={0}
         page={0}
-        onChange={function (_page: number): void { //미사용
+        onChange={function (_page: number): void {
+          //미사용
           throw new Error('Function not implemented.');
         }}
       />

@@ -50,7 +50,7 @@ const RequestCardScroll: React.FC<RequestCardScrollProps> = ({ requests }) => {
       {/* 왼쪽 버튼 (조건부 렌더링) */}
       {showLeftArrow && (
         <button
-          className="absolute left-3 z-20 m-0 flex h-[60px] w-[60px] items-center justify-center rounded-full border border-gray-300 bg-white p-0 shadow hover:shadow-lg transition-transform duration-200 hover:scale-105"
+          className="absolute left-3 z-20 m-0 flex h-[60px] w-[60px] items-center justify-center rounded-full border border-gray-300 bg-white p-0 shadow transition-transform duration-200 hover:scale-105 hover:shadow-lg"
           onClick={() => scrollBy(-800)}
         >
           <ArrowRight className="aspect-square h-[60px] w-[60px] flex-shrink-0 rotate-180" />
@@ -69,7 +69,7 @@ const RequestCardScroll: React.FC<RequestCardScrollProps> = ({ requests }) => {
 
       {/* 오른쪽 버튼 */}
       <button
-        className="absolute right-3 z-20 m-0 flex h-[60px] w-[60px] items-center justify-center rounded-full border border-gray-300 bg-white p-0 shadow hover:shadow-lg transition-transform duration-200 hover:scale-105"
+        className="absolute right-3 z-20 m-0 flex h-[60px] w-[60px] items-center justify-center rounded-full border border-gray-300 bg-white p-0 shadow transition-transform duration-200 hover:scale-105 hover:shadow-lg"
         onClick={() => scrollBy(800)}
       >
         <ArrowRight className="aspect-square h-[60px] w-[60px] flex-shrink-0" />

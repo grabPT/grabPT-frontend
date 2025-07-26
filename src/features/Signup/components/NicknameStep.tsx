@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-import ChangeProfile from '@/features/Signup/assets/ChangeProfile.png';
 import HeaderProfile from '@/assets/images/HeaderProfile.png';
+import ChangeProfile from '@/features/Signup/assets/ChangeProfile.png';
 import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
 import SignupBtn from '@/features/Signup/components/SignupBtn';
 

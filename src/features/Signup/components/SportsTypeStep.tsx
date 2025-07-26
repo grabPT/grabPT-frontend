@@ -37,7 +37,7 @@ const SportsTypeStep = ({ onNext }: SportTypeStepProps) => {
 
   return (
     <div className="flex flex-col">
-      <div className="mt-32 mb-72  flex flex-col items-center justify-center">
+      <div className="mt-32 mb-72 flex flex-col items-center justify-center">
         <div className="mb-27 flex items-center justify-center text-5xl font-extrabold whitespace-pre">
           <span>원하는 </span>
           <span className="text-[color:var(--color-button)]">운동 종목</span>
@@ -45,7 +45,7 @@ const SportsTypeStep = ({ onNext }: SportTypeStepProps) => {
         </div>
 
         {/* 공용 셀렉터 컴포넌트 */}
-        
+
         <SportsTypeSelector options={options} value={selected} onChange={setSelected} />
 
         <div className="mx-[32rem] mt-[8.3rem] w-[25.5625rem]">

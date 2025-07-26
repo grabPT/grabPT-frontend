@@ -6,8 +6,8 @@ export const AGREEMENT_TYPE = {
   marketing: { key: 'marketing', label: '(선택) 마케팅 정보 수신에 동의합니다.' },
 } as const;
 
-export type AgreementType = typeof AGREEMENT_TYPE[keyof typeof AGREEMENT_TYPE];
-export type AgreementKey = typeof AGREEMENT_TYPE[keyof typeof AGREEMENT_TYPE]['key'];
+export type AgreementType = (typeof AGREEMENT_TYPE)[keyof typeof AGREEMENT_TYPE];
+export type AgreementKey = (typeof AGREEMENT_TYPE)[keyof typeof AGREEMENT_TYPE]['key'];
 
 export type CheckedState = {
   all: boolean;

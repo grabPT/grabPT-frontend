@@ -22,15 +22,10 @@ interface RequestsViewModalProps {
 }
 
 const RequestsViewModal = (props: RequestsViewModalProps) => {
-  return(
+  return (
     <div>
-      <UserRequestHeader
-        nickName={props.nickName}
-        location={props.location}
-      />
-      <div>
-        hashTag
-      </div>
+      <UserRequestHeader nickName={props.nickName} location={props.location} />
+      <div>hashTag</div>
       <div>
         <p>{props.description}</p>
         <div>
@@ -41,6 +36,6 @@ const RequestsViewModal = (props: RequestsViewModalProps) => {
       </div>
     </div>
   );
-}
+};
 
 export default RequestsViewModal;
