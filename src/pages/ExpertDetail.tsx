@@ -11,7 +11,7 @@ export const ExpertDetail = () => {
   return (
     <section className="my-[66px]">
       <div className="flex w-full flex-col items-center">
-        <Tabs items={tabs} width='w-[25rem]' />
+        <Tabs items={tabs} width="w-[25rem]" />
         <Outlet />
       </div>
     </section>

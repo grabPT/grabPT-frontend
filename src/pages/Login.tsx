@@ -36,12 +36,12 @@ const Login = () => {
               <img src={AppLogo} alt="로고" className="h-fit w-[5.5625rem]" />
             </div>
             <div className="mt-[5.38rem] flex flex-col items-start justify-center gap-2">
-              <h1 className="text-[2.375rem] font-bold leading-[2.5625rem]">
+              <h1 className="text-[2.375rem] leading-[2.5625rem] font-bold">
                 안녕하세요
                 <br />
                 Grab PT입니다
               </h1>
-              <span className="text-[0.9375rem] font-semibold text-[#979797] leading-[2.375rem]">
+              <span className="text-[0.9375rem] leading-[2.375rem] font-semibold text-[#979797]">
                 원하는 가격에, 원하는 방식으로 시작하는 나만의 운동 플렛폼
               </span>
             </div>

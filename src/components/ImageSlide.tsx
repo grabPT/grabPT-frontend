@@ -1,5 +1,7 @@
 import { useLayoutEffect, useRef, useState } from 'react';
+
 import clsx from 'clsx';
+
 import SlideArrow from '@/components/SlideArrow';
 
 interface ImageSlideProps {
@@ -59,6 +61,7 @@ const ImageSlide = ({ images }: ImageSlideProps) => {
         {/* 뷰포트 마스크 */}
         <div className="overflow-hidden">
           {/* 트랙 */}
+          {/* 인라인 스타일 경고가 뜨는데 라이브러리 도입예정이기 때문에 냅두겠습니다 */}
           <div
             ref={trackRef}
             className="flex gap-6 transition-transform duration-300 ease-in-out"

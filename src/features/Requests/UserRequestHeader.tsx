@@ -19,7 +19,7 @@ const UserRequestHeader = ({ nickName, location }: UserRequestHeaderProps) => {
           />
         </svg>
       </div>
-      <div className="flex flex-col w-[128px]">
+      <div className="flex w-[128px] flex-col">
         <h3 className="text-lg font-semibold text-gray-900">{nickName}</h3>
         <p className="text-[12px] text-gray-500">{location}</p>
       </div>
