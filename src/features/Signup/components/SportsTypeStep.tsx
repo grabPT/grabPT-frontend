@@ -2,16 +2,16 @@ import { useState } from 'react';
 
 import SportsTypeSelector from '@/components/SportsTypeSelector';
 // ← 변경
-import Badminton from '@/features/Signup/assets/Badminton.png';
-import Boxing from '@/features/Signup/assets/Boxing.png';
-import Cycle from '@/features/Signup/assets/Cycle.png';
-import Golf from '@/features/Signup/assets/Golf.png';
-import Pilates from '@/features/Signup/assets/Pliates.png';
-import Running from '@/features/Signup/assets/Running.png';
-import Swimming from '@/features/Signup/assets/Swimming.png';
-import Tabletennis from '@/features/Signup/assets/Tabletennis.png';
-import Tennis from '@/features/Signup/assets/Tennis.png';
-import Weight from '@/features/Signup/assets/Weight.png';
+// import Badminton from '@/features/Signup/assets/Badminton.png';
+// import Boxing from '@/features/Signup/assets/Boxing.png';
+// import Cycle from '@/features/Signup/assets/Cycle.png';
+// import Golf from '@/features/Signup/assets/Golf.png';
+// import Pilates from '@/features/Signup/assets/Pliates.png';
+// import Running from '@/features/Signup/assets/Running.png';
+// import Swimming from '@/features/Signup/assets/Swimming.png';
+// import Tabletennis from '@/features/Signup/assets/Tabletennis.png';
+// import Tennis from '@/features/Signup/assets/Tennis.png';
+// import Weight from '@/features/Signup/assets/Weight.png';
 import SignupBtn from '@/features/Signup/components/SignupBtn';
 import { SportsType } from '@/types/SportsType';
 
@@ -19,18 +19,18 @@ interface SportTypeStepProps {
   onNext: () => void;
 }
 
-const options: ReadonlyArray<{ type: SportsType; img: string }> = [
-  { type: SportsType.WEIGHT, img: Weight },
-  { type: SportsType.PILATES, img: Pilates },
-  { type: SportsType.GOLF, img: Golf },
-  { type: SportsType.TENNIS, img: Tennis },
-  { type: SportsType.SWIMMING, img: Swimming },
-  { type: SportsType.BOXING, img: Boxing },
-  { type: SportsType.BADMINTON, img: Badminton },
-  { type: SportsType.RUNNING, img: Running },
-  { type: SportsType.CYCLE, img: Cycle },
-  { type: SportsType.TABLETENNIS, img: Tabletennis },
-];
+// const options: ReadonlyArray<{ type: SportsType; img: string }> = [
+//   { type: SportsType.WEIGHT, img: Weight },
+//   { type: SportsType.PILATES, img: Pilates },
+//   { type: SportsType.GOLF, img: Golf },
+//   { type: SportsType.TENNIS, img: Tennis },
+//   { type: SportsType.SWIMMING, img: Swimming },
+//   { type: SportsType.BOXING, img: Boxing },
+//   { type: SportsType.BADMINTON, img: Badminton },
+//   { type: SportsType.RUNNING, img: Running },
+//   { type: SportsType.CYCLE, img: Cycle },
+//   { type: SportsType.TABLETENNIS, img: Tabletennis },
+// ];
 
 const SportsTypeStep = ({ onNext }: SportTypeStepProps) => {
   const [selected, setSelected] = useState<SportsType | null>(null);
@@ -46,7 +46,7 @@ const SportsTypeStep = ({ onNext }: SportTypeStepProps) => {
 
         {/* 공용 셀렉터 컴포넌트 */}
 
-        <SportsTypeSelector options={options} value={selected} onChange={setSelected} />
+        <SportsTypeSelector value={selected} onChange={setSelected} />
 
         <div className="mx-[32rem] mt-[8.3rem] w-[25.5625rem]">
           {/* 아무 것도 안 골랐을 때는 비활성화 */}

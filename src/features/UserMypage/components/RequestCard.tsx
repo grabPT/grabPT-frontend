@@ -36,7 +36,9 @@ const RequestCard = ({ name, location, center, category, content }: RequestCardP
         <div className="mt-[22px] flex flex-1 flex-col justify-between gap-4">
           <div className="flex gap-1.5">
             {category.map((ct) => (
-              <span className="rounded-lg bg-[#C2D1FF] p-1 px-2 text-[8px] font-bold">{ct}</span>
+              <span className="rounded-lg bg-[#C2D1FF] p-1 px-2 text-[8px] font-bold" key={name}>
+                {ct}
+              </span>
             ))}
           </div>
           {/* 리뷰 내용 */}

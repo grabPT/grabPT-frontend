@@ -27,7 +27,7 @@ const RequestsForTrainer = () => {
     const startIndex = (page - 1) * pageSize;
     const endIndex = startIndex + pageSize;
     return sorted.slice(startIndex, endIndex);
-  }, [sort, page]);
+  }, [sort, page, pageSize]);
 
   return (
     <div className="mx-auto mt-[20px] flex h-auto w-[700px] flex-col gap-[30px]">
