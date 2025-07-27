@@ -12,94 +12,82 @@ import UserRequests from '@/features/UserMypage/components/UserRequests';
 import UserReviews from '@/features/UserMypage/components/UserReviews';
 import UserSettings from '@/features/UserMypage/components/UserSettings';
 import Layout from '@/layout/Layout';
-import CategoryPage from '@/pages/CategoryPage';
-import { Chat } from '@/pages/Chat';
-import { ExpertDetail } from '@/pages/ExpertDetail';
-import ExpertMypage from '@/pages/ExpertMypage';
-import Login from '@/pages/Login';
-import RequestPage from '@/pages/RequestPage';
-import Signup from '@/pages/Signup';
-import UserMainPage from '@/pages/UserMainPage';
-import UserMypage from '@/pages/UserMypage';
-
-import RequestsForTrainer from './pages/RequestsForTrainer';
+import Login from '@/pages/Auth/Login';
+import Signup from '@/pages/Auth/Signup';
+import CategoryPage from '@/pages/Category/CategoryPage';
+import { Chat } from '@/pages/Chat/Chat';
+import { ExpertDetail } from '@/pages/ExpertDetail/ExpertDetail';
+import UserMainPage from '@/pages/Home/UserMainPage';
+import ExpertMypage from '@/pages/MyPage/ExpertMypage';
+import UserMypage from '@/pages/MyPage/UserMypage';
+import RequestDetailPage from '@/pages/Requests/RequestDetailPage';
+import RequestPage from '@/pages/Requests/RequestPage';
+import RequestsForTrainer from '@/pages/Requests/RequestsForTrainer';
 
 const routes: RouteObject[] = [
+  /* 온보딩 */
   { path: ROUTES.AUTH.LOGIN, element: <Login /> },
   { path: ROUTES.AUTH.SIGNUP, element: <Signup /> },
+
+  /* 레이아웃 래퍼 */
   {
-    path: ROUTES.HOME.ROOT, // "/"
+    path: ROUTES.HOME.ROOT,
     element: <Layout />,
     errorElement: <>없는 페이지입니다.</>,
 
     children: [
       { index: true, element: <UserMainPage /> },
 
-      { path: ROUTES.CATEGORY.ROOT.slice(1) + '/*', element: <CategoryPage /> },
+      { path: 'category/*', element: <CategoryPage /> },
 
+      /* 마이페이지 ─ Expert */
       {
-        path: ROUTES.MYPAGE.ROOT.slice(1),
+        path: ROUTES.MYPAGE.EXPERT,
+        element: <ExpertMypage />,
         children: [
-          {
-            path: ROUTES.MYPAGE_EXPERT.ROOT.replace(ROUTES.MYPAGE.ROOT, '').slice(1),
-            element: <ExpertMypage />,
-            children: [
-              { index: true, element: <ExpertDashboard /> },
-              {
-                path: ROUTES.MYPAGE_EXPERT.PROFILE.replace(ROUTES.MYPAGE_EXPERT.ROOT + '/', ''),
-                element: <ExpertProfile />,
-              },
-              {
-                path: ROUTES.MYPAGE_EXPERT.REVIEWS.replace(ROUTES.MYPAGE_EXPERT.ROOT + '/', ''),
-                element: <ExpertReviews />,
-              },
-              {
-                path: ROUTES.MYPAGE_EXPERT.CREDENTIALS.replace(ROUTES.MYPAGE_EXPERT.ROOT + '/', ''),
-                element: <ExpertCredentials />,
-              },
-            ],
-          },
-
-          {
-            path: ROUTES.MYPAGE.USER.replace(ROUTES.MYPAGE.ROOT, '').slice(1),
-            element: <UserMypage />,
-            children: [
-              { index: true, element: <UserDashboard /> },
-              { path: 'requests', element: <UserRequests /> },
-              { path: 'reviews', element: <UserReviews /> },
-              { path: 'settings', element: <UserSettings /> },
-            ],
-          },
+          { index: true, element: <ExpertDashboard /> },
+          { path: ROUTES.MYPAGE.EXPERT_TABS.PROFILE, element: <ExpertProfile /> },
+          { path: ROUTES.MYPAGE.EXPERT_TABS.REVIEWS, element: <ExpertReviews /> },
+          { path: ROUTES.MYPAGE.EXPERT_TABS.CREDENTIALS, element: <ExpertCredentials /> },
         ],
       },
+
+      /* 마이페이지 ─ User */
       {
-        path: ROUTES.EXPERTDETAIL.ROOT.slice(1),
+        path: ROUTES.MYPAGE.USER,
+        element: <UserMypage />,
+        children: [
+          { index: true, element: <UserDashboard /> },
+          { path: ROUTES.MYPAGE.USER_TABS.REQUESTS, element: <UserRequests /> },
+          { path: ROUTES.MYPAGE.USER_TABS.REVIEWS, element: <UserReviews /> },
+          { path: ROUTES.MYPAGE.USER_TABS.SETTINGS, element: <UserSettings /> },
+        ],
+      },
+
+      /* 전문가 상세 */
+      {
+        path: ROUTES.EXPERT_DETAIL.ROOT,
         element: <ExpertDetail />,
         children: [
-          {
-            path: ROUTES.EXPERTDETAIL.INFO.replace(ROUTES.EXPERTDETAIL.ROOT + '/', ''),
-            element: <ExpertDetailInfo />,
-          },
-          {
-            path: ROUTES.EXPERTDETAIL.REVIEWS.replace(ROUTES.EXPERTDETAIL.ROOT + '/', ''),
-            element: <ExpertDetailReviews />,
-          },
+          { index: true, element: <ExpertDetailInfo /> }, // 기본 탭
+          { path: ROUTES.EXPERT_DETAIL.TABS.INFO, element: <ExpertDetailInfo /> },
+          { path: ROUTES.EXPERT_DETAIL.TABS.REVIEWS, element: <ExpertDetailReviews /> },
         ],
       },
 
-      { path: `expert/:id`, element: <ExpertDetail /> },
-
-      { path: ROUTES.REQUEST.ROOT, element: <RequestPage /> },
-      { path: `expert/:id`, element: <ExpertDetail /> },
-
-      /* 요청서 관련 */
+      /* 요청서 */
       {
-        path: ROUTES.REQUESTS.ROOT.slice(1),
-        children: [{ index: true, element: <RequestsForTrainer /> }],
+        path: ROUTES.REQUESTS.ROOT,
+        children: [
+          { index: true, element: <RequestsForTrainer /> }, // 리스트
+          { path: ROUTES.REQUESTS.NEW, element: <RequestPage /> }, // 작성
+          { path: ROUTES.REQUESTS.DETAIL, element: <RequestDetailPage /> }, // 작성
+        ],
       },
     ],
   },
-  /* 채팅 */
+
+  /* 채팅 (레이아웃 외부) */
   { path: ROUTES.CHAT.ROOT, element: <Chat /> },
 ];
 

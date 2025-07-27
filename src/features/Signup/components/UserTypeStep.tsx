@@ -1,7 +1,7 @@
 import SignupforTrainer from '@/features/Signup/assets/SignupforTrainer.png';
 import SignupforUser from '@/features/Signup/assets/SignupforUser.png';
 import SignupBtn from '@/features/Signup/components/SignupBtn';
-import type { UserType } from '@/pages/Signup';
+import type { UserType } from '@/pages/Auth/Signup';
 
 interface UserTypeStepProps {
   onNext: () => void;

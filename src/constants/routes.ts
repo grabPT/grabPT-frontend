@@ -3,10 +3,7 @@ const ROUTES = {
     ROOT: '/',
     USER: '/user',
     EXPERT: '/expert',
-  },
-
-  CHAT: {
-    ROOT: '/chat',
+    GUEST: '/guest',
   },
 
   AUTH: {
@@ -14,37 +11,56 @@ const ROUTES = {
     SIGNUP: '/signup',
   },
 
-  MYPAGE: {
-    ROOT: '/mypage',
-    USER: '/mypage/user',
-    EXPERT: '/mypage/expert',
-  },
-
-  MYPAGE_EXPERT: {
-    ROOT: '/mypage/expert',
-    PROFILE: '/mypage/expert/profile', // 자기소개
-    REVIEWS: '/mypage/expert/reviews', // 최근후기
-    CREDENTIALS: '/mypage/expert/credentials', // 자격사항 등록
+  CHAT: {
+    ROOT: '/chat',
   },
 
   CATEGORY: {
     ROOT: '/category',
-    WILDCARD: '/category/*',
   },
 
-  EXPERTDETAIL: {
+  MYPAGE: {
+    ROOT: '/mypage',
+    USER: '/mypage/user',
+    EXPERT: '/mypage/expert',
+    EXPERT_TABS: {
+      DASHBOARD: '', // index
+      PROFILE: 'profile',
+      REVIEWS: 'reviews',
+      CREDENTIALS: 'credentials',
+    },
+    USER_TABS: {
+      DASHBOARD: '', // index
+      REQUESTS: 'requests',
+      REVIEWS: 'reviews',
+      SETTINGS: 'settings',
+    },
+  },
+
+  EXPERT_DETAIL: {
     ROOT: '/expert/:id',
-    INFO: '/expert/:id/info',
-    REVIEWS: '/expert/:id/reviews',
-  },
-
-  REQUEST: {
-    ROOT: '/request',
+    TABS: {
+      INFO: 'info',
+      REVIEWS: 'reviews',
+    },
   },
 
   REQUESTS: {
-    ROOT: '/requests', // 요청 현황
-    ID: '/requests/:id', // 요청서 상세 페이지
+    ROOT: '/requests',
+    NEW: '/requests/new',
+    DETAIL: '/requests/:id',
+    PROPOSALS: '/requests/:id/proposals',
+  },
+
+  PROPOSALS: {
+    ROOT: '/proposals',
+    NEW: '/proposals/new',
+    DETAIL: '/proposals/:id',
+  },
+
+  CONTRACTS: {
+    NEW: '/contracts/new',
+    DETAIL: '/contracts/:id',
   },
 } as const;
 

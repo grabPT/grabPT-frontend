@@ -4,14 +4,14 @@ import { ko } from 'date-fns/locale';
 import DefaultProfile from '@/features/Signup/assets/DefaultProfile.svg';
 
 interface ChatCardProps {
-  img: string;
+  // img: string;
   name: string;
   location: string;
   time: Date;
   text: string;
 }
 
-export const ChatCard = ({ img, name, location, time, text }: ChatCardProps) => {
+const ChatCard = ({ name, location, time, text }: ChatCardProps) => {
   const timeAgo = formatDistanceToNow(time, {
     addSuffix: true,
     locale: ko,
@@ -19,9 +19,9 @@ export const ChatCard = ({ img, name, location, time, text }: ChatCardProps) => 
 
   return (
     <div className="flex w-full justify-center gap-3">
-      <img src={DefaultProfile} alt="chat profile" className="h-12 w-12 rounded-full">
-        {img}
-      </img>
+      <img src={DefaultProfile} alt="chat profile" className="h-12 w-12 rounded-full" />
+      {/* {img}
+      </img> */}
       <div className="flex h-12 w-full max-w-3/4 flex-col justify-start gap-2">
         <div className="text-[1rem] font-extrabold">
           {location} {name}
@@ -38,3 +38,5 @@ export const ChatCard = ({ img, name, location, time, text }: ChatCardProps) => 
     </div>
   );
 };
+
+export default ChatCard;

@@ -4,7 +4,7 @@ import { SearchIcon } from 'lucide-react';
 
 import ChatSendIcon from '@/features/Chat/assets/ChatSendIcon.svg';
 import ClipIcon from '@/features/Chat/assets/ClipIcon.svg';
-import { ChatCard } from '@/features/Chat/components/ChatCard';
+import ChatCard from '@/features/Chat/components/ChatCard';
 import { ChatInfo } from '@/features/Chat/components/ChatInfo';
 import type { ChatType } from '@/features/Chat/types/chat';
 import Header from '@/layout/components/Header';
@@ -200,13 +200,7 @@ export const Chat = () => {
                 className={`${selectedChat == chat && 'bg-white'} flex h-20 w-full cursor-pointer items-center bg-white px-3 duration-150 hover:bg-gray-300 hover:ease-in-out`}
                 onClick={() => handleChatSelect(chat)}
               >
-                <ChatCard
-                  name={chat.name}
-                  location={chat.location}
-                  text={chat.text}
-                  img={chat.img}
-                  time={time}
-                />
+                <ChatCard name={chat.name} location={chat.location} text={chat.text} time={time} />
               </div>
             ))}
           </div>
