@@ -1,40 +1,27 @@
+// src/features/Request/FillDetailStep.tsx
 import { useState } from 'react';
 
 import CheckedButton from '@/components/CheckedButton';
 import CommentBox from '@/components/CommentBox';
+import {
+  AGES,
+  type AgeGroup,
+  DAYS,
+  type Day,
+  GENDERS,
+  type Gender,
+  PURPOSES,
+  TIMES,
+  type TimeSlot,
+} from '@/types/ReqeustsType';
 
-type AgeGroup = '10대' | '20대' | '30대' | '40대' | '50대 이상';
-type Gender = '여자' | '남자';
-type Day = '월' | '화' | '수' | '목' | '금' | '토' | '일';
-type TimeSlot =
-  | '오전(06:00~12:00)'
-  | '오후(12:00~15:00)'
-  | '저녁(17:00~22:00)'
-  | '심야(22:00~06:00)';
-
-const purposeList: string[] = [
-  '기초부터 배우기',
-  '스킬 향상',
-  '다이어트',
-  '체력 향상',
-  '대회 준비',
-  '자세 교정',
-  '기타',
-];
-const ageList: AgeGroup[] = ['10대', '20대', '30대', '40대', '50대 이상'];
-const genderList: Gender[] = ['여자', '남자'];
-const dayList: Day[] = ['월', '화', '수', '목', '금', '토', '일'];
-const timeList: TimeSlot[] = [
-  '오전(06:00~12:00)',
-  '오후(12:00~15:00)',
-  '저녁(17:00~22:00)',
-  '심야(22:00~06:00)',
-];
+// 유틸 타입
+type Purpose = (typeof PURPOSES)[number];
 
 const FillDetailStep = () => {
   /* 목적(다중) */
-  const [selectedPurposes, setSelectedPurposes] = useState<string[]>([]);
-  const togglePurpose = (p: string) =>
+  const [selectedPurposes, setSelectedPurposes] = useState<Purpose[]>([]);
+  const togglePurpose = (p: Purpose) =>
     setSelectedPurposes((prev) => (prev.includes(p) ? prev.filter((v) => v !== p) : [...prev, p]));
   const etcSelected = selectedPurposes.includes('기타');
 
@@ -65,11 +52,11 @@ const FillDetailStep = () => {
       {/* 1. PT 목적 */}
       <section>
         <h1>
-          PT의 <span className="text-[var(--color-button)]">목적</span>이 무엇인가요?
+          PT의 <span className="text-button">목적</span>이 무엇인가요?
         </h1>
         <div className="mt-6">
           <div className="flex gap-6">
-            {purposeList.map((p) => (
+            {PURPOSES.map((p) => (
               <CheckedButton
                 key={p}
                 isChecked={selectedPurposes.includes(p)}
@@ -79,7 +66,6 @@ const FillDetailStep = () => {
               </CheckedButton>
             ))}
           </div>
-          {/* 기타 선택 시 텍스트박스 렌더링 */}
           {etcSelected && (
             <textarea
               className="mt-4 h-[180px] w-full resize-none rounded-[10px] border border-[#CCCCCC] bg-[#F5F5F5] p-4 text-[15px] placeholder:text-[#CCCCCC] focus:border-gray-400 focus:outline-none"
@@ -92,10 +78,10 @@ const FillDetailStep = () => {
       {/* 2. 연령대 */}
       <section>
         <h1>
-          수강생의 <span className="text-[var(--color-button)]">연령대</span>
+          수강생의 <span className="text-button">연령대</span>
         </h1>
         <div className="mt-6 flex flex-wrap gap-2">
-          {ageList.map((a) => (
+          {AGES.map((a) => (
             <CheckedButton key={a} isChecked={age === a} onClick={() => setAge(a)}>
               {a}
             </CheckedButton>
@@ -106,10 +92,10 @@ const FillDetailStep = () => {
       {/* 3. 수강생 성별 */}
       <section>
         <h1>
-          수강생의 <span className="text-[var(--color-button)]">성별</span>
+          수강생의 <span className="text-button">성별</span>
         </h1>
         <div className="mt-6 flex gap-2">
-          {genderList.map((g) => (
+          {GENDERS.map((g) => (
             <CheckedButton
               key={g}
               isChecked={studentGender === g}
@@ -124,10 +110,10 @@ const FillDetailStep = () => {
       {/* 4. 트레이너 선호 성별 */}
       <section>
         <h1>
-          트레이너 <span className="text-[var(--color-button)]">선호 성별</span>
+          트레이너 <span className="text-button">선호 성별</span>
         </h1>
         <div className="mt-6 flex gap-2">
-          {genderList.map((g) => (
+          {GENDERS.map((g) => (
             <CheckedButton
               key={g}
               isChecked={trainerGender === g}
@@ -142,7 +128,7 @@ const FillDetailStep = () => {
       {/* 5. PT 시작 희망일 */}
       <section>
         <h1>
-          PT <span className="text-[var(--color-button)]">시작 희망일</span>
+          PT <span className="text-button">시작 희망일</span>
         </h1>
         <input
           type="date"
@@ -156,10 +142,10 @@ const FillDetailStep = () => {
       {/* 6. 가능 요일 */}
       <section>
         <h1>
-          가능 <span className="text-[var(--color-button)]">요일</span>
+          가능 <span className="text-button">요일</span>
         </h1>
         <div className="mt-6 flex flex-wrap gap-2">
-          {dayList.map((d) => (
+          {DAYS.map((d) => (
             <CheckedButton
               key={d}
               width="w-[56px]"
@@ -175,10 +161,10 @@ const FillDetailStep = () => {
       {/* 7. 가능 시간대 */}
       <section>
         <h1>
-          가능 <span className="text-[var(--color-button)]">시간대</span>
+          가능 <span className="text-button">시간대</span>
         </h1>
         <div className="mt-6 flex flex-wrap gap-2">
-          {timeList.map((t) => (
+          {TIMES.map((t) => (
             <CheckedButton key={t} isChecked={times.includes(t)} onClick={() => toggleTime(t)}>
               {t}
             </CheckedButton>
@@ -189,7 +175,7 @@ const FillDetailStep = () => {
       {/* 8. 세부 요청사항 */}
       <section>
         <h1>
-          세부 <span className="text-[var(--color-button)]">요청사항</span>
+          세부 <span className="text-button">요청사항</span>
         </h1>
         <CommentBox />
       </section>
