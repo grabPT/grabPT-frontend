@@ -106,17 +106,17 @@ export const useSignupStore = create<
     const state = get();
     return {
       username: state.username,
-      email: state.userInfo.email,
-      phoneNum: state.userInfo.phoneNum,
-      nickname: state.nicknameInfo.nickname,
-      profileImageUrl: state.nicknameInfo.profileImageUrl,
       oauthId: state.oauthId,
       oauthProvider: state.oauthProvider,
       role: state.role,
+      categoryId: state.sportsTypeInfo.categoryId,
+      email: state.userInfo.email,
+      phoneNum: state.userInfo.phoneNum,
+      address: state.userInfo.address,
+      nickname: state.nicknameInfo.nickname,
+      profileImageUrl: state.nicknameInfo.profileImageUrl,
       agreedTermsIds: state.agreementInfo.agreedTermsId,
       agreeMarketing: state.agreementInfo.agreeMarketing,
-      address: state.userInfo.address,
-      categoryId: state.sportsTypeInfo.categoryId,
       // 전문가 추가 정보
       age: state.proInfo.age,
       gender: state.proInfo.gender,

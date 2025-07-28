@@ -3,20 +3,12 @@ import { dummyMessages } from '@/features/Chat/types/chat';
 import DefaultProfile from '@/features/Signup/assets/DefaultProfile.svg';
 
 interface ChatInfoProps {
-<<<<<<< HEAD
-  // id: string; 사용하지 않아서 우선 주셕 처리
-=======
->>>>>>> main
   name: string;
   location: string;
   img: string;
 }
 
-<<<<<<< HEAD
-export const ChatInfo = ({  name, location, img }: ChatInfoProps) => {
-=======
 export const ChatInfo = ({ name, location, img }: ChatInfoProps) => {
->>>>>>> main
   //선택된 채팅 정보로 세부 채팅 기록 받아오는 로직 추가 예정
   const messageResponse = dummyMessages;
 

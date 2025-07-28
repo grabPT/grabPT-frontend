@@ -23,7 +23,7 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
     }
     // 여기서 서버에 인증번호 요청 API 호출
     sendSms(
-      { phoneNum: userInfo.phoneNum }, // SmsSendRequestDto 타입
+      { phoneNum: userInfo.phoneNum },
       {
         onSuccess: (res) => {
           console.log(res);
@@ -130,7 +130,7 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
             <div className="flex flex-col gap-1">
               <span className="font-semibold">주소</span>
               <div className="flex flex-col gap-2.5">
-                <div className="flex h-[3.125rem] w-[25.625rem] items-center justify-between">
+                <div className="relative flex h-[3.125rem] w-[25.625rem] items-center justify-between rounded-[0.625rem] border border-[#BDBDBD]">
                   <input
                     type="text"
                     readOnly

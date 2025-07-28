@@ -56,7 +56,7 @@ const Signup = () => {
         });
       }
     }
-  }, [step, role, signupInfo, userSignup, proSignup]);
+  }, [nav, step, role, signupInfo, userSignup, proSignup]);
 
   return (
     <div className="relative h-dvh w-full bg-gradient-to-bl from-[#8CAFFF] to-[#FFFFFF]">
@@ -76,7 +76,7 @@ const Signup = () => {
             if (signupInfo.role === 2) {
               setStep(3); // 전문가
             } else {
-              setStep(4); 
+              setStep(4);
             }
           }}
         />
