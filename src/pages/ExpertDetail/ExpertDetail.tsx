@@ -5,13 +5,13 @@ import ROUTES from '@/constants/routes';
 
 export const ExpertDetail = () => {
   const tabs = [
-    { label: '정보', to: ROUTES.EXPERTDETAIL.INFO },
-    { label: '후기', to: ROUTES.EXPERTDETAIL.REVIEWS },
+    { label: '정보', to: ROUTES.EXPERT_DETAIL.TABS.INFO },
+    { label: '후기', to: ROUTES.EXPERT_DETAIL.TABS.REVIEWS },
   ];
   return (
     <section className="my-[66px]">
       <div className="flex w-full flex-col items-center">
-        <Tabs items={tabs} width='w-[25rem]' />
+        <Tabs items={tabs} width="w-[25rem]" />
         <Outlet />
       </div>
     </section>

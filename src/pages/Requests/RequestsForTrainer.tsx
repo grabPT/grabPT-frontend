@@ -27,7 +27,7 @@ const RequestsForTrainer = () => {
     const startIndex = (page - 1) * pageSize;
     const endIndex = startIndex + pageSize;
     return sorted.slice(startIndex, endIndex);
-  }, [sort, page]);
+  }, [sort, page, pageSize]);
 
   return (
     <div className="mx-auto mt-[20px] flex h-auto w-[700px] flex-col gap-[30px]">
@@ -59,10 +59,7 @@ const RequestsForTrainer = () => {
       {/* 카드 목록 */}
       <div className="flex flex-col gap-[30px]">
         {paginatedRequests.map((request) => (
-          <RequestsStatusCard
-            key={request.id}
-            {...request}
-          />
+          <RequestsStatusCard key={request.id} {...request} />
         ))}
       </div>
 

@@ -36,7 +36,7 @@ const ExpertProfile = () => {
       </div>
 
       {/* 소개 사진 슬라이드 */}
-      <TitleLine title='소개 사진'/>
+      <TitleLine title="소개 사진" />
       <ImageSlide title="소개 사진" images={images} />
 
       {/* 프로그램 가격 표 */}

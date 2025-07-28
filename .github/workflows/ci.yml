@@ -30,8 +30,8 @@ jobs:
         run: pnpm install
 
       # ✅ ESLint 실행
-      - name: Run ESLint
-        run: pnpm lint
+      - name: Run ESLint and prettier check
+        run: pnpm lint && pnpm prettier --check .
 
       # ✅ 빌드 실행
       - name: Build

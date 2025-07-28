@@ -46,7 +46,7 @@ export const mockRequestsDetail = {
   page: 1,
   pageSize: 5,
   totalCount: 10, // 예: 총 요청이 15개 있다고 가정
-  totalPages: 2,  // Math.ceil(totalCount / pageSize)
+  totalPages: 2, // Math.ceil(totalCount / pageSize)
   data: [
     {
       profileImage: '',
@@ -89,7 +89,8 @@ export const mockRequestsDetail = {
       totalPrice: 400000,
       status: '대기중',
       id: 3,
-      description: 'PT를 통해 체중 감량과 근력 강화를 목표로 하고 있습니다. 주 3회 운동을 원합니다.',
+      description:
+        'PT를 통해 체중 감량과 근력 강화를 목표로 하고 있습니다. 주 3회 운동을 원합니다.',
       gender: '여성',
       age: '20대',
       preferredTime: '오전(09:00~12:00)',
@@ -210,4 +211,3 @@ export const mockRequestsDetail = {
     },
   ],
 };
-

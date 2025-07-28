@@ -1,6 +1,5 @@
 interface LoginButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   color?: 'kakao' | 'naver' | 'google';
-  onClick: React.MouseEventHandler<HTMLButtonElement>
 }
 const colorMap = {
   kakao: 'bg-[#FFE812] text-black',

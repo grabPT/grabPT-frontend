@@ -36,7 +36,7 @@ const Login = () => {
               <img src={AppLogo} alt="로고" className="h-fit w-[5.5625rem]" />
             </div>
             <div className="mt-[5.38rem] flex flex-col items-start justify-center gap-2">
-              <h1 className="leading-[2.5625rem]} text-[2.375rem] font-bold">
+              <h1 className="text-[2.375rem] leading-[2.5625rem] font-bold">
                 안녕하세요
                 <br />
                 Grab PT입니다

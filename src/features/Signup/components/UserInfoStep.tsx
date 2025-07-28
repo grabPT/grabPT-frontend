@@ -130,7 +130,7 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
             <div className="flex flex-col gap-1">
               <span className="font-semibold">주소</span>
               <div className="flex flex-col gap-2.5">
-                <div className="relative flex h-[3.125rem] w-[25.625rem] items-center justify-between rounded-[0.625rem] border border-[#BDBDBD]">
+                <div className="flex h-[3.125rem] w-[25.625rem] items-center justify-between">
                   <input
                     type="text"
                     readOnly

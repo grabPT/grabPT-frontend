@@ -16,7 +16,7 @@ const ExpertProfileCard = ({
   pricePerSession,
 }: ExpertProfileCardProps) => {
   return (
-    <div className="h-[370px] w-[280px] overflow-hidden rounded-2xl bg-white shadow-[4px_4px_10px_rgba(0,0,0,0.25)] cursor-pointer scale-[1] transition-transform duration-200 hover:scale-[1.02]">
+    <div className="h-[370px] w-[280px] scale-[1] cursor-pointer overflow-hidden rounded-2xl bg-white shadow-[4px_4px_10px_rgba(0,0,0,0.25)] transition-transform duration-200 hover:scale-[1.02]">
       {/* 상단 이미지 영역 */}
       <img src={imageUrl} alt={`${name} 프로필`} className="h-[270px] w-full object-cover" />
 
@@ -32,7 +32,7 @@ const ExpertProfileCard = ({
             </p>
           </div>
 
-          <p className="font-[Pretendard Variable] h-[22px] w-[108px] text-[12px] leading-[14.2px] font-semibold whitespace-pre-line text-[#003EFB] line-height-[1]">
+          <p className="font-[Pretendard Variable] line-height-[1] h-[22px] w-[108px] text-[12px] leading-[14.2px] font-semibold whitespace-pre-line text-[#003EFB]">
             {center}
           </p>
         </div>
