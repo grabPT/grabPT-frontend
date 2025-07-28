@@ -1,9 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
+
 import { postUserSignup } from '@/features/Signup/apis/auth';
-import type { SignupResponseDto, ProSignupRequestDto } from '@/features/Signup/types/auth';
+import type { BasicResponseDto, ProSignupRequestDto } from '@/features/Signup/types/Auth';
 
 export function useProSignup() {
-  return useMutation<SignupResponseDto, Error, ProSignupRequestDto>({
+  return useMutation<BasicResponseDto, Error, ProSignupRequestDto>({
     mutationFn: postUserSignup,
   });
 }

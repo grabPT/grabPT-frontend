@@ -1,46 +1,60 @@
-export type BaseSignupRequestDto = SignupUserInfoStepDto &  SignupSportsTypeStepDto & SignupNicknameStepDto & {
-  username: string;
-  password: string;
-  oauthId: string;
-  oauthProvider: string;
-  gender: number;
-  role: number;
+export type BaseSignupRequestDto = SignupUserInfoStepDto &
+  SignupSportsTypeStepDto &
+  SignupNicknameStepDto &
+  SignupUserAgreementDto & {
+    username: string;
+    oauthId: string;
+    oauthProvider: string;
+    role: number;
+  };
+export type SignupUserAgreementDto = {
+  agreedTermsId: number[];
+  agreeMarketing: boolean;
 };
 export type SignupUserInfoStepDto = {
   email: string;
   phoneNum: string;
   address: AddressRequest;
 };
-export type SignupProInfoStepDto ={
-    activityAreas: string;
-  center: string[];
-  career: string;
-  description: string;
-}
-export type SignupSportsTypeStepDto={
-  categories: number[];
-}
-export type SignupNicknameStepDto={
-     nickname: string;
+export type SignupProInfoStepDto = {
+  center: string;
+  career: number;
+  gender: number;
+  age: number;
+};
+export type SignupSportsTypeStepDto = {
+  categoryId: number;
+};
+export type SignupNicknameStepDto = {
+  nickname: string;
   profileImageUrl: string;
-}
+};
 export type UserSignupRequestDto = BaseSignupRequestDto;
-export type ProSignupRequestDto = BaseSignupRequestDto & SignupProInfoStepDto
+export type ProSignupRequestDto = BaseSignupRequestDto & SignupProInfoStepDto;
 
 export type AddressRequest = {
   city: string;
   district: string;
   street: string;
+  streetCode: string;
   zipcode: string;
+  specAddress: string;
 };
 
 export type ReissueRequestDto = {
   refreshToken: string;
 };
 
-export type SignupResponseDto = {
+export type BasicResponseDto = {
   isSuccess: boolean;
   code: string;
   message: string;
   result: string;
+};
+
+export type SmsVerifyRequestDto = SmsSendRequestDto & {
+  inputCode: string;
+};
+export type SmsSendRequestDto = {
+  phoneNum: string;
 };

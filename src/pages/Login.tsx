@@ -19,7 +19,7 @@ const Login = () => {
         <button onClick={() => nav('/')}>
           <img alt="뒤로가기" src={BackBtn} />
         </button>
-      </div> 
+      </div>
       <div className="flex flex-col items-center justify-center">
         {/* 로고 */}
         <div className="mt-6 flex justify-center">
@@ -36,12 +36,12 @@ const Login = () => {
               <img src={AppLogo} alt="로고" className="h-fit w-[5.5625rem]" />
             </div>
             <div className="mt-[5.38rem] flex flex-col items-start justify-center gap-2">
-              <h1 className="text-[2.375rem] font-bold leading-[2.5625rem]}">
+              <h1 className="leading-[2.5625rem]} text-[2.375rem] font-bold">
                 안녕하세요
                 <br />
                 Grab PT입니다
               </h1>
-              <span className="text-[0.9375rem] font-semibold text-[#979797] leading-[2.375rem]">
+              <span className="text-[0.9375rem] leading-[2.375rem] font-semibold text-[#979797]">
                 원하는 가격에, 원하는 방식으로 시작하는 나만의 운동 플렛폼
               </span>
             </div>
@@ -50,7 +50,13 @@ const Login = () => {
             <div className="mt-[8.81rem] flex flex-col items-center justify-center rounded-[1.25rem]">
               <div className="flex w-full flex-col gap-4 whitespace-pre">
                 <div className="flex items-center justify-center">
-                  <LoginButton color="kakao" onClick={()=> (window.location.href = "http://43.203.91.190:8080/oauth2/authorization/kakao")}>
+                  <LoginButton
+                    color="kakao"
+                    onClick={() =>
+                      (window.location.href =
+                        'http://43.203.91.190:8080/oauth2/authorization/kakao')
+                    }
+                  >
                     <div className="flex items-center gap-2">
                       <img
                         src={KakaoLogo}
@@ -62,7 +68,13 @@ const Login = () => {
                   </LoginButton>
                 </div>
                 <div className="flex items-center justify-center">
-                  <LoginButton color="naver" onClick={()=> (window.location.href = "http://43.203.91.190:8080/oauth2/authorization/naver")}>
+                  <LoginButton
+                    color="naver"
+                    onClick={() =>
+                      (window.location.href =
+                        'http://43.203.91.190:8080/oauth2/authorization/naver')
+                    }
+                  >
                     <div className="flex items-center gap-2">
                       <img
                         src={NaverLogo}
@@ -74,7 +86,13 @@ const Login = () => {
                   </LoginButton>
                 </div>
                 <div className="flex items-center justify-center">
-                  <LoginButton color="google" onClick={()=> (window.location.href = "http://43.203.91.190:8080/oauth2/authorization/google")}>
+                  <LoginButton
+                    color="google"
+                    onClick={() =>
+                      (window.location.href =
+                        'http://43.203.91.190:8080/oauth2/authorization/google')
+                    }
+                  >
                     <div className="flex items-center gap-2">
                       <img
                         src={GoogleLogo}

@@ -1,11 +1,21 @@
 import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
 import SignupBtn from '@/features/Signup/components/SignupBtn';
+import { useSignupStore } from '@/store/useSignupStore';
 
 interface ExpertInfoStepProps {
   onNext: () => void;
 }
 
 const ExpertInfoStep = ({ onNext }: ExpertInfoStepProps) => {
+  const { proInfo, setProInfo } = useSignupStore();
+  const handleNext = () => {
+    if (!proInfo) {
+      alert('사용자 정보를 올바르게 입력해주세요');
+      return;
+    }
+    console.log('proInfo', proInfo);
+    onNext();
+  };
   return (
     <div className="flex flex-col items-center justify-center">
       {/* 로고 */}
@@ -19,6 +29,7 @@ const ExpertInfoStep = ({ onNext }: ExpertInfoStepProps) => {
               <span className="font-semibold">활동센터</span>
               <input
                 placeholder="센터 이름을 입력해주세요"
+                onChange={(e) => setProInfo({ ...proInfo, center: e.target.value })}
                 className="h-fit w-full rounded-[0.625rem] border border-[#BDBDBD] py-[0.88rem] pl-4"
               />
             </div>
@@ -29,6 +40,8 @@ const ExpertInfoStep = ({ onNext }: ExpertInfoStepProps) => {
                 <input
                   placeholder="나이"
                   className="w-full rounded-[0.625rem] border border-[#BDBDBD] py-[0.88rem] pl-4"
+                  //나중에 문자는 제한하는 로직 추가할 것
+                  onChange={(e) => setProInfo({ ...proInfo, age: Number(e.target.value) })}
                 />
               </div>
 
@@ -36,9 +49,14 @@ const ExpertInfoStep = ({ onNext }: ExpertInfoStepProps) => {
               <div className="flex w-1/2 flex-col gap-1">
                 <span className="mb-1 font-semibold">성별</span>
                 <div className="w-full rounded-[0.625rem] border border-[#BDBDBD] px-2 py-[0.88rem]">
-                  <select id="sex" name="sex" className="w-full text-[#707070] outline-none">
-                    <option value="남">남</option>
-                    <option value="여">여</option>
+                  <select
+                    id="sex"
+                    name="sex"
+                    className="w-full text-[#707070] outline-none"
+                    onChange={(e) => setProInfo({ ...proInfo, gender: Number(e.target.value) })}
+                  >
+                    <option value="1">남</option>
+                    <option value="2">여</option>
                   </select>
                 </div>
               </div>
@@ -53,6 +71,7 @@ const ExpertInfoStep = ({ onNext }: ExpertInfoStepProps) => {
                   step={1}
                   placeholder="경력을 입력해주세요"
                   className="w-full outline-none"
+                  onChange={(e) => setProInfo({ ...proInfo, career: Number(e.target.value) })}
                 />
                 <span className="ml-2 text-[#707070]">년</span>
               </div>
@@ -60,7 +79,7 @@ const ExpertInfoStep = ({ onNext }: ExpertInfoStepProps) => {
           </div>
 
           <div className="absolute bottom-12 left-1/2 w-[25.5625rem] -translate-x-1/2 transform">
-            <SignupBtn onClick={onNext}>다음</SignupBtn>
+            <SignupBtn onClick={handleNext}>다음</SignupBtn>
           </div>
         </div>
       </div>

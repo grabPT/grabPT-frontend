@@ -2,16 +2,39 @@ import { useEffect, useState } from 'react';
 
 import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
 import SignupBtn from '@/features/Signup/components/SignupBtn';
+import useSmsSend from '@/features/Signup/hooks/useSmsSend';
+import useSmsVerify from '@/features/Signup/hooks/useSmsVerify';
+import { useSignupStore } from '@/store/useSignupStore';
 
 interface UserInfoStepProps {
   onNext: () => void;
 }
 
 const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
-  //주소 api 사용
-  const [address, setAddress] = useState('');
-  const [location, setLocation] = useState('');
+  const { userInfo, setUserInfo } = useSignupStore();
+
   const [postModalOpen, setPostModalOpen] = useState(false);
+  //전화번호 인증
+  const { mutate: sendSms } = useSmsSend();
+  const handlePhoneNumVerification = () => {
+    if (!userInfo.phoneNum) {
+      alert('전화번호를 입력해주세요.');
+      return;
+    }
+    // 여기서 서버에 인증번호 요청 API 호출
+    sendSms(
+      { phoneNum: userInfo.phoneNum }, // SmsSendRequestDto 타입
+      {
+        onSuccess: (res) => {
+          console.log(res);
+          alert('인증번호가 전송되었습니다.');
+        },
+        onError: () => alert('인증번호 요청 실패'),
+      },
+    );
+  };
+
+  //주소 api 사용
   const handleAddressSearch = () => {
     if (!(window as any).daum || !(window as any).daum.Postcode) {
       alert('주소 검색 API가 아직 로드되지 않았습니다.');
@@ -33,10 +56,22 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
         container.innerHTML = ''; // 이전 내용 제거
         new (window as any).daum.Postcode({
           oncomplete: function (data: any) {
-            const addr = data.userSelectedType === 'R' ? data.roadAddress : data.jibunAddress;
-            const loca = data.bname;
-            setAddress(addr);
-            setLocation(loca);
+            const streetCode = data.roadAddress.replace(/^.+?\s+.+?\s+/, '');
+            const city = data.sido;
+            const district = data.sigungu;
+            const street = data.bname;
+            const zipcode = data.zonecode;
+            setUserInfo({
+              ...userInfo,
+              address: {
+                ...userInfo.address,
+                city,
+                district,
+                street,
+                streetCode,
+                zipcode,
+              },
+            });
             setPostModalOpen(false);
           },
           onclose: function () {
@@ -46,18 +81,30 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
       }
     }
   }, [postModalOpen]);
-
+  //잘못 입력 시 칸 흔들림 모션
   const [shakeKey, setShakeKey] = useState('initial');
+  //인증번호 확인
+  const { mutate: verifySms, data } = useSmsVerify();
   const [VerifyNumberCheckResult, setVerifyNumberCheckResult] = useState<boolean | null>(null);
   const [VerifyNumber, setVerifyNumber] = useState('');
-
+  //인증번호 확인 로직
   const handleVerifyNumberCheck = () => {
-    if (VerifyNumber === '123456') {
+    verifySms({ phoneNum: userInfo.phoneNum, inputCode: VerifyNumber });
+    if (data?.isSuccess) {
       setVerifyNumberCheckResult(true);
     } else {
       setVerifyNumberCheckResult(false);
       setShakeKey(`shake-${Date.now()}`);
     }
+  };
+
+  const handleNext = () => {
+    if (!userInfo) {
+      alert('사용자 정보를 올바르게 입력해주세요');
+      return;
+    }
+    console.log('userInfo', userInfo);
+    onNext();
   };
 
   return (
@@ -74,7 +121,9 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
               <input
                 type="text"
                 placeholder="이메일"
-                // value={email}
+                //이메일 같은 경우 카카오는 입력받아서 나머지는 받아온 이메일을 띄워줘야함 oauthprovider로 구분
+                value={userInfo.email}
+                onChange={(e) => setUserInfo({ ...userInfo, email: e.target.value })}
                 className="rounded-[0.625rem] border border-[#BDBDBD] py-[0.8rem] pl-4 text-[#616161]"
               />
             </div>
@@ -84,8 +133,9 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
                 <div className="relative flex h-[3.125rem] w-[25.625rem] items-center justify-between rounded-[0.625rem] border border-[#BDBDBD]">
                   <input
                     type="text"
+                    readOnly
                     placeholder="주소"
-                    value={address}
+                    value={`${userInfo.address.city} ${userInfo.address.district}`}
                     className="w-[18.25rem] py-[0.8rem] pl-4 text-[#616161]"
                   />
                   <button
@@ -100,10 +150,18 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
                     type="text"
                     placeholder="상세 주소"
                     className="w-[17rem] rounded-[0.625rem] border border-[#BDBDBD] py-[0.8rem] pl-4 text-[#616161]"
+                    value={userInfo.address.specAddress}
+                    onChange={(e) =>
+                      setUserInfo({
+                        ...userInfo,
+                        address: { ...userInfo.address, specAddress: e.target.value },
+                      })
+                    }
                   />
                   <input
                     className="flex h-full w-32 items-center justify-center rounded-[0.625rem] border border-[#BDBDBD] pl-4 text-[15px] text-[#616161]"
-                    value={location ? location : '동'}
+                    value={userInfo.address.street || '동'}
+                    readOnly
                   />
                 </div>
               </div>
@@ -131,10 +189,14 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
                 <input
                   type="tel"
                   placeholder="3334586492"
-                  // onSubmit={}
+                  value={userInfo.phoneNum}
+                  onChange={(e) => setUserInfo({ phoneNum: e.target.value })}
                   className="ml-[1.25rem] text-black"
                 />
-                <button className="absolute top-1/2 right-4 flex h-7 w-[4.375rem] -translate-y-1/2 items-center justify-center rounded-[3.125rem] bg-[color:var(--color-button)] text-[0.625rem] font-semibold text-white hover:bg-[color:var(--color-button-hover)] active:bg-[color:var(--color-button-pressed)]">
+                <button
+                  className="absolute top-1/2 right-4 flex h-7 w-[4.375rem] -translate-y-1/2 items-center justify-center rounded-[3.125rem] bg-[color:var(--color-button)] text-[0.625rem] font-semibold text-white hover:bg-[color:var(--color-button-hover)] active:bg-[color:var(--color-button-pressed)]"
+                  onClick={handlePhoneNumVerification}
+                >
                   인증요청
                 </button>
               </div>
@@ -173,7 +235,7 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
             </div>
           </div>
           <div className="absolute bottom-12 left-1/2 w-[25.5625rem] -translate-x-1/2 transform">
-            <SignupBtn onClick={onNext}>다음</SignupBtn>
+            <SignupBtn onClick={handleNext}>다음</SignupBtn>
           </div>
         </div>
         {postModalOpen && (

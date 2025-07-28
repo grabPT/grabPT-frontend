@@ -1,28 +1,27 @@
 import SportsTypeBtn from '@/components/SportsTypeBtn';
 import { SPORTS } from '@/constants/sports';
-import type { SportsType } from '@/types/SportsType';
+import type { SportItem } from '@/constants/sports';
 
 interface SportsTypeSelectorProps {
-  value: SportsType | null;
-  onChange: (type: SportsType) => void;
-  onSelectEnd?: (type: SportsType) => void;
+  value: SportItem | null;
+  onChange: (sport: SportItem) => void;
+  onSelectEnd?: (sport: SportItem) => void;
 }
 
 const SportsTypeSelector = ({ value, onChange, onSelectEnd }: SportsTypeSelectorProps) => {
-  const handleClick = (t: SportsType) => {
-    onChange(t);
-    onSelectEnd?.(t);
+  const handleClick = (sport: SportItem) => {
+    onChange(sport);
+    onSelectEnd?.(sport);
   };
-
   return (
     <div className="grid grid-cols-5 gap-x-[27px] gap-y-[19px]">
-      {SPORTS.map(({ type, img }) => (
+      {SPORTS.map((sport: SportItem) => (
         <SportsTypeBtn
-          key={type}
-          type={type}
-          img={img}
-          isSelected={value === type}
-          onClick={() => handleClick(type)}
+          key={sport.id}
+          type={sport.type}
+          img={sport.img}
+          isSelected={value?.id === sport.id}
+          onClick={() => handleClick(sport)}
         />
       ))}
     </div>

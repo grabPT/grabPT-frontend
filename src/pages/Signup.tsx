@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -9,27 +9,54 @@ import NickNameStep from '@/features/Signup/components/NicknameStep';
 import SportsTypeStep from '@/features/Signup/components/SportsTypeStep';
 import UserInfoStep from '@/features/Signup/components/UserInfoStep';
 import UserTypeStep from '@/features/Signup/components/UserTypeStep';
-
-
-
-export type UserType = 'normal' | 'expert';
+import { useProSignup } from '@/features/Signup/hooks/useProSignup';
+import { useUserSignup } from '@/features/Signup/hooks/useUserSignup';
+import { useSignupStore } from '@/store/useSignupStore';
 
 const Signup = () => {
+  const { role } = useSignupStore();
   const [step, setStep] = useState<number>(0);
-  const [userType, setUserType] = useState<UserType | null>(null);
-//타입 따라 상태 만들 예정
-
-
   const nav = useNavigate();
+  const signupInfo = useSignupStore();
+  const { mutate: userSignup } = useUserSignup();
+  const { mutate: proSignup } = useProSignup();
+
   const handleBackClick = () => {
     if (step <= 0) {
       nav('/'); // step이 0 이하일 때 홈으로 이동
-    } else if (userType == 'normal' && step == 4) {
+      //여기 바로 role 업뎃을 받아야 의미가 ㅇ있음
+    } else if (signupInfo.role == 1 && step == 4) {
       setStep((prev) => prev - 2);
     } else {
       setStep((prev) => prev - 1); // 그 외에는 한 단계 뒤로
     }
   };
+
+  useEffect(() => {
+    if (step === 6) {
+      if (role === 1) {
+        userSignup(useSignupStore.getState().getUserSignupDto(), {
+          onSuccess: (res) => {
+            console.log('User signup success:', res);
+            nav('/');
+          },
+          onError: (err) => {
+            console.error('User signup failed:', err);
+          },
+        });
+      } else if (role === 2) {
+        proSignup(useSignupStore.getState().getProSignupDto(), {
+          onSuccess: (res) => {
+            console.log('Pro signup success:', res);
+            nav('/');
+          },
+          onError: (err) => {
+            console.error('Pro signup failed:', err);
+          },
+        });
+      }
+    }
+  }, [step, role, signupInfo, userSignup, proSignup]);
 
   return (
     <div className="relative h-dvh w-full bg-gradient-to-bl from-[#8CAFFF] to-[#FFFFFF]">
@@ -42,16 +69,14 @@ const Signup = () => {
 
       {/* 본문 (약관/정보입력/거주지 선택 등) */}
       {step === 0 && <AgreementStep onNext={() => setStep(1)} />}
-      {step === 1 && (
-        <UserTypeStep onNext={() => setStep(2)} userType={userType} setUserType={setUserType} />
-      )}
+      {step === 1 && <UserTypeStep onNext={() => setStep(2)} />}
       {step === 2 && (
         <UserInfoStep
           onNext={() => {
-            if (userType === 'expert') {
+            if (signupInfo.role === 2) {
               setStep(3); // 전문가
             } else {
-              setStep(4); //
+              setStep(4); 
             }
           }}
         />
