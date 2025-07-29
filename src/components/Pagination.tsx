@@ -1,5 +1,7 @@
 import type { MouseEvent } from 'react';
 
+import useScrollToTop from '@/hooks/useScrollToTop';
+
 interface PaginationProps {
   total: number;
   page: number;
@@ -7,6 +9,7 @@ interface PaginationProps {
 }
 
 const Pagination = ({ total, page, onChange }: PaginationProps) => {
+  useScrollToTop(page);
   // 유효성 보호
   if (total < 1) return null;
 
