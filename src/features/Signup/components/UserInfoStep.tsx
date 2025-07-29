@@ -80,7 +80,7 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
         }).embed(container);
       }
     }
-  }, [postModalOpen]);
+  }, [setUserInfo, userInfo, postModalOpen]);
   //잘못 입력 시 칸 흔들림 모션
   const [shakeKey, setShakeKey] = useState('initial');
   //인증번호 확인
@@ -89,13 +89,22 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
   const [VerifyNumber, setVerifyNumber] = useState('');
   //인증번호 확인 로직
   const handleVerifyNumberCheck = () => {
-    verifySms({ phoneNum: userInfo.phoneNum, inputCode: VerifyNumber });
-    if (data?.isSuccess) {
-      setVerifyNumberCheckResult(true);
-    } else {
-      setVerifyNumberCheckResult(false);
-      setShakeKey(`shake-${Date.now()}`);
-    }
+    verifySms(
+      { phoneNum: userInfo.phoneNum, inputCode: VerifyNumber },
+      {
+        onSuccess: () => {
+          if (data?.isSuccess) {
+            setVerifyNumberCheckResult(true);
+          } else {
+            setVerifyNumberCheckResult(false);
+            setShakeKey(`shake-${Date.now()}`);
+          }
+        },
+        onError: (err) => {
+          console.error('인증 실패:', err);
+        },
+      },
+    );
   };
 
   const handleNext = () => {

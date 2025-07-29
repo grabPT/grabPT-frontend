@@ -58,3 +58,7 @@ export type SmsVerifyRequestDto = SmsSendRequestDto & {
 export type SmsSendRequestDto = {
   phoneNum: string;
 };
+
+export type LogoutDto = {
+  refreshToken: string;
+}

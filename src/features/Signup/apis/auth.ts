@@ -1,6 +1,7 @@
 import { axiosInstance } from '@/features/Signup/apis/axios';
 import type {
   BasicResponseDto,
+  LogoutDto,
   ProSignupRequestDto,
   SmsSendRequestDto,
   SmsVerifyRequestDto,
@@ -29,5 +30,9 @@ export const getCheckNickname = async (nickname: string): Promise<BasicResponseD
   const { data } = await axiosInstance.get('/auth/check-nickname', {
     params: { nickname },
   });
+  return data;
+};
+export const postLogout = async (body: LogoutDto): Promise<BasicResponseDto> => {
+  const { data } = await axiosInstance.post('/auth/logout', body);
   return data;
 };

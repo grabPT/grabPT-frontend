@@ -14,9 +14,9 @@ import { useUserSignup } from '@/features/Signup/hooks/useUserSignup';
 import { useSignupStore } from '@/store/useSignupStore';
 
 const Signup = () => {
+  const nav = useNavigate();
   const { role } = useSignupStore();
   const [step, setStep] = useState<number>(0);
-  const nav = useNavigate();
   const signupInfo = useSignupStore();
   const { mutate: userSignup } = useUserSignup();
   const { mutate: proSignup } = useProSignup();
