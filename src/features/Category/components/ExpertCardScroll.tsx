@@ -29,7 +29,7 @@ const ExpertCardScroll: React.FC<ExpertCardScrollProps> = ({ experts }) => {
   };
 
   return (
-    <div className="relative flex h-[500px] w-full items-center overflow-hidden">
+    <div className="relative flex h-[400px] w-full items-center overflow-hidden">
       {/* 오른쪽 Fade */}
       <div className="pointer-events-none absolute top-0 right-0 z-10 h-full w-[80px]" />
 

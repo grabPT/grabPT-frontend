@@ -9,7 +9,7 @@ interface UserRequestHeaderProps {
 
 const UserRequestHeader = ({ nickName, location }: UserRequestHeaderProps) => {
   return (
-    <div className="flex flex-row items-center justify-between">
+    <div className="flex flex-row items-center">
       <div className="mr-3 flex h-12 w-12 items-center justify-center rounded-full bg-gray-300">
         <svg className="h-6 w-6 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
           <path
@@ -19,8 +19,8 @@ const UserRequestHeader = ({ nickName, location }: UserRequestHeaderProps) => {
           />
         </svg>
       </div>
-      <div className="flex w-[128px] flex-col">
-        <h3 className="text-lg font-semibold text-gray-900">{nickName}</h3>
+      <div className="flex w-auto flex-col">
+        <h3 className="text-[18px] font-semibold text-gray-900">{nickName}</h3>
         <p className="text-[12px] text-gray-500">{location}</p>
       </div>
     </div>
