@@ -1,3 +1,4 @@
+import Banner from '@/components/Banner';
 import SportsTypeSelector from '@/components/SportsTypeSelector';
 import type { SportsType } from '@/types/SportsType';
 
@@ -18,6 +19,9 @@ const SportsSelectSection = ({ selected, onSelect }: SportsSelectSectionProps) =
         </p>
 
         <SportsTypeSelector value={selected} onChange={onSelect} onSelectEnd={onSelect} />
+      </div>
+      <div className="mx-auto mt-[200px] max-w-[1480px] sm:w-[720px] lg:w-[720px]">
+        <Banner />
       </div>
     </section>
   );

@@ -1,19 +1,29 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import arrowIcon from '@/features/home/assets/icons/NextArrow.svg';
+//import arrowIcon from '@/features/home/assets/icons/NextArrow.svg';
 import img1 from '@/features/home/assets/images/Usermain1.png';
 import img2 from '@/features/home/assets/images/Usermain2.png';
 import img3 from '@/features/home/assets/images/Usermain3.png';
+import img4 from '@/features/home/assets/images/Usermain4.png';
+import img5 from '@/features/home/assets/images/Usermain5.png';
 
-const images = [img1, img2, img3];
+const images = [img1, img2, img3, img4, img5];
 
 const UserSearchSection = () => {
-  const [_current, setCurrent] = useState(0); // 사용하지 않는 변수 _처리
+  const [current, setCurrent] = useState(0);
   const [keyword, setKeyword] = useState('');
 
-  const handleNext = () => {
-    setCurrent((prev) => (prev + 1) % images.length);
-  };
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % images.length);
+    }, 10000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  // const handleNext = () => {
+  //   setCurrent((prev) => (prev + 1) % images.length);
+  // };
 
   const handleSearch = () => {
     console.log('검색:', keyword);
@@ -22,12 +32,13 @@ const UserSearchSection = () => {
   return (
     <section
       className="relative z-50 h-[552px] w-full bg-cover bg-center transition-all duration-700"
-      style={{ backgroundImage: `url(${img1})` }}
+      style={{ backgroundImage: `url(${images[current]})` }}
     >
       {/* 어두운 오버레이 */}
-      <div className="absolute inset-0 z-10 bg-transparent" />
+      <div className="absolute inset-0 z-10 bg-black/40" />
+
       {/* 텍스트 및 검색 UI */}
-      <div className="absolute inset-0 z-20 mx-auto flex w-[1477px] flex-col justify-center text-white">
+      <div className="g:w-[720px] absolute inset-0 z-20 mx-auto flex w-[1480px] flex-col justify-center text-white sm:w-[720px] xl:w-[1080px] 2xl:w-[1480px]">
         <h1 className="w-[747px] text-left text-[60px] leading-[74px] font-extrabold whitespace-pre-line">
           <span className="text-[#ACBEFF]">운동</span>
           <span className="text-white">이 필요한 순간,{'\n'}딱 맞는 전문가를 찾아보세요</span>
@@ -64,13 +75,14 @@ const UserSearchSection = () => {
           </div>
         </div>
       </div>
+
       {/* 오른쪽 아래 화살표 버튼 */}
-      <button
+      {/* <button
         onClick={handleNext}
         className="absolute right-5 bottom-5 z-30 rounded-full bg-white p-2 shadow-md transition hover:scale-105"
       >
         <img src={arrowIcon} alt="다음" className="h-5 w-5" />
-      </button>
+      </button> */}
     </section>
   );
 };

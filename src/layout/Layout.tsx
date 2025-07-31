@@ -28,10 +28,10 @@ function Layout() {
       {/* 스크롤시 section내부요소가 잘리는 버그 발생. => GPU/페인팅 조작으로 일단 해결 */}
       {/* 뭐가 문젠지 아직도 잘 모르겠는데 일단 해결함;;; */}
       <section
-        ref={scrollRef}
         className="flex min-h-0 flex-1 basis-0 [transform:translateZ(0)] flex-col justify-between overflow-y-scroll [will-change:transform] [contain:layout_paint]"
+        ref={scrollRef}
       >
-        <main className={clsx(!isFullWidthPage && 'px-[220px] max-[1440px]:px-[180px]')}>
+        <main className={clsx(!isFullWidthPage && 'px-auto max-[1440px]:px-[180px]')}>
           <Outlet />
         </main>
 
