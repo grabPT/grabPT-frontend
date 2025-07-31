@@ -22,6 +22,7 @@ interface NicknameInfoFormValues {
 const NickNameStep = ({ onNext }: NicknameStepProps) => {
   const { nicknameInfo, setNicknameInfo } = useSignupStore();
   const { mutate: checkNickname } = useCheckNickname();
+  
   // 프로필 사진 미리보기 URL
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   // 닉네임 중복 확인 결과 상태

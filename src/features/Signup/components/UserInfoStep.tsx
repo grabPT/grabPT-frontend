@@ -23,6 +23,45 @@ interface UserInfoFormValues {
 const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
   //store에서 업데이트할 목록 불러오기
   const { userInfo, setUserInfo } = useSignupStore();
+    //유효성 검사
+  const {
+    register,
+    trigger,
+    handleSubmit,
+    formState: { errors, touchedFields },
+    setValue,
+  } = useForm({
+    mode: 'onChange',
+    resolver: zodResolver(userInfoSchema),
+    defaultValues: {
+      email: userInfo.email,
+      address: `${userInfo.address.city} ${userInfo.address.district}`,
+      specAddress: userInfo.address.specAddress,
+      phoneNum: userInfo.phoneNum,
+    },
+  });
+
+  console.log(errors);
+  //폼 제출 로직(폼 확인 및 store에 값 업데이트)
+  const onSubmit = (data: UserInfoFormValues) => {
+    if (!VerifyNumberCheckResult) {
+      alert('전화번호 인증을 완료해주세요.');
+      return;
+    }
+
+    setUserInfo({
+      ...userInfo,
+      email: data.email,
+      phoneNum: data.phoneNum,
+      address: {
+        ...userInfo.address,
+        specAddress: data.specAddress,
+      },
+    });
+    console.log(userInfo);
+    onNext();
+  };
+
   //주소 api 모달 띄우기
   const [postModalOpen, setPostModalOpen] = useState(false);
   //주소 api 호출
@@ -55,7 +94,6 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
               shouldValidate: false,
             });
             trigger('address');
-            console.log(isSubmitted, touchedFields, errors);
             setPostModalOpen(false);
           },
           onclose: function () {
@@ -64,7 +102,7 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
         }).embed(container);
       }
     }
-  }, [setUserInfo, userInfo, postModalOpen]);
+  }, [postModalOpen, setUserInfo, userInfo, setValue, trigger]);
   //주소 api 사용
   const handleAddressSearch = () => {
     if (!(window as any).daum || !(window as any).daum.Postcode) {
@@ -132,44 +170,6 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
         },
       },
     );
-  };
-  //유효성 검사
-  const {
-    register,
-    trigger,
-    handleSubmit,
-    formState: { errors, isSubmitted, touchedFields },
-    setValue,
-  } = useForm({
-    mode: 'onChange',
-    resolver: zodResolver(userInfoSchema),
-    defaultValues: {
-      email: userInfo.email,
-      address: `${userInfo.address.city} ${userInfo.address.district}`,
-      specAddress: userInfo.address.specAddress,
-      phoneNum: userInfo.phoneNum,
-    },
-  });
-
-  console.log(errors);
-  //폼 제출 로직(폼 확인 및 store에 값 업데이트)
-  const onSubmit = (data: UserInfoFormValues) => {
-    if (!VerifyNumberCheckResult) {
-      alert('전화번호 인증을 완료해주세요.');
-      return;
-    }
-
-    setUserInfo({
-      ...userInfo,
-      email: data.email,
-      phoneNum: data.phoneNum,
-      address: {
-        ...userInfo.address,
-        specAddress: data.specAddress,
-      },
-    });
-    console.log(userInfo);
-    onNext();
   };
 
   return (
