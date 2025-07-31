@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
+
 import { getCheckNickname } from '@/features/Signup/apis/auth';
 import type { BasicResponseDto } from '@/features/Signup/types/Auth';
 

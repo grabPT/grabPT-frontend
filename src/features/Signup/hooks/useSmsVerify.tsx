@@ -6,7 +6,6 @@ import type { BasicResponseDto, SmsVerifyRequestDto } from '@/features/Signup/ty
 function useSmsVerify() {
   return useMutation<BasicResponseDto, Error, SmsVerifyRequestDto>({
     mutationFn: postSmsVerify,
-    
   });
 }
 

@@ -55,7 +55,7 @@ const AgreementStep = ({ onNext }: AgreementStepProps) => {
       alert('필수 약관에 모두 동의해주세요');
       return;
     }
-    console.log("agreementInfo",agreementInfo);
+    console.log('agreementInfo', agreementInfo);
     onNext();
   };
   return (

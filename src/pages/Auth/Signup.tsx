@@ -40,7 +40,7 @@ const Signup = () => {
       // 일반 유저일 경우 전문가 페이지 숨김
       setStep((prev) => prev - 2);
     } else {
-      setStep((prev) => prev - 1); 
+      setStep((prev) => prev - 1);
     }
   };
 
