@@ -154,6 +154,11 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
   console.log(errors);
   //폼 제출 로직(폼 확인 및 store에 값 업데이트)
   const onSubmit = (data: UserInfoFormValues) => {
+    if (!VerifyNumberCheckResult) {
+      alert('전화번호 인증을 완료해주세요.');
+      return;
+    }
+
     setUserInfo({
       ...userInfo,
       email: data.email,
