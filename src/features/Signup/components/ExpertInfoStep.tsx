@@ -1,21 +1,57 @@
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+
 import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
 import SignupBtn from '@/features/Signup/components/SignupBtn';
+import { proInfoSchema } from '@/features/Signup/schema/signupSchema';
 import { useSignupStore } from '@/store/useSignupStore';
 
 interface ExpertInfoStepProps {
   onNext: () => void;
 }
-
+interface ProInfoFormValues {
+  age: number;
+  gender: number;
+  career: number;
+  center: string;
+}
 const ExpertInfoStep = ({ onNext }: ExpertInfoStepProps) => {
   const { proInfo, setProInfo } = useSignupStore();
-  const handleNext = () => {
-    if (!proInfo) {
-      alert('사용자 정보를 올바르게 입력해주세요');
-      return;
-    }
-    console.log('proInfo', proInfo);
+  const getProErrorMessage = () => {
+    if (errors.center && touchedFields.center) return errors.center.message;
+    if (errors.age && touchedFields.age) return errors.age.message;
+    if (errors.career && touchedFields.career) return errors.career.message;
+  };
+
+  //유효성 검사
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, touchedFields },
+  } = useForm({
+    mode: 'onChange',
+    resolver: zodResolver(proInfoSchema),
+    defaultValues: {
+      age: proInfo.age,
+      gender: proInfo.gender,
+      career: proInfo.career,
+      center: proInfo.center,
+    },
+  });
+
+  console.log(errors);
+  const onSubmit = (data: ProInfoFormValues) => {
+    setProInfo({
+      ...proInfo,
+      age: data.age,
+      gender: data.gender,
+      career: data.career,
+      center: data.center,
+    });
+    console.log(proInfo);
     onNext();
   };
+
   return (
     <div className="flex flex-col items-center justify-center">
       {/* 로고 */}
@@ -29,7 +65,7 @@ const ExpertInfoStep = ({ onNext }: ExpertInfoStepProps) => {
               <span className="font-semibold">활동센터</span>
               <input
                 placeholder="센터 이름을 입력해주세요"
-                onChange={(e) => setProInfo({ ...proInfo, center: e.target.value })}
+                {...register('center')}
                 className="h-fit w-full rounded-[0.625rem] border border-[#BDBDBD] py-[0.88rem] pl-4"
               />
             </div>
@@ -39,9 +75,10 @@ const ExpertInfoStep = ({ onNext }: ExpertInfoStepProps) => {
                 <span className="mb-1 font-semibold">나이</span>
                 <input
                   placeholder="나이"
+                  type="number"
                   className="w-full rounded-[0.625rem] border border-[#BDBDBD] py-[0.88rem] pl-4"
                   //나중에 문자는 제한하는 로직 추가할 것
-                  onChange={(e) => setProInfo({ ...proInfo, age: Number(e.target.value) })}
+                  {...register('age')}
                 />
               </div>
 
@@ -51,9 +88,8 @@ const ExpertInfoStep = ({ onNext }: ExpertInfoStepProps) => {
                 <div className="w-full rounded-[0.625rem] border border-[#BDBDBD] px-2 py-[0.88rem]">
                   <select
                     id="sex"
-                    name="sex"
                     className="w-full text-[#707070] outline-none"
-                    onChange={(e) => setProInfo({ ...proInfo, gender: Number(e.target.value) })}
+                    {...register('gender')}
                   >
                     <option value="1">남</option>
                     <option value="2">여</option>
@@ -71,15 +107,19 @@ const ExpertInfoStep = ({ onNext }: ExpertInfoStepProps) => {
                   step={1}
                   placeholder="경력을 입력해주세요"
                   className="w-full outline-none"
-                  onChange={(e) => setProInfo({ ...proInfo, career: Number(e.target.value) })}
+                  {...register('career')}
                 />
                 <span className="ml-2 text-[#707070]">년</span>
               </div>
             </div>
           </div>
-
+          {getProErrorMessage() && (
+            <div className="my-4 h-[20px] text-center text-red-500">{getProErrorMessage()}</div>
+          )}
           <div className="absolute bottom-12 left-1/2 w-[25.5625rem] -translate-x-1/2 transform">
-            <SignupBtn onClick={handleNext}>다음</SignupBtn>
+            <SignupBtn type="button" onClick={handleSubmit(onSubmit)}>
+              다음
+            </SignupBtn>
           </div>
         </div>
       </div>

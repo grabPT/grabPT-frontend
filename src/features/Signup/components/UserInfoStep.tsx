@@ -1,54 +1,31 @@
 import { useEffect, useState } from 'react';
 
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+
 import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
 import SignupBtn from '@/features/Signup/components/SignupBtn';
 import useSmsSend from '@/features/Signup/hooks/useSmsSend';
 import useSmsVerify from '@/features/Signup/hooks/useSmsVerify';
+import { userInfoSchema } from '@/features/Signup/schema/signupSchema';
 import { useSignupStore } from '@/store/useSignupStore';
 
 interface UserInfoStepProps {
   onNext: () => void;
 }
+interface UserInfoFormValues {
+  email: string;
+  address: string;
+  specAddress: string;
+  phoneNum: string;
+}
 
 const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
+  //store에서 업데이트할 목록 불러오기
   const { userInfo, setUserInfo } = useSignupStore();
-
+  //주소 api 모달 띄우기
   const [postModalOpen, setPostModalOpen] = useState(false);
-  //전화번호 인증
-  const { mutate: sendSms } = useSmsSend();
-  const handlePhoneNumVerification = () => {
-    if (!userInfo.phoneNum) {
-      alert('전화번호를 입력해주세요.');
-      return;
-    }
-    // 여기서 서버에 인증번호 요청 API 호출
-    sendSms(
-      { phoneNum: userInfo.phoneNum },
-      {
-        onSuccess: (res) => {
-          console.log(res);
-          alert('인증번호가 전송되었습니다.');
-        },
-        onError: () => alert('인증번호 요청 실패'),
-      },
-    );
-  };
-
-  //주소 api 사용
-  const handleAddressSearch = () => {
-    if (!(window as any).daum || !(window as any).daum.Postcode) {
-      alert('주소 검색 API가 아직 로드되지 않았습니다.');
-      return;
-    }
-    setPostModalOpen(true);
-  };
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
-    script.async = true;
-    document.body.appendChild(script);
-  }, []);
-
+  //주소 api 호출
   useEffect(() => {
     if (postModalOpen && (window as any).daum && (window as any).daum.Postcode) {
       const container = document.getElementById('daum-postcode') as HTMLElement;
@@ -72,6 +49,13 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
                 zipcode,
               },
             });
+            setValue('address', `${city} ${district}`, {
+              shouldDirty: false,
+              shouldTouch: false,
+              shouldValidate: false,
+            });
+            trigger('address');
+            console.log(isSubmitted, touchedFields, errors);
             setPostModalOpen(false);
           },
           onclose: function () {
@@ -81,6 +65,49 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
       }
     }
   }, [setUserInfo, userInfo, postModalOpen]);
+  //주소 api 사용
+  const handleAddressSearch = () => {
+    if (!(window as any).daum || !(window as any).daum.Postcode) {
+      alert('주소 검색 API가 아직 로드되지 않았습니다.');
+      return;
+    }
+    setPostModalOpen(true);
+  };
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
+
+  //폼 검사 에러 메시지 출력
+  const getUserErrorMessage = () => {
+    if (errors.email && touchedFields.email) return errors.email.message;
+    if (errors.address && touchedFields.address) return errors.address.message;
+    if (errors.specAddress && touchedFields.specAddress) return errors.specAddress.message;
+    if (errors.phoneNum && touchedFields.phoneNum) return errors.phoneNum.message;
+  };
+
+  //전화번호 인증
+  const { mutate: sendSms } = useSmsSend();
+  const handlePhoneNumVerification = () => {
+    if (!userInfo.phoneNum) {
+      alert('전화번호를 입력해주세요.');
+      return;
+    }
+    // 여기서 서버에 인증번호 요청 API 호출
+    sendSms(
+      { phoneNum: userInfo.phoneNum },
+      {
+        onSuccess: (res) => {
+          console.log(res);
+          alert('인증번호가 전송되었습니다.');
+        },
+        onError: () => alert('인증번호 요청 실패'),
+      },
+    );
+  };
+
   //잘못 입력 시 칸 흔들림 모션
   const [shakeKey, setShakeKey] = useState('initial');
   //인증번호 확인
@@ -106,13 +133,37 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
       },
     );
   };
+  //유효성 검사
+  const {
+    register,
+    trigger,
+    handleSubmit,
+    formState: { errors, isSubmitted, touchedFields },
+    setValue,
+  } = useForm({
+    mode: 'onChange',
+    resolver: zodResolver(userInfoSchema),
+    defaultValues: {
+      email: userInfo.email,
+      address: `${userInfo.address.city} ${userInfo.address.district}`,
+      specAddress: userInfo.address.specAddress,
+      phoneNum: userInfo.phoneNum,
+    },
+  });
 
-  const handleNext = () => {
-    if (!userInfo) {
-      alert('사용자 정보를 올바르게 입력해주세요');
-      return;
-    }
-    console.log('userInfo', userInfo);
+  console.log(errors);
+  //폼 제출 로직(폼 확인 및 store에 값 업데이트)
+  const onSubmit = (data: UserInfoFormValues) => {
+    setUserInfo({
+      ...userInfo,
+      email: data.email,
+      phoneNum: data.phoneNum,
+      address: {
+        ...userInfo.address,
+        specAddress: data.specAddress,
+      },
+    });
+    console.log(userInfo);
     onNext();
   };
 
@@ -127,12 +178,12 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
           <div className="mx-[4.375rem] mt-16 flex flex-col gap-5">
             <div className="flex flex-col gap-1">
               <span className="font-semibold">이메일</span>
+
               <input
                 type="text"
+                {...register('email')}
                 placeholder="이메일"
                 //이메일 같은 경우 카카오는 입력받아서 나머지는 받아온 이메일을 띄워줘야함 oauthprovider로 구분
-                value={userInfo.email}
-                onChange={(e) => setUserInfo({ ...userInfo, email: e.target.value })}
                 className="rounded-[0.625rem] border border-[#BDBDBD] py-[0.8rem] pl-4 text-[#616161]"
               />
             </div>
@@ -154,18 +205,13 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
                     주소 검색
                   </button>
                 </div>
+
                 <div className="flex h-[3.125rem] w-[25.625rem] items-center justify-between">
                   <input
                     type="text"
                     placeholder="상세 주소"
                     className="w-[17rem] rounded-[0.625rem] border border-[#BDBDBD] py-[0.8rem] pl-4 text-[#616161]"
-                    value={userInfo.address.specAddress}
-                    onChange={(e) =>
-                      setUserInfo({
-                        ...userInfo,
-                        address: { ...userInfo.address, specAddress: e.target.value },
-                      })
-                    }
+                    {...register('specAddress')}
                   />
                   <input
                     className="flex h-full w-32 items-center justify-center rounded-[0.625rem] border border-[#BDBDBD] pl-4 text-[15px] text-[#616161]"
@@ -195,19 +241,20 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
                     <option value="+86">+86</option>
                   </select>
                 </div>
-                <input
-                  type="tel"
-                  placeholder="3334586492"
-                  value={userInfo.phoneNum}
-                  onChange={(e) => setUserInfo({ phoneNum: e.target.value })}
-                  className="ml-[1.25rem] text-black"
-                />
-                <button
-                  className="absolute top-1/2 right-4 flex h-7 w-[4.375rem] -translate-y-1/2 items-center justify-center rounded-[3.125rem] bg-[color:var(--color-button)] text-[0.625rem] font-semibold text-white hover:bg-[color:var(--color-button-hover)] active:bg-[color:var(--color-button-pressed)]"
-                  onClick={handlePhoneNumVerification}
-                >
-                  인증요청
-                </button>
+                <div className="">
+                  <input
+                    type="tel"
+                    placeholder="3334586492"
+                    {...register('phoneNum')}
+                    className="ml-[1.25rem] text-black"
+                  />
+                  <button
+                    className="absolute top-1/2 right-4 flex h-7 w-[4.375rem] -translate-y-1/2 items-center justify-center rounded-[3.125rem] bg-[color:var(--color-button)] text-[0.625rem] font-semibold text-white hover:bg-[color:var(--color-button-hover)] active:bg-[color:var(--color-button-pressed)]"
+                    onClick={handlePhoneNumVerification}
+                  >
+                    인증요청
+                  </button>
+                </div>
               </div>
             </div>
             <div className="flex flex-col gap-1">
@@ -243,8 +290,13 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
               </div>
             </div>
           </div>
+          {getUserErrorMessage() && (
+            <div className="my-4 h-[20px] text-center text-red-500">{getUserErrorMessage()}</div>
+          )}
           <div className="absolute bottom-12 left-1/2 w-[25.5625rem] -translate-x-1/2 transform">
-            <SignupBtn onClick={handleNext}>다음</SignupBtn>
+            <SignupBtn type="button" onClick={handleSubmit(onSubmit)}>
+              다음
+            </SignupBtn>
           </div>
         </div>
         {postModalOpen && (

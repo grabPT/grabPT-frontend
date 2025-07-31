@@ -9,6 +9,7 @@ interface UserTypeStepProps {
 }
 
 const UserTypeStep = ({ onNext }: UserTypeStepProps) => {
+
   const { role, setRole } = useSignupStore();
 
   const handleSelect = (type: 'normal' | 'expert') => {

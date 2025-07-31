@@ -1,16 +1,24 @@
 import { useState } from 'react';
 
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+
 import HeaderProfile from '@/assets/images/HeaderProfile.png';
 import ChangeProfile from '@/features/Signup/assets/ChangeProfile.png';
 import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
 import SignupBtn from '@/features/Signup/components/SignupBtn';
 import { useCheckNickname } from '@/features/Signup/hooks/useCheckNickname';
+import { nicknameInfoSchema } from '@/features/Signup/schema/signupSchema';
 import { useSignupStore } from '@/store/useSignupStore';
 
 interface NicknameStepProps {
   onNext: () => void;
 }
 
+interface NicknameInfoFormValues {
+  nickname: string;
+  profileImageUrl: string;
+}
 const NickNameStep = ({ onNext }: NicknameStepProps) => {
   const { nicknameInfo, setNicknameInfo } = useSignupStore();
   const { mutate: checkNickname } = useCheckNickname();
@@ -30,10 +38,6 @@ const NickNameStep = ({ onNext }: NicknameStepProps) => {
   };
   // 닉네임 중복 확인 로직
   const handleCheckNickname = () => {
-    if (!nicknameInfo.nickname) {
-      alert('닉네임을 입력해주세요');
-      return;
-    }
     checkNickname(nicknameInfo.nickname, {
       onSuccess: (res) => {
         if (res.isSuccess) {
@@ -44,18 +48,39 @@ const NickNameStep = ({ onNext }: NicknameStepProps) => {
       },
     });
   };
-
-  const [shouldShake, setShouldShake] = useState(false);
-
-  const handleNext = () => {
-    if (nicknameInfo.nickname.length == 0 || nicknameCheckResult == 'duplicate') {
+  //유효성 검사
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    mode: 'onChange',
+    resolver: zodResolver(nicknameInfoSchema),
+    defaultValues: {
+      nickname: nicknameInfo.nickname,
+      profileImageUrl: nicknameInfo.profileImageUrl,
+    },
+  });
+  console.log(errors);
+  //폼 제출 로직(폼 확인 및 store에 값 업데이트)
+  const onSubmit = (data: NicknameInfoFormValues) => {
+    if (nicknameCheckResult !== 'available') {
       setShouldShake(false);
       setTimeout(() => setShouldShake(true), 10);
       return;
     }
-    console.log('nicknameInfo:', nicknameInfo);
+
+    setNicknameInfo({
+      ...nicknameInfo,
+      nickname: data.nickname,
+      profileImageUrl: nicknameInfo.profileImageUrl,
+    });
+    console.log(signupStore);
     onNext();
   };
+  const [shouldShake, setShouldShake] = useState(false);
+  const signupStore = useSignupStore();
+
   return (
     <div className="flex flex-col items-center justify-center">
       {/* 로고 */}
@@ -106,7 +131,7 @@ const NickNameStep = ({ onNext }: NicknameStepProps) => {
             <input
               key={shouldShake ? 'shake' : 'no-shake'}
               value={nicknameInfo.nickname}
-              onChange={(e) => setNicknameInfo({ ...nicknameInfo, nickname: e.target.value })}
+              {...register('nickname')}
               placeholder="닉네임을 등록해주세요"
               className={`rounded-[0.625rem] border py-[0.88rem] pl-4 ${
                 nicknameCheckResult === 'available'
@@ -124,17 +149,18 @@ const NickNameStep = ({ onNext }: NicknameStepProps) => {
             </button>
           </div>
           <div className="mx-[4.375rem] mt-2 flex flex-col gap-2">
-            {nicknameCheckResult === 'available' && (
+            {nicknameInfo.nickname && nicknameCheckResult === 'available' && (
               <p className="mt-1 text-sm text-green-600">사용 가능한 닉네임입니다</p>
             )}
-
-            {nicknameCheckResult === 'duplicate' && (
+            {nicknameInfo.nickname && nicknameCheckResult === 'duplicate' && (
               <p className="mt-1 text-sm text-red-600">이미 사용 중인 닉네임입니다</p>
             )}
           </div>
           {/* 다음 버튼 */}
           <div className="absolute bottom-12 left-1/2 w-[25.5625rem] -translate-x-1/2 transform">
-            <SignupBtn onClick={handleNext}>완료</SignupBtn>
+            <SignupBtn type="button" onClick={handleSubmit(onSubmit)}>
+              완료
+            </SignupBtn>
           </div>
         </div>
       </div>

@@ -21,14 +21,26 @@ const Signup = () => {
   const { mutate: userSignup } = useUserSignup();
   const { mutate: proSignup } = useProSignup();
 
+  const handleNext = () => {
+    if (role === 2 && step === 2) {
+      // 전문가
+      setStep(3);
+    } else if (role === 1 && step === 2) {
+      // 일반 유저
+      setStep(4);
+    } else {
+      setStep((prev) => prev + 1);
+    }
+  };
+
   const handleBackClick = () => {
     if (step <= 0) {
-      nav('/'); // step이 0 이하일 때 홈으로 이동
-      //여기 바로 role 업뎃을 받아야 의미가 ㅇ있음
-    } else if (signupInfo.role == 1 && step == 4) {
+      nav('/'); // 첫 단계면 홈으로 이동
+    } else if (role === 1 && step === 4) {
+      // 일반 유저일 경우 전문가 페이지 숨김
       setStep((prev) => prev - 2);
     } else {
-      setStep((prev) => prev - 1); // 그 외에는 한 단계 뒤로
+      setStep((prev) => prev - 1); 
     }
   };
 
@@ -68,23 +80,12 @@ const Signup = () => {
       </div>
 
       {/* 본문 (약관/정보입력/거주지 선택 등) */}
-      {step === 0 && <AgreementStep onNext={() => setStep(1)} />}
-      {step === 1 && <UserTypeStep onNext={() => setStep(2)} />}
-      {step === 2 && (
-        <UserInfoStep
-          onNext={() => {
-            if (signupInfo.role === 2) {
-              setStep(3); // 전문가
-            } else {
-              setStep(4);
-            }
-          }}
-        />
-      )}
-
-      {step === 3 && <ExpertInfoStep onNext={() => setStep(4)} />}
-      {step === 4 && <SportsTypeStep onNext={() => setStep(5)} />}
-      {step === 5 && <NickNameStep onNext={() => setStep(6)} />}
+      {step === 0 && <AgreementStep onNext={handleNext} />}
+      {step === 1 && <UserTypeStep onNext={handleNext} />}
+      {step === 2 && <UserInfoStep onNext={handleNext} />}
+      {step === 3 && <ExpertInfoStep onNext={handleNext} />}
+      {step === 4 && <SportsTypeStep onNext={handleNext} />}
+      {step === 5 && <NickNameStep onNext={handleNext} />}
     </div>
   );
 };

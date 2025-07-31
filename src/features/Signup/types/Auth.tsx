@@ -18,9 +18,9 @@ export type SignupUserInfoStepDto = {
 };
 export type SignupProInfoStepDto = {
   center: string;
-  career: number;
+  career: null | number;
   gender: number;
-  age: number;
+  age: null | number;
 };
 export type SignupSportsTypeStepDto = {
   categoryId: number;
@@ -61,4 +61,4 @@ export type SmsSendRequestDto = {
 
 export type LogoutDto = {
   refreshToken: string;
-}
+};
