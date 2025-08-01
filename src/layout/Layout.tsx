@@ -31,7 +31,7 @@ function Layout() {
         className="flex min-h-0 flex-1 basis-0 [transform:translateZ(0)] flex-col justify-between overflow-y-scroll [will-change:transform] [contain:layout_paint]"
         ref={scrollRef}
       >
-        <main className={clsx(!isFullWidthPage && 'px-auto max-[1440px]:px-[180px]')}>
+        <main className={clsx(!isFullWidthPage && 'px-[220px] max-[1440px]:px-[180px]')}>
           <Outlet />
         </main>
 

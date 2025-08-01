@@ -16,11 +16,15 @@ import Login from '@/pages/Auth/Login';
 import Signup from '@/pages/Auth/Signup';
 import CategoryPage from '@/pages/Category/CategoryPage';
 import { Chat } from '@/pages/Chat/Chat';
+import ContractDetailPage from '@/pages/Contracts/ContractDetailPage';
+import ContractFormPage from '@/pages/Contracts/ContractFormPage';
 import { ExpertDetail } from '@/pages/ExpertDetail/ExpertDetail';
 import UserMainPage from '@/pages/Home/UserMainPage';
 import ExpertMypage from '@/pages/MyPage/ExpertMypage';
 import UserMypage from '@/pages/MyPage/UserMypage';
 import ProposalDetailPage from '@/pages/Proposals/ProposalDetailPage';
+import ProposalFormPage from '@/pages/Proposals/ProposalFormPage';
+import ProposalsListPage from '@/pages/Proposals/ProposalsListPage';
 import ProposalsForRequest from '@/pages/Requests/ProposalsForRequest';
 import RequestDetailPage from '@/pages/Requests/RequestDetailPage';
 import RequestPage from '@/pages/Requests/RequestPage';
@@ -88,12 +92,22 @@ const routes: RouteObject[] = [
         ],
       },
 
+      // 제안서
       {
         path: ROUTES.PROPOSALS.ROOT,
         children: [
-          { index: true, element: <>나의 제안 현황</> },
-          { path: ROUTES.PROPOSALS.NEW, element: <>제안서 작성</> },
+          { index: true, element: <ProposalsListPage /> },
+          { path: ROUTES.PROPOSALS.NEW, element: <ProposalFormPage /> },
           { path: ROUTES.PROPOSALS.DETAIL, element: <ProposalDetailPage /> },
+        ],
+      },
+
+      // 계약
+      {
+        path: ROUTES.CONTRACTS.ROOT,
+        children: [
+          { path: ROUTES.CONTRACTS.NEW, element: <ContractFormPage /> },
+          { path: ROUTES.CONTRACTS.DETAIL, element: <ContractDetailPage /> },
         ],
       },
     ],
