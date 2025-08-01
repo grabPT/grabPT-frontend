@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -9,22 +9,70 @@ import NickNameStep from '@/features/Signup/components/NicknameStep';
 import SportsTypeStep from '@/features/Signup/components/SportsTypeStep';
 import UserInfoStep from '@/features/Signup/components/UserInfoStep';
 import UserTypeStep from '@/features/Signup/components/UserTypeStep';
-
-export type UserType = 'normal' | 'expert';
+import { useProSignup } from '@/features/Signup/hooks/useProSignup';
+import { useUserSignup } from '@/features/Signup/hooks/useUserSignup';
+import { useSignupStore } from '@/store/useSignupStore';
 
 const Signup = () => {
-  const [step, setStep] = useState<number>(0);
-  const [userType, setUserType] = useState<UserType | null>(null);
   const nav = useNavigate();
-  const handleBackClick = () => {
-    if (step <= 0) {
-      nav('/'); // step이 0 이하일 때 홈으로 이동
-    } else if (userType == 'normal' && step == 4) {
-      setStep((prev) => prev - 2);
+  const { role } = useSignupStore();
+  const [step, setStep] = useState<number>(0);
+  const signupInfo = useSignupStore();
+  const { mutate: userSignup } = useUserSignup();
+  const { mutate: proSignup } = useProSignup();
+
+  const handleNext = () => {
+    if (role === 2 && step === 2) {
+      // 전문가
+      setStep(3);
+    } else if (role === 1 && step === 2) {
+      // 일반 유저
+      setStep(4);
     } else {
-      setStep((prev) => prev - 1); // 그 외에는 한 단계 뒤로
+      setStep((prev) => prev + 1);
     }
   };
+
+  const handleBackClick = () => {
+    if (step <= 0) {
+      nav('/'); // 첫 단계면 홈으로 이동
+    } else if (role === 1 && step === 4) {
+      // 일반 유저일 경우 전문가 페이지 숨김
+      setStep((prev) => prev - 2);
+    } else {
+      setStep((prev) => prev - 1);
+    }
+  };
+
+  useEffect(() => {
+    if (step === 6) {
+      if (role === 1) {
+        const payload = useSignupStore.getState().getUserSignupDto(); // ✅ 먼저 선언
+
+        console.log('📦 보내는 user-signup payload:', payload); // ✅ 여기에서 안전하게 출력
+        userSignup(useSignupStore.getState().getUserSignupDto(), {
+          onSuccess: (res) => {
+            console.log('User signup success:', res);
+            nav('/');
+          },
+          onError: (err) => {
+            console.error('User signup failed:', err);
+          },
+        });
+      } else if (role === 2) {
+        proSignup(useSignupStore.getState().getProSignupDto(), {
+          onSuccess: (res) => {
+            console.log('Pro signup success:', res);
+            nav('/');
+          },
+          onError: (err) => {
+            console.error('Pro signup failed:', err);
+          },
+        });
+      }
+    }
+  }, [nav, step, role, signupInfo, userSignup, proSignup]);
+
   return (
     <div className="relative h-dvh w-full bg-gradient-to-bl from-[#8CAFFF] to-[#FFFFFF]">
       {/* 뒤로 가기 버튼 */}
@@ -35,25 +83,12 @@ const Signup = () => {
       </div>
 
       {/* 본문 (약관/정보입력/거주지 선택 등) */}
-      {step === 0 && <AgreementStep onNext={() => setStep(1)} />}
-      {step === 1 && (
-        <UserTypeStep onNext={() => setStep(2)} userType={userType} setUserType={setUserType} />
-      )}
-      {step === 2 && (
-        <UserInfoStep
-          onNext={() => {
-            if (userType === 'expert') {
-              setStep(3); // 전문가
-            } else {
-              setStep(4); //
-            }
-          }}
-        />
-      )}
-
-      {step === 3 && <ExpertInfoStep onNext={() => setStep(4)} />}
-      {step === 4 && <SportsTypeStep onNext={() => setStep(5)} />}
-      {step === 5 && <NickNameStep onNext={() => setStep(6)} />}
+      {step === 0 && <AgreementStep onNext={handleNext} />}
+      {step === 1 && <UserTypeStep onNext={handleNext} />}
+      {step === 2 && <UserInfoStep onNext={handleNext} />}
+      {step === 3 && <ExpertInfoStep onNext={handleNext} />}
+      {step === 4 && <SportsTypeStep onNext={handleNext} />}
+      {step === 5 && <NickNameStep onNext={handleNext} />}
     </div>
   );
 };

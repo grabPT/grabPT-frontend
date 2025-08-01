@@ -1,40 +1,88 @@
 import { useState } from 'react';
 
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+
 import HeaderProfile from '@/assets/images/HeaderProfile.png';
 import ChangeProfile from '@/features/Signup/assets/ChangeProfile.png';
 import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
 import SignupBtn from '@/features/Signup/components/SignupBtn';
+import { useCheckNickname } from '@/features/Signup/hooks/useCheckNickname';
+import { nicknameInfoSchema } from '@/features/Signup/schema/signupSchema';
+import { useSignupStore } from '@/store/useSignupStore';
 
 interface NicknameStepProps {
   onNext: () => void;
 }
 
+interface NicknameInfoFormValues {
+  nickname: string;
+  profileImageUrl: string;
+}
 const NickNameStep = ({ onNext }: NicknameStepProps) => {
-  // 프로필 사진 업로드 상태
-  const [, setProfileImage] = useState<File | null>(null); //사용하지 않는 변수 임시 제거
+  const { nicknameInfo, setNicknameInfo } = useSignupStore();
+  const { mutate: checkNickname } = useCheckNickname();
+
   // 프로필 사진 미리보기 URL
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   // 닉네임 중복 확인 결과 상태
   const [nicknameCheckResult, setNicknameCheckResult] = useState<'available' | 'duplicate' | null>(
     null,
   );
-  // 닉네임 입력 상태
-  const [nickname, setNickname] = useState('');
   //이미지 업로드 로직
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    setProfileImage(file);
-    setPreviewUrl(URL.createObjectURL(file));
+    const fileUrl = URL.createObjectURL(file);
+    setNicknameInfo({ ...nicknameInfo, profileImageUrl: fileUrl });
+    setPreviewUrl(fileUrl);
   };
   // 닉네임 중복 확인 로직
   const handleCheckNickname = () => {
-    if (nickname === 'takenName') {
-      setNicknameCheckResult('duplicate');
-    } else {
-      setNicknameCheckResult('available');
-    }
+    checkNickname(nicknameInfo.nickname, {
+      onSuccess: (res) => {
+        if (res.isSuccess) {
+          setNicknameCheckResult('available');
+        } else {
+          setNicknameCheckResult('duplicate');
+        }
+      },
+    });
   };
+  //유효성 검사
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm({
+    mode: 'onChange',
+    resolver: zodResolver(nicknameInfoSchema),
+    defaultValues: {
+      nickname: nicknameInfo.nickname,
+      profileImageUrl: nicknameInfo.profileImageUrl ?? '',
+    },
+  });
+  console.log(errors);
+  //폼 제출 로직(폼 확인 및 store에 값 업데이트)
+  const onSubmit = (data: NicknameInfoFormValues) => {
+    if (nicknameCheckResult !== 'available') {
+      setShouldShake(false);
+      setTimeout(() => setShouldShake(true), 10);
+      return;
+    }
+    setNicknameInfo({
+      ...nicknameInfo,
+      nickname: data.nickname,
+      profileImageUrl: nicknameInfo.profileImageUrl,
+    });
+    console.log(signupStore);
+    onNext();
+  };
+  const [shouldShake, setShouldShake] = useState(false);
+  const signupStore = useSignupStore();
+  const nickname = watch('nickname');
+
   return (
     <div className="flex flex-col items-center justify-center">
       {/* 로고 */}
@@ -83,18 +131,17 @@ const NickNameStep = ({ onNext }: NicknameStepProps) => {
           {/* 닉네임 설정 */}
           <div className="relative mx-[4.375rem] mt-[5.06rem] flex flex-col gap-2">
             <input
-              value={nickname}
-              onChange={(e) => setNickname(e.target.value)}
+              key={shouldShake ? 'shake' : 'no-shake'}
+              {...register('nickname')}
               placeholder="닉네임을 등록해주세요"
               className={`rounded-[0.625rem] border py-[0.88rem] pl-4 ${
                 nicknameCheckResult === 'available'
                   ? 'border-green-500'
-                  : nicknameCheckResult === 'duplicate'
-                    ? 'border-red-500'
+                  : nicknameCheckResult === 'duplicate' || shouldShake
+                    ? 'animate-[var(--animate-shake)] border-red-500'
                     : 'border-gray-300'
               }`}
             />
-
             <button
               className="absolute top-1/2 right-4 flex h-7 w-[4.375rem] -translate-y-1/2 items-center justify-center rounded-[3.125rem] bg-[color:var(--color-button)] text-[0.625rem] font-semibold text-white hover:bg-[color:var(--color-button-hover)] active:bg-[color:var(--color-button-pressed)]"
               onClick={handleCheckNickname}
@@ -103,25 +150,16 @@ const NickNameStep = ({ onNext }: NicknameStepProps) => {
             </button>
           </div>
           <div className="mx-[4.375rem] mt-2 flex flex-col gap-2">
-            {nicknameCheckResult === 'available' && (
+            {nickname && nicknameCheckResult === 'available' && (
               <p className="mt-1 text-sm text-green-600">사용 가능한 닉네임입니다</p>
             )}
-
-            {nicknameCheckResult === 'duplicate' && (
+            {nickname && nicknameCheckResult === 'duplicate' && (
               <p className="mt-1 text-sm text-red-600">이미 사용 중인 닉네임입니다</p>
             )}
           </div>
           {/* 다음 버튼 */}
           <div className="absolute bottom-12 left-1/2 w-[25.5625rem] -translate-x-1/2 transform">
-            <SignupBtn
-              onClick={() => {
-                if (nickname.length == 0) {
-                  alert('닉네임을 설정해주세요');
-                } else {
-                  onNext();
-                }
-              }}
-            >
+            <SignupBtn type="button" onClick={handleSubmit(onSubmit)}>
               완료
             </SignupBtn>
           </div>

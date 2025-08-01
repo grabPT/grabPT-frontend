@@ -1,10 +1,10 @@
 import Banner from '@/components/Banner';
 import SportsTypeSelector from '@/components/SportsTypeSelector';
-import type { SportsType } from '@/types/SportsType';
+import type { SportItem } from '@/constants/sports';
 
 interface SportsSelectSectionProps {
-  selected: SportsType | null;
-  onSelect: (type: SportsType) => void;
+  selected: SportItem | null;
+  onSelect: (item: SportItem) => void;
 }
 
 const SportsSelectSection = ({ selected, onSelect }: SportsSelectSectionProps) => {
@@ -18,7 +18,7 @@ const SportsSelectSection = ({ selected, onSelect }: SportsSelectSectionProps) =
           원하는 운동을 선택해 보세요. 트레이너를 추천해 드립니다.
         </p>
 
-        <SportsTypeSelector value={selected} onChange={onSelect} onSelectEnd={onSelect} />
+        <SportsTypeSelector value={selected} onChange={onSelect} />
       </div>
       <div className="mx-auto mt-[200px] max-w-[1480px] sm:w-[720px] lg:w-[720px]">
         <Banner />

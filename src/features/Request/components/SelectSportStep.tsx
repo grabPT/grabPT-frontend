@@ -1,10 +1,10 @@
 import { useState } from 'react';
 
 import SportsTypeSelector from '@/components/SportsTypeSelector';
-import type { SportsType } from '@/types/SportsType';
+import type { SportItem } from '@/constants/sports';
 
 const SelectSportStep = () => {
-  const [selected, setSelected] = useState<SportsType | null>(null);
+  const [selected, setSelected] = useState<SportItem | null>(null);
 
   return (
     <div className="flex flex-col items-center gap-10">

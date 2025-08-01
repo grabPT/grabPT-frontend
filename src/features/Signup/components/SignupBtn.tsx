@@ -2,6 +2,7 @@ import type { ButtonHTMLAttributes, PropsWithChildren } from 'react';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   label?: string; // 접근성 레이블
+  type?: ButtonHTMLAttributes<HTMLButtonElement>['type'];
 }
 
 const SignupBtn = ({ label, children, ...rest }: PropsWithChildren<ButtonProps>) => {

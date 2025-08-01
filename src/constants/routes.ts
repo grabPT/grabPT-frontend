@@ -10,6 +10,7 @@ const ROUTES = {
     LOGIN: '/login',
     SIGNUP: '/signup',
   },
+  OAUTH: '/auth/callback',
 
   CHAT: {
     ROOT: '/chat',

@@ -1,15 +1,29 @@
 import SignupforTrainer from '@/features/Signup/assets/SignupforTrainer.png';
 import SignupforUser from '@/features/Signup/assets/SignupforUser.png';
 import SignupBtn from '@/features/Signup/components/SignupBtn';
-import type { UserType } from '@/pages/Auth/Signup';
+import { useSignupStore } from '@/store/useSignupStore';
 
+export type UserType = 'normal' | 'expert';
 interface UserTypeStepProps {
   onNext: () => void;
-  userType: UserType | null;
-  setUserType: (type: UserType) => void;
 }
 
-const UserTypeStep = ({ onNext, setUserType, userType }: UserTypeStepProps) => {
+const UserTypeStep = ({ onNext }: UserTypeStepProps) => {
+  const { role, setRole } = useSignupStore();
+
+  const handleSelect = (type: 'normal' | 'expert') => {
+    setRole(type === 'normal' ? 1 : 2);
+  };
+
+  const handleNext = () => {
+    if (!role) {
+      alert('사용자 유형을 선택해주세요');
+      return;
+    }
+    console.log('role', role);
+    onNext();
+  };
+
   return (
     <div className="flex flex-col">
       <div className="mt-32 mb-72 flex flex-col items-center justify-center">
@@ -27,7 +41,7 @@ const UserTypeStep = ({ onNext, setUserType, userType }: UserTypeStepProps) => {
           {/* 일반 이용자 카드 */}
           <div
             className="w-96 transform rounded-[1.25rem] shadow-2xl transition-transform duration-200 ease-in-out hover:scale-105"
-            onClick={() => setUserType('normal')}
+            onClick={() => handleSelect('normal')}
           >
             <div className="relative cursor-pointer overflow-hidden rounded-[1.25rem]">
               <img
@@ -37,7 +51,7 @@ const UserTypeStep = ({ onNext, setUserType, userType }: UserTypeStepProps) => {
               />
 
               <div
-                className={`absolute inset-0 transition-colors duration-200 ease-in-out ${userType !== 'normal' ? 'bg-black/58' : 'bg-[#003EFBB2]/50'}`}
+                className={`absolute inset-0 transition-colors duration-200 ease-in-out ${role !== 1 ? 'bg-black/58' : 'bg-[#003EFBB2]/50'}`}
               />
 
               <div className="absolute top-6 left-6 z-10 text-center font-semibold text-white">
@@ -52,7 +66,7 @@ const UserTypeStep = ({ onNext, setUserType, userType }: UserTypeStepProps) => {
           {/* 전문가 카드 */}
           <div
             className="w-96 transform rounded-[1.25rem] shadow-2xl transition-transform duration-200 ease-in-out hover:scale-105"
-            onClick={() => setUserType('expert')}
+            onClick={() => handleSelect('expert')}
           >
             <div className="relative cursor-pointer overflow-hidden rounded-[1.25rem]">
               <img
@@ -61,7 +75,7 @@ const UserTypeStep = ({ onNext, setUserType, userType }: UserTypeStepProps) => {
                 className="z-0 h-auto w-full object-cover"
               />
               <div
-                className={`absolute inset-0 transition-colors duration-200 ease-in-out ${userType !== 'expert' ? 'bg-black/58' : 'bg-[#003EFBB2]/50'}`}
+                className={`absolute inset-0 transition-colors duration-200 ease-in-out ${role !== 2 ? 'bg-black/58' : 'bg-[#003EFBB2]/50'}`}
               />
 
               <div className="absolute top-6 left-6 z-10 font-semibold text-white">
@@ -75,17 +89,7 @@ const UserTypeStep = ({ onNext, setUserType, userType }: UserTypeStepProps) => {
         </div>
         {/* 다음 버튼 */}
         <div className="mx-[32rem] mt-[8.5rem] w-[25.5625rem]">
-          <SignupBtn
-            onClick={() => {
-              if (userType) {
-                onNext();
-              } else {
-                alert('사용자 유형을 선택해주세요.');
-              }
-            }}
-          >
-            다음
-          </SignupBtn>
+          <SignupBtn onClick={handleNext}>다음</SignupBtn>
         </div>
       </div>
     </div>

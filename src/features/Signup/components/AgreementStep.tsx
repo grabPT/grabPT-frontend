@@ -4,40 +4,60 @@ import FrontBtn from '@/features/Signup/assets/FrontBtn.png';
 import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
 import AgreementModal from '@/features/Signup/components/AgreementModal';
 import SignupBtn from '@/features/Signup/components/SignupBtn';
+import { useSignupStore } from '@/store/useSignupStore';
 
 interface AgreementStepProps {
   onNext: () => void;
 }
 
 const AgreementStep = ({ onNext }: AgreementStepProps) => {
+  const { agreementInfo, setAgreementInfo } = useSignupStore();
   //상세 설명 모달
   const [isModalOpen, setIsModalOpen] = useState<number | null>(null);
-  // 체크박스 상태 관리
-  const [checkedList, setCheckedList] = useState<boolean[]>([
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-  ]);
-  //버튼 관리용
-  const isAllRequiredChecked = checkedList[1] && checkedList[2] && checkedList[3] && checkedList[4];
+  // checkedList
+  const checkedList = [
+    agreementInfo.agreedTermsId.length === 4 && agreementInfo.agreeMarketing,
+    agreementInfo.agreedTermsId.includes(1),
+    agreementInfo.agreedTermsId.includes(2),
+    agreementInfo.agreedTermsId.includes(3),
+    agreementInfo.agreedTermsId.includes(4),
+    agreementInfo.agreeMarketing,
+  ];
+  // 전체 선택 버튼 관리
+  const isAllRequiredChecked =
+    agreementInfo.agreedTermsId.includes(1) &&
+    agreementInfo.agreedTermsId.includes(2) &&
+    agreementInfo.agreedTermsId.includes(3) &&
+    agreementInfo.agreedTermsId.includes(4);
   // 체크박스 로직
   const toggleCheckbox = (index: number) => {
-    const newList = [...checkedList];
-    newList[index] = !newList[index];
-    setCheckedList(newList);
+    if (index === 5) {
+      setAgreementInfo({ ...agreementInfo, agreeMarketing: !agreementInfo.agreeMarketing });
+    } else {
+      const termId = index;
+      const newIds = agreementInfo.agreedTermsId.includes(termId)
+        ? agreementInfo.agreedTermsId.filter((id) => id !== termId)
+        : [...agreementInfo.agreedTermsId, termId];
+      setAgreementInfo({ ...agreementInfo, agreedTermsId: newIds });
+    }
   };
   // 전체 동의 로직
   const toggleAllCheckbox = () => {
-    const allTrueList = [true, true, true, true, true, true];
-    const allFalseList = [false, false, false, false, false, false];
-    if (checkedList[0] === false) {
-      setCheckedList(allTrueList);
-    } else setCheckedList(allFalseList);
+    if (!isAllRequiredChecked || !agreementInfo.agreeMarketing) {
+      setAgreementInfo({ agreedTermsId: [1, 2, 3, 4], agreeMarketing: true });
+    } else {
+      setAgreementInfo({ agreedTermsId: [], agreeMarketing: false });
+    }
   };
-
+  // 필수 약관 동의 안하면 alert, 동의 시 onNext
+  const handleNext = () => {
+    if (!isAllRequiredChecked) {
+      alert('필수 약관에 모두 동의해주세요');
+      return;
+    }
+    console.log('agreementInfo', agreementInfo);
+    onNext();
+  };
   return (
     <div className="relative flex flex-col items-center justify-center">
       {/* 로고 */}
@@ -111,7 +131,7 @@ const AgreementStep = ({ onNext }: AgreementStepProps) => {
                 <input
                   type="checkbox"
                   checked={checkedList[4]}
-                  onChange={() => toggleCheckbox(3)}
+                  onChange={() => toggleCheckbox(4)}
                   className="h-5 w-5 rounded-sm border border-[#BABABA] checked:border-transparent checked:bg-blue-500"
                 />
                 <span className="font-medium">(필수) 만 14세 이상입니다.</span>
@@ -139,17 +159,7 @@ const AgreementStep = ({ onNext }: AgreementStepProps) => {
           </div>
           {/* 다음 버튼 */}
           <div className="absolute bottom-12 left-1/2 w-[25.5625rem] -translate-x-1/2 transform">
-            <SignupBtn
-              onClick={() => {
-                if (isAllRequiredChecked) {
-                  onNext();
-                } else {
-                  alert('필수 약관에 모두 동의해 주세요.');
-                }
-              }}
-            >
-              동의하기
-            </SignupBtn>
+            <SignupBtn onClick={handleNext}>동의하기</SignupBtn>
           </div>
         </div>
         {/* 상세 설명 모달 */}
