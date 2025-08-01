@@ -4,17 +4,17 @@ import { useState } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 
 import SportsSelectSection from '@/features/Category/components/SportsSelectSection';
-import { SportsType } from '@/types/SportsType';
+import type { SportItem } from '@/constants/sports';
 
 import CategoryDetailPage from './CategoryDetailPage';
 
 export default function CategoryPage() {
-  const [selected, setSelected] = useState<SportsType | null>(null);
+  const [selected, setSelected] = useState<SportItem | null>(null);
   const navigate = useNavigate();
 
-  const handleSelect = (type: SportsType) => {
+  const handleSelect = (type: SportItem) => {
     setSelected(type);
-    navigate(`/category/${type.toLowerCase()}`); // /category/tennis 등
+    navigate(`/category/${type.label}`); // /category/tennis 등
   };
 
   return (
