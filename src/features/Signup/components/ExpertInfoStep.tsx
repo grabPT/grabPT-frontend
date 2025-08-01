@@ -44,7 +44,7 @@ const ExpertInfoStep = ({ onNext }: ExpertInfoStepProps) => {
     setProInfo({
       ...proInfo,
       age: data.age,
-      gender: data.gender,
+      gender: Number(data.gender),
       career: data.career,
       center: data.center,
     });

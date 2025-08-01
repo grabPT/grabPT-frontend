@@ -53,13 +53,14 @@ const NickNameStep = ({ onNext }: NicknameStepProps) => {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm({
     mode: 'onChange',
     resolver: zodResolver(nicknameInfoSchema),
     defaultValues: {
       nickname: nicknameInfo.nickname,
-      profileImageUrl: nicknameInfo.profileImageUrl,
+      profileImageUrl: nicknameInfo.profileImageUrl ?? '',
     },
   });
   console.log(errors);
@@ -70,7 +71,6 @@ const NickNameStep = ({ onNext }: NicknameStepProps) => {
       setTimeout(() => setShouldShake(true), 10);
       return;
     }
-
     setNicknameInfo({
       ...nicknameInfo,
       nickname: data.nickname,
@@ -81,6 +81,7 @@ const NickNameStep = ({ onNext }: NicknameStepProps) => {
   };
   const [shouldShake, setShouldShake] = useState(false);
   const signupStore = useSignupStore();
+ const nickname = watch('nickname');
 
   return (
     <div className="flex flex-col items-center justify-center">
@@ -131,7 +132,6 @@ const NickNameStep = ({ onNext }: NicknameStepProps) => {
           <div className="relative mx-[4.375rem] mt-[5.06rem] flex flex-col gap-2">
             <input
               key={shouldShake ? 'shake' : 'no-shake'}
-              value={nicknameInfo.nickname}
               {...register('nickname')}
               placeholder="닉네임을 등록해주세요"
               className={`rounded-[0.625rem] border py-[0.88rem] pl-4 ${
@@ -150,10 +150,10 @@ const NickNameStep = ({ onNext }: NicknameStepProps) => {
             </button>
           </div>
           <div className="mx-[4.375rem] mt-2 flex flex-col gap-2">
-            {nicknameInfo.nickname && nicknameCheckResult === 'available' && (
+            {nickname && nicknameCheckResult === 'available' && (
               <p className="mt-1 text-sm text-green-600">사용 가능한 닉네임입니다</p>
             )}
-            {nicknameInfo.nickname && nicknameCheckResult === 'duplicate' && (
+            {nickname && nicknameCheckResult === 'duplicate' && (
               <p className="mt-1 text-sm text-red-600">이미 사용 중인 닉네임입니다</p>
             )}
           </div>

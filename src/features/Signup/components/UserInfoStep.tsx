@@ -27,6 +27,7 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
   const {
     register,
     trigger,
+    watch,
     handleSubmit,
     formState: { errors, touchedFields },
     setValue,
@@ -38,6 +39,7 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
       address: `${userInfo.address.city} ${userInfo.address.district}`,
       specAddress: userInfo.address.specAddress,
       phoneNum: userInfo.phoneNum,
+      verifyNum: '',
     },
   });
 
@@ -61,7 +63,8 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
     console.log(userInfo);
     onNext();
   };
-
+  const phoneNum = watch('phoneNum');
+  const verifyNum = watch('verifyNum');
   //주소 api 모달 띄우기
   const [postModalOpen, setPostModalOpen] = useState(false);
   //주소 api 호출
@@ -124,18 +127,20 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
     if (errors.address && touchedFields.address) return errors.address.message;
     if (errors.specAddress && touchedFields.specAddress) return errors.specAddress.message;
     if (errors.phoneNum && touchedFields.phoneNum) return errors.phoneNum.message;
+    if (errors.verifyNum && touchedFields.verifyNum) return errors.verifyNum.message;
   };
 
   //전화번호 인증
   const { mutate: sendSms } = useSmsSend();
+  //수정 해야함
   const handlePhoneNumVerification = () => {
-    if (!userInfo.phoneNum) {
+    if (!phoneNum) {
       alert('전화번호를 입력해주세요.');
       return;
     }
     // 여기서 서버에 인증번호 요청 API 호출
     sendSms(
-      { phoneNum: userInfo.phoneNum },
+      { phoneNum },
       {
         onSuccess: (res) => {
           console.log(res);
@@ -149,16 +154,15 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
   //잘못 입력 시 칸 흔들림 모션
   const [shakeKey, setShakeKey] = useState('initial');
   //인증번호 확인
-  const { mutate: verifySms, data } = useSmsVerify();
+  const { mutate: verifySms} = useSmsVerify();
   const [VerifyNumberCheckResult, setVerifyNumberCheckResult] = useState<boolean | null>(null);
-  const [VerifyNumber, setVerifyNumber] = useState('');
   //인증번호 확인 로직
   const handleVerifyNumberCheck = () => {
     verifySms(
-      { phoneNum: userInfo.phoneNum, inputCode: VerifyNumber },
+      { phoneNum, inputCode: verifyNum },
       {
-        onSuccess: () => {
-          if (data?.isSuccess) {
+        onSuccess: (res) => {
+          if (res.isSuccess) {
             setVerifyNumberCheckResult(true);
           } else {
             setVerifyNumberCheckResult(false);
@@ -267,8 +271,7 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
               <div className="relative flex items-center justify-between">
                 <input
                   key={shakeKey}
-                  value={VerifyNumber}
-                  onChange={(e) => setVerifyNumber(e.target.value)}
+                  {...register('verifyNum')}
                   placeholder="XXXXXX"
                   className={`w-full rounded-[0.625rem] border py-[0.8rem] pl-4 text-[#616161] ${
                     VerifyNumberCheckResult === true
