@@ -3,8 +3,8 @@ import { useState } from 'react';
 
 import { Route, Routes, useNavigate } from 'react-router-dom';
 
-import SportsSelectSection from '@/features/Category/components/SportsSelectSection';
 import type { SportItem } from '@/constants/sports';
+import SportsSelectSection from '@/features/Category/components/SportsSelectSection';
 
 import CategoryDetailPage from './CategoryDetailPage';
 
