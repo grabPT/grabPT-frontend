@@ -47,9 +47,9 @@ const Signup = () => {
   useEffect(() => {
     if (step === 6) {
       if (role === 1) {
-         const payload = useSignupStore.getState().getUserSignupDto(); // ✅ 먼저 선언
+        const payload = useSignupStore.getState().getUserSignupDto(); // ✅ 먼저 선언
 
-    console.log('📦 보내는 user-signup payload:', payload); // ✅ 여기에서 안전하게 출력
+        console.log('📦 보내는 user-signup payload:', payload); // ✅ 여기에서 안전하게 출력
         userSignup(useSignupStore.getState().getUserSignupDto(), {
           onSuccess: (res) => {
             console.log('User signup success:', res);
@@ -57,7 +57,6 @@ const Signup = () => {
           },
           onError: (err) => {
             console.error('User signup failed:', err);
-            
           },
         });
       } else if (role === 2) {

@@ -81,7 +81,7 @@ const NickNameStep = ({ onNext }: NicknameStepProps) => {
   };
   const [shouldShake, setShouldShake] = useState(false);
   const signupStore = useSignupStore();
- const nickname = watch('nickname');
+  const nickname = watch('nickname');
 
   return (
     <div className="flex flex-col items-center justify-center">

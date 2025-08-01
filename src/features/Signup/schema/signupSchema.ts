@@ -10,7 +10,7 @@ export const userInfoSchema = z.object({
     }),
   address: z.string().min(1, { message: '주소를 입력해주세요.' }),
   specAddress: z.string().min(1, { message: '주소를 입력해주세요.' }),
-  verifyNum:z.string().min(1, {message:"인증번호를 입력하세요."})
+  verifyNum: z.string().min(1, { message: '인증번호를 입력하세요.' }),
 });
 
 export const proInfoSchema = z.object({

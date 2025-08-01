@@ -154,7 +154,7 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
   //잘못 입력 시 칸 흔들림 모션
   const [shakeKey, setShakeKey] = useState('initial');
   //인증번호 확인
-  const { mutate: verifySms} = useSmsVerify();
+  const { mutate: verifySms } = useSmsVerify();
   const [VerifyNumberCheckResult, setVerifyNumberCheckResult] = useState<boolean | null>(null);
   //인증번호 확인 로직
   const handleVerifyNumberCheck = () => {
