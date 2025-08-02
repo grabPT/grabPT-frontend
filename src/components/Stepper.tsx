@@ -15,7 +15,7 @@ const Stepper = ({ total, current, barWidth = 'w-12' }: StepperProps) => {
           className={clsx(
             'h-1 rounded-full',
             barWidth,
-            idx < current ? 'bg-[var(--color-button)]' : 'bg-[var(--color-white-dark)]',
+            idx < current ? 'bg-button' : 'bg-white-dark',
           )}
         />
       ))}

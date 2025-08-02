@@ -5,19 +5,29 @@ interface UserRoleStore {
   isLoggedIn: boolean;
 
   toggleExpert: () => void;
-  setLoggedIn: (state: boolean) => void;
+  LogIn: () => void;
+  LogOut: () => void;
+  toggleLoggedIn: () => void;
 }
 
 export const useUserRoleStore = create<UserRoleStore>()((set) => ({
   isExpert: false,
-  isLoggedIn: true,
+  isLoggedIn: false,
 
   toggleExpert: () =>
     set((s) => ({
       isExpert: !s.isExpert,
     })),
-  setLoggedIn: (state) =>
+  LogIn: () =>
     set(() => ({
-      isLoggedIn: state,
+      isLoggedIn: true,
+    })),
+  LogOut: () =>
+    set(() => ({
+      isLoggedIn: false,
+    })),
+  toggleLoggedIn: () =>
+    set((s) => ({
+      isLoggedIn: !s.isLoggedIn,
     })),
 }));

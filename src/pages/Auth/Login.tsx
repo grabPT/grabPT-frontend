@@ -12,17 +12,19 @@ import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
 export type UserType = 'normal' | 'expert';
 
 const Login = () => {
-  const nav = useNavigate();
+  const navigate = useNavigate();
+  const navigateToBack = () => navigate(-1);
+
   return (
-    <div className="relative h-dvh w-full bg-gradient-to-bl from-[#8CAFFF] to-[#FFFFFF]">
-      <div className="mx-6">
-        <button onClick={() => nav('/')}>
+    <div className="relative flex h-dvh w-full items-center justify-center bg-gradient-to-bl from-[#8CAFFF] to-[#FFFFFF]">
+      <div className="absolute top-0 left-0 mx-6">
+        <button onClick={navigateToBack}>
           <img alt="뒤로가기" src={BackBtn} />
         </button>
       </div>
       <div className="flex flex-col items-center justify-center">
         {/* 로고 */}
-        <div className="mt-6 flex justify-center">
+        <div className="flex justify-center">
           <img src={SignupLogo} alt="로고" className="h-[2.3125rem] w-[6.25rem]" />
         </div>
         <div className="relative mt-14 flex h-[42.25rem] w-[34.375rem] flex-col items-center rounded-[1.25rem] border border-white bg-white px-16 shadow-2xl">

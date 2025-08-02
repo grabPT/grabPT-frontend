@@ -1,5 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
+import { useNavigate } from 'react-router-dom';
+
+import { urlFor } from '@/constants/routes';
 import ExpertProfileCard from '@/features/Category/components/ExpertProfileCard';
 import type { ExpertCardProps } from '@/features/Category/types/ExpertCardProps';
 import ArrowRight from '@/features/home/assets/icons/ArrowRight';
@@ -8,9 +11,15 @@ interface ExpertCardScrollProps {
   experts: ExpertCardProps[];
 }
 
-const ExpertCardScroll: React.FC<ExpertCardScrollProps> = ({ experts }) => {
+const ExpertCardScroll = ({ experts }: ExpertCardScrollProps) => {
+  const navigate = useNavigate();
+
   const scrollRef = useRef<HTMLDivElement>(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
+
+  const navigateToExpertDetail = (id: number) => {
+    navigate(urlFor.expertDetail(id));
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -49,7 +58,12 @@ const ExpertCardScroll: React.FC<ExpertCardScrollProps> = ({ experts }) => {
         className="scrollbar-hide flex h-full w-full gap-[45px] overflow-x-auto scroll-smooth"
       >
         {experts.map((expert, idx) => (
-          <div key={idx} className="flex h-full flex-shrink-0 items-center">
+          <div
+            key={idx}
+            className="flex h-full flex-shrink-0 cursor-pointer items-center"
+            // 원래 expert.id넘겨야 함. 근데 없는 듯 ㅜㅜ
+            onClick={() => navigateToExpertDetail(idx)}
+          >
             <ExpertProfileCard {...expert} />
           </div>
         ))}

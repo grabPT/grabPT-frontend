@@ -18,8 +18,8 @@ const Button = ({
 }: PropsWithChildren<ButtonProps>) => {
   const base =
     'flex items-center justify-center rounded-[10px] ' +
-    'bg-[color:var(--color-button)] hover:bg-[color:var(--color-button-hover)] ' +
-    'active:bg-[color:var(--color-button-pressed)]';
+    'bg-button hover:bg-button-hover ' +
+    'active:bg-button-pressed';
 
   const merged = [base, width, height, text, className].filter(Boolean).join(' ');
 

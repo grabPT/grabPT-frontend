@@ -74,9 +74,9 @@ const Signup = () => {
   }, [nav, step, role, signupInfo, userSignup, proSignup]);
 
   return (
-    <div className="relative h-dvh w-full bg-gradient-to-bl from-[#8CAFFF] to-[#FFFFFF]">
+    <div className="relative flex h-dvh w-full items-center justify-center bg-gradient-to-bl from-[#8CAFFF] to-[#FFFFFF]">
       {/* 뒤로 가기 버튼 */}
-      <div className="mx-6">
+      <div className="absolute top-0 left-0 mx-6">
         <button onClick={handleBackClick}>
           <img alt="뒤로가기" src={BackBtn} />
         </button>

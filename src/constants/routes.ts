@@ -66,4 +66,12 @@ const ROUTES = {
   },
 } as const;
 
+export const urlFor = {
+  expertDetail: (id: string | number) => `/expert/${id}`,
+  requestDetail: (id: string | number) => `/requests/${id}`,
+  requestProposals: (id: string | number) => `/requests/${id}/proposals`,
+  proposalDetail: (id: string | number) => `/proposals/${id}`,
+  contractDetail: (id: string | number) => `/contracts/${id}`,
+} as const;
+
 export default ROUTES;

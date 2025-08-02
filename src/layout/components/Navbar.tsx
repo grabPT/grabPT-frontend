@@ -18,8 +18,8 @@ const Navbar = () => {
       label: isExpert ? '요청 현황' : '요청서 작성',
       path: isExpert ? ROUTES.REQUESTS.ROOT : ROUTES.REQUESTS.NEW,
     },
-    { label: '트레이너 찾기', path: '/' },
-    { label: '내지역 센터', path: '/' },
+    { label: '트레이너 찾기', path: '/나중에설정' },
+    { label: '내지역 센터', path: '/나중에설정' },
     { label: '카테고리', path: ROUTES.CATEGORY.ROOT },
   ];
 

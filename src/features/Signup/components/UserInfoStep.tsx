@@ -164,12 +164,15 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
         onSuccess: (res) => {
           if (res.isSuccess) {
             setVerifyNumberCheckResult(true);
-          } else {
-            setVerifyNumberCheckResult(false);
-            setShakeKey(`shake-${Date.now()}`);
           }
+          //   else {
+          //     setVerifyNumberCheckResult(false);
+          //     setShakeKey(`shake-${Date.now()}`);
+          //   }
         },
         onError: (err) => {
+          setVerifyNumberCheckResult(false);
+          setShakeKey(`shake-${Date.now()}`);
           console.error('인증 실패:', err);
         },
       },
@@ -223,6 +226,7 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
                     {...register('specAddress')}
                   />
                   <input
+                    aria-label="동"
                     className="flex h-full w-32 items-center justify-center rounded-[0.625rem] border border-[#BDBDBD] pl-4 text-[15px] text-[#616161]"
                     value={userInfo.address.street || '동'}
                     readOnly
@@ -274,11 +278,12 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
                   {...register('verifyNum')}
                   placeholder="XXXXXX"
                   className={`w-full rounded-[0.625rem] border py-[0.8rem] pl-4 text-[#616161] ${
-                    VerifyNumberCheckResult === true
-                      ? 'border-green-500'
-                      : VerifyNumberCheckResult === false
-                        ? 'animate-[var(--animate-shake)] border-red-500'
-                        : 'border-[#BDBDBD]'
+                    VerifyNumberCheckResult === null
+                      ? 'border-[#BDBDBD]'
+                      : VerifyNumberCheckResult
+                        ? 'border-green-500'
+                        : 'animate-[var(--animate-shake)] border-red-500'
+                    // : 'border-[#BDBDBD]'
                   }`}
                 />
                 <button
@@ -289,12 +294,12 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
                 </button>
               </div>
               <div className="mt-1 flex flex-col gap-2">
-                {VerifyNumberCheckResult === true && (
-                  <p className="mt-1 text-sm text-green-600">인증되었습니다</p>
-                )}
-                {VerifyNumberCheckResult === false && (
-                  <p className="mt-1 text-sm text-red-600">인증번호가 일치하지 않습니다</p>
-                )}
+                {VerifyNumberCheckResult !== null &&
+                  (VerifyNumberCheckResult ? (
+                    <p className="mt-1 text-sm text-green-600">인증되었습니다</p>
+                  ) : (
+                    <p className="mt-1 text-sm text-red-600">인증번호가 일치하지 않습니다</p>
+                  ))}
               </div>
             </div>
           </div>

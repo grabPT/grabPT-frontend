@@ -10,8 +10,8 @@ const SelectPriceStep = () => {
   /** 총액 계산 */
   const total = useMemo(() => count * unitPrice, [count, unitPrice]);
   return (
-    <div className="relative flex w-full flex-col items-center pt-12">
-      <div className="absolute bottom-[100%] left-0 flex items-start gap-[10px]">
+    <div className="relative flex w-full flex-col items-center">
+      <div className="absolute bottom-[110%] left-0 flex items-start gap-[10px]">
         {/* 운동명, 후에 api연동 시 data넘기기 적용하고 거기서 받아오는 걸로 */}
         <p className="font-[Pretendard Variable] text-[36px] leading-[100%] font-extrabold text-black">
           복싱
@@ -26,11 +26,11 @@ const SelectPriceStep = () => {
       </div>
 
       <h1 className="text-5xl font-extrabold">
-        희망하는 PT <span className="text-[var(--color-button)]">횟수</span> 와{' '}
-        <span className="text-[var(--color-button)]">가격</span>을 입력해주세요
+        희망하는 PT <span className="text-button">횟수</span> 와{' '}
+        <span className="text-button">가격</span>을 입력해주세요
       </h1>
 
-      <section className="flex flex-col items-center gap-8 py-8">
+      <section className="mt-[80px] mb-[20px] flex flex-col items-center gap-8">
         {/* 횟수  */}
         <div className="w-80 space-y-2">
           <label className="block text-center text-sm font-semibold">횟수</label>

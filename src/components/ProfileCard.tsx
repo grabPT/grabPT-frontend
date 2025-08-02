@@ -1,7 +1,12 @@
+import { useNavigate } from 'react-router-dom';
+
 import Profile from '@/assets/images/HeaderProfile.png';
 import StarRating from '@/components/StarRating';
+import ROUTES from '@/constants/routes';
 
 const ProfileCard = () => {
+  const navigate = useNavigate();
+
   return (
     // 좌우패딩불일치, 일단34로 작업함
     <div className="flex h-[115px] w-[926px] items-center justify-between rounded-[30px] border-[1.5px] border-[#b8b8b8] px-[34px]">
@@ -22,7 +27,10 @@ const ProfileCard = () => {
       </div>
 
       <div className="flex h-full items-end py-[17px]">
-        <button className="h-[26px] w-[88px] rounded-[10px] bg-[#003EFB] px-[20px] py-[8px] text-[10px] leading-0 font-semibold text-white">
+        <button
+          className="h-[26px] w-[88px] cursor-pointer rounded-[10px] bg-[#003EFB] px-[20px] py-[8px] text-[10px] leading-0 font-semibold text-white"
+          onClick={() => navigate(ROUTES.MYPAGE.EXPERT)}
+        >
           프로필 편집
         </button>
       </div>

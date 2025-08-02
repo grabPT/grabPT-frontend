@@ -31,9 +31,10 @@ const UserSearchSection = () => {
 
   return (
     <section
-      className="relative z-50 h-[552px] w-full bg-cover bg-center transition-all duration-700"
-      style={{ backgroundImage: `url(${images[current]})` }}
+      className="relative z-50 h-[552px] w-full transition-all duration-700"
+      // style={{ backgroundImage: `url(${images[current]})` }}
     >
+      <img src={images[current]} alt="배경" className="absolute z-5 h-full w-full object-cover" />
       {/* 어두운 오버레이 */}
       <div className="absolute inset-0 z-10 bg-black/40" />
 

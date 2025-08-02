@@ -1,35 +1,10 @@
-import { useEffect, useState } from 'react';
-
 import { useParams } from 'react-router-dom';
 
-import Button from '@/components/Button';
+import RealtimeMatchingStatus from '@/components/RealtimeMatchingStatus';
 import ExpertCardScroll from '@/features/Category/components/ExpertCardScroll';
-import MatchingStatusCard from '@/features/Category/components/MatchingStatusCard';
-import { dummyExperts, dummyMatchings } from '@/features/Category/data/dummy';
+import { dummyExperts } from '@/features/Category/data/dummy';
 
-export default function CategoryDetailPage() {
-  const [cardCount, setCardCount] = useState(8);
-
-  // 브레이크포인트에 따라 카드 개수 조절
-  useEffect(() => {
-    const updateCardCount = () => {
-      const width = window.innerWidth;
-      if (width >= 1536) {
-        // 2xl 이상
-        setCardCount(8);
-      } else if (width >= 1280) {
-        // xl 이상
-        setCardCount(6);
-      } else {
-        // 그 외
-        setCardCount(4);
-      }
-    };
-
-    updateCardCount();
-    window.addEventListener('resize', updateCardCount);
-    return () => window.removeEventListener('resize', updateCardCount);
-  }, []);
+const CategoryDetailPage = () => {
   const { slug } = useParams(); // ex) tennis
 
   return (
@@ -57,29 +32,12 @@ export default function CategoryDetailPage() {
       </section>
 
       {/* 실시간 매칭 현황 */}
-      <section className="h-374px mt-[156px] mb-[200px]">
-        <h2 className="font-[Pretendard Variable] leading-[40px] font-extrabold text-black not-italic sm:text-[24px] xl:text-[30px]">
-          실시간 매칭 현황
-        </h2>
-
-        <div className="mt-[94px] grid grid-cols-1 gap-x-[20px] gap-y-[16px] md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-          {dummyMatchings.slice(0, cardCount).map((match, idx) => (
-            <MatchingStatusCard key={idx} {...match} />
-          ))}
-        </div>
-
-        {/* 오른쪽 아래 정렬 */}
-        <div className="mt-[40px] flex justify-end">
-          <Button
-            label="요청서 작성"
-            width="w-[189px]"
-            height="h-[42px]"
-            text="text-[15px] font-semibold text-white"
-          >
-            요청서 작성
-          </Button>
-        </div>
-      </section>
+      <div className="mt-[156px] mb-[200px]">
+        {/* 얘도 나중에 데이터 props로 넘겨줘야 함 */}
+        <RealtimeMatchingStatus />
+      </div>
     </div>
   );
-}
+};
+
+export default CategoryDetailPage;

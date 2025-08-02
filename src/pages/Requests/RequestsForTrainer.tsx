@@ -37,8 +37,8 @@ const RequestsForTrainer = () => {
         <Button
           className={`${
             sort === '최신순'
-              ? 'bg-[color:var(--color-button)] text-white'
-              : 'bg-[color:var(--color-button-nonSelected)] text-[#7D7D7D] hover:bg-[color:var(--color-button-nonSelected-hover)]'
+              ? 'bg-button text-white'
+              : 'bg-button-nonSelected hover:bg-button-nonSelected-hover text-[#7D7D7D]'
           }`}
           onClick={handleChangeToLatest}
         >
@@ -47,8 +47,8 @@ const RequestsForTrainer = () => {
         <Button
           className={`${
             sort === '가격 높은순'
-              ? 'bg-[color:var(--color-button)] text-white'
-              : 'bg-[color:var(--color-button-nonSelected)] text-[#7D7D7D] hover:bg-[color:var(--color-button-nonSelected-hover)]'
+              ? 'bg-button text-white'
+              : 'bg-button-nonSelected hover:bg-button-nonSelected-hover text-[#7D7D7D]'
           }`}
           onClick={handleChangeToPrice}
         >

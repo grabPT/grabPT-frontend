@@ -20,10 +20,8 @@ const CheckedButton = ({
 }: PropsWithChildren<CheckedButtonProps>) => {
   const base = 'flex items-center justify-center rounded-[10px] transition-colors px-4 py-2';
 
-  const inactive =
-    'bg-[#f2f2f2] hover:bg-[var(--color-white-dark-hover)] text-black active:bg-[var(--color-white-dark-active)]]';
-  const active =
-    'bg-[color:var(--color-button)] text-white hover:bg-[color:var(--color-button-hover)] active:bg-[color:var(--color-button-pressed)]';
+  const inactive = 'bg-[#f2f2f2] hover:bg-white-dark-hover text-black active:bg-white-dark-active';
+  const active = 'bg-button text-white hover:bg-button-hover active:bg-button-pressed';
 
   const merged = clsx(base, width, height, text, isChecked ? active : inactive, className);
 

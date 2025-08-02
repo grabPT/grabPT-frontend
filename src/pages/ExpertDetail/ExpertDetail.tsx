@@ -5,7 +5,7 @@ import ROUTES from '@/constants/routes';
 
 export const ExpertDetail = () => {
   const tabs = [
-    { label: '정보', to: ROUTES.EXPERT_DETAIL.TABS.INFO },
+    { label: '정보', to: '' },
     { label: '후기', to: ROUTES.EXPERT_DETAIL.TABS.REVIEWS },
   ];
   return (

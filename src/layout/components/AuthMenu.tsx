@@ -13,18 +13,26 @@ import { useUserRoleStore } from '@/store/useUserRoleStore';
 function AuthMenu() {
   const navigate = useNavigate();
 
-  const { isLoggedIn, isExpert, toggleExpert } = useUserRoleStore();
+  const { isLoggedIn, toggleLoggedIn, isExpert, toggleExpert } = useUserRoleStore();
   const [isOpenProfileDropdown, setIsOpenProfileDropdown] = useState<boolean>(false);
 
   return (
     <div className="flex items-center">
+      {/* 로그인토글버튼추가 */}
+      <button
+        type="button"
+        onClick={toggleLoggedIn}
+        className="mr-6 rounded-md bg-orange-300 px-3 py-1 text-sm text-white"
+      >
+        {isLoggedIn ? '로그아웃할래' : '로그인할래'}
+      </button>
       {/* 유저타입 토글 버튼. 추후 api연동 후 삭제*/}
       <button
         type="button"
         onClick={toggleExpert}
-        className="mr-6 rounded-md bg-blue-600 px-3 py-1 text-sm text-white"
+        className="mr-6 cursor-pointer rounded-md bg-orange-600 px-3 py-1 text-sm text-white"
       >
-        {isExpert ? 'Expert' : 'User'}
+        {isExpert ? '지금Expert' : '지금User'}
       </button>
 
       {/*  로그인 여부에 따른 메뉴 */}

@@ -1,23 +1,36 @@
 import { useState } from 'react';
 
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import Profile from '@/assets/images/HeaderProfile.png';
 import Button from '@/components/Button';
 import CheckedButton from '@/components/CheckedButton';
 import Tabs, { type TabItem } from '@/components/Tabs';
+import ROUTES, { urlFor } from '@/constants/routes';
 import { useUserRoleStore } from '@/store/useUserRoleStore';
 import { AGES, DAYS, GENDERS, PURPOSES, TIMES } from '@/types/ReqeustsType';
 
 const RequestDetailPage = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const { isExpert } = useUserRoleStore();
-  // api연결 시 isWriter 함수로 변경
-  const [isWriter] = useState<boolean>(true);
+  // api연결 시 isWriter 함수로 변경 (요청서의 작성자 id === 현재 유저 id)
+  const [isWriter] = useState<boolean>(false);
   const TabItems: TabItem[] = [
-    { label: '정보', to: `/requests/${id}` },
-    { label: '제안 목록', to: `/requests/${id}/proposals` },
+    { label: '정보', to: urlFor.requestDetail(Number(id)) },
+    { label: '제안 목록', to: urlFor.requestProposals(Number(id)) },
   ];
+
+  const editRequest = () => alert('ㄴㄴ아직 ㅋㅋ');
+  const navigateToProposalForm = () => {
+    // 이건 요청서 id를 넘겨주든 뭘 해야 할 듯?
+    navigate(ROUTES.PROPOSALS.NEW);
+  };
+
+  const handleButton = () => {
+    if (isWriter) editRequest();
+    else navigateToProposalForm();
+  };
 
   return (
     <section className="flex flex-col items-center py-6">
@@ -172,7 +185,7 @@ const RequestDetailPage = () => {
       </section>
 
       {(isExpert || isWriter) && (
-        <Button width="w-[425px]" className="mt-28">
+        <Button width="w-[425px]" className="mt-28" onClick={handleButton}>
           {isExpert ? '제안서 작성' : '수정하기'}
         </Button>
       )}

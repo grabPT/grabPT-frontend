@@ -1,3 +1,7 @@
+import { useNavigate } from 'react-router-dom';
+
+import { urlFor } from '@/constants/routes';
+
 import UserRequestHeader from './UserRequestHeader';
 
 /*
@@ -18,8 +22,14 @@ interface RequestsStatusCardProps {
 }
 
 const RequestsStatusCard = (props: RequestsStatusCardProps) => {
+  const navigate = useNavigate();
+  const navigateToRequestDetail = (requestId: number) => navigate(urlFor.requestDetail(requestId));
+
   return (
-    <div className="flex h-[75px] w-[700px] cursor-pointer flex-row items-center justify-between rounded-2xl border border-gray-200 bg-white px-4 py-3 shadow-xl transition-shadow duration-200 hover:shadow-lg">
+    <div
+      onClick={() => navigateToRequestDetail(props.id)}
+      className="flex h-[75px] w-[700px] cursor-pointer flex-row items-center justify-between rounded-2xl border border-gray-200 bg-white px-4 py-3 shadow-xl transition-shadow duration-200 hover:shadow-lg"
+    >
       <UserRequestHeader nickName={props.nickName} location={props.location} />
       <div className="flex items-center space-x-2">
         <span className="text-sm text-gray-700">{props.numbersOfpt}회</span>
