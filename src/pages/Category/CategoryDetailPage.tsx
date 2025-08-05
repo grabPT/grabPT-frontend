@@ -33,8 +33,9 @@ const CategoryDetailPage = () => {
 
       {/* 실시간 매칭 현황 */}
       <div className="mt-[156px] mb-[200px]">
-        {/* 얘도 나중에 데이터 props로 넘겨줘야 함 */}
-        <RealtimeMatchingStatus />
+        {/* 백엔드랑 slug 통합 */}
+        {/* <RealtimeMatchingStatus categoryType="slug" /> */}
+        <RealtimeMatchingStatus categoryType="box" />
       </div>
     </div>
   );
