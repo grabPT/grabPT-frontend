@@ -3,15 +3,25 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Button from '@/components/Button';
+import MatchingStatusCard from '@/components/MatchingStatusCard';
 import ROUTES from '@/constants/routes';
-import MatchingStatusCard from '@/features/Category/components/MatchingStatusCard';
-import { dummyMatchings } from '@/features/Category/data/dummy';
+import { useGetRealtimeMatching } from '@/hooks/useGetRealtimeMatching';
 import { useUserRoleStore } from '@/store/useUserRoleStore';
+import type { CategoryCodeType } from '@/types/RealtimeMatchingType';
 
-const RealtimeMatchingStatus = () => {
+interface RealtimeMatchingStatusProps {
+  categoryType: CategoryCodeType;
+}
+
+// 실시간 매칭 현황 컴포넌트입니다
+// category를 넘겨받으면 컴포넌트에서 요청을 날립니다
+const RealtimeMatchingStatus = ({ categoryType }: RealtimeMatchingStatusProps) => {
+  const { data } = useGetRealtimeMatching(categoryType);
+  const matchingList = data?.result;
   const navigate = useNavigate();
   const { isLoggedIn, isExpert } = useUserRoleStore();
   const [cardCount, setCardCount] = useState(8);
+
   const handleRequestWriteClick = () => {
     if (!isLoggedIn) {
       alert('로그인이 필요합니다.');
@@ -41,9 +51,9 @@ const RealtimeMatchingStatus = () => {
       </h2>
 
       <div className="mt-9 grid grid-cols-1 gap-x-[20px] gap-y-[16px] md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-        {dummyMatchings.slice(0, cardCount).map((match, idx) => (
-          <MatchingStatusCard key={idx} {...match} />
-        ))}
+        {matchingList
+          ?.slice(0, cardCount)
+          .map((match, idx) => <MatchingStatusCard key={idx} match={match} />)}
       </div>
 
       {/* 오른쪽 아래 정렬 */}

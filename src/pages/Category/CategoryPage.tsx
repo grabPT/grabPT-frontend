@@ -14,7 +14,7 @@ export default function CategoryPage() {
 
   const handleSelect = (type: SportItem) => {
     setSelected(type);
-    navigate(`/category/${type.label}`); // /category/tennis 등
+    navigate(`/category/${type.slug}`); // /category/tennis 등
   };
 
   return (
