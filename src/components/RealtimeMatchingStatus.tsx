@@ -7,9 +7,10 @@ import MatchingStatusCard from '@/components/MatchingStatusCard';
 import ROUTES from '@/constants/routes';
 import { useGetRealtimeMatching } from '@/hooks/useGetRealtimeMatching';
 import { useUserRoleStore } from '@/store/useUserRoleStore';
+import type { CategoryCodeType } from '@/types/RealtimeMatchingType';
 
 interface RealtimeMatchingStatusProps {
-  categoryType: string;
+  categoryType: CategoryCodeType;
 }
 
 // 실시간 매칭 현황 컴포넌트입니다

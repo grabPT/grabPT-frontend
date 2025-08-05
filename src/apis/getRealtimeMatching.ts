@@ -5,6 +5,7 @@ export const getRealtimeMatching = async (
   category: string,
 ): Promise<getRealtimeMatchingResponseDto> => {
   const { data } = await publicInstance.get(`/api/v1/requests/${category}`);
-  console.log(`axios성공`);
+  console.log(`getRealtimeMatching axios 성공 : ${data}`);
+  console.log(data);
   return data;
 };
