@@ -1,12 +1,12 @@
 import { axiosInstance } from '@/features/Signup/apis/axios';
 import type {
-  BasicResponseDto,
   LogoutDto,
   ProSignupRequestDto,
   SmsSendRequestDto,
   SmsVerifyRequestDto,
   UserSignupRequestDto,
 } from '@/features/Signup/types/Auth';
+import type { BasicResponseDto } from '@/types/Common';
 
 export const postUserSignup = async (body: UserSignupRequestDto): Promise<BasicResponseDto> => {
   const { data } = await axiosInstance.post('/auth/user-signup', body);

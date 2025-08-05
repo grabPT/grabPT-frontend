@@ -1,12 +1,15 @@
 import { useState } from 'react';
 
 import { useNavigate, useParams } from 'react-router-dom';
+import z from 'zod';
 
 import Profile from '@/assets/images/HeaderProfile.png';
 import Button from '@/components/Button';
 import CheckedButton from '@/components/CheckedButton';
 import Tabs, { type TabItem } from '@/components/Tabs';
 import ROUTES, { urlFor } from '@/constants/routes';
+import { detailInfoSchema } from '@/features/Request/schemas/requestSchema';
+import { useRequestStore } from '@/store/useRequestStore';
 import { useUserRoleStore } from '@/store/useUserRoleStore';
 import { AGES, DAYS, GENDERS, PURPOSES, TIMES } from '@/types/ReqeustsType';
 
@@ -31,6 +34,18 @@ const RequestDetailPage = () => {
     if (isWriter) editRequest();
     else navigateToProposalForm();
   };
+  //값 수정 시 유효성 검사 
+  const { detailInfo } = useRequestStore();
+
+  try {
+    detailInfoSchema.parse(detailInfo);
+    // 검증 통과 → 제출 가능
+  } catch (err) {
+    if (err instanceof z.ZodError) {
+      console.log(err); // 각 필드별 에러 메시지 접근 가능
+      alert(err.message); // 첫 번째 에러 메시지 alert
+    }
+  }
 
   return (
     <section className="flex flex-col items-center py-6">
@@ -102,12 +117,7 @@ const RequestDetailPage = () => {
           </h1>
           <div className="mt-6 flex gap-2">
             {GENDERS.map((g) => (
-              <CheckedButton
-                key={g}
-                // isChecked={studentGender === data.userGender}
-              >
-                {g}
-              </CheckedButton>
+              <CheckedButton key={g}>{g}</CheckedButton>
             ))}
           </div>
         </section>
@@ -119,12 +129,7 @@ const RequestDetailPage = () => {
           </h1>
           <div className="mt-6 flex gap-2">
             {GENDERS.map((g) => (
-              <CheckedButton
-                key={g}
-                // isChecked={trainerGender === data.userGender}
-              >
-                {g}
-              </CheckedButton>
+              <CheckedButton key={g}>{g}</CheckedButton>
             ))}
           </div>
         </section>
@@ -137,7 +142,7 @@ const RequestDetailPage = () => {
           <input
             type="date"
             aria-label="PT 시작 희망일"
-            value={'2025-07-28'}
+            value={detailInfo?.startPreference || ''}
             className="mt-6 rounded-[10px] border border-[#CCCCCC] p-3 text-xl focus:border-gray-400 focus:outline-none"
           />
         </section>
@@ -149,11 +154,7 @@ const RequestDetailPage = () => {
           </h1>
           <div className="mt-6 flex flex-wrap gap-2">
             {DAYS.map((d) => (
-              <CheckedButton
-                key={d}
-                width="w-[56px]"
-                // isChecked={d === data.startPreference.날짜작업}
-              >
+              <CheckedButton key={d} width="w-[56px]">
                 {d}
               </CheckedButton>
             ))}
@@ -180,6 +181,7 @@ const RequestDetailPage = () => {
           <textarea
             className="mt-6 h-[433px] w-full resize-none rounded-[10px] border border-[#CCCCCC] bg-[#F5F5F5] p-4 text-[15px] placeholder:text-[#CCCCCC] focus:border-gray-400 focus:outline-none"
             placeholder={'입력받아서 넘겨요 ~'}
+            value={detailInfo?.content || ''}
           />
         </section>
       </section>

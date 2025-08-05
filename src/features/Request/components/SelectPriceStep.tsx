@@ -1,14 +1,16 @@
-import { useMemo, useState } from 'react';
+import { useRequestStore } from '@/store/useRequestStore';
+import { useMemo } from 'react';
+
 
 const numberWithComma = (n: number) => n.toLocaleString('ko-KR');
 
 const SelectPriceStep = () => {
   /** 입력 상태 */
-  const [count, setCount] = useState(20); // 횟수
-  const [unitPrice, setUnitPrice] = useState(20_000); // 1회 가격(원)
+  const { priceInfo, setPriceInfo } = useRequestStore();
+  const { price, sessionCount} = priceInfo;
 
   /** 총액 계산 */
-  const total = useMemo(() => count * unitPrice, [count, unitPrice]);
+  const total = useMemo(() => price * sessionCount, [price, sessionCount]);
   return (
     <div className="relative flex w-full flex-col items-center">
       <div className="absolute bottom-[110%] left-0 flex items-start gap-[10px]">
@@ -39,11 +41,19 @@ const SelectPriceStep = () => {
               type="number"
               aria-label="PT 횟수"
               min={1}
-              value={count}
+              value={sessionCount === 0 ? '' : sessionCount}
               // NaN 방지
               onChange={(e) => {
-                const value = Number(e.target.value);
-                setCount(Number.isNaN(value) ? 0 : value);
+                const raw = e.target.value;
+                if (raw === '') {
+                  setPriceInfo({ ...priceInfo, sessionCount: 0 });
+                  return;
+                }
+                const value = Number(raw.replace(/^0+/, ''));
+                setPriceInfo({
+                  ...priceInfo,
+                  sessionCount: value
+                });
               }}
               className="h-12 w-full rounded-lg border border-gray-300 pr-12 pl-15.5 text-center text-lg outline-none focus:border-blue-500"
             />
@@ -62,11 +72,19 @@ const SelectPriceStep = () => {
               aria-label="횟수당 가격"
               min={0}
               step={1000}
-              value={unitPrice}
+              value={price === 0 ? '' : price}
               // NaN 방지
               onChange={(e) => {
-                const value = Number(e.target.value);
-                setUnitPrice(Number.isNaN(value) ? 0 : value);
+                const raw = e.target.value;
+                if (raw === '') {
+                  setPriceInfo({ ...priceInfo, price: 0 });
+                  return;
+                }
+                const value = Number(raw.replace(/^0+/, ''));
+                setPriceInfo({
+                  ...priceInfo,
+                  price: value
+                });
               }}
               className="box-border h-12 w-full rounded-lg border border-gray-300 pr-12 pl-15.5 text-center text-lg outline-none focus:border-blue-500"
             />

@@ -1,4 +1,5 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
+import React from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -9,37 +10,68 @@ import FillDetailStep from '@/features/Request/components/FillDetailStep';
 import SelectPriceStep from '@/features/Request/components/SelectPriceStep';
 import SelectSportStep from '@/features/Request/components/SelectSportStep';
 import useStepParam from '@/features/Request/hooks/UseStepParam';
+import { useRequest } from '@/features/Request/hooks/useRequest';
+import { useRequestStore } from '@/store/useRequestStore';
 
+type FillDetailRef = { submit: () => Promise<boolean> };
 const STEP_MAP = {
   1: SelectSportStep,
   2: SelectPriceStep,
   3: FillDetailStep,
 } as const;
 
+type StepComponentType =
+  | (typeof STEP_MAP)[1]
+  | (typeof STEP_MAP)[2]
+  | React.ForwardRefExoticComponent<React.RefAttributes<FillDetailRef>>;
+
 const RequestPage = () => {
   const navigate = useNavigate();
   /* step 관리 훅 */
   const { step, next, isLast } = useStepParam(3);
 
-  /* 다음 버튼 핸들러 */
-  const handleNextStep = useCallback(() => {
-    if (isLast) {
-      alert('요청서 제출 완료');
-      // post요청 보내고 id받아와서 해당 요청서 상세페이지로 리다이렉트
-      // 일단 하드코딩
-      navigate(urlFor.requestDetail(3));
+  const StepComponent = STEP_MAP[step] as StepComponentType;
+  const fillDetailRef = useRef<{ submit: () => Promise<boolean> }>(null);
+
+  //api 연결
+  const { mutate: requestSend } = useRequest();
+  const { sportsTypeInfo } = useRequestStore();
+  useEffect(() => {
+    requestSend(useRequestStore.getState().getRequestDto(), {
+      onSuccess: (res) => {
+        console.log('Request success:', res);
+      },
+      onError: (err) => {
+        console.error('Request failed:', err);
+      },
+    });
+  }, [requestSend]);
+
+  const handleNext = useCallback(async () => {
+    if (step === 1) {
+      if (sportsTypeInfo?.categoryId == 0) {
+        alert('운동 종목을 선택해주세요');
+        return;
+      }
     }
 
-    next(); // 쿼리 파라미터를 step+1 로 수정
-  }, [isLast, next, navigate]);
+    if (isLast) {
+      const success = await fillDetailRef.current?.submit(); //외부(RequestPage.tsx)에서 내부(FillDetailStep.tsx) 컴포넌트의 onSubmit 함수를 호출하여 폼검사를 진행
+      console.log(success);
+      if (!success) return; // 유효성 실패 시 중단(이 부분 좀 이상함)
 
-  const StepComponent = STEP_MAP[step];
+      alert('요청서 제출 완료');
+      navigate(urlFor.requestDetail(3));
+      return;
+    }
 
+    next();
+  }, [step, isLast, navigate, sportsTypeInfo, next]);
   return (
     <div className="box-border flex flex-col items-center py-[100px] text-center">
-      <StepComponent />
+      {step === 3 ? <FillDetailStep ref={fillDetailRef} /> : <StepComponent />}
       <div className="mt-12">
-        <Button onClick={handleNextStep} width="w-[26rem]">
+        <Button onClick={handleNext} width="w-[26rem]">
           {isLast ? '작성 완료' : '다음'}
         </Button>
       </div>
