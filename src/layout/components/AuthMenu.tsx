@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import { Link, useNavigate } from 'react-router-dom';
 
+import { getAccessToken } from '@/apis/test';
 import Alert from '@/assets/images/Alert.png';
 import Chat from '@/assets/images/Chat.png';
 import HeaderProfile from '@/assets/images/HeaderProfile.png';
@@ -21,7 +22,10 @@ function AuthMenu() {
       {/* 로그인토글버튼추가 */}
       <button
         type="button"
-        onClick={toggleLoggedIn}
+        onClick={() => {
+          if (!isLoggedIn) getAccessToken();
+          toggleLoggedIn();
+        }}
         className="mr-6 rounded-md bg-orange-300 px-3 py-1 text-sm text-white"
       >
         {isLoggedIn ? '로그아웃할래' : '로그인할래'}
