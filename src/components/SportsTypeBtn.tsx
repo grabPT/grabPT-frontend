@@ -1,12 +1,12 @@
-import type { SportsType } from '@/types/SportsType';
+import type { SportsLabelType } from '@/types/SportsType';
 
 interface SportsTypeBtnProps {
-  type: SportsType;
+  label: SportsLabelType;
   img: string;
   onClick: () => void;
   isSelected: boolean;
 }
-const SportsTypeBtn = ({ type, img, isSelected, onClick }: SportsTypeBtnProps) => {
+const SportsTypeBtn = ({ label, img, isSelected, onClick }: SportsTypeBtnProps) => {
   // 선택된 운동 종목과 현재 버튼의 종목이 일치하는지 확인
   return (
     <div
@@ -21,7 +21,7 @@ const SportsTypeBtn = ({ type, img, isSelected, onClick }: SportsTypeBtnProps) =
       </div>
 
       <div className="absolute top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2 text-2xl font-semibold whitespace-nowrap text-white drop-shadow-md">
-        {type}
+        {label}
       </div>
     </div>
   );
