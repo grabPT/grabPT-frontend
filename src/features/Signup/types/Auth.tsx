@@ -1,4 +1,4 @@
-import type { SportsTypeStepDto } from "@/types/Common";
+import type { SportsTypeStepDto } from '@/types/SportsTypeStepDto';
 
 export type BaseSignupRequestDto = SignupUserInfoStepDto &
   SportsTypeStepDto &

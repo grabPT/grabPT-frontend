@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 import type { RequestDetailStepDto, RequestPriceStepDto } from '@/features/Request/types/Request';
-import type { SportsTypeStepDto } from '@/types/Common';
+import type { SportsTypeStepDto } from '@/types/SportsTypeStepDto';
 
 interface RequestState {
   sportsTypeInfo: SportsTypeStepDto;
@@ -27,8 +27,8 @@ export const useRequestStore = create<
     availableDays: [],
     availableTimes: [],
     trainerGender: '',
-    startPreference:'',
-    content:'',
+    startPreference: '',
+    content: '',
   },
   setSportsTypeInfo: (info) =>
     set((state) => ({ sportsTypeInfo: { ...state.sportsTypeInfo, ...info } })),

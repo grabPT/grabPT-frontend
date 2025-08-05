@@ -3,11 +3,10 @@ import { create } from 'zustand';
 import type {
   SignupNicknameStepDto,
   SignupProInfoStepDto,
-
   SignupUserAgreementDto,
   SignupUserInfoStepDto,
 } from '@/features/Signup/types/Auth';
-import type { SportsTypeStepDto } from '@/types/Common';
+import type { SportsTypeStepDto } from '@/types/SportsTypeStepDto';
 
 interface SignupState {
   userInfo: SignupUserInfoStepDto;

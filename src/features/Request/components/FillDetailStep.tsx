@@ -21,8 +21,6 @@ import {
   type TimeSlot,
 } from '@/types/ReqeustsType';
 
-
-
 const FillDetailStep: ForwardRefRenderFunction<{ submit: () => Promise<boolean> }, object> = (
   _props,
   ref,
@@ -53,21 +51,24 @@ const FillDetailStep: ForwardRefRenderFunction<{ submit: () => Promise<boolean> 
   });
   console.log(errors);
 
-  const onSubmit = (data: RequestDetailStepDto) => {
-    const updated = {
-      ...data,
-      etcPurposeContent: data.purpose.includes('기타') ? data.etcPurposeContent : undefined,
-    };
-    setDetailInfo(updated);
-    console.log(updated);
-    return true;
-  };
-
   useImperativeHandle(ref, () => ({
     submit: () =>
-      handleSubmit(onSubmit, () => false)()
-        .then(() => true)
-        .catch(() => false),
+      new Promise((resolve) => {
+        handleSubmit(
+          async (data) => {
+            const updated = {
+              ...data,
+              etcPurposeContent: data.purpose.includes('기타') ? data.etcPurposeContent : undefined,
+            };
+            setDetailInfo(updated);
+            console.log(updated);
+            resolve(true);
+          },
+          () => {
+            resolve(false); // 유효성 검증 실패 시 false 반환
+          },
+        )();
+      }),
   }));
 
   /* 목적(다중) */
@@ -113,9 +114,15 @@ const FillDetailStep: ForwardRefRenderFunction<{ submit: () => Promise<boolean> 
     <div className="flex w-full flex-col gap-20 text-left text-4xl font-bold">
       {/* 1. PT 목적 */}
       <section>
-        <h1>
-          PT의 <span className="text-button">목적</span>이 무엇인가요?
-        </h1>
+        <div className="flex items-end gap-3">
+          <h1>
+            PT의 <span className={errors.purpose ? 'text-red-500' : 'text-button'}>목적</span>이
+            무엇인가요?
+          </h1>
+          {errors.purpose && (
+            <p className="text-[1rem] font-semibold text-red-500">{errors.purpose.message}</p>
+          )}
+        </div>
         <div className="mt-6">
           <div className="flex gap-6">
             {PURPOSES.map((p) => (
@@ -140,9 +147,15 @@ const FillDetailStep: ForwardRefRenderFunction<{ submit: () => Promise<boolean> 
 
       {/* 2. 연령대 */}
       <section>
-        <h1>
-          수강생의 <span className="text-button">연령대</span>
-        </h1>
+        <div className="flex items-end gap-3">
+          <h1>
+            수강생의{' '}
+            <span className={errors.ageGroup ? 'text-red-500' : 'text-button'}>연령대</span>
+          </h1>
+          {errors.ageGroup && (
+            <p className="text-[1rem] font-semibold text-red-500">{errors.ageGroup.message}</p>
+          )}
+        </div>
         <div className="mt-6 flex flex-wrap gap-2">
           {AGES.map((a) => (
             <CheckedButton key={a} isChecked={age === a} onClick={() => setAge(a)}>
@@ -154,9 +167,16 @@ const FillDetailStep: ForwardRefRenderFunction<{ submit: () => Promise<boolean> 
 
       {/* 3. 수강생 성별 */}
       <section>
-        <h1>
-          수강생의 <span className="text-button">성별</span>
-        </h1>
+        <div className="flex items-end gap-3">
+          <h1>
+            수강생의{' '}
+            <span className={errors.userGender ? 'text-red-500' : 'text-button'}>성별</span>
+          </h1>
+          {errors.userGender && (
+            <p className="text-[1rem] font-semibold text-red-500">{errors.userGender.message}</p>
+          )}
+        </div>
+
         <div className="mt-6 flex gap-2">
           {GENDERS.map((g) => (
             <CheckedButton
@@ -172,9 +192,15 @@ const FillDetailStep: ForwardRefRenderFunction<{ submit: () => Promise<boolean> 
 
       {/* 4. 트레이너 선호 성별 */}
       <section>
-        <h1>
-          트레이너 <span className="text-button">선호 성별</span>
-        </h1>
+        <div className="flex items-end gap-3">
+          <h1>
+            트레이너{' '}
+            <span className={errors.trainerGender ? 'text-red-500' : 'text-button'}>선호 성별</span>
+          </h1>
+          {errors.trainerGender && (
+            <p className="text-[1rem] font-semibold text-red-500">{errors.trainerGender.message}</p>
+          )}
+        </div>
         <div className="mt-6 flex gap-2">
           {GENDERS.map((g) => (
             <CheckedButton key={g} isChecked={trainer === g} onClick={() => setTrainerGender(g)}>
@@ -186,9 +212,19 @@ const FillDetailStep: ForwardRefRenderFunction<{ submit: () => Promise<boolean> 
 
       {/* 5. PT 시작 희망일 */}
       <section>
-        <h1>
-          PT <span className="text-button">시작 희망일</span>
-        </h1>
+        <div className="flex items-end gap-3">
+          <h1>
+            PT{' '}
+            <span className={errors.startPreference ? 'text-red-500' : 'text-button'}>
+              시작 희망일
+            </span>
+          </h1>
+          {errors.startPreference && (
+            <p className="text-[1rem] font-semibold text-red-500">
+              {errors.startPreference.message}
+            </p>
+          )}
+        </div>
         <input
           type="date"
           aria-label="PT 시작 희망일"
@@ -200,9 +236,14 @@ const FillDetailStep: ForwardRefRenderFunction<{ submit: () => Promise<boolean> 
 
       {/* 6. 가능 요일 */}
       <section>
-        <h1>
-          가능 <span className="text-button">요일</span>
-        </h1>
+        <div className="flex items-end gap-3">
+          <h1>
+            가능<span className={errors.availableDays ? 'text-red-500' : 'text-button'}>요일</span>
+          </h1>
+          {errors.availableDays && (
+            <p className="text-[1rem] font-semibold text-red-500">{errors.availableDays.message}</p>
+          )}
+        </div>
         <div className="mt-6 flex flex-wrap gap-2">
           {DAYS.map((d) => (
             <CheckedButton
@@ -219,9 +260,17 @@ const FillDetailStep: ForwardRefRenderFunction<{ submit: () => Promise<boolean> 
 
       {/* 7. 가능 시간대 */}
       <section>
-        <h1>
-          가능 <span className="text-button">시간대</span>
-        </h1>
+        <div className="flex items-end gap-3">
+          <h1>
+            가능
+            <span className={errors.availableTimes ? 'text-red-500' : 'text-button'}>시간대</span>
+          </h1>
+          {errors.availableTimes && (
+            <p className="text-[1rem] font-semibold text-red-500">
+              {errors.availableTimes.message}
+            </p>
+          )}
+        </div>
         <div className="mt-6 flex flex-wrap gap-2">
           {TIMES.map((t) => (
             <CheckedButton key={t} isChecked={times.includes(t)} onClick={() => toggleTime(t)}>

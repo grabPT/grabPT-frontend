@@ -57,10 +57,7 @@ const RequestPage = () => {
 
     if (isLast) {
       const success = await fillDetailRef.current?.submit(); //외부(RequestPage.tsx)에서 내부(FillDetailStep.tsx) 컴포넌트의 onSubmit 함수를 호출하여 폼검사를 진행
-      console.log(success);
-      if (!success) return; // 유효성 실패 시 중단(이 부분 좀 이상함)
-
-      alert('요청서 제출 완료');
+      if (!success) return;
       navigate(urlFor.requestDetail(3));
       return;
     }

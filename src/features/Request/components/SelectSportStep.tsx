@@ -1,15 +1,11 @@
-import { useState } from 'react';
-
 import SportsTypeSelector from '@/components/SportsTypeSelector';
 import { SPORTS, type SportItem } from '@/constants/sports';
 import { useRequestStore } from '@/store/useRequestStore';
 
 const SelectSportStep = () => {
-  const [selected, setSelected] = useState<SportItem | null>(null);
-
-//api 연결
- const { sportsTypeInfo, setSportsTypeInfo } = useRequestStore();
-   const handleSelect = (sport: SportItem) => {
+  //api 연결
+  const { sportsTypeInfo, setSportsTypeInfo } = useRequestStore();
+  const handleSelect = (sport: SportItem) => {
     setSportsTypeInfo({ categoryId: sport.id });
   };
   return (
@@ -19,8 +15,10 @@ const SelectSportStep = () => {
       </h1>
 
       <div className="mt-20">
-        <SportsTypeSelector  value={SPORTS.find((s) => s.id === sportsTypeInfo.categoryId) ?? null}
-                onChange={handleSelect} />
+        <SportsTypeSelector
+          value={SPORTS.find((s) => s.id === sportsTypeInfo.categoryId) ?? null}
+          onChange={handleSelect}
+        />
       </div>
     </div>
   );

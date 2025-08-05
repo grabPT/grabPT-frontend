@@ -1,12 +1,17 @@
 import { useMutation } from '@tanstack/react-query';
 
 import { postRequest } from '@/features/Request/apis/request';
-
-import type { BasicResponseDto } from '@/types/Common';
 import type { RequestRequestDto } from '@/features/Request/types/Request';
+import type { CommonResponseDto } from '@/types/commonResponseDto';
 
 export const useRequest = () => {
-  return useMutation<BasicResponseDto, Error, RequestRequestDto>({
+  return useMutation<CommonResponseDto<string>, Error, RequestRequestDto>({
     mutationFn: postRequest,
+    onSuccess: (data) => {
+      console.log('요청서 작성 성공:', data);
+    },
+    onError: (error) => {
+      console.error('요청서 작성 실패:', error);
+    },
   });
 };
