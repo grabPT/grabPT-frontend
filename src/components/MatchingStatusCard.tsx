@@ -7,8 +7,9 @@ interface MatchingStatusCardProps {
   match: RealtimeMatchingType;
 }
 
+// RealtimeMatchingStatus.tsx에 쓰이는 카드 컴포넌트입니다
 const MatchingStatusCard = ({ match }: MatchingStatusCardProps) => {
-  const isMatched = (match.matchStatus = '매칭 완료');
+  const isMatched = match.matchStatus === 'MATCHED';
 
   return (
     <div className="flex h-[48px] w-[380px] items-center">

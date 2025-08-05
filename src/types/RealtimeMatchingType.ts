@@ -1,6 +1,18 @@
 import type { CommonResponseDto } from '@/types/commonResponseDto';
 
-export type MatchingStatus = 'MATCHING' | '이거뭐임' | '이거뭐임';
+export type CategoryCodeType =
+  | 'health'
+  | 'pilates'
+  | 'golf'
+  | 'tennis'
+  | 'swimming'
+  | 'boxing'
+  | 'badminton'
+  | 'running'
+  | 'dance'
+  | 'pingpong';
+
+export type MatchStatusType = 'MATCHING' | 'MATCHED';
 
 export type RealtimeMatchingType = {
   id: number | null;
@@ -8,7 +20,7 @@ export type RealtimeMatchingType = {
   region: string;
   sessionCount: number;
   totalPrice: number;
-  matchStatus: string;
+  matchStatus: MatchStatusType;
   profileImageUrl: string | null;
 };
 
