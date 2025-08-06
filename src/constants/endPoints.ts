@@ -8,12 +8,12 @@ export const END_POINT = {
   MYPAGE: {},
 
   CATEGORY: {
-    realtime: (categoryCode: SportsSlugType) => `/api/v1/requests${categoryCode}`,
+    realtime: (categoryCode: SportsSlugType) => `/api/v1/requests/${categoryCode}`,
   },
 
   REQUESTS: {
     LIST: {
-      list: '/requestion/nearby',
+      list: '/api/requestion/nearby',
     },
     FORM: {},
     DETAIL: {},

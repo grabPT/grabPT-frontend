@@ -4,10 +4,19 @@ import Button from '@/components/Button';
 import Pagination from '@/components/Pagination';
 import { mockRequestsDetail } from '@/data/requests';
 import RequestsStatusCard from '@/features/Requests/components/RequestsStatusCard';
+import { useGetRequestsList } from '@/features/Requests/hooks/useGetRequestsList';
 import { useSortRequestsStore } from '@/store/useSortRequestsStore';
 
 const RequestsListPage = () => {
   const [page, setPage] = useState(1);
+
+  const {
+    data: requestsList,
+    error,
+    isPending,
+  } = useGetRequestsList({ sortBy: 'latest', page: 1, size: 6 });
+
+  console.log(requestsList);
 
   const sort = useSortRequestsStore((state) => state.sort);
   const handleChangeToLatest = useSortRequestsStore((state) => state.handleChangeToLatest);

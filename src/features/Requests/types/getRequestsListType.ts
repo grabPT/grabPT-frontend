@@ -1,9 +1,9 @@
 import type { MatchStatusType } from '@/types/RealtimeMatchingType';
-import type { SortType } from '@/types/SortType';
+import type { SortByType, SortType } from '@/types/SortType';
 import type { CommonResponseDto } from '@/types/commonResponseDto';
 
 export type getRequestsListRequestDto = {
-  sortBy: 'latest' | 'price';
+  sortBy: SortByType;
   page: number;
   size: number;
 };
