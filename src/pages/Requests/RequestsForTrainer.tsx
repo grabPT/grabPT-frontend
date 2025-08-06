@@ -3,7 +3,7 @@ import { useMemo, useState } from 'react';
 import Button from '@/components/Button';
 import Pagination from '@/components/Pagination';
 import { mockRequestsDetail } from '@/data/requests';
-import RequestsStatusCard from '@/features/Requests/RequestsStatusCard';
+import RequestsStatusCard from '@/features/Requests/components/RequestsStatusCard';
 import { useSortRequestsStore } from '@/store/useSortRequestsStore';
 
 const RequestsForTrainer = () => {

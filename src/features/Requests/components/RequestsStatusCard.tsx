@@ -1,8 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
 import { urlFor } from '@/constants/routes';
-
-import UserRequestHeader from './UserRequestHeader';
+import UserRequestHeader from '@/features/Requests/components/UserRequestHeader';
 
 /*
 전문가 요청현황 조회 시
