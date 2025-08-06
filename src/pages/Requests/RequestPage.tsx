@@ -41,8 +41,10 @@ const RequestPage = () => {
     if (step === 1) {
       if (sportsTypeInfo?.categoryId == 0) {
         alert('운동 종목을 선택해주세요');
+        
         return;
       }
+
     }
 
     if (isLast) {
