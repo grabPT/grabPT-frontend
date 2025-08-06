@@ -1,3 +1,4 @@
+import { END_POINT } from '@/constants/endPoints';
 import type {
   getRequestsListRequestDto,
   getRequestsListResponseDto,
@@ -9,7 +10,7 @@ export const getRequestsList = async (
   params: getRequestsListRequestDto,
 ): Promise<getRequestsListResponseDto> => {
   try {
-    const { data } = await privateInstance.get(`api/requestion/nearby`, { params });
+    const { data } = await privateInstance.get(END_POINT.REQUESTS.LIST.list, { params });
     return data;
   } catch (e) {
     throw e as Error;
