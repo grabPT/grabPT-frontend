@@ -22,7 +22,7 @@ const UserMainPage = () => {
       )}
 
       <div className="my-[200px]">
-        <RealtimeMatchingStatus categoryType={'boxing'} />
+        <RealtimeMatchingStatus categoryType={'health'} />
       </div>
 
       <div className="mx-auto mb-[200px] max-w-[1480px] sm:w-[720px] lg:w-[720px] xl:w-[1080px] 2xl:w-[1480px]">
