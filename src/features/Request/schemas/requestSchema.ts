@@ -19,3 +19,8 @@ export const detailInfoSchema = z.object({
   availableTimes: z.array(z.enum(TIMES)).min(1, '가능한 시간대를 하나 이상 선택해주세요.'),
   content: z.string().max(500, '요청사항은 300자 이내로 입력해주세요.'),
 });
+
+export const patchRequestSchema = detailInfoSchema.extend({
+  price: z.number().min(0,{message: "가격과 횟수는 0 이상이여야 합니다."}),
+
+})

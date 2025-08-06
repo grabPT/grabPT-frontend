@@ -6,7 +6,7 @@ const SelectSportStep = () => {
   //api 연결
   const { sportsTypeInfo, setSportsTypeInfo } = useRequestStore();
   const handleSelect = (sport: SportItem) => {
-    setSportsTypeInfo({ categoryId: sport.id });
+    setSportsTypeInfo({ categoryId: sport.id});
   };
   return (
     <div className="mb-12.5 flex flex-col items-center">

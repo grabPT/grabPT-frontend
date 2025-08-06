@@ -54,9 +54,10 @@ const SelectPriceStep = () => {
                 setPriceInfo({
                   ...priceInfo,
                   sessionCount: value,
+                  location:'서울시 강서구 화곡3동'//나중에 주소 받아서 연결 필요 지금은 하드 코딩
                 });
               }}
-              className="h-12 w-full rounded-lg border border-gray-300 pr-12 pl-15.5 text-center text-lg outline-none focus:border-blue-500"
+              className="h-12 w-full rounded-lg border border-gray-300 pr-12 pl-15 text-center text-lg outline-none focus:border-blue-500"
             />
             <span className="absolute top-1/2 right-4 -translate-y-1/2 text-sm text-gray-500">
               회
@@ -87,7 +88,7 @@ const SelectPriceStep = () => {
                   price: value,
                 });
               }}
-              className="box-border h-12 w-full rounded-lg border border-gray-300 pr-12 pl-15.5 text-center text-lg outline-none focus:border-blue-500"
+              className="box-border h-12 w-full rounded-lg border border-gray-300 pr-12 pl-15 text-center text-lg outline-none focus:border-blue-500"
             />
             <span className="absolute top-1/2 right-4 -translate-y-1/2 text-sm text-gray-500">
               원

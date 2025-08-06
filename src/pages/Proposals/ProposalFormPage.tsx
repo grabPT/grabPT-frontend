@@ -20,7 +20,7 @@ const ProposalFormPage = () => {
 
   //api 연결
   const { mutate: suggestSend } = useSuggest();
-  const { setSuggestInfo } = useSuggestStore();
+  const { suggestInfo,setSuggestInfo } = useSuggestStore();
   //유효성 검사
   const {
     register,
@@ -40,12 +40,12 @@ const ProposalFormPage = () => {
   });
   console.log(errors);
   const onSubmit = async (data: DetailProposalForm) => {
-    //우선 requestionId를 받아오는 로직 모르겠어서 임의로 넣음 나중에 수정할 것
+
     const newSuggestInfo = {
       ...data,
       sentAt: new Date().toISOString(),
-      requestionId: 3,
       isAgreed: false,
+      requestionId:suggestInfo.requestionId,
     };
     setSuggestInfo(newSuggestInfo);
 

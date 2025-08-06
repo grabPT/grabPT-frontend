@@ -19,7 +19,7 @@ export const useRequestStore = create<
   }
 >((set, get) => ({
   sportsTypeInfo: { categoryId: 0 },
-  priceInfo: { price: 20000, sessionCount: 20 },
+  priceInfo: { price: 20000, sessionCount: 20, location: '' },
   detailInfo: {
     purpose: [],
     ageGroup: null,
@@ -32,15 +32,15 @@ export const useRequestStore = create<
   },
   setSportsTypeInfo: (info) =>
     set((state) => ({ sportsTypeInfo: { ...state.sportsTypeInfo, ...info } })),
-  setDetailInfo: (info) => set((state) => ({ detailInfo: { ...state.detailInfo, ...info } })),
   setPriceInfo: (info) => set((state) => ({ priceInfo: { ...state.priceInfo, ...info } })),
-
+  setDetailInfo: (info) => set((state) => ({ detailInfo: { ...state.detailInfo, ...info } })),
   getRequestInfo: () => {
     const state = get();
     return {
       categoryId: state.sportsTypeInfo.categoryId,
       price: state.priceInfo.price,
       sessionCount: state.priceInfo.sessionCount,
+      location:state.priceInfo.location,
       purpose: state.detailInfo.purpose,
       ageGroup: state.detailInfo.ageGroup,
       userGender: state.detailInfo.userGender,

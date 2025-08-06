@@ -13,7 +13,7 @@ export const publicInstance = axios.create({
 // 여기서 찾은 권장패턴입니다. 추후 활성화
 // 토큰 포함 인스턴스
 export const privateInstance = axios.create({
-  baseURL: import.meta.env.VITE_SERVER_BASE_URL,
+  baseURL: import.meta.env.VITE_SERVER_API_URL,
   //   headers: { 'Content-Type': 'application/json' },
   //   timeout: 10_000,
 });

@@ -3,6 +3,6 @@ import { privateInstance } from '@/libs/axios';
 import type { CommonResponseDto } from '@/types/commonResponseDto';
 
 export const postSuggest = async (body: SuggestRequestDto): Promise<CommonResponseDto<string>> => {
-  const { data } = await privateInstance.post('/suggestion', body);
+  const { data } = await privateInstance.post('/api/suggestion', body);
   return data;
 };

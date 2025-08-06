@@ -8,25 +8,34 @@ import Button from '@/components/Button';
 import CheckedButton from '@/components/CheckedButton';
 import Tabs, { type TabItem } from '@/components/Tabs';
 import ROUTES, { urlFor } from '@/constants/routes';
-import { detailInfoSchema } from '@/features/Request/schemas/requestSchema';
-import { useRequestStore } from '@/store/useRequestStore';
+import { useSuggestStore } from '@/store/useSuggestStore';
 import { useUserRoleStore } from '@/store/useUserRoleStore';
 import { AGES, DAYS, GENDERS, PURPOSES, TIMES } from '@/types/ReqeustsType';
+import { useRequestDetail } from '@/features/Request/hooks/useGetDetailRequest';
+import { mapEGenderToEnum } from '@/types/ReqeustsType';
 
 const RequestDetailPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const requestionId = Number(id);
+  const { setSuggestInfo } = useSuggestStore();
   const { isExpert } = useUserRoleStore();
+
+  // const category = SPORTS.find((s) => s.id === data?.categoryId);
+
   // api연결 시 isWriter 함수로 변경 (요청서의 작성자 id === 현재 유저 id)
   const [isWriter] = useState<boolean>(false);
   const TabItems: TabItem[] = [
-    { label: '정보', to: urlFor.requestDetail(Number(id)) },
-    { label: '제안 목록', to: urlFor.requestProposals(Number(id)) },
+    { label: '정보', to: urlFor.requestDetail(requestionId) },
+    { label: '제안 목록', to: urlFor.requestProposals(requestionId) },
   ];
+  const {data, isLoading, isError} = useRequestDetail(requestionId);
+
 
   const editRequest = () => alert('ㄴㄴ아직 ㅋㅋ');
   const navigateToProposalForm = () => {
-    // 이건 요청서 id를 넘겨주든 뭘 해야 할 듯?
+    //request 페이지에서 url에 있는 id로 requestionId 업데이트 + 가격+위치 정보 업데이트 -> proposalFormPage에서 store의 저장된 값을 받아서 사용
+    setSuggestInfo({ ...setSuggestInfo, requestionId });
     navigate(ROUTES.PROPOSALS.NEW);
   };
 
@@ -34,11 +43,9 @@ const RequestDetailPage = () => {
     if (isWriter) editRequest();
     else navigateToProposalForm();
   };
-  //값 수정 시 유효성 검사
-  const { detailInfo } = useRequestStore();
 
   try {
-    detailInfoSchema.parse(detailInfo);
+    
     // 검증 통과 → 제출 가능
   } catch (err) {
     if (err instanceof z.ZodError) {
@@ -46,7 +53,6 @@ const RequestDetailPage = () => {
       alert(err.message); // 첫 번째 에러 메시지 alert
     }
   }
-
   return (
     <section className="flex flex-col items-center py-6">
       {isWriter && <Tabs items={TabItems} width="w-[400px]" />}
@@ -54,20 +60,23 @@ const RequestDetailPage = () => {
       {/* 헤더 */}
       <div className="mt-16 flex h-[50px] w-full items-center justify-center gap-3">
         <img src={Profile} alt="요청서 프로필" className="h-full" />
-
-        <span className="text-4xl font-extrabold">강서구 복서</span>
+        {/* 강서구 복서 -> 회원 닉네임으로 바꿔야 할 듯, 아니면 복서라는 단어를 모든 종목마다 따로 설정해야함 */}
+        <span className="text-4xl font-extrabold">
+          {data?.location}
+           {/* {category?.label} */}
+        </span>
         <span className="text-2xl leading-none font-bold"> 님의 요청서입니다.</span>
       </div>
 
       <section className="mt-20 flex w-full flex-col gap-20 text-4xl font-bold">
         <section>
           <span className="mr-3">복싱</span>
-          <span className="text-lg font-semibold">서울시 강서구 화곡동</span>
+          <span className="text-lg font-semibold">{data?.location}</span>
 
           <div className="mt-5 flex items-center">
             <input
               type="number"
-              value={10}
+              value={data?.sessionCount}
               aria-label="희망 PT 횟수"
               readOnly
               className="mr-1.5 h-12 w-[85px] rounded-xl border-2 border-[#BABABA] pl-3.5 text-center text-2xl text-[#9F9F9F]"
@@ -75,7 +84,7 @@ const RequestDetailPage = () => {
             <span className="mr-5">회</span>
             <input
               type="number"
-              value={480000}
+              value={data?.price}
               aria-label="희망 PT 가격"
               readOnly
               className="mr-1.5 h-12 w-[260px] rounded-xl border-2 border-[#BABABA] px-8 text-end text-2xl text-[#9F9F9F]"
@@ -92,9 +101,14 @@ const RequestDetailPage = () => {
           <div className="mt-6">
             <div className="flex gap-6">
               {PURPOSES.map((p) => (
-                <CheckedButton key={p}>{p}</CheckedButton>
+                <CheckedButton isChecked={(data?.purpose ?? []).includes(p)} key={p}>{p}</CheckedButton>
               ))}
             </div>
+               {/* 타입 고치고 나서 추가 예정 {data.etcPurposeContent && ( */}
+            <textarea
+              className="mt-4 h-[180px] w-full resize-none rounded-[10px] border border-[#CCCCCC] bg-[#F5F5F5] p-4 text-[15px] placeholder:text-[#CCCCCC] focus:border-gray-400 focus:outline-none"
+              placeholder="세부 내용을 입력해주세요"
+            />
           </div>
         </section>
 
@@ -105,7 +119,16 @@ const RequestDetailPage = () => {
           </h1>
           <div className="mt-6 flex flex-wrap gap-2">
             {AGES.map((a) => (
-              <CheckedButton key={a}>{a}</CheckedButton>
+              <CheckedButton
+                isChecked={data?.ageGroup === a}
+                key={a}
+                onClick={() => {
+                  //  disabled={!canEdit}
+                  // setValue('ageGroup', a, { shouldDirty: true, shouldValidate: true });
+                }}
+              >
+                {a}
+              </CheckedButton>
             ))}
           </div>
         </section>
@@ -117,7 +140,7 @@ const RequestDetailPage = () => {
           </h1>
           <div className="mt-6 flex gap-2">
             {GENDERS.map((g) => (
-              <CheckedButton key={g}>{g}</CheckedButton>
+              <CheckedButton   isChecked={mapEGenderToEnum(data?.userGender ?? '') === g} key={g}>{g}</CheckedButton>
             ))}
           </div>
         </section>
@@ -129,7 +152,7 @@ const RequestDetailPage = () => {
           </h1>
           <div className="mt-6 flex gap-2">
             {GENDERS.map((g) => (
-              <CheckedButton key={g}>{g}</CheckedButton>
+              <CheckedButton isChecked={mapEGenderToEnum(data?.trainerGender ?? '') === g} key={g}>{g}</CheckedButton>
             ))}
           </div>
         </section>
@@ -142,7 +165,7 @@ const RequestDetailPage = () => {
           <input
             type="date"
             aria-label="PT 시작 희망일"
-            value={detailInfo?.startPreference || ''}
+            value={data?.startPreference}
             className="mt-6 rounded-[10px] border border-[#CCCCCC] p-3 text-xl focus:border-gray-400 focus:outline-none"
           />
         </section>
@@ -154,7 +177,7 @@ const RequestDetailPage = () => {
           </h1>
           <div className="mt-6 flex flex-wrap gap-2">
             {DAYS.map((d) => (
-              <CheckedButton key={d} width="w-[56px]">
+              <CheckedButton isChecked={data?.availableDays.includes(d)} key={d} width="w-[56px]">
                 {d}
               </CheckedButton>
             ))}
@@ -168,7 +191,7 @@ const RequestDetailPage = () => {
           </h1>
           <div className="mt-6 flex flex-wrap gap-2">
             {TIMES.map((t) => (
-              <CheckedButton key={t}>{t}</CheckedButton>
+              <CheckedButton isChecked={data?.availableTimes.includes(t)} key={t}>{t}</CheckedButton>
             ))}
           </div>
         </section>
@@ -181,7 +204,7 @@ const RequestDetailPage = () => {
           <textarea
             className="mt-6 h-[433px] w-full resize-none rounded-[10px] border border-[#CCCCCC] bg-[#F5F5F5] p-4 text-[15px] placeholder:text-[#CCCCCC] focus:border-gray-400 focus:outline-none"
             placeholder={'입력받아서 넘겨요 ~'}
-            value={detailInfo?.content || ''}
+            // value={data?.content}
           />
         </section>
       </section>
