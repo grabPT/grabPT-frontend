@@ -6,7 +6,7 @@ export const publicInstance = axios.create({
   headers: { 'Content-Type': 'application/json' },
   timeout: 10_000, //10
   withCredentials: false, // 쿠키/세션 차단 속성
-  validateStatus: (status) => status < 500, // 4xx도 클라이언트에서 처리
+  // validateStatus: (status) => status < 500, // 4xx도 클라이언트에서 처리 => 할 줄 몰라서 꺼버림 ㅎ
 });
 
 // https://medium.com/%40velja/token-refresh-with-axios-interceptors-for-a-seamless-authentication-experience-854b06064bde

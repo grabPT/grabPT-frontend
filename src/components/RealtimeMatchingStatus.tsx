@@ -3,21 +3,23 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Button from '@/components/Button';
+import ErrorComponent from '@/components/ErrorComponent';
+import LoadingMuscle from '@/components/LoadingMuscle';
 import MatchingStatusCard from '@/components/MatchingStatusCard';
 import ROUTES from '@/constants/routes';
 import { useGetRealtimeMatching } from '@/hooks/useGetRealtimeMatching';
 import { useUserRoleStore } from '@/store/useUserRoleStore';
-import type { CategoryCodeType } from '@/types/RealtimeMatchingType';
+import type {} from '@/types/RealtimeMatchingType';
+import type { SportsSlugType } from '@/types/SportsType';
 
 interface RealtimeMatchingStatusProps {
-  categoryType: CategoryCodeType;
+  categoryType: SportsSlugType;
 }
 
 // 실시간 매칭 현황 컴포넌트입니다
 // category를 넘겨받으면 컴포넌트에서 요청을 날립니다
 const RealtimeMatchingStatus = ({ categoryType }: RealtimeMatchingStatusProps) => {
-  const { data } = useGetRealtimeMatching(categoryType);
-  const matchingList = data?.result;
+  const { data: matchingList, error, isPending } = useGetRealtimeMatching(categoryType);
   const navigate = useNavigate();
   const { isLoggedIn, isExpert } = useUserRoleStore();
   const [cardCount, setCardCount] = useState(8);
@@ -43,6 +45,10 @@ const RealtimeMatchingStatus = ({ categoryType }: RealtimeMatchingStatusProps) =
     window.addEventListener('resize', update);
     return () => window.removeEventListener('resize', update);
   }, []);
+
+  //ui 처리
+  if (isPending) return <LoadingMuscle />;
+  if (error) return <ErrorComponent />;
 
   return (
     <section className="flex max-w-[1480px] flex-col gap-9 px-4 sm:w-[720px] lg:w-[720px] xl:w-[1080px] 2xl:w-[1480px]">

@@ -1,17 +1,5 @@
 import type { CommonResponseDto } from '@/types/commonResponseDto';
 
-export type CategoryCodeType =
-  | 'health'
-  | 'pilates'
-  | 'golf'
-  | 'tennis'
-  | 'swimming'
-  | 'boxing'
-  | 'badminton'
-  | 'running'
-  | 'dance'
-  | 'pingpong';
-
 export type MatchStatusType = 'MATCHING' | 'MATCHED';
 
 export type RealtimeMatchingType = {
