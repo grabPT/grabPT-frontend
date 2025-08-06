@@ -18,7 +18,7 @@ const SportsTypeSelector = ({ value, onChange, onSelectEnd }: SportsTypeSelector
       {SPORTS.map((sport: SportItem) => (
         <SportsTypeBtn
           key={sport.id}
-          type={sport.type}
+          label={sport.label}
           img={sport.img}
           isSelected={value?.id === sport.id}
           onClick={() => handleClick(sport)}
