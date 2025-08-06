@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Button from '@/components/Button';
+import ErrorComponent from '@/components/ErrorComponent';
 import LoadingMuscle from '@/components/LoadingMuscle';
 import MatchingStatusCard from '@/components/MatchingStatusCard';
 import ROUTES from '@/constants/routes';
@@ -47,7 +48,7 @@ const RealtimeMatchingStatus = ({ categoryType }: RealtimeMatchingStatusProps) =
 
   //ui 처리
   if (isPending) return <LoadingMuscle />;
-  if (error) return <>에러</>;
+  if (error) return <ErrorComponent />;
 
   return (
     <section className="flex max-w-[1480px] flex-col gap-9 px-4 sm:w-[720px] lg:w-[720px] xl:w-[1080px] 2xl:w-[1480px]">
