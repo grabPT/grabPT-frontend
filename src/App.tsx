@@ -28,8 +28,8 @@ import ProposalFormPage from '@/pages/Proposals/ProposalFormPage';
 import ProposalsListPage from '@/pages/Proposals/ProposalsListPage';
 import ProposalsForRequest from '@/pages/Requests/ProposalsForRequest';
 import RequestDetailPage from '@/pages/Requests/RequestDetailPage';
-import RequestPage from '@/pages/Requests/RequestPage';
-import RequestsForTrainer from '@/pages/Requests/RequestsForTrainer';
+import RequestFormPage from '@/pages/Requests/RequestFormPage';
+import RequestsListPage from '@/pages/Requests/RequestsListPage';
 
 const routes: RouteObject[] = [
   /* 온보딩 */
@@ -88,8 +88,8 @@ const routes: RouteObject[] = [
       {
         path: ROUTES.REQUESTS.ROOT,
         children: [
-          { index: true, element: <RequestsForTrainer /> }, // 리스트
-          { path: ROUTES.REQUESTS.NEW, element: <RequestPage /> }, // 작성
+          { index: true, element: <RequestsListPage /> }, // 리스트
+          { path: ROUTES.REQUESTS.NEW, element: <RequestFormPage /> }, // 작성
           { path: ROUTES.REQUESTS.DETAIL, element: <RequestDetailPage /> }, // 요청서상세
           { path: ROUTES.REQUESTS.PROPOSALS, element: <ProposalsForRequest /> }, // 요청서의 제안서 리스트
         ],

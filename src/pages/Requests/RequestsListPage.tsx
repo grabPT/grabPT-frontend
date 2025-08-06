@@ -6,7 +6,7 @@ import { mockRequestsDetail } from '@/data/requests';
 import RequestsStatusCard from '@/features/Requests/components/RequestsStatusCard';
 import { useSortRequestsStore } from '@/store/useSortRequestsStore';
 
-const RequestsForTrainer = () => {
+const RequestsListPage = () => {
   const [page, setPage] = useState(1);
 
   const sort = useSortRequestsStore((state) => state.sort);
@@ -71,4 +71,4 @@ const RequestsForTrainer = () => {
   );
 };
 
-export default RequestsForTrainer;
+export default RequestsListPage;
