@@ -35,5 +35,3 @@ export const TIMES: readonly TimeSlot[] = [
   '저녁(17:00~22:00)',
   '심야(22:00~06:00)',
 ] as const;
-
-

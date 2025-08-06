@@ -46,7 +46,7 @@ const Signup = () => {
   useEffect(() => {
     if (step === 6) {
       if (role === 1) {
-        const payload = useSignupStore.getState().getUserSignupDto(); 
+        const payload = useSignupStore.getState().getUserSignupDto();
 
         console.log('📦 보내는 user-signup payload:', payload); //
         userSignup(useSignupStore.getState().getUserSignupDto(), {

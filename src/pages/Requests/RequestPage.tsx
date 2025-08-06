@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useRef } from 'react';
 import React from 'react';
 
 import { useNavigate } from 'react-router-dom';
@@ -28,24 +28,14 @@ type StepComponentType =
 const RequestPage = () => {
   const navigate = useNavigate();
   /* step 관리 훅 */
-  const { step, next, isLast } = useStepParam(3);
+  const { step, isLast } = useStepParam(3);
 
   const StepComponent = STEP_MAP[step] as StepComponentType;
   const fillDetailRef = useRef<{ submit: () => Promise<boolean> }>(null);
 
-  //api 연결
+  //api 연결 + 유효성 검사
   const { mutate: requestSend } = useRequest();
   const { sportsTypeInfo } = useRequestStore();
-  useEffect(() => {
-    requestSend(useRequestStore.getState().getRequestDto(), {
-      onSuccess: (res) => {
-        console.log('Request success:', res);
-      },
-      onError: (err) => {
-        console.error('Request failed:', err);
-      },
-    });
-  }, [requestSend]);
 
   const handleNext = useCallback(async () => {
     if (step === 1) {
@@ -56,14 +46,23 @@ const RequestPage = () => {
     }
 
     if (isLast) {
-      const success = await fillDetailRef.current?.submit(); //외부(RequestPage.tsx)에서 내부(FillDetailStep.tsx) 컴포넌트의 onSubmit 함수를 호출하여 폼검사를 진행
+      //외부(RequestPage.tsx)에서 내부(FillDetailStep.tsx) 컴포넌트의 onSubmit 함수를 호출하여 폼검사를 진행
+      const success = await fillDetailRef.current?.submit();
       if (!success) return;
+      const requestInfo = useRequestStore.getState().getRequestInfo();
+      try {
+        await requestSend(requestInfo);
+        // 성공 시 이동
+        navigate(urlFor.requestDetail(3));
+      } catch (err) {
+        console.error('Request failed:', err);
+        alert('요청 전송에 실패했습니다. 잠시 후 다시 시도해주세요.');
+      }
       navigate(urlFor.requestDetail(3));
       return;
     }
+  }, [step, isLast, sportsTypeInfo?.categoryId, navigate, requestSend]);
 
-    next();
-  }, [step, isLast, navigate, sportsTypeInfo, next]);
   return (
     <div className="box-border flex flex-col items-center py-[100px] text-center">
       {step === 3 ? <FillDetailStep ref={fillDetailRef} /> : <StepComponent />}

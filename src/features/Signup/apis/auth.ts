@@ -8,18 +8,23 @@ import type {
 } from '@/features/Signup/types/Auth';
 import type { CommonResponseDto } from '@/types/commonResponseDto';
 
-
-export const postUserSignup = async (body: UserSignupRequestDto): Promise<CommonResponseDto<string>> => {
+export const postUserSignup = async (
+  body: UserSignupRequestDto,
+): Promise<CommonResponseDto<string>> => {
   const { data } = await axiosInstance.post('/auth/user-signup', body);
   return data;
 };
 
-export const postProSignup = async (body: ProSignupRequestDto): Promise<CommonResponseDto<string>> => {
+export const postProSignup = async (
+  body: ProSignupRequestDto,
+): Promise<CommonResponseDto<string>> => {
   const { data } = await axiosInstance.post('/auth/pro-signup', body);
   return data;
 };
 
-export const postSmsVerify = async (body: SmsVerifyRequestDto): Promise<CommonResponseDto<string>> => {
+export const postSmsVerify = async (
+  body: SmsVerifyRequestDto,
+): Promise<CommonResponseDto<string>> => {
   const { data } = await axiosInstance.post('/sms/verify-sms', body);
   return data;
 };

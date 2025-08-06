@@ -16,7 +16,9 @@ const CommentBox = ({
   return (
     <div className="relative w-full">
       {/* 글자 수 카운터 */}
-      <div className="text-right text-[14px]">{value.length}/{max}</div>
+      <div className="text-right text-[14px]">
+        {value.length}/{max}
+      </div>
 
       {/* 입력 영역 */}
       {/* 추후 반응형 */}
@@ -29,6 +31,6 @@ const CommentBox = ({
       />
     </div>
   );
-}
+};
 
 export default CommentBox;

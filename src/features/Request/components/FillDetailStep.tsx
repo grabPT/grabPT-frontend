@@ -287,7 +287,7 @@ const FillDetailStep: ForwardRefRenderFunction<{ submit: () => Promise<boolean> 
         </h1>
         <CommentBox
           value={watch('content')}
-          onChange={(e) => setValue('content', e.target.value)}
+          onChange={(e) => setValue('content', e.target.value, { shouldDirty: true })}
         />
       </section>
     </div>

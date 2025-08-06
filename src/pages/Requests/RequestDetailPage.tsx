@@ -34,7 +34,7 @@ const RequestDetailPage = () => {
     if (isWriter) editRequest();
     else navigateToProposalForm();
   };
-  //값 수정 시 유효성 검사 
+  //값 수정 시 유효성 검사
   const { detailInfo } = useRequestStore();
 
   try {

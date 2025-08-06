@@ -15,7 +15,7 @@ interface RequestState {
 
 export const useRequestStore = create<
   RequestState & {
-    getRequestDto: () => any;
+    getRequestInfo: () => any;
   }
 >((set, get) => ({
   sportsTypeInfo: { categoryId: 0 },
@@ -35,7 +35,7 @@ export const useRequestStore = create<
   setDetailInfo: (info) => set((state) => ({ detailInfo: { ...state.detailInfo, ...info } })),
   setPriceInfo: (info) => set((state) => ({ priceInfo: { ...state.priceInfo, ...info } })),
 
-  getRequestDto: () => {
+  getRequestInfo: () => {
     const state = get();
     return {
       categoryId: state.sportsTypeInfo.categoryId,
