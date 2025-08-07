@@ -11,6 +11,7 @@ export type proposalsListItemtype = {
   price: number;
   sessionCount: number;
   status: MatchStatusType;
+  requestionId: number;
 };
 
 export type getProposalsListResulttype = {
