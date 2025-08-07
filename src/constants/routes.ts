@@ -46,18 +46,35 @@ const ROUTES = {
     },
   },
 
-  REQUESTS: {
-    ROOT: '/requests',
-    NEW: '/requests/new',
-    DETAIL: '/requests/:id',
-    PROPOSALS: '/requests/:id/proposals',
+  MATCHING_STATUS: {
+    ROOT: '/matching',
+
+    REQUESTS: {
+      ROOT: '/matching/requests',
+      NEW: '/matching/requests/new',
+      DETAIL: '/matching/requests/:id',
+      PROPOSALS: '/matching/requests/:id/proposals',
+    },
+
+    PROPOSALS: {
+      ROOT: '/matching/proposals',
+      NEW: '/matching/proposals/new',
+      DETAIL: '/matching/proposals/:id',
+    },
   },
 
-  PROPOSALS: {
-    ROOT: '/proposals',
-    NEW: '/proposals/new',
-    DETAIL: '/proposals/:id',
-  },
+  // REQUESTS: {
+  //   ROOT: '/requests',
+  //   NEW: '/requests/new',
+  //   DETAIL: '/requests/:id',
+  //   PROPOSALS: '/requests/:id/proposals',
+  // },
+
+  // PROPOSALS: {
+  //   ROOT: '/proposals',
+  //   NEW: '/proposals/new',
+  //   DETAIL: '/proposals/:id',
+  // },
 
   CONTRACTS: {
     ROOT: '/contracts',
@@ -68,9 +85,9 @@ const ROUTES = {
 
 export const urlFor = {
   expertDetail: (id: string | number) => `/expert/${id}`,
-  requestDetail: (id: string | number) => `/requests/${id}`,
-  requestProposals: (id: string | number) => `/requests/${id}/proposals`,
-  proposalDetail: (id: string | number) => `/proposals/${id}`,
+  requestDetail: (id: string | number) => `/matching/requests/${id}`,
+  requestProposals: (id: string | number) => `/matching/requests/${id}/proposals`,
+  proposalDetail: (id: string | number) => `/matching/proposals/${id}`,
   contractDetail: (id: string | number) => `/contracts/${id}`,
 } as const;
 
