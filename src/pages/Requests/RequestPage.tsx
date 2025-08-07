@@ -12,7 +12,6 @@ import SelectSportStep from '@/features/Request/components/SelectSportStep';
 import useStepParam from '@/features/Request/hooks/UseStepParam';
 import { usePostRequest } from '@/features/Request/hooks/usePostRequest';
 import { useRequestStore } from '@/store/useRequestStore';
-import { mapKGenderToEnum } from '@/types/ReqeustsType';
 
 type FillDetailRef = { submit: () => Promise<boolean> };
 const STEP_MAP = {
@@ -57,8 +56,6 @@ const RequestPage = () => {
    
       const payload = {
         ...requestInfo,
-        userGender: mapKGenderToEnum(requestInfo.userGender),
-        trainerGender: mapKGenderToEnum(requestInfo.trainerGender),
       };
       try {
         // 호출 직전

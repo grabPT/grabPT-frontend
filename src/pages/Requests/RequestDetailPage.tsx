@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import z from 'zod';
 
@@ -8,11 +10,24 @@ import Button from '@/components/Button';
 import CheckedButton from '@/components/CheckedButton';
 import Tabs, { type TabItem } from '@/components/Tabs';
 import ROUTES, { urlFor } from '@/constants/routes';
+import { SPORTS } from '@/constants/sports';
+import { useRequestDetail } from '@/features/Request/hooks/useGetDetailRequest';
+import { patchRequestSchema } from '@/features/Request/schemas/requestSchema';
+import type { RequestRequestDto } from '@/features/Request/types/Request';
 import { useSuggestStore } from '@/store/useSuggestStore';
 import { useUserRoleStore } from '@/store/useUserRoleStore';
-import { AGES, DAYS, GENDERS, PURPOSES, TIMES } from '@/types/ReqeustsType';
-import { useRequestDetail } from '@/features/Request/hooks/useGetDetailRequest';
-import { mapEGenderToEnum } from '@/types/ReqeustsType';
+import {
+  AGES,
+  type AgeGroup,
+  DAYS,
+  type Day,
+  GENDERS,
+  type Gender,
+  PURPOSES,
+  type Purpose,
+  TIMES,
+  type TimeSlot,
+} from '@/types/ReqeustsType';
 
 const RequestDetailPage = () => {
   const navigate = useNavigate();
@@ -21,7 +36,7 @@ const RequestDetailPage = () => {
   const { setSuggestInfo } = useSuggestStore();
   const { isExpert } = useUserRoleStore();
 
-  // const category = SPORTS.find((s) => s.id === data?.categoryId);
+//제안서 작성하기 버튼 누를 시 suggestStore의 requestionId를 업데이트하고 proposalFormPage에서 받아쓰기
 
   // api연결 시 isWriter 함수로 변경 (요청서의 작성자 id === 현재 유저 id)
   const [isWriter] = useState<boolean>(false);
@@ -29,9 +44,51 @@ const RequestDetailPage = () => {
     { label: '정보', to: urlFor.requestDetail(requestionId) },
     { label: '제안 목록', to: urlFor.requestProposals(requestionId) },
   ];
-  const {data, isLoading, isError} = useRequestDetail(requestionId);
+  const { data } = useRequestDetail(requestionId);
+  const {
+    register,
+    watch,
+    // handleSubmit,
+    formState: { errors },
+    setValue,
+    reset,
+  } = useForm<Omit<RequestRequestDto, 'location' | 'categoryId'>>({
+    mode: 'onChange',
+    resolver: zodResolver(patchRequestSchema),
+    defaultValues: {
+      purpose: [],
+      ageGroup: null,
+      userGender: '',
+      trainerGender: '',
+      startPreference: '',
+      availableDays: [],
+      availableTimes: [],
+      content: '',
+      etcPurposeContent: '',
+      price: 0,
+      sessionCount: 0,
+    },
+  });
 
-
+  useEffect(() => {
+    if (data) {
+      reset({
+        purpose: data.purpose ?? [],
+        ageGroup: data.ageGroup ?? null,
+        userGender: data.userGender,
+        trainerGender: data.trainerGender,
+        startPreference: data.startPreference ?? '',
+        availableDays: data.availableDays ?? [],
+        availableTimes: data.availableTimes ?? [],
+        content: data.content ?? '',
+        etcPurposeContent: data.etcPurposeContent ?? '',
+        price: data.price ?? 0,
+        sessionCount: data.sessionCount ?? 0,
+      });
+    }
+  }, [data, reset]);
+  const category = SPORTS.find((s) => s.id === data?.categoryId)?.label;
+  // const profileImage = data?.profileImage;
   const editRequest = () => alert('ㄴㄴ아직 ㅋㅋ');
   const navigateToProposalForm = () => {
     //request 페이지에서 url에 있는 id로 requestionId 업데이트 + 가격+위치 정보 업데이트 -> proposalFormPage에서 store의 저장된 값을 받아서 사용
@@ -40,12 +97,50 @@ const RequestDetailPage = () => {
   };
 
   const handleButton = () => {
+//추후에 수정 버튼 활성화 필요
     if (isWriter) editRequest();
     else navigateToProposalForm();
   };
+  /* 목적(다중) */
+  const selectedPurposes = watch('purpose');
+  //기타 포함 시 입력창 보임
+  const etcSelected = selectedPurposes.includes('기타');
+
+  /* 연령대(단일) */
+  const age = watch('ageGroup');
+  const setAge = (a: AgeGroup) => setValue('ageGroup', a);
+
+  /* 수강생 성별(단일) */
+  const studentGender = watch('userGender');
+  const setStudentGender = (g: Gender) => setValue('userGender', g);
+
+  /* 트레이너 선호 성별(단일) */
+  const trainer = watch('trainerGender');
+  const setTrainerGender = (g: Gender) => setValue('trainerGender', g);
+
+  /* 가능 요일(다중) */
+  const days = watch('availableDays');
+  const toggleDay = (d: Day) => {
+    const next = days.includes(d) ? days.filter((v) => v !== d) : [...days, d];
+    setValue('availableDays', next);
+  };
+  /* 가능 시간대(다중) */
+  const times = watch('availableTimes');
+  const toggleTime = (t: TimeSlot) => {
+    const next = times.includes(t) ? times.filter((v) => v !== t) : [...times, t];
+    setValue('availableTimes', next);
+  };
+  /* PT 시작 희망일 */
+  const startDate = watch('startPreference');
+  const setStartDate = (v: string) => setValue('startPreference', v);
+
+  const togglePurpose = (p: Purpose) => {
+    const current = watch('purpose');
+    const next = current.includes(p) ? current.filter((v) => v !== p) : [...current, p];
+    setValue('purpose', next);
+  };
 
   try {
-    
     // 검증 통과 → 제출 가능
   } catch (err) {
     if (err instanceof z.ZodError) {
@@ -59,18 +154,19 @@ const RequestDetailPage = () => {
 
       {/* 헤더 */}
       <div className="mt-16 flex h-[50px] w-full items-center justify-center gap-3">
+        {/* 프로필 url 이미지로 바꾸는 로직 필요 */}
         <img src={Profile} alt="요청서 프로필" className="h-full" />
         {/* 강서구 복서 -> 회원 닉네임으로 바꿔야 할 듯, 아니면 복서라는 단어를 모든 종목마다 따로 설정해야함 */}
         <span className="text-4xl font-extrabold">
           {data?.location}
-           {/* {category?.label} */}
+          {/* {category} */}
         </span>
         <span className="text-2xl leading-none font-bold"> 님의 요청서입니다.</span>
       </div>
 
       <section className="mt-20 flex w-full flex-col gap-20 text-4xl font-bold">
         <section>
-          <span className="mr-3">복싱</span>
+          <span className="mr-3">{category}</span>
           <span className="text-lg font-semibold">{data?.location}</span>
 
           <div className="mt-5 flex items-center">
@@ -94,38 +190,56 @@ const RequestDetailPage = () => {
         </section>
 
         {/* 1. PT 목적 */}
-        <section className="">
-          <h1>
-            PT의 <span className="text-button">목적</span>이 무엇인가요?
-          </h1>
+        <section>
+          <div className="flex items-end gap-3">
+            <h1>
+              PT의 <span className={errors.purpose ? 'text-red-500' : 'text-button'}>목적</span>이
+              무엇인가요?
+            </h1>
+            {errors.purpose && (
+              <p className="text-[1rem] font-semibold text-red-500">{errors.purpose.message}</p>
+            )}
+          </div>
           <div className="mt-6">
             <div className="flex gap-6">
               {PURPOSES.map((p) => (
-                <CheckedButton isChecked={(data?.purpose ?? []).includes(p)} key={p}>{p}</CheckedButton>
+                <CheckedButton
+                  isChecked={selectedPurposes.includes(p)}
+                  onClick={() => togglePurpose(p)}
+                  key={p}
+                >
+                  {p}
+                </CheckedButton>
               ))}
             </div>
-               {/* 타입 고치고 나서 추가 예정 {data.etcPurposeContent && ( */}
-            <textarea
-              className="mt-4 h-[180px] w-full resize-none rounded-[10px] border border-[#CCCCCC] bg-[#F5F5F5] p-4 text-[15px] placeholder:text-[#CCCCCC] focus:border-gray-400 focus:outline-none"
-              placeholder="세부 내용을 입력해주세요"
-            />
+            {etcSelected && (
+              <textarea
+                {...register('etcPurposeContent')}
+                className="mt-4 h-[180px] w-full resize-none rounded-[10px] border border-[#CCCCCC] bg-[#F5F5F5] p-4 text-[15px] placeholder:text-[#CCCCCC] focus:border-gray-400 focus:outline-none"
+                placeholder="세부 내용을 입력해주세요"
+              />
+            )}
           </div>
         </section>
 
         {/* 2. 연령대 */}
         <section>
-          <h1>
-            수강생의 <span className="text-button">연령대</span>
-          </h1>
+          <div className="flex items-end gap-3">
+            <h1>
+              수강생의{' '}
+              <span className={errors.ageGroup ? 'text-red-500' : 'text-button'}>연령대</span>
+            </h1>
+            {errors.ageGroup && (
+              <p className="text-[1rem] font-semibold text-red-500">{errors.ageGroup.message}</p>
+            )}
+          </div>
           <div className="mt-6 flex flex-wrap gap-2">
             {AGES.map((a) => (
               <CheckedButton
-                isChecked={data?.ageGroup === a}
                 key={a}
-                onClick={() => {
-                  //  disabled={!canEdit}
-                  // setValue('ageGroup', a, { shouldDirty: true, shouldValidate: true });
-                }}
+                isChecked={age === a}
+                // disabled 추가 필요
+                onClick={() => setAge(a)}
               >
                 {a}
               </CheckedButton>
@@ -135,49 +249,97 @@ const RequestDetailPage = () => {
 
         {/* 3. 수강생 성별 */}
         <section>
-          <h1>
-            수강생의 <span className="text-button">성별</span>
-          </h1>
+          <div className="flex items-end gap-3">
+            <h1>
+              수강생의{' '}
+              <span className={errors.userGender ? 'text-red-500' : 'text-button'}>성별</span>
+            </h1>
+            {errors.userGender && (
+              <p className="text-[1rem] font-semibold text-red-500">{errors.userGender.message}</p>
+            )}
+          </div>
           <div className="mt-6 flex gap-2">
             {GENDERS.map((g) => (
-              <CheckedButton   isChecked={mapEGenderToEnum(data?.userGender ?? '') === g} key={g}>{g}</CheckedButton>
+              <CheckedButton
+                isChecked={studentGender === g}
+                onClick={() => setStudentGender(g)}
+                key={g}
+              >
+                {g}
+              </CheckedButton>
             ))}
           </div>
         </section>
 
         {/* 4. 트레이너 선호 성별 */}
         <section>
-          <h1>
-            트레이너 <span className="text-button">선호 성별</span>
-          </h1>
+          <div className="flex items-end gap-3">
+            <h1>
+              트레이너{' '}
+              <span className={errors.trainerGender ? 'text-red-500' : 'text-button'}>
+                선호 성별
+              </span>
+            </h1>
+            {errors.trainerGender && (
+              <p className="text-[1rem] font-semibold text-red-500">
+                {errors.trainerGender.message}
+              </p>
+            )}
+          </div>
           <div className="mt-6 flex gap-2">
             {GENDERS.map((g) => (
-              <CheckedButton isChecked={mapEGenderToEnum(data?.trainerGender ?? '') === g} key={g}>{g}</CheckedButton>
+              <CheckedButton isChecked={trainer === g} onClick={() => setTrainerGender(g)} key={g}>
+                {g}
+              </CheckedButton>
             ))}
           </div>
         </section>
 
         {/* 5. PT 시작 희망일 */}
         <section>
-          <h1>
-            PT <span className="text-button">시작 희망일</span>
-          </h1>
+          <div className="flex items-end gap-3">
+            <h1>
+              PT{' '}
+              <span className={errors.startPreference ? 'text-red-500' : 'text-button'}>
+                시작 희망일
+              </span>
+            </h1>
+            {errors.startPreference && (
+              <p className="text-[1rem] font-semibold text-red-500">
+                {errors.startPreference.message}
+              </p>
+            )}
+          </div>
           <input
             type="date"
             aria-label="PT 시작 희망일"
-            value={data?.startPreference}
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
             className="mt-6 rounded-[10px] border border-[#CCCCCC] p-3 text-xl focus:border-gray-400 focus:outline-none"
           />
         </section>
 
         {/* 6. 가능 요일 */}
         <section>
-          <h1>
-            가능 <span className="text-button">요일</span>
-          </h1>
+          <div className="flex items-end gap-3">
+            <h1>
+              가능
+              <span className={errors.availableDays ? 'text-red-500' : 'text-button'}>요일</span>
+            </h1>
+            {errors.availableDays && (
+              <p className="text-[1rem] font-semibold text-red-500">
+                {errors.availableDays.message}
+              </p>
+            )}
+          </div>
           <div className="mt-6 flex flex-wrap gap-2">
             {DAYS.map((d) => (
-              <CheckedButton isChecked={data?.availableDays.includes(d)} key={d} width="w-[56px]">
+              <CheckedButton
+                isChecked={days.includes(d)}
+                onClick={() => toggleDay(d)}
+                key={d}
+                width="w-[56px]"
+              >
                 {d}
               </CheckedButton>
             ))}
@@ -186,12 +348,22 @@ const RequestDetailPage = () => {
 
         {/* 7. 가능 시간대 */}
         <section>
-          <h1>
-            가능 <span className="text-button">시간대</span>
-          </h1>
+          <div className="flex items-end gap-3">
+            <h1>
+              가능
+              <span className={errors.availableTimes ? 'text-red-500' : 'text-button'}>시간대</span>
+            </h1>
+            {errors.availableTimes && (
+              <p className="text-[1rem] font-semibold text-red-500">
+                {errors.availableTimes.message}
+              </p>
+            )}
+          </div>
           <div className="mt-6 flex flex-wrap gap-2">
             {TIMES.map((t) => (
-              <CheckedButton isChecked={data?.availableTimes.includes(t)} key={t}>{t}</CheckedButton>
+              <CheckedButton isChecked={times.includes(t)} onClick={() => toggleTime(t)} key={t}>
+                {t}
+              </CheckedButton>
             ))}
           </div>
         </section>
@@ -204,7 +376,8 @@ const RequestDetailPage = () => {
           <textarea
             className="mt-6 h-[433px] w-full resize-none rounded-[10px] border border-[#CCCCCC] bg-[#F5F5F5] p-4 text-[15px] placeholder:text-[#CCCCCC] focus:border-gray-400 focus:outline-none"
             placeholder={'입력받아서 넘겨요 ~'}
-            // value={data?.content}
+            value={watch('content')}
+            onChange={(e) => setValue('content', e.target.value, { shouldDirty: true })}
           />
         </section>
       </section>
