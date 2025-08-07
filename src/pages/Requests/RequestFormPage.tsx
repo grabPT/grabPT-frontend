@@ -16,7 +16,7 @@ const STEP_MAP = {
   3: FillDetailStep,
 } as const;
 
-const RequestPage = () => {
+const RequestFormPage = () => {
   const navigate = useNavigate();
   /* step 관리 훅 */
   const { step, next, isLast } = useStepParam(3);
@@ -50,4 +50,4 @@ const RequestPage = () => {
   );
 };
 
-export default RequestPage;
+export default RequestFormPage;

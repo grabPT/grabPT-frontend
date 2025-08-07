@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 
-import UserRequestHeader from '@/features/Requests/UserRequestHeader';
+import UserRequestHeader from '@/features/Requests/components/UserRequestHeader';
 import type { RealtimeMatchingType } from '@/types/RealtimeMatchingType';
 
 interface MatchingStatusCardProps {
