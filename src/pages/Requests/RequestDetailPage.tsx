@@ -101,7 +101,7 @@ const RequestDetailPage = () => {
       price: data?.price,
       sessionCount: data?.sessionCount,
     });
-    navigate(ROUTES.PROPOSALS.NEW);
+    navigate(ROUTES.MATCHING_STATUS.PROPOSALS.NEW);
   };
   const { mutate: editRequest } = usePatchRequest();
   const handleButton = () => {
