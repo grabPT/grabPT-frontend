@@ -54,7 +54,7 @@ const SelectPriceStep = () => {
                 setPriceInfo({
                   ...priceInfo,
                   sessionCount: value,
-                  location:'서울시 강서구 화곡3동'//나중에 주소 받아서 연결 필요 지금은 하드 코딩
+                  location: '서울시 강서구 화곡3동', //나중에 주소 받아서 연결 필요 지금은 하드 코딩
                 });
               }}
               className="h-12 w-full rounded-lg border border-gray-300 pr-12 pl-15 text-center text-lg outline-none focus:border-blue-500"

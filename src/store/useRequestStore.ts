@@ -40,7 +40,7 @@ export const useRequestStore = create<
       categoryId: state.sportsTypeInfo.categoryId,
       price: state.priceInfo.price,
       sessionCount: state.priceInfo.sessionCount,
-      location:state.priceInfo.location,
+      location: state.priceInfo.location,
       purpose: state.detailInfo.purpose,
       ageGroup: state.detailInfo.ageGroup,
       userGender: state.detailInfo.userGender,

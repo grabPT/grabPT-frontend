@@ -13,14 +13,13 @@ import { proposalFormSchema } from '@/features/ProposalForm/schemas/proposalForm
 import type { DetailProposalForm } from '@/features/ProposalForm/types/ProposalForm';
 import { useSuggestStore } from '@/store/useSuggestStore';
 
-
 const ProposalFormPage = () => {
   /** 'accept' = 고객 요청 수락, 'custom' = 새로운 가격 제안 */
   const [mode, setMode] = useState<'accept' | 'custom'>('accept');
   //요청서 정보를 가져와야함 이 부분 나중에 추가
   //api 연결
   const { mutate: suggestSend } = useSuggest();
-  const { suggestInfo,setSuggestInfo } = useSuggestStore();
+  const { suggestInfo, setSuggestInfo } = useSuggestStore();
   //유효성 검사
   const {
     register,
@@ -40,12 +39,11 @@ const ProposalFormPage = () => {
   });
   console.log(errors);
   const onSubmit = async (data: DetailProposalForm) => {
-
     const newSuggestInfo = {
       ...data,
       sentAt: new Date().toISOString(),
       isAgreed: false,
-      requestionId:suggestInfo.requestionId,
+      requestionId: suggestInfo.requestionId,
     };
     setSuggestInfo(newSuggestInfo);
 

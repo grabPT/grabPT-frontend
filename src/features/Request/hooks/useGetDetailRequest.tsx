@@ -1,5 +1,6 @@
-import { getDetailRequest } from "@/features/Request/apis/request";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery } from '@tanstack/react-query';
+
+import { getDetailRequest } from '@/features/Request/apis/request';
 
 export const useRequestDetail = (id: number) =>
   useQuery({

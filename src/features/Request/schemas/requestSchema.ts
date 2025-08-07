@@ -21,6 +21,6 @@ export const detailInfoSchema = z.object({
 });
 
 export const patchRequestSchema = detailInfoSchema.extend({
-  price: z.number().min(0,{message: "가격과 횟수는 0 이상이여야 합니다."}),
-sessionCount: z.number().min(0,{message: "가격과 횟수는 0 이상이여야 합니다."}), 
-})
+  price: z.number().min(0, { message: '가격과 횟수는 0 이상이여야 합니다.' }),
+  sessionCount: z.number().min(0, { message: '가격과 횟수는 0 이상이여야 합니다.' }),
+});

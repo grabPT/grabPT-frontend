@@ -36,7 +36,7 @@ const RequestDetailPage = () => {
   const { setSuggestInfo } = useSuggestStore();
   const { isExpert } = useUserRoleStore();
 
-//제안서 작성하기 버튼 누를 시 suggestStore의 requestionId를 업데이트하고 proposalFormPage에서 받아쓰기
+  //제안서 작성하기 버튼 누를 시 suggestStore의 requestionId를 업데이트하고 proposalFormPage에서 받아쓰기
 
   // api연결 시 isWriter 함수로 변경 (요청서의 작성자 id === 현재 유저 id)
   const [isWriter] = useState<boolean>(false);
@@ -97,7 +97,7 @@ const RequestDetailPage = () => {
   };
 
   const handleButton = () => {
-//추후에 수정 버튼 활성화 필요
+    //추후에 수정 버튼 활성화 필요
     if (isWriter) editRequest();
     else navigateToProposalForm();
   };

@@ -3,7 +3,15 @@ import React from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
-
+import Button from '@/components/Button';
+import Stepper from '@/components/Stepper';
+import { urlFor } from '@/constants/routes';
+import FillDetailStep from '@/features/Request/components/FillDetailStep';
+import SelectPriceStep from '@/features/Request/components/SelectPriceStep';
+import SelectSportStep from '@/features/Request/components/SelectSportStep';
+import useStepParam from '@/features/Request/hooks/UseStepParam';
+import { usePostRequest } from '@/features/Request/hooks/usePostRequest';
+import { useRequestStore } from '@/store/useRequestStore';
 
 type FillDetailRef = { submit: () => Promise<boolean> };
 const STEP_MAP = {
@@ -45,7 +53,7 @@ const RequestPage = () => {
       const requestInfo = useRequestStore.getState().getRequestInfo();
 
       //한국 성별 -> 영어 성별로 변환(만약 서버에서 한국어로 받는게 문제가 안되면 없애도 될듯)
-   
+
       const payload = {
         ...requestInfo,
       };
