@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 
 import Error from '@/assets/json/ErrorEmoji.json';
 
-// 로딩애니메이션 컴포넌트입니다. (귀여움)
+// 에러 컴포넌트입니다. (귀여움)
 // 높이 고정해놨습니다.
 const ErrorComponent = () =>
   createPortal(

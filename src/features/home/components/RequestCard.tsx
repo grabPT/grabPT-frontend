@@ -2,7 +2,7 @@
 import { useNavigate } from 'react-router-dom';
 
 import { urlFor } from '@/constants/routes';
-import UserRequestHeader from '@/features/Requests/UserRequestHeader';
+import UserRequestHeader from '@/features/Requests/components/UserRequestHeader';
 
 import Hashtag from './Hashtag';
 

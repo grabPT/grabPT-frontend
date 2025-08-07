@@ -3,7 +3,15 @@ import React from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
-
+import Button from '@/components/Button';
+import Stepper from '@/components/Stepper';
+import { urlFor } from '@/constants/routes';
+import FillDetailStep from '@/features/Request/components/FillDetailStep';
+import SelectPriceStep from '@/features/Request/components/SelectPriceStep';
+import SelectSportStep from '@/features/Request/components/SelectSportStep';
+import useStepParam from '@/features/Request/hooks/UseStepParam';
+import { usePostRequest } from '@/features/Request/hooks/usePostRequest';
+import { useRequestStore } from '@/store/useRequestStore';
 
 type FillDetailRef = { submit: () => Promise<boolean> };
 const STEP_MAP = {
@@ -17,7 +25,7 @@ type StepComponentType =
   | (typeof STEP_MAP)[2]
   | React.ForwardRefExoticComponent<React.RefAttributes<FillDetailRef>>;
 
-const RequestPage = () => {
+const RequestFormPage = () => {
   const navigate = useNavigate();
   /* step 관리 훅 */
   const { step, next, isLast } = useStepParam(3);
@@ -82,4 +90,4 @@ const RequestPage = () => {
   );
 };
 
-export default RequestPage;
+export default RequestFormPage;
