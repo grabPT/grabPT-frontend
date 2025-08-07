@@ -11,7 +11,7 @@ const tabs = [
 const MatchingStatusPage = () => {
   return (
     <div className="pt-12">
-      <div className="mb-20">
+      <div className="">
         <Tabs items={tabs} width="w-72" />
       </div>
       <Outlet />

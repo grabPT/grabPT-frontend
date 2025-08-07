@@ -31,7 +31,7 @@ const RequestsListPage = () => {
   if (error) return <ErrorComponent />;
 
   return (
-    <div className="mx-auto mt-[20px] flex h-auto w-[700px] flex-col gap-[30px]">
+    <div className="mx-auto flex h-auto w-[700px] flex-col gap-[30px] py-12">
       <h1 className="mb-[30px] text-4xl font-bold">요청 현황</h1>
       {/* 정렬 버튼 */}
       <div className="mb-4 flex flex-row justify-start gap-4">
