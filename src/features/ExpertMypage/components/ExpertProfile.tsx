@@ -31,7 +31,7 @@ const ExpertProfile = () => {
             className="h-[50px] w-full resize-none rounded-lg border border-[#CCCCCC] bg-[#F5F5F5] p-4 text-sm leading-relaxed placeholder:text-gray-400 focus:border-gray-400 focus:outline-none"
           />
           {/* 상세 소개 */}
-          <CommentBox placeholder="• 내용을 입력해주세요." />
+          <CommentBox placeholder="• 내용을 입력해주세요." value={''} onChange={() => {}} />
         </div>
       </div>
 

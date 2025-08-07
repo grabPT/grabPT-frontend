@@ -3,15 +3,15 @@ import { create } from 'zustand';
 import type {
   SignupNicknameStepDto,
   SignupProInfoStepDto,
-  SignupSportsTypeStepDto,
   SignupUserAgreementDto,
   SignupUserInfoStepDto,
 } from '@/features/Signup/types/Auth';
+import type { SportsTypeStepDto } from '@/types/SportsTypeStepDto';
 
 interface SignupState {
   userInfo: SignupUserInfoStepDto;
   proInfo: SignupProInfoStepDto;
-  sportsTypeInfo: SignupSportsTypeStepDto;
+  sportsTypeInfo: SportsTypeStepDto;
   nicknameInfo: SignupNicknameStepDto;
   username: string;
   oauthId: string;
@@ -21,7 +21,7 @@ interface SignupState {
 
   setUserInfo: (info: Partial<SignupUserInfoStepDto>) => void;
   setProInfo: (info: Partial<SignupProInfoStepDto>) => void;
-  setSportsTypeInfo: (info: Partial<SignupSportsTypeStepDto>) => void;
+  setSportsTypeInfo: (info: Partial<SportsTypeStepDto>) => void;
   setNicknameInfo: (info: Partial<SignupNicknameStepDto>) => void;
   setUserName: (info: string) => void;
   setOauthId: (info: string) => void;

@@ -25,7 +25,7 @@ type StepComponentType =
   | (typeof STEP_MAP)[2]
   | React.ForwardRefExoticComponent<React.RefAttributes<FillDetailRef>>;
 
-const RequestFormPage = () => {
+const RequestPage = () => {
   const navigate = useNavigate();
   /* step 관리 훅 */
   const { step, next, isLast } = useStepParam(3);
@@ -90,4 +90,4 @@ const RequestFormPage = () => {
   );
 };
 
-export default RequestFormPage;
+export default RequestPage;
