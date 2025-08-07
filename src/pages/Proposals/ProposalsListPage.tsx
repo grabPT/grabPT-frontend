@@ -1,7 +1,11 @@
 import Pagination from '@/components/Pagination';
 import MyProposalsListItem from '@/features/Proposals/components/MyProposalsListItem';
+import { useGetProposalsList } from '@/features/Proposals/hooks/useGetProposalsList';
 
 const ProposalsListPage = () => {
+  const { data } = useGetProposalsList({ page: 1 });
+  console.log(data);
+
   return (
     <section className="flex flex-col items-center py-12">
       <div>

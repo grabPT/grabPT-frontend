@@ -5,6 +5,8 @@ interface UserRoleStore {
   isLoggedIn: boolean;
 
   toggleExpert: () => void;
+  setUser: () => void;
+  setExpert: () => void;
   LogIn: () => void;
   LogOut: () => void;
   toggleLoggedIn: () => void;
@@ -17,6 +19,14 @@ export const useUserRoleStore = create<UserRoleStore>()((set) => ({
   toggleExpert: () =>
     set((s) => ({
       isExpert: !s.isExpert,
+    })),
+  setUser: () =>
+    set(() => ({
+      isExpert: false,
+    })),
+  setExpert: () =>
+    set(() => ({
+      isExpert: true,
     })),
   LogIn: () =>
     set(() => ({
