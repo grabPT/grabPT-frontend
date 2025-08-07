@@ -1,11 +1,13 @@
-import { useState } from 'react';
-
 import SportsTypeSelector from '@/components/SportsTypeSelector';
-import type { SportItem } from '@/constants/sports';
+import { SPORTS, type SportItem } from '@/constants/sports';
+import { useRequestStore } from '@/store/useRequestStore';
 
 const SelectSportStep = () => {
-  const [selected, setSelected] = useState<SportItem | null>(null);
-
+  //api 연결
+  const { sportsTypeInfo, setSportsTypeInfo } = useRequestStore();
+  const handleSelect = (sport: SportItem) => {
+    setSportsTypeInfo({ categoryId: sport.id });
+  };
   return (
     <div className="mb-12.5 flex flex-col items-center">
       <h1 className="text-5xl font-extrabold">
@@ -13,7 +15,10 @@ const SelectSportStep = () => {
       </h1>
 
       <div className="mt-20">
-        <SportsTypeSelector value={selected} onChange={setSelected} />
+        <SportsTypeSelector
+          value={SPORTS.find((s) => s.id === sportsTypeInfo.categoryId) ?? null}
+          onChange={handleSelect}
+        />
       </div>
     </div>
   );

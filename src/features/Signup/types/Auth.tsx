@@ -1,5 +1,7 @@
+import type { SportsTypeStepDto } from '@/types/SportsTypeStepDto';
+
 export type BaseSignupRequestDto = SignupUserInfoStepDto &
-  SignupSportsTypeStepDto &
+  SportsTypeStepDto &
   SignupNicknameStepDto &
   SignupUserAgreementDto & {
     username: string;
@@ -22,9 +24,7 @@ export type SignupProInfoStepDto = {
   gender: number;
   age: null | number;
 };
-export type SignupSportsTypeStepDto = {
-  categoryId: number;
-};
+
 export type SignupNicknameStepDto = {
   nickname: string;
   profileImageUrl: string;
@@ -43,13 +43,6 @@ export type AddressRequest = {
 
 export type ReissueRequestDto = {
   refreshToken: string;
-};
-
-export type BasicResponseDto = {
-  isSuccess: boolean;
-  code: string;
-  message: string;
-  result: string;
 };
 
 export type SmsVerifyRequestDto = SmsSendRequestDto & {

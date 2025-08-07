@@ -1,23 +1,26 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
+
+import { SPORTS } from '@/constants/sports';
+import { useRequestStore } from '@/store/useRequestStore';
 
 const numberWithComma = (n: number) => n.toLocaleString('ko-KR');
 
 const SelectPriceStep = () => {
   /** 입력 상태 */
-  const [count, setCount] = useState(20); // 횟수
-  const [unitPrice, setUnitPrice] = useState(20_000); // 1회 가격(원)
-
+  const { priceInfo, setPriceInfo, sportsTypeInfo } = useRequestStore();
+  const { price, sessionCount } = priceInfo;
+  //스토어에 저장된 종목 categorId를 기반으로 해당 종목 이름 가져오기
+  const sport = SPORTS.find((s) => s.id === sportsTypeInfo.categoryId);
   /** 총액 계산 */
-  const total = useMemo(() => count * unitPrice, [count, unitPrice]);
+  const total = useMemo(() => price * sessionCount, [price, sessionCount]);
   return (
     <div className="relative flex w-full flex-col items-center">
       <div className="absolute bottom-[110%] left-0 flex items-start gap-[10px]">
-        {/* 운동명, 후에 api연동 시 data넘기기 적용하고 거기서 받아오는 걸로 */}
         <p className="font-[Pretendard Variable] text-[36px] leading-[100%] font-extrabold text-black">
-          복싱
+          {sport?.label}
         </p>
 
-        {/* 주소 (예시 주소 나중에 연동해야됨) */}
+        {/* 주소 (예시 주소 나중에 연동해야됨) -> 주소는 response로 받아올 건지/로그인 시 쿠키나 스토리지에 보관해둘건지 정해야할듯 */}
         <div className="mt-[19.5px] ml-[10px] h-[17px] w-[152px]">
           <p className="font-[Pretendard Variable] text-[17px] leading-[100%] font-semibold text-black">
             서울시 강서구 화곡3동
@@ -39,13 +42,22 @@ const SelectPriceStep = () => {
               type="number"
               aria-label="PT 횟수"
               min={1}
-              value={count}
+              value={sessionCount === 0 ? '' : sessionCount}
               // NaN 방지
               onChange={(e) => {
-                const value = Number(e.target.value);
-                setCount(Number.isNaN(value) ? 0 : value);
+                const raw = e.target.value;
+                if (raw === '') {
+                  setPriceInfo({ ...priceInfo, sessionCount: 0 });
+                  return;
+                }
+                const value = Number(raw.replace(/^0+/, ''));
+                setPriceInfo({
+                  ...priceInfo,
+                  sessionCount: value,
+                  location: '서울시 강서구 화곡3동', //나중에 주소 받아서 연결 필요 지금은 하드 코딩
+                });
               }}
-              className="h-12 w-full rounded-lg border border-gray-300 pr-12 pl-15.5 text-center text-lg outline-none focus:border-blue-500"
+              className="h-12 w-full rounded-lg border border-gray-300 pr-12 pl-15 text-center text-lg outline-none focus:border-blue-500"
             />
             <span className="absolute top-1/2 right-4 -translate-y-1/2 text-sm text-gray-500">
               회
@@ -62,13 +74,21 @@ const SelectPriceStep = () => {
               aria-label="횟수당 가격"
               min={0}
               step={1000}
-              value={unitPrice}
+              value={price === 0 ? '' : price}
               // NaN 방지
               onChange={(e) => {
-                const value = Number(e.target.value);
-                setUnitPrice(Number.isNaN(value) ? 0 : value);
+                const raw = e.target.value;
+                if (raw === '') {
+                  setPriceInfo({ ...priceInfo, price: 0 });
+                  return;
+                }
+                const value = Number(raw.replace(/^0+/, ''));
+                setPriceInfo({
+                  ...priceInfo,
+                  price: value,
+                });
               }}
-              className="box-border h-12 w-full rounded-lg border border-gray-300 pr-12 pl-15.5 text-center text-lg outline-none focus:border-blue-500"
+              className="box-border h-12 w-full rounded-lg border border-gray-300 pr-12 pl-15 text-center text-lg outline-none focus:border-blue-500"
             />
             <span className="absolute top-1/2 right-4 -translate-y-1/2 text-sm text-gray-500">
               원

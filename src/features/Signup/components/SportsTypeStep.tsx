@@ -13,7 +13,7 @@ const SportsTypeStep = ({ onNext }: SportTypeStepProps) => {
     setSportsTypeInfo({ categoryId: sport.id });
   };
   const handleNext = () => {
-    if (!sportsTypeInfo) {
+    if (sportsTypeInfo.categoryId == 0) {
       alert('운동 종목을 선택해주세요');
       return;
     }

@@ -17,7 +17,6 @@ const Signup = () => {
   const nav = useNavigate();
   const { role } = useSignupStore();
   const [step, setStep] = useState<number>(0);
-  const signupInfo = useSignupStore();
   const { mutate: userSignup } = useUserSignup();
   const { mutate: proSignup } = useProSignup();
 
@@ -47,9 +46,9 @@ const Signup = () => {
   useEffect(() => {
     if (step === 6) {
       if (role === 1) {
-        const payload = useSignupStore.getState().getUserSignupDto(); // ✅ 먼저 선언
+        const payload = useSignupStore.getState().getUserSignupDto();
 
-        console.log('📦 보내는 user-signup payload:', payload); // ✅ 여기에서 안전하게 출력
+        console.log('📦 보내는 user-signup payload:', payload); //
         userSignup(useSignupStore.getState().getUserSignupDto(), {
           onSuccess: (res) => {
             console.log('User signup success:', res);
@@ -71,7 +70,7 @@ const Signup = () => {
         });
       }
     }
-  }, [nav, step, role, signupInfo, userSignup, proSignup]);
+  }, [nav, step, role, userSignup, proSignup]);
 
   return (
     <div className="relative flex h-dvh w-full items-center justify-center bg-gradient-to-bl from-[#8CAFFF] to-[#FFFFFF]">
