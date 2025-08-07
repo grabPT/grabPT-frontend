@@ -14,6 +14,8 @@ export type RequestsListItemType = {
   sessionCount: number;
   price: number;
   status: MatchStatusType;
+  userProfileImageUrl: string;
+  requstionId: number;
 };
 
 export type getRequestsListResultType = {
