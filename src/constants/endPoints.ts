@@ -20,7 +20,9 @@ export const END_POINT = {
     PROPOSALS_FOR_REQUESTS: {},
   },
 
-  PROPOSALS: {},
+  PROPOSALS: {
+    list: '/api/suggestion/mySuggestions',
+  },
 
   CHAT: {},
 
