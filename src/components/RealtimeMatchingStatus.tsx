@@ -30,7 +30,7 @@ const RealtimeMatchingStatus = ({ categoryType }: RealtimeMatchingStatusProps) =
       navigate(ROUTES.AUTH.LOGIN);
     } else if (isExpert) {
       alert('전문가 계정은 요청서를 작성할 수 없습니다.');
-    } else navigate(ROUTES.REQUESTS.NEW);
+    } else navigate(ROUTES.MATCHING_STATUS.REQUESTS.NEW);
   };
 
   // 화면 폭에 따라 카드 개수 조정

@@ -1,4 +1,4 @@
-import { type RouteObject, RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { Navigate, type RouteObject, RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import ROUTES from '@/constants/routes';
 import { ExpertDetailInfo } from '@/features/ExpertDetail/components/ExpertDetailInfo';
@@ -21,6 +21,7 @@ import ContractFormPage from '@/pages/Contracts/ContractFormPage';
 import { ExpertDetail } from '@/pages/ExpertDetail/ExpertDetail';
 import ExpertMainPage from '@/pages/Home/ExpertMainPage';
 import UserMainPage from '@/pages/Home/UserMainPage';
+import MatchingStatusPage from '@/pages/MatchingStatus/MatchingStatusPage';
 import ExpertMypage from '@/pages/MyPage/ExpertMypage';
 import UserMypage from '@/pages/MyPage/UserMypage';
 import ProposalDetailPage from '@/pages/Proposals/ProposalDetailPage';
@@ -84,26 +85,26 @@ const routes: RouteObject[] = [
         ],
       },
 
-      /* 요청서 */
+      // 요청, 제안 현황 리스트
       {
-        path: ROUTES.REQUESTS.ROOT,
+        path: ROUTES.MATCHING_STATUS.ROOT, // '/matching'
+        element: <MatchingStatusPage />, // Tabs 포함
         children: [
-          { index: true, element: <RequestsListPage /> }, // 리스트
-          { path: ROUTES.REQUESTS.NEW, element: <RequestFormPage /> }, // 작성
-          { path: ROUTES.REQUESTS.DETAIL, element: <RequestDetailPage /> }, // 요청서상세
-          { path: ROUTES.REQUESTS.PROPOSALS, element: <ProposalsForRequest /> }, // 요청서의 제안서 리스트
+          { index: true, element: <Navigate to="requests" replace /> },
+
+          { path: ROUTES.MATCHING_STATUS.REQUESTS.ROOT, element: <RequestsListPage /> }, // /matching/requests
+          { path: ROUTES.MATCHING_STATUS.PROPOSALS.ROOT, element: <ProposalsListPage /> }, // /matching/proposals
         ],
       },
 
+      // 요청서
+      { path: ROUTES.MATCHING_STATUS.REQUESTS.NEW, element: <RequestFormPage /> },
+      { path: ROUTES.MATCHING_STATUS.REQUESTS.DETAIL, element: <RequestDetailPage /> },
+      { path: ROUTES.MATCHING_STATUS.REQUESTS.PROPOSALS, element: <ProposalsForRequest /> },
+
       // 제안서
-      {
-        path: ROUTES.PROPOSALS.ROOT,
-        children: [
-          { index: true, element: <ProposalsListPage /> },
-          { path: ROUTES.PROPOSALS.NEW, element: <ProposalFormPage /> },
-          { path: ROUTES.PROPOSALS.DETAIL, element: <ProposalDetailPage /> },
-        ],
-      },
+      { path: ROUTES.MATCHING_STATUS.PROPOSALS.NEW, element: <ProposalFormPage /> },
+      { path: ROUTES.MATCHING_STATUS.PROPOSALS.DETAIL, element: <ProposalDetailPage /> },
 
       // 계약
       {

@@ -15,8 +15,8 @@ const Navbar = () => {
   // 페이지 생성 시 path 수정, memo도입 고려
   const menuList = [
     {
-      label: isExpert ? '요청 현황' : '요청서 작성',
-      path: isExpert ? ROUTES.REQUESTS.ROOT : ROUTES.REQUESTS.NEW,
+      label: isExpert ? '매칭 현황' : '요청서 작성',
+      path: isExpert ? ROUTES.MATCHING_STATUS.ROOT : ROUTES.MATCHING_STATUS.REQUESTS.NEW,
     },
     { label: '트레이너 찾기', path: '/나중에설정' },
     { label: '내지역 센터', path: '/나중에설정' },

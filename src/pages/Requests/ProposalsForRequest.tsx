@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 
 import Pagination from '@/components/Pagination';
 import Tabs, { type TabItem } from '@/components/Tabs';
+import { urlFor } from '@/constants/routes';
 import ProposalsListItem from '@/features/RequestsDetail/ProposalsListItem';
 
 // type ProposalsForRequestResponseDto = {
@@ -159,8 +160,8 @@ const ProposalsForRequest = () => {
   };
 
   const TabItems: TabItem[] = [
-    { label: '정보', to: `/requests/${id}` },
-    { label: '제안 목록', to: `/requests/${id}/proposals` },
+    { label: '정보', to: urlFor.requestDetail(id as string) },
+    { label: '제안 목록', to: urlFor.requestProposals(id as string) },
   ];
 
   return (

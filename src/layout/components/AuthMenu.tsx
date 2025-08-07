@@ -14,29 +14,43 @@ import { useUserRoleStore } from '@/store/useUserRoleStore';
 function AuthMenu() {
   const navigate = useNavigate();
 
-  const { isLoggedIn, toggleLoggedIn, isExpert, toggleExpert } = useUserRoleStore();
+  const { isLoggedIn, LogIn, LogOut, isExpert, setUser, setExpert } = useUserRoleStore();
   const [isOpenProfileDropdown, setIsOpenProfileDropdown] = useState<boolean>(false);
 
   return (
     <div className="flex items-center">
-      {/* 로그인토글버튼추가 */}
+      {/* 유저로 로그인 */}
       <button
         type="button"
         onClick={() => {
-          if (!isLoggedIn) getAccessToken();
-          toggleLoggedIn();
+          getAccessToken(1);
+          LogIn();
+          setUser();
         }}
-        className="mr-6 rounded-md bg-orange-300 px-3 py-1 text-sm text-white"
+        className="mr-3 rounded-full bg-orange-300 p-2 text-sm text-white"
       >
-        {isLoggedIn ? '로그아웃할래' : '로그인할래'}
+        U
       </button>
-      {/* 유저타입 토글 버튼. 추후 api연동 후 삭제*/}
+      {/* expert로 로그인*/}
       <button
         type="button"
-        onClick={toggleExpert}
-        className="mr-6 cursor-pointer rounded-md bg-orange-600 px-3 py-1 text-sm text-white"
+        onClick={() => {
+          getAccessToken(61);
+          LogIn();
+          setExpert();
+        }}
+        className="mr-6 cursor-pointer rounded-full bg-orange-600 p-2 text-sm text-white"
       >
-        {isExpert ? '지금Expert' : '지금User'}
+        E
+      </button>
+      <button
+        type="button"
+        onClick={() => {
+          LogOut();
+        }}
+        className="mr-6 cursor-pointer rounded-full bg-red-500 p-2 text-sm text-white"
+      >
+        LogOut
       </button>
 
       {/*  로그인 여부에 따른 메뉴 */}
