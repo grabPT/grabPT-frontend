@@ -30,4 +30,3 @@ export type RequestDetailPageResponse = RequestRequestDto & {
   profileImage: string;
   requestionId: number;
 };
-

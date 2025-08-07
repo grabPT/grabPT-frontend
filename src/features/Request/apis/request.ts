@@ -1,5 +1,4 @@
 import type {
-
   RequestDetailPageResponse,
   RequestRequestDto,
   RequestResponseDto,
@@ -32,8 +31,8 @@ export const getCanEditRequest = async (
   return data;
 };
 
-export const patchRequest =  async (
-  requestionId:number,
+export const patchRequest = async (
+  requestionId: number,
   body: RequestRequestDto,
 ): Promise<CommonResponseDto<RequestResponseDto>> => {
   const { data } = await privateInstance.patch(`/api/requestion/${requestionId}`, body);

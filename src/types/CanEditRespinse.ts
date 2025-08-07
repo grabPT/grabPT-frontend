@@ -1,4 +1,3 @@
-
-export type CanEditResponse ={
-  canEdit: boolean
-}
+export type CanEditResponse = {
+  canEdit: boolean;
+};
