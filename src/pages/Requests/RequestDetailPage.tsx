@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -11,9 +11,12 @@ import CheckedButton from '@/components/CheckedButton';
 import Tabs, { type TabItem } from '@/components/Tabs';
 import ROUTES, { urlFor } from '@/constants/routes';
 import { SPORTS } from '@/constants/sports';
-import { useRequestDetail } from '@/features/Request/hooks/useGetDetailRequest';
+import { useGetCanEditRequest } from '@/features/Request/hooks/useGetCanEditRequest';
+import { useGetDetailRequest } from '@/features/Request/hooks/useGetDetailRequest';
+import { usePatchRequest } from '@/features/Request/hooks/usePatchRequest';
 import { patchRequestSchema } from '@/features/Request/schemas/requestSchema';
 import type { RequestRequestDto } from '@/features/Request/types/Request';
+import { useRequestStore } from '@/store/useRequestStore';
 import { useSuggestStore } from '@/store/useSuggestStore';
 import { useUserRoleStore } from '@/store/useUserRoleStore';
 import {
@@ -35,20 +38,20 @@ const RequestDetailPage = () => {
   const requestionId = Number(id);
   const { setSuggestInfo } = useSuggestStore();
   const { isExpert } = useUserRoleStore();
-
   //제안서 작성하기 버튼 누를 시 suggestStore의 requestionId를 업데이트하고 proposalFormPage에서 받아쓰기
 
   // api연결 시 isWriter 함수로 변경 (요청서의 작성자 id === 현재 유저 id)
-  const [isWriter] = useState<boolean>(false);
+  const { data: isWriter } = useGetCanEditRequest(requestionId);
+
   const TabItems: TabItem[] = [
     { label: '정보', to: urlFor.requestDetail(requestionId) },
     { label: '제안 목록', to: urlFor.requestProposals(requestionId) },
   ];
-  const { data } = useRequestDetail(requestionId);
+  const { data } = useGetDetailRequest(requestionId);
   const {
     register,
     watch,
-    // handleSubmit,
+    handleSubmit,
     formState: { errors },
     setValue,
     reset,
@@ -77,7 +80,9 @@ const RequestDetailPage = () => {
         ageGroup: data.ageGroup ?? null,
         userGender: data.userGender,
         trainerGender: data.trainerGender,
-        startPreference: data.startPreference ?? '',
+        startPreference: Array.isArray(data.startPreference)
+          ? `${data.startPreference[0]}-${String(data.startPreference[1]).padStart(2, '0')}-${String(data.startPreference[2]).padStart(2, '0')}`
+          : (data.startPreference ?? ''),
         availableDays: data.availableDays ?? [],
         availableTimes: data.availableTimes ?? [],
         content: data.content ?? '',
@@ -89,17 +94,34 @@ const RequestDetailPage = () => {
   }, [data, reset]);
   const category = SPORTS.find((s) => s.id === data?.categoryId)?.label;
   // const profileImage = data?.profileImage;
-  const editRequest = () => alert('ㄴㄴ아직 ㅋㅋ');
   const navigateToProposalForm = () => {
     //request 페이지에서 url에 있는 id로 requestionId 업데이트 + 가격+위치 정보 업데이트 -> proposalFormPage에서 store의 저장된 값을 받아서 사용
-    setSuggestInfo({ ...setSuggestInfo, requestionId });
+    setSuggestInfo({
+      ...setSuggestInfo,
+      requestionId,
+      price: data?.price,
+      sessionCount: data?.sessionCount,
+    });
     navigate(ROUTES.PROPOSALS.NEW);
   };
-
+  const { mutate: editRequest } = usePatchRequest();
   const handleButton = () => {
-    //추후에 수정 버튼 활성화 필요
-    if (isWriter) editRequest();
-    else navigateToProposalForm();
+    if (isExpert) {
+      navigateToProposalForm();
+    } else {
+      handleSubmit((formData) => {
+        if (isWriter?.canEdit) {
+          editRequest({
+            requestionId,
+            body: {
+              ...formData,
+              location: data?.location ?? '',
+              categoryId: data?.categoryId ?? 0,
+            },
+          });
+        }
+      })();
+    }
   };
   /* 목적(다중) */
   const selectedPurposes = watch('purpose');
@@ -156,9 +178,8 @@ const RequestDetailPage = () => {
       <div className="mt-16 flex h-[50px] w-full items-center justify-center gap-3">
         {/* 프로필 url 이미지로 바꾸는 로직 필요 */}
         <img src={Profile} alt="요청서 프로필" className="h-full" />
-        {/* 강서구 복서 -> 회원 닉네임으로 바꿔야 할 듯, 아니면 복서라는 단어를 모든 종목마다 따로 설정해야함 */}
         <span className="text-4xl font-extrabold">
-          {data?.location}
+          {data?.location} {data?.nickname}
           {/* {category} */}
         </span>
         <span className="text-2xl leading-none font-bold"> 님의 요청서입니다.</span>

@@ -16,7 +16,6 @@ import { useSuggestStore } from '@/store/useSuggestStore';
 const ProposalFormPage = () => {
   /** 'accept' = 고객 요청 수락, 'custom' = 새로운 가격 제안 */
   const [mode, setMode] = useState<'accept' | 'custom'>('accept');
-  //요청서 정보를 가져와야함 이 부분 나중에 추가
   //api 연결
   const { mutate: suggestSend } = useSuggest();
   const { suggestInfo, setSuggestInfo } = useSuggestStore();
@@ -31,9 +30,9 @@ const ProposalFormPage = () => {
     mode: 'onChange',
     resolver: zodResolver(proposalFormSchema),
     defaultValues: {
-      price: 0,
+      price: suggestInfo.price,
       message: '',
-      sessionCount: 0,
+      sessionCount: suggestInfo.sessionCount,
       location: '',
     },
   });
