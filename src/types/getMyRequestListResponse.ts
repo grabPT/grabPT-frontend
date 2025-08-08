@@ -1,4 +1,5 @@
 import type { PageableType } from '@/features/Requests/types/getRequestsListType';
+import type { TimeSlot } from '@/types/ReqeustsType';
 import type { SortType } from '@/types/SortType';
 import type { CommonResponseDto } from '@/types/commonResponseDto';
 
@@ -6,7 +7,7 @@ export type getMyRequestsListResultType = {
   totalPages: number;
   totalElements: number;
   size: number;
-  content: ContentInfo[];
+  content: MyRequestListItemType[];
   number: number;
   sort: SortType;
   numberOfElements: number;
@@ -15,19 +16,15 @@ export type getMyRequestsListResultType = {
   last: boolean;
   empty: boolean;
 };
-export type ContentInfo = {
-  nickname: string;
-  profileImageUrl: string;
-  city: string;
-  district: string;
-  street: string;
-  zipcode: string;
-  streetCode: string;
-  specAddress: string;
-  etcPurposeContent: string;
-  categoryName: string;
+export type MyRequestListItemType = {
+  requestId: number;
+  imageURL: string;
+  userId: number;
+  location: string;
+  availableTimes: TimeSlot[];
   availableDays: string[];
-  availableTimes: string[];
+  categoryName: string;
+  sessionCount: number;
   content: string;
 };
 

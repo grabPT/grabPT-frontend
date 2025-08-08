@@ -8,31 +8,15 @@ import { TitleLine } from '@/components/TitleLine';
 import ROUTES from '@/constants/routes';
 import ExpertDetailBgImg from '@/features/ExpertDetail/assets/ExpertDetailBgImg.svg';
 import { Credential } from '@/features/ExpertDetail/components/Credential';
-import { CredentialType, type credentialListItem } from '@/features/ExpertDetail/type/credential';
+import { useGetCredentialList } from '@/features/ExpertDetail/hooks/useGetCredentialList';
 
 export const ExpertDetailInfo = () => {
   const nav = useNavigate();
   const handleChatButton = () => {
     nav(ROUTES.CHAT.ROOT);
   };
-  const credentialList: credentialListItem[] = [
-    {
-      type: CredentialType.CERTIFICATE,
-      content: '생활스포츠지도사 2급 (보디빌딩)',
-    },
-    {
-      type: CredentialType.AWARD,
-      content: '보디빌딩 대회 준우승',
-    },
-    {
-      type: CredentialType.EDUCATION,
-      content: '생활스포츠지도사 2급 (보디빌딩)',
-    },
-    {
-      type: CredentialType.EXPERIENCE,
-      content: '보디빌딩 대회 준우승',
-    },
-  ];
+  const { data: credentialList } = useGetCredentialList();
+  console.log(credentialList);
   const images = Array.from({ length: 7 }, () => MockImage);
   return (
     <div className="flex flex-col items-center justify-center">
@@ -75,11 +59,11 @@ export const ExpertDetailInfo = () => {
         <div className="flex w-full flex-col items-center justify-center">
           <TitleLine title="자격 사항" />
           <div className="flex w-full flex-col items-center justify-center gap-5">
-            {credentialList.map((credential, index) => (
+            {credentialList?.certifications.map((credential, index) => (
               <Credential
-                key={`${credential.type}-${index}`}
-                type={credential.type}
-                content={credential.content}
+                key={`${credential.certificationType}-${index}`}
+                type={credential.certificationType}
+                content={credential.description}
               />
             ))}
           </div>

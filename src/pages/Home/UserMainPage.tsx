@@ -5,19 +5,19 @@ import Banner from '@/components/Banner';
 import RealtimeMatchingStatus from '@/components/RealtimeMatchingStatus';
 import RequestSlider from '@/features/home/components/RequestSlider';
 import UserSearchSection from '@/features/home/components/UserSearchSection';
-import mockRequests from '@/features/home/data/dummy';
+import { useGetMyRequestsList } from '@/hooks/useGetMyRequestsList';
 import { useUserRoleStore } from '@/store/useUserRoleStore';
 
 const UserMainPage = () => {
   const { isLoggedIn } = useUserRoleStore();
-
+  const { data: requests } = useGetMyRequestsList({ page: 1, size: 40 });
   return (
     <div className="flex flex-col items-center justify-center">
       <UserSearchSection />
 
       {isLoggedIn && (
         <div className="mt-[109px]">
-          <RequestSlider title={'나의 요청서'} requests={mockRequests} />
+          <RequestSlider title={'나의 요청서'} requests={requests?.content ?? []} />
         </div>
       )}
 

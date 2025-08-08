@@ -1,16 +1,26 @@
 import Profile from '@/assets/images/HeaderProfile.png';
 import XIcon from '@/assets/images/x.png';
 import Box from '@/components/Box';
+import Hashtag from '@/features/home/components/Hashtag';
+import { TIME_SLOT_LABELS } from '@/types/ReqeustsType';
+import type { Tags } from '@/types/Tags';
 
 interface RequestCardProps {
   name: string;
-  location: string;
-  center: string;
-  category: string[];
+  tags: Tags;
   content: string;
+  location: string;
 }
 
-const RequestCard = ({ name, location, center, category, content }: RequestCardProps) => {
+const RequestCard = ({ name, tags, content, location }: RequestCardProps) => {
+  const daysPerWeek = `주 ${tags.daysPerWeek}회`;
+
+  const tagsResult = [
+    ...tags.cagtegoryName.split(' '),
+    ...tags.availableTimes.map((time) => TIME_SLOT_LABELS[time]),
+    daysPerWeek,
+  ];
+
   return (
     <Box>
       <div className="relative flex h-full w-full flex-col p-[10px] pt-[15px]">
@@ -29,16 +39,13 @@ const RequestCard = ({ name, location, center, category, content }: RequestCardP
             <span className="text-[10px] leading-[140%] font-semibold text-[#7A7A7A]">
               {location}
             </span>
-            <span className="text-[8px] leading-[140%] font-semibold text-[#013EFB]">{center}</span>
           </div>
         </div>
 
         <div className="mt-[22px] flex flex-1 flex-col justify-between gap-4">
           <div className="flex gap-1.5">
-            {category.map((ct) => (
-              <span className="rounded-lg bg-[#C2D1FF] p-1 px-2 text-[8px] font-bold" key={name}>
-                {ct}
-              </span>
+            {tagsResult.map((tag, idx) => (
+              <Hashtag key={idx} tag={tag} />
             ))}
           </div>
           {/* 리뷰 내용 */}

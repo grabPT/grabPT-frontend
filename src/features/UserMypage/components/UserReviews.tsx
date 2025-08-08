@@ -1,30 +1,37 @@
+import { useState } from 'react';
+
+import ErrorComponent from '@/components/ErrorComponent';
+import Pagination from '@/components/Pagination';
 import ReviewCard from '@/components/ReviewCard';
+import { useGetMyReviewsList } from '@/features/Requests/hooks/useGetMyReviewsList';
 
 const UserReviews = () => {
-  const review = {
-    name: '날다람주날닮았쥐',
-    location: '서울시 강서구 화곡동',
-    rating: 3.5,
-    content:
-      '너무너무 친절하시고, 운동하면서 부족한 부분을 너무 잘 지적해주셨습니다!! 저는 20회 추가 PT 신청했습니다!!~~~~~~~~~~~~~~~~~~~~~~~~~',
-  };
-
-  const reviews = Array.from({ length: 5 }, () => review);
+  const [page, setPage] = useState(1);
+  const { data: myReviewsList, isPending, error } = useGetMyReviewsList({ page, size: 6 });
+  if (error) return <ErrorComponent />;
+  const total = myReviewsList?.totalPages ?? 1;
 
   return (
-    <div className="flex justify-center">
+    <div className="flex flex-col items-center justify-center">
+      {isPending && <>스켈레톤 ui</>}
       <div className="mt-[50px] flex w-[800px] flex-col gap-[30px]">
-        {reviews.map((rv, idx) => (
+        {myReviewsList?.content.map((rv, idx) => (
           <div key={idx}>
             <ReviewCard
-              name={rv.name}
-              location={rv.location}
+              name={rv.nickName}
+              location={rv.residence}
               rating={rv.rating}
               content={rv.content}
             />
           </div>
         ))}
       </div>
+      {/* 페이지네이션 */}
+      {
+        <div className="mt-8">
+          <Pagination total={total} page={page} onChange={setPage} />
+        </div>
+      }
     </div>
   );
 };

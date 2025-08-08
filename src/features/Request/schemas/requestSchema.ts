@@ -23,4 +23,5 @@ export const detailInfoSchema = z.object({
 export const patchRequestSchema = detailInfoSchema.extend({
   price: z.number().min(0, { message: '가격과 횟수는 0 이상이여야 합니다.' }),
   sessionCount: z.number().min(0, { message: '가격과 횟수는 0 이상이여야 합니다.' }),
+  categoryId: z.number().min(1, { message: '운동 카테고리를 받아오는데 실패했습니다.' }),
 });

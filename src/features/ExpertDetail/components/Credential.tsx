@@ -1,4 +1,4 @@
-import type { CredentialType } from '@/features/ExpertDetail/type/credential';
+import type { CredentialType } from '@/features/ExpertDetail/types/credential';
 
 interface ICredentail {
   type: CredentialType;

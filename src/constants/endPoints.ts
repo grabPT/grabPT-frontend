@@ -6,12 +6,18 @@ export const END_POINT = {
   HOME: {},
 
   MYPAGE: {
-    LIST: {
-      //요청서 조회 페이지만 있어서 list로 작성
-      list: `/api/requestion/my`,
+    REQUESTS: {
+      requests: `/mypage/requests`,
+    },
+    REVIEWS: {
+      reviews: `/mypage/reviews`,
     },
   },
-
+  MYPROPAGE: {
+    CREDENTIALS: {
+      credentials: '/mypage/pro/certification',
+    },
+  },
   CATEGORY: {
     realtime: (categoryCode: SportsSlugType) => `/api/v1/requests/${categoryCode}`,
   },

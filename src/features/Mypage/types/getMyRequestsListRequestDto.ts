@@ -1,4 +1,4 @@
-export type getMyRequestsListRequestDto = {
+export type getMyInfoListRequestDto = {
   page: number;
   size: number;
 };

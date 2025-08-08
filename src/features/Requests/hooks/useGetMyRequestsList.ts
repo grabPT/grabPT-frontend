@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { QUERY_KEYS } from '@/constants/queryKeys';
-import { getRequestsList } from '@/features/Requests/apis/getRequestsList';
+import { getRequestsList } from '@/features/Requests/apis/getMyRequestsList';
 import type {
   getRequestsListRequestDto,
   getRequestsListResponseDto,
