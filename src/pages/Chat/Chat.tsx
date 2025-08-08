@@ -7,158 +7,10 @@ import ClipIcon from '@/features/Chat/assets/ClipIcon.svg';
 import ChatCard from '@/features/Chat/components/ChatCard';
 import { ChatInfo } from '@/features/Chat/components/ChatInfo';
 import { useGetChatRoomList } from '@/features/Chat/hooks/useGetChatRoomList';
-import type { ChatType } from '@/features/Chat/types/chat';
 import type { ChatRoomListItemType } from '@/features/Chat/types/getChatRoomListType';
 import Header from '@/layout/components/Header';
 
 export const Chat = () => {
-  //나중에 API 에서 받아온 걸로 수정 예정
-  const [chatList, _setChatList] = useState<ChatType[]>([
-    {
-      id: '1',
-      location: '서울',
-      name: '재우',
-      img: '/images/profile1.png',
-      time: '3분 전',
-      text: '오늘 운동 잘했어?',
-    },
-    {
-      id: '2',
-      location: '부산',
-      name: '민지',
-      img: '/images/profile2.png',
-      time: '10분 전',
-      text: '저녁 먹었어요?',
-    },
-    {
-      id: '3',
-      location: '대구',
-      name: '하준',
-      img: '/images/profile3.png',
-      time: '1시간 전',
-      text: '아아 야장 가서 삼쏘하고 싶다아ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅣㅏㅏㄴ엉너ㅏㅍ ㅠㄹ아ㅓㅍ ㅠㄹㅇㄹ파ㅓㄹ우 ㅏㅓㄹ우 파ㅓ눞넝푸나어ㅏㅏㅏㅏㅏ',
-    },
-    {
-      id: '1',
-      location: '서울',
-      name: '재우',
-      img: '/images/profile1.png',
-      time: '3분 전',
-      text: '오늘 운동 잘했어?',
-    },
-    {
-      id: '2',
-      location: '부산',
-      name: '민지',
-      img: '/images/profile2.png',
-      time: '10분 전',
-      text: '저녁 먹었어요?',
-    },
-    {
-      id: '3',
-      location: '대구',
-      name: '하준',
-      img: '/images/profile3.png',
-      time: '1시간 전',
-      text: '아아 야장 가서 삼쏘하고 싶다아ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅣㅏㅏㄴ엉너ㅏㅍ ㅠㄹ아ㅓㅍ ㅠㄹㅇㄹ파ㅓㄹ우 ㅏㅓㄹ우 파ㅓ눞넝푸나어ㅏㅏㅏㅏㅏ',
-    },
-    {
-      id: '1',
-      location: '서울',
-      name: '재우',
-      img: '/images/profile1.png',
-      time: '3분 전',
-      text: '오늘 운동 잘했어?',
-    },
-    {
-      id: '2',
-      location: '부산',
-      name: '민지',
-      img: '/images/profile2.png',
-      time: '10분 전',
-      text: '저녁 먹었어요?',
-    },
-    {
-      id: '3',
-      location: '대구',
-      name: '하준',
-      img: '/images/profile3.png',
-      time: '1시간 전',
-      text: '아아 야장 가서 삼쏘하고 싶다아ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅣㅏㅏㄴ엉너ㅏㅍ ㅠㄹ아ㅓㅍ ㅠㄹㅇㄹ파ㅓㄹ우 ㅏㅓㄹ우 파ㅓ눞넝푸나어ㅏㅏㅏㅏㅏ',
-    },
-    {
-      id: '1',
-      location: '서울',
-      name: '재우',
-      img: '/images/profile1.png',
-      time: '3분 전',
-      text: '오늘 운동 잘했어?',
-    },
-    {
-      id: '2',
-      location: '부산',
-      name: '민지',
-      img: '/images/profile2.png',
-      time: '10분 전',
-      text: '저녁 먹었어요?',
-    },
-    {
-      id: '3',
-      location: '대구',
-      name: '하준',
-      img: '/images/profile3.png',
-      time: '1시간 전',
-      text: '아아 야장 가서 삼쏘하고 싶다아ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅣㅏㅏㄴ엉너ㅏㅍ ㅠㄹ아ㅓㅍ ㅠㄹㅇㄹ파ㅓㄹ우 ㅏㅓㄹ우 파ㅓ눞넝푸나어ㅏㅏㅏㅏㅏ',
-    },
-    {
-      id: '1',
-      location: '서울',
-      name: '재우',
-      img: '/images/profile1.png',
-      time: '3분 전',
-      text: '오늘 운동 잘했어?',
-    },
-    {
-      id: '2',
-      location: '부산',
-      name: '민지',
-      img: '/images/profile2.png',
-      time: '10분 전',
-      text: '저녁 먹었어요?',
-    },
-    {
-      id: '3',
-      location: '대구',
-      name: '하준',
-      img: '/images/profile3.png',
-      time: '1시간 전',
-      text: '아아 야장 가서 삼쏘하고 싶다아ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅣㅏㅏㄴ엉너ㅏㅍ ㅠㄹ아ㅓㅍ ㅠㄹㅇㄹ파ㅓㄹ우 ㅏㅓㄹ우 파ㅓ눞넝푸나어ㅏㅏㅏㅏㅏ',
-    },
-    {
-      id: '1',
-      location: '서울',
-      name: '재우',
-      img: '/images/profile1.png',
-      time: '3분 전',
-      text: '오늘 운동 잘했어?',
-    },
-    {
-      id: '2',
-      location: '부산',
-      name: '민지',
-      img: '/images/profile2.png',
-      time: '10분 전',
-      text: '저녁 먹었어요?',
-    },
-    {
-      id: '3',
-      location: '대구',
-      name: '하준',
-      img: '/images/profile3.png',
-      time: '1시간 전',
-      text: '아아 야장 가서 삼쏘하고 싶다아ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅣㅏㅏㄴ엉너ㅏㅍ ㅠㄹ아ㅓㅍ ㅠㄹㅇㄹ파ㅓㄹ우 ㅏㅓㄹ우 파ㅓ눞넝푸나어ㅏㅏㅏㅏㅏ',
-    },
-  ]); // useMutation을 사용하여 서버에서 채팅 목록을 가져오는 로직을 추가할 예정
   const [keyword, setKeyword] = useState('');
   const handleSearch = () => {
     console.log('검색:', keyword);
@@ -167,12 +19,11 @@ export const Chat = () => {
   const [selectedChat, setSelectedChat] = useState<ChatRoomListItemType | null>(null);
 
   const { data: chatRoomList } = useGetChatRoomList({});
+  console.log(chatRoomList);
   // 채팅 선택 핸들러
   const handleChatSelect = (chat: ChatRoomListItemType) => {
     setSelectedChat(chat);
   };
-  //시간 표시
-  const time = new Date('2025-07-01T12:00:00Z'); // 예시 시간, 실제로는 서버에서 받아온 시간 사용
 
   return (
     <div className="flex h-screen flex-col overflow-hidden">
@@ -213,8 +64,8 @@ export const Chat = () => {
           {selectedChat ? (
             <>
               <ChatInfo
+                roomId={selectedChat.chatRoomId}
                 name={selectedChat.roomName}
-                location={selectedChat.otherUserProfile}
                 img={selectedChat.otherUserProfile}
               />
 
@@ -225,7 +76,7 @@ export const Chat = () => {
                       <input
                         type="text"
                         placeholder="메시지를 입력하세요"
-                        className="font-inter h-full w-full text-xl leading-[16px] font-semibold text-black placeholder-[#CCCCCC] outline-none"
+                        className="font-inter text -xl h-full w-full leading-[16px] font-semibold text-black placeholder-[#CCCCCC] outline-none"
                       />
                       <img src={ClipIcon} alt="클립 아이콘" className="h-6 w-6 cursor-pointer" />
                       <img
