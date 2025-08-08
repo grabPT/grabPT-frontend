@@ -12,6 +12,7 @@ interface ChatInfoProps {
 }
 
 export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
+  // 방읽음처리, 구독 등은 별도 로직에서 처리
   const { data, fetchNextPage, isFetchingNextPage, isLoading } = useGetMessagesInfinite({ roomId });
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -19,30 +20,22 @@ export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const lastRequestedCursorRef = useRef<number | null>(null);
-  const processedPageCountRef = useRef(0); // 몇 개의 page를 반영했는지 추적
-
   const [didInitialScroll, setDidInitialScroll] = useState(false);
-  const [totalMessages, setTotalMessages] = useState<messageType[]>([]);
 
-  // ▼ 핵심: 첫 페이지는 reverse 해서 set, 이후 페이지는 reverse 해서 앞에 prepend
-  useEffect(() => {
+  // ▼ data.pages만으로 기존 정렬 로직을 재현:
+  //    - pages[0] = 최신 페이지
+  //    - 각 페이지는 reverse
+  //    - 오래된 페이지부터(배열 뒤쪽부터) 앞으로 붙이기 → 결국 "첫 페이지 reverse, 이후 reverse-prepend"와 동일
+  const totalMessages: messageType[] = useMemo(() => {
     const pages = data?.pages ?? [];
-    if (!pages.length) return;
-
-    // 새로 추가된 페이지만 처리
-    for (let i = processedPageCountRef.current; i < pages.length; i++) {
+    if (!pages.length) return [];
+    const out: messageType[] = [];
+    for (let i = pages.length - 1; i >= 0; i--) {
       const arr = pages[i].messages ?? [];
-      const reversed = arr.length > 1 ? [...arr].reverse() : arr; // 원본 불변성 유지
-
-      if (i === 0 && processedPageCountRef.current === 0) {
-        // 첫 페이지: 교체
-        setTotalMessages(reversed);
-      } else {
-        // 이후 페이지: 앞에 붙이기 (unshift 대신 불변성 유지)
-        setTotalMessages((prev) => [...reversed, ...prev]);
-      }
+      const reversed = arr.length > 1 ? [...arr].reverse() : arr;
+      out.push(...reversed);
     }
-    processedPageCountRef.current = pages.length;
+    return out;
   }, [data]);
 
   // 다음 커서 (중복 요청 방지용)
@@ -105,11 +98,9 @@ export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
     return () => observer.disconnect();
   }, [fetchNextPage, nextCursor, isFetchingNextPage]);
 
-  // 방 변경 시 초기화
+  // 방 변경 시 스크롤 상태만 리셋(데이터는 캐시로 즉시 그려짐)
   useEffect(() => {
     lastRequestedCursorRef.current = null;
-    processedPageCountRef.current = 0;
-    setTotalMessages([]);
     setDidInitialScroll(false);
   }, [roomId]);
 
