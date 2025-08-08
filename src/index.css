@@ -8,6 +8,12 @@
   --font-inter: 'Inter', 'Helvetica Neue', Arial, sans-serif;
   --font-roboto: 'Roboto', 'sans-serif';
 
+  /* 브레이크 포인트 */
+  --breakpoint-xs: 390px;
+  --breakpoint-sm: 720px;
+  --breakpoint-md: 1080px;
+  --breakpoint-lg: 1440px;
+
   /* Button Scale */
   --color-button: #003efb;
   --color-button-hover: #1537d9;
