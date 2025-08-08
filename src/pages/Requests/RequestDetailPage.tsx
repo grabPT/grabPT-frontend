@@ -31,6 +31,7 @@ import {
   type TimeSlot,
 } from '@/types/ReqeustsType';
 
+//에러 보여주기 추가할것
 const RequestDetailPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -97,7 +98,7 @@ const RequestDetailPage = () => {
     //request 페이지에서 url에 있는 id로 requestionId 업데이트 + 가격+위치 정보 업데이트 -> proposalFormPage에서 store의 저장된 값을 받아서 사용
     setSuggestInfo({
       ...setSuggestInfo,
-      requestionId,
+      requestionId: requestionId,
       price: data?.price,
       sessionCount: data?.sessionCount,
     });
@@ -122,6 +123,7 @@ const RequestDetailPage = () => {
       })();
     }
   };
+
   /* 목적(다중) */
   const selectedPurposes = watch('purpose');
   //기타 포함 시 입력창 보임
@@ -192,17 +194,16 @@ const RequestDetailPage = () => {
           <div className="mt-5 flex items-center">
             <input
               type="number"
-              value={data?.sessionCount}
+              {...register('sessionCount', { valueAsNumber: true })}
               aria-label="희망 PT 횟수"
-              readOnly
               className="mr-1.5 h-12 w-[85px] rounded-xl border-2 border-[#BABABA] pl-3.5 text-center text-2xl text-[#9F9F9F]"
             />
+
             <span className="mr-5">회</span>
             <input
               type="number"
-              value={data?.price}
+              {...register('price', { valueAsNumber: true })}
               aria-label="희망 PT 가격"
-              readOnly
               className="mr-1.5 h-12 w-[260px] rounded-xl border-2 border-[#BABABA] px-8 text-end text-2xl text-[#9F9F9F]"
             />
             <span className="mr-5">원</span>
@@ -234,7 +235,10 @@ const RequestDetailPage = () => {
             </div>
             {etcSelected && (
               <textarea
-                {...register('etcPurposeContent')}
+                value={watch('etcPurposeContent')}
+                onChange={(e) =>
+                  setValue('etcPurposeContent', e.target.value, { shouldDirty: true })
+                }
                 className="mt-4 h-[180px] w-full resize-none rounded-[10px] border border-[#CCCCCC] bg-[#F5F5F5] p-4 text-[15px] placeholder:text-[#CCCCCC] focus:border-gray-400 focus:outline-none"
                 placeholder="세부 내용을 입력해주세요"
               />

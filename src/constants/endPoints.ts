@@ -5,7 +5,12 @@ export const END_POINT = {
 
   HOME: {},
 
-  MYPAGE: {},
+  MYPAGE: {
+    LIST: {
+      //요청서 조회 페이지만 있어서 list로 작성
+      list: `/api/requestion/my`,
+    },
+  },
 
   CATEGORY: {
     realtime: (categoryCode: SportsSlugType) => `/api/v1/requests/${categoryCode}`,
