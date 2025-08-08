@@ -8,7 +8,7 @@ interface ChatInfoProps {
   img: string;
 }
 
-export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
+export const ChatInfo = ({ name, img }: ChatInfoProps) => {
   //선택된 채팅 정보로 세부 채팅 기록 받아오는 로직 추가 예정
   const messageResponse = dummyMessages;
 
