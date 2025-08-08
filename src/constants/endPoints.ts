@@ -23,14 +23,18 @@ export const END_POINT = {
     },
     FORM: {},
     DETAIL: {},
-    PROPOSALS_FOR_REQUESTS: {},
+    PROPOSALS_FOR_REQUESTS: (requestionId: number) =>
+      `/api/suggestion/requestionList/${requestionId}`,
   },
 
   PROPOSALS: {
     list: '/api/suggestion/mySuggestions',
   },
 
-  CHAT: {},
+  CHAT: {
+    list: '/chatRoom/list',
+    messages: (roomId: number) => `/chatRoom/${roomId}/messages`,
+  },
 
   CONTRACTS: {},
 

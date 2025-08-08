@@ -1,14 +1,14 @@
 import { ChatText } from '@/features/Chat/components/ChatText';
 import { dummyMessages } from '@/features/Chat/types/chat';
-import DefaultProfile from '@/features/Signup/assets/DefaultProfile.svg';
+import { onErrorImage } from '@/utils/onErrorImage';
 
 interface ChatInfoProps {
+  roomId: number;
   name: string;
-  location: string;
   img: string;
 }
 
-export const ChatInfo = ({ name, location, img }: ChatInfoProps) => {
+export const ChatInfo = ({ name, img }: ChatInfoProps) => {
   //선택된 채팅 정보로 세부 채팅 기록 받아오는 로직 추가 예정
   const messageResponse = dummyMessages;
 
@@ -20,14 +20,13 @@ export const ChatInfo = ({ name, location, img }: ChatInfoProps) => {
       prev.getDate() !== curr.getDate()
     );
   };
+
   return (
     <div className="flex h-full flex-col pb-40">
       <div className="flex h-14 items-center justify-between bg-[#1F56FF] px-5">
         <div className="flex items-center justify-start gap-3">
-          <img src={img ? img : DefaultProfile} alt={name} className="h-9 w-9 rounded-full" />
-          <span className="text-[1rem] font-extrabold text-white">
-            {location} {name}
-          </span>
+          <img src={img} onError={onErrorImage} alt={name} className="h-9 w-9 rounded-full" />
+          <span className="text-[1rem] font-extrabold text-white">{name}</span>
         </div>
       </div>
       <div className="flex-1 overflow-y-auto py-3">
