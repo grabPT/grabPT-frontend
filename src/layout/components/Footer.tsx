@@ -10,7 +10,7 @@ const Footer = () => {
       <div className="absolute inset-0 bg-[#000000D9]"></div>
 
       {/* 내용들 */}
-      <div className="absolute inset-0 flex justify-between p-12 pr-28 text-[11px] leading-[140%] font-normal text-white">
+      <div className="absolute inset-0 flex justify-between p-12 pr-28 text-[11px] text-white lg:leading-[140%] lg:font-normal">
         <div className="flex gap-[30px]">
           <div className="w-[30px]">
             <img src={LogoIcon} alt="푸터로고" className="object-cover" />
@@ -31,12 +31,12 @@ const Footer = () => {
             </p>
           </div>
         </div>
-        <div className="flex gap-[223px]">
-          <div className="flex flex-col gap-[66px]">
+        <div className="flex flex-col gap-[44px] lg:min-w-sm lg:justify-between [@media(min-width:1112px)]:flex-row">
+          <div className="flex flex-col gap-4 [@media(min-width:1112px)]:gap-[66px]">
             <header className="text-xl">Contact us</header>
             <p>GrabPT@.gmail.com</p>
           </div>
-          <div className="flex flex-col gap-[66px]">
+          <div className="flex flex-col gap-4 [@media(min-width:1112px)]:gap-[66px]">
             <header className="text-xl">Follow us</header>
             <p>Yes, We are social</p>
             <img src={FooterIcons} alt="아이콘들" className="h-5 object-cover" />
