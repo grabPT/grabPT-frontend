@@ -3,7 +3,7 @@ import type { CommonResponseDto } from '@/types/commonResponseDto';
 
 type getAccessTokenResponseDto = CommonResponseDto<string>;
 
-export const getAccessToken = async (userId: 3 | 61): Promise<getAccessTokenResponseDto> => {
+export const getAccessToken = async (userId: number): Promise<getAccessTokenResponseDto> => {
   const { data } = await publicInstance.get(`/api/users/${userId}`);
   localStorage.setItem('accessToken', data.result);
   console.log(`accessToken 업데이트 : ${data.result}`);
