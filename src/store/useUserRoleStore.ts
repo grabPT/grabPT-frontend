@@ -5,7 +5,7 @@ interface UserRoleStore {
   isLoggedIn: boolean;
   userId: number | null;
 
-  setUserId: () => void;
+  setUserId: (id: number | null) => void;
   toggleExpert: () => void;
   setUser: () => void;
   setExpert: () => void;
@@ -19,9 +19,9 @@ export const useUserRoleStore = create<UserRoleStore>()((set) => ({
   isLoggedIn: false,
   userId: null,
 
-  setUserId: () =>
+  setUserId: (s: number | null) =>
     set(() => ({
-      userId: 3,
+      userId: s,
     })),
   toggleExpert: () =>
     set((s) => ({

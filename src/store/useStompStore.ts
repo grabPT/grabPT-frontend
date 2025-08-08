@@ -50,6 +50,7 @@ export const useStompStore = create<StompState>((set, get) => ({
     const { client } = get();
     if (!client || !client.connected) return null;
     return client.subscribe(dest, (msg) => {
+      console.log('[WS IN]', dest, msg.body);
       try {
         const parsed = JSON.parse(msg.body);
         cb(parsed, msg);

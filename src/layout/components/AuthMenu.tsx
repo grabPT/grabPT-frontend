@@ -24,7 +24,7 @@ function AuthMenu() {
         type="button"
         onClick={() => {
           getAccessToken(3);
-          setUserId();
+          setUserId(3);
           LogIn();
           setUser();
         }}
@@ -47,6 +47,7 @@ function AuthMenu() {
       <button
         type="button"
         onClick={() => {
+          setUserId(null);
           LogOut();
         }}
         className="mr-6 cursor-pointer rounded-full bg-red-500 p-2 text-sm text-white"

@@ -6,7 +6,9 @@ import ChatSendIcon from '@/features/Chat/assets/ChatSendIcon.svg';
 import ClipIcon from '@/features/Chat/assets/ClipIcon.svg';
 import ChatCard from '@/features/Chat/components/ChatCard';
 import { ChatInfo } from '@/features/Chat/components/ChatInfo';
+import { useGetChatRoomList } from '@/features/Chat/hooks/useGetChatRoomList';
 import type { ChatType } from '@/features/Chat/types/chat';
+import type { ChatRoomListItemType } from '@/features/Chat/types/getChatRoomListType';
 import Header from '@/layout/components/Header';
 
 export const Chat = () => {
@@ -162,10 +164,11 @@ export const Chat = () => {
     console.log('검색:', keyword);
   };
 
-  const [selectedChat, setSelectedChat] = useState<ChatType | null>(null);
+  const [selectedChat, setSelectedChat] = useState<ChatRoomListItemType | null>(null);
 
+  const { data: chatRoomList } = useGetChatRoomList({});
   // 채팅 선택 핸들러
-  const handleChatSelect = (chat: ChatType) => {
+  const handleChatSelect = (chat: ChatRoomListItemType) => {
     setSelectedChat(chat);
   };
   //시간 표시
@@ -194,24 +197,25 @@ export const Chat = () => {
           </div>
 
           <div className="w-full flex-1 overflow-y-auto pt-5">
-            {chatList.map((chat, idx) => (
+            {chatRoomList?.map((chat, idx) => (
               <div
                 key={idx}
                 className={`${selectedChat == chat && 'bg-white'} flex h-20 w-full cursor-pointer items-center bg-white px-3 duration-150 hover:bg-gray-300 hover:ease-in-out`}
                 onClick={() => handleChatSelect(chat)}
               >
-                <ChatCard name={chat.name} location={chat.location} text={chat.text} time={time} />
+                <ChatCard chat={chat} />
               </div>
             ))}
           </div>
         </div>
+
         <div className="flex h-full w-full flex-col bg-white">
           {selectedChat ? (
             <>
               <ChatInfo
-                name={selectedChat.name}
-                location={selectedChat.location}
-                img={selectedChat.img}
+                name={selectedChat.roomName}
+                location={selectedChat.otherUserProfile}
+                img={selectedChat.otherUserProfile}
               />
 
               <div className="sticky bottom-0 z-10 rounded-t-4xl bg-white p-4 shadow-[4px_4px_18px_10px_rgba(0,0,0,0.15)]">
