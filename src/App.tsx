@@ -1,6 +1,9 @@
+import { useEffect } from 'react';
+
 import { Navigate, type RouteObject, RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import ROUTES from '@/constants/routes';
+import UnreadCountController from '@/features/Chat/controller/UnreadCountController';
 import { ExpertDetailInfo } from '@/features/ExpertDetail/components/ExpertDetailInfo';
 import ExpertDetailReviews from '@/features/ExpertDetail/components/ExpertDetailReviews';
 import ExpertCredentials from '@/features/ExpertMypage/components/ExpertCredentials';
@@ -31,6 +34,7 @@ import ProposalsForRequest from '@/pages/Requests/ProposalsForRequest';
 import RequestDetailPage from '@/pages/Requests/RequestDetailPage';
 import RequestFormPage from '@/pages/Requests/RequestFormPage';
 import RequestsListPage from '@/pages/Requests/RequestsListPage';
+import { useStompStore } from '@/store/useStompStore';
 
 const routes: RouteObject[] = [
   /* 온보딩 */
@@ -124,5 +128,18 @@ const routes: RouteObject[] = [
 const router = createBrowserRouter(routes);
 
 export default function App() {
-  return <RouterProvider router={router} />;
+  const init = useStompStore((s) => s.init);
+  const teardown = useStompStore((s) => s.teardown);
+
+  useEffect(() => {
+    init(); // 앱 켜질 때 연결 시작
+    return () => teardown(); // 필요 시 정리 (SPA면 생략 가능)
+  }, [init, teardown]);
+
+  return (
+    <>
+      <RouterProvider router={router} />
+      <UnreadCountController />
+    </>
+  );
 }

@@ -25,7 +25,10 @@ export const END_POINT = {
     list: '/api/suggestion/mySuggestions',
   },
 
-  CHAT: {},
+  CHAT: {
+    list: '/chatRoom/list',
+    messages: (roomId: number) => `/chatRoom/${roomId}/messages`,
+  },
 
   CONTRACTS: {},
 
