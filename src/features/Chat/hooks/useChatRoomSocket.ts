@@ -1,27 +1,32 @@
+// useChatRoomSocket.ts
 import { useEffect, useMemo, useRef } from 'react';
 
 import type { StompSubscription } from '@stomp/stompjs';
 
 import { useStompStore } from '@/store/useStompStore';
 
-type Handlers = {
-  /** 새 메시지 수신 */
-  onMessage?: (payload: unknown) => void;
-  /** 읽음 상태 수신 */
-  onReadStatus?: (payload: unknown) => void;
-  /** 타이핑 표시 수신 (쓰면) */
-  onTyping?: (payload: unknown) => void;
+type Handlers<T> = {
+  onMessage?: (payload: T) => void;
+  onReadStatus?: (payload: T) => void;
+  onTyping?: (payload: T) => void;
 };
 
 type Options = {
-  enableMessage?: boolean; // default: true
-  enableReadStatus?: boolean; // default: false
-  enableTyping?: boolean; // default: false
+  enableMessage?: boolean;
+  enableReadStatus?: boolean;
+  enableTyping?: boolean;
 };
 
-export function useChatRoomSocket(
+export type sendMessageRequestDto = {
+  roomId: number;
+  senderId: number;
+  content: string;
+  messageType: 'TEXT';
+};
+
+export function useChatRoomSocket<T = unknown>(
   roomId?: number | null,
-  handlers: Handlers = {},
+  handlers: Handlers<T> = {},
   opts: Options = {},
 ) {
   const connected = useStompStore((s) => s.connected);
@@ -29,49 +34,47 @@ export function useChatRoomSocket(
   const unsubscribe = useStompStore((s) => s.unsubscribe);
   const publish = useStompStore((s) => s.publish);
 
-  const { onMessage, onReadStatus, onTyping } = handlers;
-
   const { enableMessage = true, enableReadStatus = false, enableTyping = false } = opts;
 
-  // 현재 활성 구독을 모두 보관
+  const handlersRef = useRef<Handlers<T>>({});
+  handlersRef.current = handlers;
+
   const subsRef = useRef<StompSubscription[]>([]);
 
-  // 채널 경로 메모
-  const endpoints = useMemo(() => {
-    if (!roomId) return [];
+  const paths = useMemo(() => {
+    if (!roomId) return [] as string[];
     const base = `/subscribe/chat/${roomId}`;
-    const list: Array<{ path: string; handler?: (p: unknown) => void; enabled: boolean }> = [
-      { path: `${base}`, handler: onMessage, enabled: enableMessage },
-      { path: `${base}/read-status`, handler: onReadStatus, enabled: enableReadStatus },
-      { path: `${base}/typing`, handler: onTyping, enabled: enableTyping },
+    const list: Array<{ path: string; enabled: boolean }> = [
+      { path: `${base}`, enabled: enableMessage },
+      { path: `${base}/read-status`, enabled: enableReadStatus },
+      { path: `${base}/typing`, enabled: enableTyping },
     ];
-    return list.filter((x) => x.enabled && !!x.handler);
-  }, [roomId, enableMessage, enableReadStatus, enableTyping, onMessage, onReadStatus, onTyping]);
+    return list.filter((x) => x.enabled).map((x) => x.path);
+  }, [roomId, enableMessage, enableReadStatus, enableTyping]);
 
-  // 구독/해제 관리
   useEffect(() => {
-    // 방 없음 or 미연결이면 skip
     if (!roomId || !connected) return;
 
-    // 안전하게 기존 구독 해제
     subsRef.current.forEach((s) => unsubscribe(s));
     subsRef.current = [];
 
-    // 새로 구독
-    endpoints.forEach(({ path, handler }) => {
-      const sub = subscribe(path, (payload) => handler?.(payload));
+    paths.forEach((path) => {
+      const sub = subscribe(path, (payload) => {
+        const h = handlersRef.current;
+        if (path.endsWith('/read-status')) h.onReadStatus?.(payload as T);
+        else if (path.endsWith('/typing')) h.onTyping?.(payload as T);
+        else h.onMessage?.(payload as T);
+      });
       if (sub) subsRef.current.push(sub);
     });
 
-    // 클린업: 의존성 바뀌면 모두 해제
     return () => {
       subsRef.current.forEach((s) => unsubscribe(s));
       subsRef.current = [];
     };
-  }, [roomId, connected, subscribe, unsubscribe, endpoints]);
+  }, [roomId, connected, subscribe, unsubscribe, paths]);
 
-  // 이 방으로 메시지 publish (편의 함수)
-  const sendMessage = (body: unknown, headers?: Record<string, string>) => {
+  const sendMessage = (body: sendMessageRequestDto, headers?: Record<string, string>) => {
     if (!roomId) return;
     publish(`/publish/chat/${roomId}`, body, headers);
   };

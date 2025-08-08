@@ -1,10 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
+import { useQueryClient } from '@tanstack/react-query';
+
 import { ChatText } from '@/features/Chat/components/ChatText';
 import { useChatRoomSocket } from '@/features/Chat/hooks/useChatRoomSocket';
 import { useGetMessagesInfinite } from '@/features/Chat/hooks/useGetMessages';
 import { usePostReadWhenEnter } from '@/features/Chat/hooks/usePostReadWhenEnter';
 import type { messageType } from '@/features/Chat/types/getMessagesType';
+import { upsertIncomingMessage } from '@/utils/castCache';
 import { onErrorImage } from '@/utils/onErrorImage';
 
 interface ChatInfoProps {
@@ -14,6 +17,7 @@ interface ChatInfoProps {
 }
 
 export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
+  const queryClient = useQueryClient();
   // 읽음처리 api 전송
   // chatroom/{roomid}/readWhenEnter
   const { mutate } = usePostReadWhenEnter(roomId);
@@ -24,26 +28,15 @@ export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
   // 채팅방 구독
   // /subscribe/chat/${roomId}
   // 3) 방 소켓 구독 (메시지 / 읽음상태)
-  useChatRoomSocket(
+  useChatRoomSocket<messageType>(
     roomId,
     {
-      onMessage: (payload) => {
-        // payload 구조에 맞게 처리
-        // 예: 새 메시지가 오면 맨 아래로 스크롤
-        // 필요 시 React Query 캐시 갱신으로 append 처리
-        console.log('NEW MESSAGE', payload);
-        // bottomRef.current?.scrollIntoView({ block: 'end' });
-      },
-      onReadStatus: (payload) => {
-        // 읽음 상태 업데이트 처리 (메시지별 read 여부 반영 등)
-        console.log('READ STATUS', payload);
+      onMessage: (msg) => {
+        upsertIncomingMessage(queryClient, roomId, msg);
+        requestAnimationFrame(() => bottomRef.current?.scrollIntoView({ block: 'end' }));
       },
     },
-    {
-      enableMessage: true,
-      enableReadStatus: true,
-      enableTyping: false,
-    },
+    { enableMessage: true }, // 읽음/타이핑 안 쓰면 굳이 켤 필요 없음
   );
   // 읽음상태 구독
   // stompClient.subscribe(`/subscribe/chat/${roomId}/read-status`, (msg) => {

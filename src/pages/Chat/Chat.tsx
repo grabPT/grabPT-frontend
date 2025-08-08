@@ -6,9 +6,14 @@ import ChatSendIcon from '@/features/Chat/assets/ChatSendIcon.svg';
 import ClipIcon from '@/features/Chat/assets/ClipIcon.svg';
 import ChatCard from '@/features/Chat/components/ChatCard';
 import { ChatInfo } from '@/features/Chat/components/ChatInfo';
+import {
+  type sendMessageRequestDto,
+  useChatRoomSocket,
+} from '@/features/Chat/hooks/useChatRoomSocket';
 import { useGetChatRoomList } from '@/features/Chat/hooks/useGetChatRoomList';
 import type { ChatRoomListItemType } from '@/features/Chat/types/getChatRoomListType';
 import Header from '@/layout/components/Header';
+import { useUserRoleStore } from '@/store/useUserRoleStore';
 
 export const Chat = () => {
   const [keyword, setKeyword] = useState('');
@@ -17,6 +22,33 @@ export const Chat = () => {
   };
 
   const [selectedChat, setSelectedChat] = useState<ChatRoomListItemType | null>(null);
+
+  // ✅ 전송만 쓰는 소켓 훅 (구독 off)
+  const { sendMessage, connected } = useChatRoomSocket(
+    selectedChat?.chatRoomId,
+    {}, // 핸들러 없음
+    { enableMessage: false, enableReadStatus: false, enableTyping: false },
+  );
+
+  const [text, setText] = useState('');
+
+  const { userId } = useUserRoleStore();
+
+  const handleSend = () => {
+    const body = text.trim();
+    if (!selectedChat || !connected || !body) return;
+
+    const dto: sendMessageRequestDto = {
+      roomId: selectedChat.chatRoomId,
+      senderId: userId ?? 1000000000,
+      content: body,
+      messageType: 'TEXT',
+    };
+
+    // 서버가 내가 보낸 것도 브로드캐스트하므로 캐시 직접 건드릴 필요 없음
+    sendMessage(dto, { 'content-type': 'application/json;charset=UTF-8' });
+    setText('');
+  };
 
   const { data: chatRoomList } = useGetChatRoomList({});
   console.log(chatRoomList);
@@ -77,12 +109,16 @@ export const Chat = () => {
                         type="text"
                         placeholder="메시지를 입력하세요"
                         className="font-inter text -xl h-full w-full leading-[16px] font-semibold text-black placeholder-[#CCCCCC] outline-none"
+                        value={text}
+                        onChange={(e) => setText(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && handleSend()}
                       />
                       <img src={ClipIcon} alt="클립 아이콘" className="h-6 w-6 cursor-pointer" />
                       <img
                         src={ChatSendIcon}
                         alt="전송 아이콘"
                         className="h-6 w-6 cursor-pointer"
+                        onClick={handleSend}
                       />
                     </div>
                   </div>
