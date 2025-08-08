@@ -194,9 +194,9 @@ export const Chat = () => {
           </div>
 
           <div className="w-full flex-1 overflow-y-auto pt-5">
-            {chatList.map((chat) => (
+            {chatList.map((chat, idx) => (
               <div
-                key={chat.id}
+                key={idx}
                 className={`${selectedChat == chat && 'bg-white'} flex h-20 w-full cursor-pointer items-center bg-white px-3 duration-150 hover:bg-gray-300 hover:ease-in-out`}
                 onClick={() => handleChatSelect(chat)}
               >

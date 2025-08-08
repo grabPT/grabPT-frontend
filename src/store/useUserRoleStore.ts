@@ -3,7 +3,9 @@ import { create } from 'zustand';
 interface UserRoleStore {
   isExpert: boolean;
   isLoggedIn: boolean;
+  userId: number | null;
 
+  setUserId: () => void;
   toggleExpert: () => void;
   setUser: () => void;
   setExpert: () => void;
@@ -15,7 +17,12 @@ interface UserRoleStore {
 export const useUserRoleStore = create<UserRoleStore>()((set) => ({
   isExpert: false,
   isLoggedIn: false,
+  userId: null,
 
+  setUserId: () =>
+    set(() => ({
+      userId: 3,
+    })),
   toggleExpert: () =>
     set((s) => ({
       isExpert: !s.isExpert,

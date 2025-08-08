@@ -2,7 +2,7 @@
 import type { Client, IMessage, StompSubscription } from '@stomp/stompjs';
 import { create } from 'zustand';
 
-import { createStompClient } from '@/libs/webSocketClent';
+import { createStompClient } from '@/libs/webSocketClient';
 
 type StompState = {
   client: Client | null;
@@ -22,6 +22,7 @@ export const useStompStore = create<StompState>((set, get) => ({
   client: null,
   connected: false,
 
+  //   연결시작
   init: () => {
     const { client } = get();
     if (client?.active) return; // 이미 활성화되어 있으면 무시

@@ -14,7 +14,7 @@ import { useUserRoleStore } from '@/store/useUserRoleStore';
 function AuthMenu() {
   const navigate = useNavigate();
 
-  const { isLoggedIn, LogIn, LogOut, isExpert, setUser, setExpert } = useUserRoleStore();
+  const { isLoggedIn, LogIn, LogOut, setUserId, isExpert, setUser, setExpert } = useUserRoleStore();
   const [isOpenProfileDropdown, setIsOpenProfileDropdown] = useState<boolean>(false);
 
   return (
@@ -23,7 +23,8 @@ function AuthMenu() {
       <button
         type="button"
         onClick={() => {
-          getAccessToken(1);
+          getAccessToken(3);
+          setUserId();
           LogIn();
           setUser();
         }}
