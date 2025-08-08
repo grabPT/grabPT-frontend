@@ -84,11 +84,11 @@ const ROUTES = {
 } as const;
 
 export const urlFor = {
-  expertDetail: (id: string | number) => `/expert/${id}`,
-  requestDetail: (id: string | number) => `/matching/requests/${id}`,
-  requestProposals: (id: string | number) => `/matching/requests/${id}/proposals`,
-  proposalDetail: (id: string | number) => `/matching/proposals/${id}`,
-  contractDetail: (id: string | number) => `/contracts/${id}`,
+  expertDetail: (id: number | undefined) => `/expert/${id}`,
+  requestDetail: (id: number | undefined) => `/matching/requests/${id}`,
+  requestProposals: (id: number | undefined) => `/matching/requests/${id}/proposals`,
+  proposalDetail: (id: number | undefined) => `/matching/proposals/${id}`,
+  contractDetail: (id: number | undefined) => `/contracts/${id}`,
 } as const;
 
 export default ROUTES;

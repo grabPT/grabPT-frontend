@@ -1,31 +1,31 @@
 import Profile from '@/assets/images/HeaderProfile.png';
 import StarRating from '@/components/StarRating';
-import type { ProposalsListType } from '@/pages/Requests/ProposalsForRequest';
+import type { proposalsForRequestItemType } from '@/features/ProposalsForRequest/types/getProposalsForRequestType';
 
 interface ProposalsListItemProps {
-  data: ProposalsListType;
+  proposal: proposalsForRequestItemType;
 }
 
-const ProposalsListItem = ({ data }: ProposalsListItemProps) => {
+const ProposalsListItem = ({ proposal }: ProposalsListItemProps) => {
   return (
     <div className="flex h-36 w-4xl items-center justify-between rounded-2xl bg-[#E6ECFF] px-5 shadow-[0_4px_4px_rgba(0,0,0,0.1)]">
       <div className="flex gap-3.5">
         <img src={Profile} alt="제안 트레이너 프로필" className="h-24" />
 
         <div className="flex flex-col justify-between">
-          <p className="text-button text-2xl font-bold">{data.nickname} 전문가님의 제안</p>
-          <p className="text-base font-bold">{data.center}</p>
-          <StarRating rating={data.averageRate} size={14} fontSize={10} />
-          <p className="text-xs font-semibold">{data.address}</p>
+          <p className="text-button text-2xl font-bold">{proposal.nickname} 전문가님의 제안</p>
+          <p className="text-base font-bold">{proposal.center}</p>
+          <StarRating rating={proposal.averageRate} size={14} fontSize={10} />
+          <p className="text-xs font-semibold">{proposal.address}</p>
         </div>
       </div>
 
       <div className="mr-6 text-right text-2xl font-bold">
         <p>
-          <span className="text-button">10</span> 회
+          <span className="text-button">{10}</span> 회
         </p>
         <p>
-          <span className="text-button">{data.price.toLocaleString()}</span> 원
+          <span className="text-button">{proposal.price.toLocaleString()}</span> 원
         </p>
       </div>
     </div>
