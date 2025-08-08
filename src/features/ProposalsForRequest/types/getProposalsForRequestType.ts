@@ -12,6 +12,9 @@ export type proposalsForRequestItemType = {
   address: string;
   price: number;
   averageRate: number;
+  sessionCount: number;
+  profileImageUrl: string;
+  proposalId: number;
 };
 
 export type getProposalsForRequestResultType = {

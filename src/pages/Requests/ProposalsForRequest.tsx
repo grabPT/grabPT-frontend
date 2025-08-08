@@ -43,6 +43,7 @@ const ProposalsForRequest = () => {
   if (isPending) return <LoadingMuscle />;
   if (error) return <ErrorComponent />;
 
+  console.log(proposalsForRequestList);
   return (
     <section className="flex flex-col items-center py-6">
       {isWriter && <Tabs items={TabItems} width="w-[400px]" />}
