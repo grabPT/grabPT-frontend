@@ -4,11 +4,14 @@ import ErrorComponent from '@/components/ErrorComponent';
 import Pagination from '@/components/Pagination';
 import RequestCard from '@/features/UserMypage/components/RequestCard';
 import { useGetMyRequestsList } from '@/hooks/useGetMyRequestsList';
+import { useSignupStore } from '@/store/useSignupStore';
 
 const UserRequests = () => {
   const [page, setPage] = useState(1);
   /** 실제 환경에선 API 응답으로 교체 */
-  const { data: myRequestsList, isPending, error } = useGetMyRequestsList({ page: 1, size: 5 });
+  const { data: myRequestsList, isPending, error } = useGetMyRequestsList({ page, size: 5 });
+  //닉네임 정보를 스토어에서 가져와서 지그믕ㄴ 제대로 안 뜰 수도 있음
+  const {nicknameInfo} = useSignupStore();
   const total = myRequestsList?.totalPages ?? 1;
   if (error) return <ErrorComponent />;
   return (
@@ -19,9 +22,7 @@ const UserRequests = () => {
         {myRequestsList?.content.map((rq, idx) => (
           <RequestCard
             key={`${page}-${idx}`}
-            name={rq.nickname}
-            location={rq.city}
-            center={rq.specAddress}
+            name={nicknameInfo.nickname}
             category={rq.categoryName.split(' ')}
             content={rq.content}
           />

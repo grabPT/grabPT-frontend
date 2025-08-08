@@ -4,7 +4,7 @@ import Button from '@/components/Button';
 import ErrorComponent from '@/components/ErrorComponent';
 import Pagination from '@/components/Pagination';
 import RequestsStatusCard from '@/features/Requests/components/RequestsStatusCard';
-import { useGetRequestsList } from '@/features/Requests/hooks/useGetRequestsList';
+import { useGetRequestsList } from '@/features/Requests/hooks/useGetMyRequestsList';
 import { useSortRequestsStore } from '@/store/useSortRequestsStore';
 
 const RequestsListPage = () => {

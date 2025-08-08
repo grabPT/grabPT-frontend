@@ -62,7 +62,7 @@ const ExpertCardScroll = ({ experts }: ExpertCardScrollProps) => {
             key={idx}
             className="flex h-full flex-shrink-0 cursor-pointer items-center"
             // 원래 expert.id넘겨야 함. 근데 없는 듯 ㅜㅜ
-            onClick={() => navigateToExpertDetail(idx)}
+            onClick={() => navigateToExpertDetail(63)}
           >
             <ExpertProfileCard {...expert} />
           </div>

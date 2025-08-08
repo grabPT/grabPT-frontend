@@ -4,13 +4,11 @@ import Box from '@/components/Box';
 
 interface RequestCardProps {
   name: string;
-  location: string;
-  center: string;
   category: string[];
   content: string;
 }
 
-const RequestCard = ({ name, location, center, category, content }: RequestCardProps) => {
+const RequestCard = ({ name, category, content }: RequestCardProps) => {
   return (
     <Box>
       <div className="relative flex h-full w-full flex-col p-[10px] pt-[15px]">
@@ -26,10 +24,6 @@ const RequestCard = ({ name, location, center, category, content }: RequestCardP
 
           <div className="flex flex-col">
             <span className="text-[16px] leading-[140%] font-semibold">{name}</span>
-            <span className="text-[10px] leading-[140%] font-semibold text-[#7A7A7A]">
-              {location}
-            </span>
-            <span className="text-[8px] leading-[140%] font-semibold text-[#013EFB]">{center}</span>
           </div>
         </div>
 

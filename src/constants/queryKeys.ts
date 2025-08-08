@@ -1,6 +1,7 @@
 import type { getChatRoomListRequestDto } from '@/features/Chat/types/getChatRoomListType';
 import type { getMessagesRequestDto } from '@/features/Chat/types/getMessagesType';
-import type { getMyRequestsListRequestDto } from '@/features/Mypage/types/getMyRequestsListRequestDto';
+import type { getMyInfoListRequestDto } from '@/features/Mypage/types/getMyRequestsListRequestDto';
+
 import type { getProposalsListRequestDto } from '@/features/Proposals/types/getProposalsListType';
 import type { getProposalsForRequestRequestDto } from '@/features/ProposalsForRequest/types/getProposalsForRequestType';
 import type { getRequestsListRequestDto } from '@/features/Requests/types/getRequestsListType';
@@ -13,8 +14,13 @@ export const QUERY_KEYS = {
     params.page,
     params.size,
   ],
-  myRequestsList: (params: getMyRequestsListRequestDto) => [
+  myRequestsList: (params: getMyInfoListRequestDto) => [
     'MyReqeustsList',
+    params.page,
+    params.size,
+  ],
+   myReviewsList: (params: getMyInfoListRequestDto) => [
+    'MyReviewsList',
     params.page,
     params.size,
   ],
@@ -23,6 +29,7 @@ export const QUERY_KEYS = {
     params.requestionId,
     params.page,
   ],
+  credentialList:()=>['credentialList'],
   proposalsList: (params: getProposalsListRequestDto) => ['proposalsList', params.page],
   CHAT: {
     list: (parmas: getChatRoomListRequestDto) => ['chatList', parmas.keyword],
