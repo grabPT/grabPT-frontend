@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { ChatText } from '@/features/Chat/components/ChatText';
 import { useGetMessagesInfinite } from '@/features/Chat/hooks/useGetMessages';
+import { usePostReadWhenEnter } from '@/features/Chat/hooks/usePostReadWhenEnter';
 import type { messageType } from '@/features/Chat/types/getMessagesType';
 import { onErrorImage } from '@/utils/onErrorImage';
 
@@ -12,7 +13,25 @@ interface ChatInfoProps {
 }
 
 export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
-  // 방읽음처리, 구독 등은 별도 로직에서 처리
+  // 읽음처리 api 전송
+  // chatroom/{roomid}/readWhenEnter
+  const { mutate } = usePostReadWhenEnter(roomId);
+  useEffect(() => {
+    if (!roomId) return;
+    mutate(roomId);
+  }, [roomId, mutate]);
+  // 채팅방 구독
+  // /subscribe/chat/${roomId}
+  // 읽음상태 구독
+  // stompClient.subscribe(`/subscribe/chat/${roomId}/read-status`, (msg) => {
+  // 메시지 올때마다 하나씩 읽음처리
+  // chatroom/roomid/readWhenExist
+  // 메시지 전송
+  // stompClient.send(`/publish/chat/${currentRoomId}`, {}, JSON.stringify(dto));
+  // 이미지보낼때는
+  // file을 /chatRoom/{roomId}/upload 에 보내서 content에 담긴 이미지 url
+  // 같이 담아서 보내기 (dto에)
+  //
   const { data, fetchNextPage, isFetchingNextPage, isLoading } = useGetMessagesInfinite({ roomId });
 
   const scrollRef = useRef<HTMLDivElement>(null);
