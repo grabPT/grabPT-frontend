@@ -1,8 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
+import { useQueryClient } from '@tanstack/react-query';
+
 import { ChatText } from '@/features/Chat/components/ChatText';
+import { useChatRoomSocket } from '@/features/Chat/hooks/useChatRoomSocket';
 import { useGetMessagesInfinite } from '@/features/Chat/hooks/useGetMessages';
+import { usePostReadWhenEnter } from '@/features/Chat/hooks/usePostReadWhenEnter';
 import type { messageType } from '@/features/Chat/types/getMessagesType';
+import { upsertIncomingMessage } from '@/utils/castCache';
 import { onErrorImage } from '@/utils/onErrorImage';
 
 interface ChatInfoProps {
@@ -12,6 +17,37 @@ interface ChatInfoProps {
 }
 
 export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
+  const queryClient = useQueryClient();
+  // 읽음처리 api 전송
+  // chatroom/{roomid}/readWhenEnter
+  const { mutate } = usePostReadWhenEnter(roomId);
+  useEffect(() => {
+    if (!roomId) return;
+    mutate(roomId);
+  }, [roomId, mutate]);
+  // 채팅방 구독
+  // /subscribe/chat/${roomId}
+  // 3) 방 소켓 구독 (메시지 / 읽음상태)
+  useChatRoomSocket<messageType>(
+    roomId,
+    {
+      onMessage: (msg) => {
+        upsertIncomingMessage(queryClient, roomId, msg);
+        requestAnimationFrame(() => bottomRef.current?.scrollIntoView({ block: 'end' }));
+      },
+    },
+    { enableMessage: true }, // 읽음/타이핑 안 쓰면 굳이 켤 필요 없음
+  );
+  // 읽음상태 구독
+  // stompClient.subscribe(`/subscribe/chat/${roomId}/read-status`, (msg) => {
+  // 메시지 올때마다 하나씩 읽음처리
+  // chatroom/roomid/readWhenExist
+  // 메시지 전송
+  // stompClient.send(`/publish/chat/${currentRoomId}`, {}, JSON.stringify(dto));
+  // 이미지보낼때는
+  // file을 /chatRoom/{roomId}/upload 에 보내서 content에 담긴 이미지 url
+  // 같이 담아서 보내기 (dto에)
+  //
   const { data, fetchNextPage, isFetchingNextPage, isLoading } = useGetMessagesInfinite({ roomId });
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -19,30 +55,22 @@ export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const lastRequestedCursorRef = useRef<number | null>(null);
-  const processedPageCountRef = useRef(0); // 몇 개의 page를 반영했는지 추적
-
   const [didInitialScroll, setDidInitialScroll] = useState(false);
-  const [totalMessages, setTotalMessages] = useState<messageType[]>([]);
 
-  // ▼ 핵심: 첫 페이지는 reverse 해서 set, 이후 페이지는 reverse 해서 앞에 prepend
-  useEffect(() => {
+  // ▼ data.pages만으로 기존 정렬 로직을 재현:
+  //    - pages[0] = 최신 페이지
+  //    - 각 페이지는 reverse
+  //    - 오래된 페이지부터(배열 뒤쪽부터) 앞으로 붙이기 → 결국 "첫 페이지 reverse, 이후 reverse-prepend"와 동일
+  const totalMessages: messageType[] = useMemo(() => {
     const pages = data?.pages ?? [];
-    if (!pages.length) return;
-
-    // 새로 추가된 페이지만 처리
-    for (let i = processedPageCountRef.current; i < pages.length; i++) {
+    if (!pages.length) return [];
+    const out: messageType[] = [];
+    for (let i = pages.length - 1; i >= 0; i--) {
       const arr = pages[i].messages ?? [];
-      const reversed = arr.length > 1 ? [...arr].reverse() : arr; // 원본 불변성 유지
-
-      if (i === 0 && processedPageCountRef.current === 0) {
-        // 첫 페이지: 교체
-        setTotalMessages(reversed);
-      } else {
-        // 이후 페이지: 앞에 붙이기 (unshift 대신 불변성 유지)
-        setTotalMessages((prev) => [...reversed, ...prev]);
-      }
+      const reversed = arr.length > 1 ? [...arr].reverse() : arr;
+      out.push(...reversed);
     }
-    processedPageCountRef.current = pages.length;
+    return out;
   }, [data]);
 
   // 다음 커서 (중복 요청 방지용)
@@ -105,11 +133,9 @@ export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
     return () => observer.disconnect();
   }, [fetchNextPage, nextCursor, isFetchingNextPage]);
 
-  // 방 변경 시 초기화
+  // 방 변경 시 스크롤 상태만 리셋(데이터는 캐시로 즉시 그려짐)
   useEffect(() => {
     lastRequestedCursorRef.current = null;
-    processedPageCountRef.current = 0;
-    setTotalMessages([]);
     setDidInitialScroll(false);
   }, [roomId]);
 

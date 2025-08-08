@@ -8,6 +8,7 @@ import { useStompStore } from '@/store/useStompStore';
 
 async function fetchUnreadTotal(): Promise<number> {
   const { data } = await privateInstance.get('/chat/unreadCount', { withCredentials: true });
+  console.log(data);
   return data?.isSuccess ? (data.result as number) : 0;
 }
 
@@ -48,6 +49,6 @@ export function useUnreadCount(userId?: number | null) {
     };
   }, [userId, connected, subscribe, unsubscribe]);
 
-  console.log(count);
+  console.log(`unReadCount : ${count}`);
   return count;
 }
