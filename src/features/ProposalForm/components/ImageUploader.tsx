@@ -7,7 +7,11 @@ interface PreviewImage {
   url: string;
 }
 
-export default function ImageUploader() {
+interface ImageUploaderProps {
+  onChange: (files: File[]) => void;
+}
+
+export default function ImageUploader({ onChange }: ImageUploaderProps) {
   const [images, setImages] = useState<PreviewImage[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -25,6 +29,7 @@ export default function ImageUploader() {
     }));
 
     setImages((prev) => [...prev, ...previews]);
+    onChange(files);
     e.target.value = ''; // 같은 파일 재선택 가능하도록 초기화
   };
 

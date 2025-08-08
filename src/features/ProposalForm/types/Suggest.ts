@@ -10,3 +10,7 @@ export type DetailProposalForm = {
   message: string;
   location: string;
 };
+
+export type SuggestResponseDto = {
+  suggestionId: number;
+};

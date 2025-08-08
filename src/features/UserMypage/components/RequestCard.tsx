@@ -50,5 +50,4 @@ const RequestCard = ({ name, location, center, category, content }: RequestCardP
     </Box>
   );
 };
-
 export default RequestCard;

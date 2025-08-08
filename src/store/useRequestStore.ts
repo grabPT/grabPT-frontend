@@ -29,6 +29,7 @@ export const useRequestStore = create<
     trainerGender: '',
     startPreference: '',
     content: '',
+    etcPurposeContent: '',
   },
   setSportsTypeInfo: (info) =>
     set((state) => ({ sportsTypeInfo: { ...state.sportsTypeInfo, ...info } })),
@@ -49,6 +50,7 @@ export const useRequestStore = create<
       trainerGender: state.detailInfo.trainerGender,
       startPreference: state.detailInfo.startPreference,
       content: state.detailInfo.content,
+      etcPurposeContent: state.detailInfo.etcPurposeContent,
     };
   },
 }));

@@ -10,15 +10,17 @@ import CommentBox from '@/components/CommentBox';
 import ImageUploader from '@/features/ProposalForm/components/ImageUploader';
 import { useSuggest } from '@/features/ProposalForm/hooks/useSuggest';
 import { proposalFormSchema } from '@/features/ProposalForm/schemas/proposalFormSchema';
-import type { DetailProposalForm } from '@/features/ProposalForm/types/ProposalForm';
+import type { DetailProposalForm } from '@/features/ProposalForm/types/Suggest';
 import { useSuggestStore } from '@/store/useSuggestStore';
 
 const ProposalFormPage = () => {
   /** 'accept' = 고객 요청 수락, 'custom' = 새로운 가격 제안 */
   const [mode, setMode] = useState<'accept' | 'custom'>('accept');
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
   //api 연결
   const { mutate: suggestSend } = useSuggest();
   const { suggestInfo, setSuggestInfo } = useSuggestStore();
+
   //유효성 검사
   const {
     register,
@@ -45,11 +47,16 @@ const ProposalFormPage = () => {
       requestionId: suggestInfo.requestionId,
     };
     setSuggestInfo(newSuggestInfo);
-
-    try {
-      await suggestSend(newSuggestInfo);
-    } catch (err) {
-      console.error('Suggest failed:', err);
+    console.log('requestionId', suggestInfo.requestionId);
+    if (newSuggestInfo.requestionId !== null) {
+      try {
+        await suggestSend({
+          data: newSuggestInfo,
+          photos: imageFiles,
+        });
+      } catch (err) {
+        console.error('Suggest failed:', err);
+      }
     }
   };
   const amountErrorMsg = errors.price?.message ?? errors.sessionCount?.message;
@@ -167,7 +174,7 @@ const ProposalFormPage = () => {
           <span>
             <span className="text-button">사진</span> 첨부
           </span>
-          <ImageUploader />
+          <ImageUploader onChange={(files) => setImageFiles(files)} />
         </div>
       </div>
 

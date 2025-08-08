@@ -1,37 +1,28 @@
 import { useState } from 'react';
 
+import ErrorComponent from '@/components/ErrorComponent';
 import Pagination from '@/components/Pagination';
 import RequestCard from '@/features/UserMypage/components/RequestCard';
+import { useGetMyRequestsList } from '@/hooks/useGetMyRequestsList';
 
 const UserRequests = () => {
-  const sample = {
-    name: '날다람주날닮았쥐',
-    location: '서울시 강서구 화곡동',
-    center: '용암동헬스장 브라이언박 트레이닝 센터',
-    category: ['복싱', '아침', '점심', '저녁', '주 2회'],
-    content:
-      '너무너무 친절하시고, 운동하면서 부족한 부분을 너무 잘 지적해주셨습니다!! 저는 20회 추가 PT 신청했습니다!!~~~~~~~~~~~~~~~~~~~~~~~~~',
-  };
-  /** 실제 환경에선 API 응답으로 교체 */
-  const requests = Array.from({ length: 23 }, () => sample);
-
-  const PAGE_SIZE = 5;
   const [page, setPage] = useState(1);
-  const total = Math.ceil(requests.length / PAGE_SIZE);
-
-  const paged = requests.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
-
+  /** 실제 환경에선 API 응답으로 교체 */
+  const { data: myRequestsList, isPending, error } = useGetMyRequestsList({ page: 1, size: 5 });
+  const total = myRequestsList?.totalPages ?? 1;
+  if (error) return <ErrorComponent />;
   return (
     <div className="flex flex-col items-center">
+      {isPending && <>스켈레톤 ui</>}
       {/* 요청 카드 목록 */}
       <div className="mt-[50px] flex w-[800px] flex-col gap-[30px]">
-        {paged.map((rq, idx) => (
+        {myRequestsList?.content.map((rq, idx) => (
           <RequestCard
             key={`${page}-${idx}`}
-            name={rq.name}
-            location={rq.location}
-            center={rq.center}
-            category={rq.category}
+            name={rq.nickname}
+            location={rq.city}
+            center={rq.specAddress}
+            category={rq.categoryName.split(' ')}
             content={rq.content}
           />
         ))}
