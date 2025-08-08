@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { ChatText } from '@/features/Chat/components/ChatText';
+import { useChatRoomSocket } from '@/features/Chat/hooks/useChatRoomSocket';
 import { useGetMessagesInfinite } from '@/features/Chat/hooks/useGetMessages';
 import { usePostReadWhenEnter } from '@/features/Chat/hooks/usePostReadWhenEnter';
 import type { messageType } from '@/features/Chat/types/getMessagesType';
@@ -22,6 +23,28 @@ export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
   }, [roomId, mutate]);
   // 채팅방 구독
   // /subscribe/chat/${roomId}
+  // 3) 방 소켓 구독 (메시지 / 읽음상태)
+  useChatRoomSocket(
+    roomId,
+    {
+      onMessage: (payload) => {
+        // payload 구조에 맞게 처리
+        // 예: 새 메시지가 오면 맨 아래로 스크롤
+        // 필요 시 React Query 캐시 갱신으로 append 처리
+        console.log('NEW MESSAGE', payload);
+        // bottomRef.current?.scrollIntoView({ block: 'end' });
+      },
+      onReadStatus: (payload) => {
+        // 읽음 상태 업데이트 처리 (메시지별 read 여부 반영 등)
+        console.log('READ STATUS', payload);
+      },
+    },
+    {
+      enableMessage: true,
+      enableReadStatus: true,
+      enableTyping: false,
+    },
+  );
   // 읽음상태 구독
   // stompClient.subscribe(`/subscribe/chat/${roomId}/read-status`, (msg) => {
   // 메시지 올때마다 하나씩 읽음처리
