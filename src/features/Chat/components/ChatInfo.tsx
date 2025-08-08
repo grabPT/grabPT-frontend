@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { ChatText } from '@/features/Chat/components/ChatText';
 import { useGetMessagesInfinite } from '@/features/Chat/hooks/useGetMessages';
+import type { messageType } from '@/features/Chat/types/getMessagesType';
 import { onErrorImage } from '@/utils/onErrorImage';
 
 interface ChatInfoProps {
@@ -12,46 +13,39 @@ interface ChatInfoProps {
 
 export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
   const { data, fetchNextPage, isFetchingNextPage, isLoading } = useGetMessagesInfinite({ roomId });
-  console.log(data);
 
-  // 스크롤 컨테이너 & 상단/하단 앵커
   const scrollRef = useRef<HTMLDivElement>(null);
   const topSentinelRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
-  // 같은 커서 중복 요청 방지
   const lastRequestedCursorRef = useRef<number | null>(null);
+  const processedPageCountRef = useRef(0); // 몇 개의 page를 반영했는지 추적
 
-  // 첫 진입 자동 스크롤 중복 방지
   const [didInitialScroll, setDidInitialScroll] = useState(false);
+  const [totalMessages, setTotalMessages] = useState<messageType[]>([]);
 
-  // ✅ 서버가 준 페이지 순서를 그대로 이어붙임 (정렬/디듀프 X)
-  //    TanStack의 pages는 [첫 페이지, 그다음, ...] 순서로 누적됨
-  // ✅ 모든 로드된 페이지를 '순서대로' 이어붙임 (정렬/디듀프 X)
-  const messages = useMemo(() => {
+  // ▼ 핵심: 첫 페이지는 reverse 해서 set, 이후 페이지는 reverse 해서 앞에 prepend
+  useEffect(() => {
     const pages = data?.pages ?? [];
-    if (!pages.length) return [];
+    if (!pages.length) return;
 
-    // 각 페이지 내부가 DESC(최신→오래된)라면 뒤집어 ASC로
-    const pagesAscInside = pages.map((p) => {
-      const arr = p.messages ?? [];
-      if (arr.length < 2) return arr;
-      const first = new Date(arr[0].sendAt).getTime();
-      const last = new Date(arr[arr.length - 1].sendAt).getTime();
-      return first > last ? [...arr].reverse() : arr;
-    });
+    // 새로 추가된 페이지만 처리
+    for (let i = processedPageCountRef.current; i < pages.length; i++) {
+      const arr = pages[i].messages ?? [];
+      const reversed = arr.length > 1 ? [...arr].reverse() : arr; // 원본 불변성 유지
 
-    // 페이지 간 순서도 오래된 페이지가 먼저 오게 정렬
-    const pagesWithKey = pagesAscInside.map((msgs) => ({
-      key: msgs.length ? new Date(msgs[0].sendAt).getTime() : Number.POSITIVE_INFINITY,
-      msgs,
-    }));
-    pagesWithKey.sort((a, b) => a.key - b.key);
-
-    return pagesWithKey.flatMap((x) => x.msgs);
+      if (i === 0 && processedPageCountRef.current === 0) {
+        // 첫 페이지: 교체
+        setTotalMessages(reversed);
+      } else {
+        // 이후 페이지: 앞에 붙이기 (unshift 대신 불변성 유지)
+        setTotalMessages((prev) => [...reversed, ...prev]);
+      }
+    }
+    processedPageCountRef.current = pages.length;
   }, [data]);
 
-  // 서버가 내려준 다음 커서 (마지막 페이지 기준)
+  // 다음 커서 (중복 요청 방지용)
   const nextCursor = useMemo(() => {
     const pages = data?.pages ?? [];
     if (!pages.length) return null;
@@ -60,7 +54,6 @@ export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
     return c === 0 || c == null ? null : c;
   }, [data]);
 
-  // 날짜 경계 판단
   const isDifferentDay = (prev: Date | null, curr: Date) => {
     if (!prev) return true;
     return (
@@ -70,15 +63,15 @@ export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
     );
   };
 
-  // 첫 로딩 완료 시 맨 아래로
+  // 첫 로딩 후 맨 아래로
   useEffect(() => {
-    if (!isLoading && !isFetchingNextPage && messages?.length && !didInitialScroll) {
+    if (!isLoading && !isFetchingNextPage && totalMessages.length && !didInitialScroll) {
       bottomRef.current?.scrollIntoView({ block: 'end' });
       setDidInitialScroll(true);
     }
-  }, [isLoading, isFetchingNextPage, messages?.length, didInitialScroll]);
+  }, [isLoading, isFetchingNextPage, totalMessages.length, didInitialScroll]);
 
-  // IntersectionObserver: 상단 센티널 보이면 이전 페이지 로드
+  // IO로 상단 도달 시 이전 페이지 로드 + 점프 방지
   useEffect(() => {
     const root = scrollRef.current;
     const target = topSentinelRef.current;
@@ -97,29 +90,26 @@ export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
           const prevTop = root.scrollTop;
 
           lastRequestedCursorRef.current = nextCursor;
-          await fetchNextPage(); // 훅의 getNextPageParam이 서버 커서를 사용
+          await fetchNextPage();
 
-          // 점프 방지
           requestAnimationFrame(() => {
             const nextHeight = root.scrollHeight;
             root.scrollTop = prevTop + (nextHeight - prevHeight);
           });
         }
       },
-      {
-        root,
-        rootMargin: '200px 0px 0px 0px',
-        threshold: 0,
-      },
+      { root, rootMargin: '200px 0px 0px 0px', threshold: 0 },
     );
 
     observer.observe(target);
     return () => observer.disconnect();
   }, [fetchNextPage, nextCursor, isFetchingNextPage]);
 
-  // roomId 변경 시 초기화
+  // 방 변경 시 초기화
   useEffect(() => {
     lastRequestedCursorRef.current = null;
+    processedPageCountRef.current = 0;
+    setTotalMessages([]);
     setDidInitialScroll(false);
   }, [roomId]);
 
@@ -143,9 +133,9 @@ export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
           <div className="py-2 text-center text-sm text-gray-500">이전 메시지 불러오는 중…</div>
         )}
 
-        {messages?.map((message, index) => {
+        {totalMessages.map((message, index) => {
           const currentDate = new Date(message.sendAt);
-          const prevDate = index > 0 ? new Date(messages[index - 1].sendAt) : null;
+          const prevDate = index > 0 ? new Date(totalMessages[index - 1].sendAt) : null;
           const shouldShowDate = isDifferentDay(prevDate, currentDate);
 
           return (
@@ -165,7 +155,7 @@ export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
           );
         })}
 
-        {/* 하단 앵커 */}
+        {/* 하단 앵커: 최신이 맨 아래 */}
         <div ref={bottomRef} />
       </div>
     </div>
