@@ -2,7 +2,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
 
 import type { ChatRoomListItemType } from '@/features/Chat/types/getChatRoomListType';
-import DefaultProfile from '@/features/Signup/assets/DefaultProfile.svg';
+import { onErrorImage } from '@/utils/onErrorImage';
 
 interface ChatCardProps {
   chat: ChatRoomListItemType;
@@ -16,7 +16,12 @@ const ChatCard = ({ chat }: ChatCardProps) => {
 
   return (
     <div className="flex w-full justify-center gap-3">
-      <img src={DefaultProfile} alt="chat profile" className="h-12 w-12 rounded-full" />
+      <img
+        src={chat.otherUserProfile}
+        onError={onErrorImage}
+        alt="chat profile"
+        className="h-12 w-12 rounded-full"
+      />
       {/* {img}
       </img> */}
       <div className="flex h-12 w-full max-w-3/4 flex-col justify-start gap-2">
