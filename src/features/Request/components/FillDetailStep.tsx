@@ -60,7 +60,7 @@ const FillDetailStep: ForwardRefRenderFunction<{ submit: () => Promise<boolean> 
               etcPurposeContent: data.purpose.includes('기타') ? data.etcPurposeContent : undefined,
             };
             setDetailInfo(updated);
-            console.log('updated:',updated);
+            console.log('updated:', updated);
             resolve(true);
           },
           () => {
@@ -136,10 +136,8 @@ const FillDetailStep: ForwardRefRenderFunction<{ submit: () => Promise<boolean> 
           </div>
           {etcSelected && (
             <textarea
-                  value={watch('etcPurposeContent')}
-                onChange={(e) =>
-                  setValue('etcPurposeContent', e.target.value, { shouldDirty: true })
-                }
+              value={watch('etcPurposeContent')}
+              onChange={(e) => setValue('etcPurposeContent', e.target.value, { shouldDirty: true })}
               className="mt-4 h-[180px] w-full resize-none rounded-[10px] border border-[#CCCCCC] bg-[#F5F5F5] p-4 text-[15px] placeholder:text-[#CCCCCC] focus:border-gray-400 focus:outline-none"
               placeholder="세부 내용을 입력해주세요"
             />

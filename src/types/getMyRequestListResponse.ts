@@ -1,6 +1,6 @@
-import type { PageableType } from "@/features/Requests/types/getRequestsListType";
-import type { CommonResponseDto } from "@/types/commonResponseDto";
-import type { SortType } from "@/types/SortType";
+import type { PageableType } from '@/features/Requests/types/getRequestsListType';
+import type { SortType } from '@/types/SortType';
+import type { CommonResponseDto } from '@/types/commonResponseDto';
 
 export type getMyRequestsListResultType = {
   totalPages: number;

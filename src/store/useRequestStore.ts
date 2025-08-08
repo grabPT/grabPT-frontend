@@ -29,7 +29,7 @@ export const useRequestStore = create<
     trainerGender: '',
     startPreference: '',
     content: '',
-    etcPurposeContent:''
+    etcPurposeContent: '',
   },
   setSportsTypeInfo: (info) =>
     set((state) => ({ sportsTypeInfo: { ...state.sportsTypeInfo, ...info } })),

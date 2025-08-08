@@ -29,13 +29,12 @@ multipartInstance.interceptors.request.use(
   (request) => {
     const accessToken = localStorage.getItem('accessToken');
     if (accessToken) {
-      request.headers['Authorization'] = `Bearer ${accessToken}`;//헤더에 토큰 넣어줌
+      request.headers['Authorization'] = `Bearer ${accessToken}`; //헤더에 토큰 넣어줌
     }
     return request;
   },
   (error) => Promise.reject(error),
 );
-
 
 //요청 인터셉터로 토큰 자동 주입
 privateInstance.interceptors.request.use(

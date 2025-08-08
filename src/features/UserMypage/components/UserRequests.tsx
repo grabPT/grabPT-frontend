@@ -1,16 +1,16 @@
 import { useState } from 'react';
 
+import ErrorComponent from '@/components/ErrorComponent';
 import Pagination from '@/components/Pagination';
 import RequestCard from '@/features/UserMypage/components/RequestCard';
 import { useGetMyRequestsList } from '@/hooks/useGetMyRequestsList';
 
 const UserRequests = () => {
-
-    const [page, setPage] = useState(1);
+  const [page, setPage] = useState(1);
   /** 실제 환경에선 API 응답으로 교체 */
-     const { data: myRequestsList, isPending, error } = useGetMyRequestsList({ page: 1, size: 5 });
+  const { data: myRequestsList, isPending, error } = useGetMyRequestsList({ page: 1, size: 5 });
   const total = myRequestsList?.totalPages ?? 1;
-
+  if (error) return <ErrorComponent />;
   return (
     <div className="flex flex-col items-center">
       {isPending && <>스켈레톤 ui</>}
