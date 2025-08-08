@@ -2,7 +2,6 @@ import Banner from '@/components/Banner';
 import ProfileCard from '@/components/ProfileCard';
 import RequestSlider from '@/features/home/components/RequestSlider';
 import { useGetMyRequestsList } from '@/hooks/useGetMyRequestsList';
-
 import { useProProfileQuery } from '@/hooks/useGetProProfile';
 
 const ExpertMainPage = () => {
@@ -15,7 +14,6 @@ const ExpertMainPage = () => {
   if (isLoading) return <div>로딩 중...</div>;
   if (isError || !profileData) return <div>에러 발생</div>;
 
-
   return (
     <section className="mt-[70px] mb-[140px] flex flex-col items-center">
       <h1 className="text-[40px] font-bold">
@@ -26,7 +24,7 @@ const ExpertMainPage = () => {
         <ProfileCard profileData={profileData} />
       </div>
       <div className="mt-[145px]">
-        <RequestSlider title={'받은 요청서'}   requests={requests?.content ?? []} />
+        <RequestSlider title={'받은 요청서'} requests={requests?.content ?? []} />
       </div>
 
       <div className="mt-[182px]">
