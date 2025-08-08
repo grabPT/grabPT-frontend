@@ -55,10 +55,11 @@ const RequestDetailPage = () => {
     formState: { errors },
     setValue,
     reset,
-  } = useForm<Omit<RequestRequestDto, 'location' | 'categoryId'>>({
+  } = useForm<Omit<RequestRequestDto, 'location'>>({
     mode: 'onChange',
     resolver: zodResolver(patchRequestSchema),
     defaultValues: {
+      categoryId: 0,
       purpose: [],
       ageGroup: null,
       userGender: '',
@@ -76,6 +77,7 @@ const RequestDetailPage = () => {
   useEffect(() => {
     if (data) {
       reset({
+        categoryId: data.categoryId,
         purpose: data.purpose ?? [],
         ageGroup: data.ageGroup ?? null,
         userGender: data.userGender,

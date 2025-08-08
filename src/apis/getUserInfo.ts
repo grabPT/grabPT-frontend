@@ -30,6 +30,7 @@ export interface ApiResponse<T> {
 export type GetUserInfoResponse = ApiResponse<UserInfo>;
 
 /** accessToken으로 사용자 정보 조회 */
+//이거 왜 이름이 getLocation?
 export async function getLocation(accessToken: string): Promise<GetUserInfoResponse> {
   try {
     const { data } = await publicInstance.get<ApiResponse<UserInfo>>('/api/users/info', {

@@ -1,6 +1,6 @@
 import type { PageableType } from '@/features/Requests/types/getRequestsListType';
-import type { CommonResponseDto } from '@/types/commonResponseDto';
 import type { SortType } from '@/types/SortType';
+import type { CommonResponseDto } from '@/types/commonResponseDto';
 
 export type getMyReviewsListRequestDto = {
   userId: number;
@@ -28,4 +28,4 @@ export type getMyReviewsListItemType = {
   rating: number;
   content: string;
 };
-export type getMyReviewsListResponseDto = CommonResponseDto<getMyReviewsListResultType>
+export type getMyReviewsListResponseDto = CommonResponseDto<getMyReviewsListResultType>;

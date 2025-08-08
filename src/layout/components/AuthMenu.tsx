@@ -23,8 +23,8 @@ function AuthMenu() {
       <button
         type="button"
         onClick={() => {
-          getAccessToken(3);
-          setUserId(3);
+          getAccessToken(2);
+          setUserId(2);
           LogIn();
           setUser();
         }}

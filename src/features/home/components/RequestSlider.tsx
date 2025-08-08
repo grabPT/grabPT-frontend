@@ -6,23 +6,17 @@ import 'slick-carousel/slick/slick.css';
 
 import { NextArrow, PrevArrow } from '@/features/home/components/CustomArrow';
 import RequestCardInMain from '@/features/home/components/RequestCard';
-
-type RequestItem = {
-  nickname: string;
-  region: string;
-  tags: string[];
-  memo: string;
-};
+import { useGetUserInfo } from '@/hooks/useGetUserInfo';
+import type { getMyRequestsListResultType } from '@/types/getMyRequestListResponse';
 
 interface RequestSliderProps {
   title: string;
-  requests: RequestItem[];
+  requests: getMyRequestsListResultType['content'];
 }
 
 function RequestSlider({ title, requests }: RequestSliderProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
-
   const settings = {
     className: 'center',
     infinite: false,
@@ -40,7 +34,8 @@ function RequestSlider({ title, requests }: RequestSliderProps) {
       { breakpoint: 1024, settings: { slidesToShow: 2, dots: false } },
     ],
   };
-
+  //임시방편용 사용자 이름
+  const { username } = useGetUserInfo().data ?? { username: '사용자' };
   return (
     <section
       ref={containerRef}
@@ -55,12 +50,15 @@ function RequestSlider({ title, requests }: RequestSliderProps) {
           {requests.slice(0, 12).map((r, i) => (
             <div key={i} className="h-[230px] px-4">
               <RequestCardInMain
-                name={r.nickname}
-                location={r.region}
-                tags={r.tags}
-                text={r.memo}
-                // 추후 추가
-                // id={r.id}
+                id={r.requestId}
+                name={username}
+                location={r.location}
+                tags={{
+                  availableTimes: r.availableTimes,
+                  daysPerWeek: r.availableDays.length,
+                  cagtegoryName: r.categoryName,
+                }}
+                text={r.content}
               />
             </div>
           ))}

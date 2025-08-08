@@ -15,7 +15,7 @@ export const ExpertDetailInfo = () => {
   const handleChatButton = () => {
     nav(ROUTES.CHAT.ROOT);
   };
-  const {data: credentialList} = useGetCredentialList();
+  const { data: credentialList } = useGetCredentialList();
   console.log(credentialList);
   const images = Array.from({ length: 7 }, () => MockImage);
   return (

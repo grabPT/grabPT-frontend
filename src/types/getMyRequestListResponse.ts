@@ -1,4 +1,5 @@
 import type { PageableType } from '@/features/Requests/types/getRequestsListType';
+import type { TimeSlot } from '@/types/ReqeustsType';
 import type { SortType } from '@/types/SortType';
 import type { CommonResponseDto } from '@/types/commonResponseDto';
 
@@ -20,7 +21,8 @@ export type MyRequestListItemType = {
   imageURL: string;
   userId: number;
   location: string;
-  availableTimes: string[];
+  availableTimes: TimeSlot[];
+  availableDays: string[];
   categoryName: string;
   sessionCount: number;
   content: string;

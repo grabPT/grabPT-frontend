@@ -1,11 +1,9 @@
 import { useState } from 'react';
 
 import ErrorComponent from '@/components/ErrorComponent';
-import ReviewCard from '@/components/ReviewCard';
-
-import { useGetMyReviewsList } from '@/features/Requests/hooks/useGetMyReviewsList';
 import Pagination from '@/components/Pagination';
-
+import ReviewCard from '@/components/ReviewCard';
+import { useGetMyReviewsList } from '@/features/Requests/hooks/useGetMyReviewsList';
 
 const UserReviews = () => {
   const [page, setPage] = useState(1);
@@ -28,12 +26,12 @@ const UserReviews = () => {
           </div>
         ))}
       </div>
-       {/* 페이지네이션 */}
-      {(
+      {/* 페이지네이션 */}
+      {
         <div className="mt-8">
           <Pagination total={total} page={page} onChange={setPage} />
         </div>
-      )}
+      }
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import type { CommonResponseDto } from "@/types/commonResponseDto";
+import type { CommonResponseDto } from '@/types/commonResponseDto';
 
 export const CredentialType = {
   AWARD: '수상',
@@ -13,7 +13,7 @@ export type credentialListItem = {
   description: string;
 };
 
-export type getCredentialListResultDTO={
-certifications: credentialListItem[];
-}
-export type  getCredentialListResponseDto=CommonResponseDto<getCredentialListResultDTO>
+export type getCredentialListResultDTO = {
+  certifications: credentialListItem[];
+};
+export type getCredentialListResponseDto = CommonResponseDto<getCredentialListResultDTO>;

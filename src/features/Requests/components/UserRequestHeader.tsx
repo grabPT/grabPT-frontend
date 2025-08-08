@@ -7,7 +7,7 @@ interface UserRequestHeaderProps {
   location: string;
 }
 
-const UserRequestHeader = ({ nickName, location }: UserRequestHeaderProps) => {
+const UserRequestHeader = ({ nickName }: UserRequestHeaderProps) => {
   return (
     <div className="flex flex-row items-center">
       <div className="mr-3 flex h-12 w-12 items-center justify-center rounded-full bg-gray-300">
@@ -21,7 +21,6 @@ const UserRequestHeader = ({ nickName, location }: UserRequestHeaderProps) => {
       </div>
       <div className="flex w-auto flex-col">
         <h3 className="text-[18px] font-semibold text-gray-900">{nickName}</h3>
-        <p className="text-[12px] text-gray-500">{location}</p>
       </div>
     </div>
   );

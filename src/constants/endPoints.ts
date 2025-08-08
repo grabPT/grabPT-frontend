@@ -13,11 +13,11 @@ export const END_POINT = {
       reviews: `/mypage/reviews`,
     },
   },
-MYPROPAGE:{
-  CREDENTIALS:{
-    credentials: '/mypage/pro/certification'
+  MYPROPAGE: {
+    CREDENTIALS: {
+      credentials: '/mypage/pro/certification',
+    },
   },
-},
   CATEGORY: {
     realtime: (categoryCode: SportsSlugType) => `/api/v1/requests/${categoryCode}`,
   },
