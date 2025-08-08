@@ -2,6 +2,7 @@ import Profile from '@/assets/images/HeaderProfile.png';
 import XIcon from '@/assets/images/x.png';
 import Box from '@/components/Box';
 
+
 interface RequestCardProps {
   name: string;
   location: string;
@@ -11,6 +12,7 @@ interface RequestCardProps {
 }
 
 const RequestCard = ({ name, location, center, category, content }: RequestCardProps) => {
+
   return (
     <Box>
       <div className="relative flex h-full w-full flex-col p-[10px] pt-[15px]">
@@ -50,5 +52,4 @@ const RequestCard = ({ name, location, center, category, content }: RequestCardP
     </Box>
   );
 };
-
 export default RequestCard;

@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import type { SuggestRequestDto } from '@/features/ProposalForm/types/ProposalForm';
+import type { SuggestRequestDto } from '@/features/ProposalForm/types/Suggest';
 
 interface SuggestState {
   suggestInfo: SuggestRequestDto;

@@ -52,8 +52,6 @@ const RequestFormPage = () => {
       // 스토어에서 작성 데이터 취득
       const requestInfo = useRequestStore.getState().getRequestInfo();
 
-      //한국 성별 -> 영어 성별로 변환(만약 서버에서 한국어로 받는게 문제가 안되면 없애도 될듯)
-
       const payload = {
         ...requestInfo,
       };
