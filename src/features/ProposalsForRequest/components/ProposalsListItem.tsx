@@ -1,17 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 
-import Profile from '@/assets/images/HeaderProfile.png';
 import StarRating from '@/components/StarRating';
 import { urlFor } from '@/constants/routes';
 import type { proposalsForRequestItemType } from '@/features/ProposalsForRequest/types/getProposalsForRequestType';
+import { onErrorImage } from '@/utils/onErrorImage';
 
 interface ProposalsListItemProps {
   proposal: proposalsForRequestItemType;
 }
-
-const onErrorImage = (e: any) => {
-  e.target.src = Profile;
-};
 
 const ProposalsListItem = ({ proposal }: ProposalsListItemProps) => {
   const navigate = useNavigate();
