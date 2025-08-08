@@ -1,17 +1,15 @@
+import type { messageType } from '@/features/Chat/types/getMessagesType';
 import DefaultProfile from '@/features/Signup/assets/DefaultProfile.svg';
+import { useUserRoleStore } from '@/store/useUserRoleStore';
 
 interface ChatTextProps {
-  id: string;
-  senderId: string;
-  message: string;
-  timestamp: Date;
-  type: 'text' | 'image';
-  isRead: boolean;
+  chat: messageType;
 }
 
-export const ChatText = ({ senderId, message, timestamp, type, isRead }: ChatTextProps) => {
-  const isMe = senderId === 'me';
-  const timeAgo = new Date(timestamp).toLocaleTimeString('ko-KR', {
+export const ChatText = ({ chat }: ChatTextProps) => {
+  const { userId } = useUserRoleStore();
+  const isMe = chat.senderId === userId;
+  const timeAgo = new Date(chat.sendAt).toLocaleTimeString('ko-KR', {
     hour: '2-digit',
     minute: '2-digit',
   });
@@ -31,7 +29,9 @@ export const ChatText = ({ senderId, message, timestamp, type, isRead }: ChatTex
       <div className="flex w-fit max-w-[70%] items-end gap-1">
         {isMe && (
           <div className="mt-2.5 flex flex-col items-end justify-end">
-            {!isRead && <span className="text-[1rem] font-bold text-[#1F56FF]">1</span>}
+            {chat.readCount === 1 && (
+              <span className="text-[1rem] font-bold text-[#1F56FF]">1</span>
+            )}
             <span className="text-[0.875rem] font-semibold text-[#A5A5A5]">{timeAgo}</span>
           </div>
         )}
@@ -42,10 +42,10 @@ export const ChatText = ({ senderId, message, timestamp, type, isRead }: ChatTex
               : 'rounded-t-xl rounded-br-xl rounded-bl-none bg-[#EDEDED] text-black'
           }`}
         >
-          {type === 'image' ? (
-            <img src={message} alt="채팅 이미지" className="h-32 w-32 rounded-md" />
+          {chat.messageType === 'IMAGE' ? (
+            <img src={chat.content} alt="채팅 이미지" className="h-32 w-32 rounded-md" />
           ) : (
-            <span>{message}</span>
+            <span>{chat.content}</span>
           )}
         </div>
         {!isMe && (
