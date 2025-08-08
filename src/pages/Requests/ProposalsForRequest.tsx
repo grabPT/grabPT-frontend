@@ -5,41 +5,7 @@ import { useParams } from 'react-router-dom';
 import Pagination from '@/components/Pagination';
 import Tabs, { type TabItem } from '@/components/Tabs';
 import { urlFor } from '@/constants/routes';
-import ProposalsListItem from '@/features/RequestsDetail/ProposalsListItem';
-
-// type ProposalsForRequestResponseDto = {
-//   isSuccess: boolean;
-//   code: string;
-//   message: string;
-//   result: {
-//     totalPages: number;
-//     totalElements: number;
-//     size: number;
-//     content: ProposalsListType[];
-//     number: number;
-//     sort: {
-//       empty: boolean;
-//       unsorted: boolean;
-//       sorted: boolean;
-//     };
-//     numberOfElements: number;
-//     pageable: {
-//       offset: number;
-//       sort: {
-//         empty: boolean;
-//         unsorted: boolean;
-//         sorted: boolean;
-//       };
-//       paged: boolean;
-//       unpaged: boolean;
-//       pageNumber: number;
-//       pageSize: number;
-//     };
-//     first: boolean;
-//     last: boolean;
-//     empty: boolean;
-//   };
-// };
+import ProposalsListItem from '@/features/ProposalsForRequest/components/ProposalsListItem';
 
 export type ProposalsListType = {
   // 제안서 상세페이지로 리다이렉트하기 위해 제안서 고유 id 필요합니다!
