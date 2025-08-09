@@ -17,26 +17,33 @@ interface ChatInfoProps {
 }
 
 export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
+  // 채팅방 컴포넌트 queryClient 생성. 캐시관리용
   const queryClient = useQueryClient();
-  // 읽음처리 api 전송
-  // chatroom/{roomid}/readWhenEnter
+
+  // 채팅방 렌더링 시 (새로운 채팅방 접속 시) 읽음처리 api 전송
   const { mutate } = usePostReadWhenEnter(roomId);
   useEffect(() => {
     if (!roomId) return;
     mutate(roomId);
   }, [roomId, mutate]);
-  // 채팅방 구독
-  // /subscribe/chat/${roomId}
-  // 3) 방 소켓 구독 (메시지 / 읽음상태)
+
+  // onMessage함수 (방구독에서 온 메시지 콜백함수)
+  const onMessage = (message: messageType) => {
+    // ui에 추가
+    upsertIncomingMessage(queryClient, roomId, message);
+    // 스크롤 하단으로
+    requestAnimationFrame(() => bottomRef.current?.scrollIntoView({ block: 'end' }));
+  };
+  // onReadStatus함수 (읽음상태구독에서 온 메시지 콜백함수)
+  const onReadStatus = () => console.log('read-status에서 문자옴');
   useChatRoomSocket<messageType>(
     roomId,
     {
-      onMessage: (msg) => {
-        upsertIncomingMessage(queryClient, roomId, msg);
-        requestAnimationFrame(() => bottomRef.current?.scrollIntoView({ block: 'end' }));
-      },
+      // 메시지가 왔을 때
+      onMessage: onMessage,
+      onReadStatus: onReadStatus,
     },
-    { enableMessage: true }, // 읽음/타이핑 안 쓰면 굳이 켤 필요 없음
+    { enableMessage: true, enableReadStatus: true }, // 읽음/타이핑 안 쓰면 굳이 켤 필요 없음
   );
   // 읽음상태 구독
   // stompClient.subscribe(`/subscribe/chat/${roomId}/read-status`, (msg) => {
@@ -82,6 +89,7 @@ export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
     return c === 0 || c == null ? null : c;
   }, [data]);
 
+  // 날짜 검증 로직
   const isDifferentDay = (prev: Date | null, curr: Date) => {
     if (!prev) return true;
     return (

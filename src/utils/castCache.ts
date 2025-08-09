@@ -8,6 +8,7 @@ export const upsertIncomingMessage = (
   incoming: messageType,
 ) => {
   queryClient.setQueryData<any>(['Chat', roomId], (prev: any) => {
+    // 이전 데이터 없을 때,
     if (!prev) {
       return { pages: [{ cursor: null, messages: [incoming] }], pageParams: [] };
     }

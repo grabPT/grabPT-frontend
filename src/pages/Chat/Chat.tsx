@@ -27,7 +27,7 @@ export const Chat = () => {
   const { sendMessage, connected } = useChatRoomSocket(
     selectedChat?.chatRoomId,
     {}, // 핸들러 없음
-    { enableMessage: false, enableReadStatus: false, enableTyping: false },
+    { enableMessage: false, enableReadStatus: false },
   );
 
   const [text, setText] = useState('');
