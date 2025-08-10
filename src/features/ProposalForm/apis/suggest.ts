@@ -3,18 +3,12 @@ import { multipartInstance } from '@/libs/axios';
 import type { CommonResponseDto } from '@/types/commonResponseDto';
 
 export const postSuggest = async (
-  data: SuggestRequestDto, // JSON 데이터
+  data: SuggestRequestDto,
   photos: File[], // 이미지 파일 배열
 ): Promise<CommonResponseDto<SuggestResponseDto>> => {
   const form = new FormData();
 
-  // form.append('data', new Blob([JSON.stringify(data)], { type: 'application/json' })); //data 주입
-  form.append('price', String(data.price));
-  form.append('sessionCount', String(data.sessionCount));
-  form.append('message', data.message);
-  form.append('location', data.location);
-  form.append('sentAt', data.sentAt);
-  form.append('isAgreed', String(data.isAgreed));
+  form.append('data', new Blob([JSON.stringify(data)], { type: 'application/json' })); //data 주입
 
   if (photos?.length) {
     photos.forEach((file) => {
@@ -29,6 +23,8 @@ export const postSuggest = async (
     blob.text().then(console.log);
   }
 
-  const { data: responseData } = await multipartInstance.post('/api/suggestion', form);
+  const { data: responseData } = await multipartInstance.post('/api/suggestion', form, {
+    skipAuth: false,
+  });
   return responseData;
 };

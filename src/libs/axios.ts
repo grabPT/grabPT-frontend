@@ -18,24 +18,6 @@ export const privateInstance = axios.create({
   timeout: 10_000,
 });
 
-// 파일 업로드 전용 인스턴스 (multipart/form-data)
-export const multipartInstance = axios.create({
-  baseURL: import.meta.env.VITE_SERVER_API_URL,
-  timeout: 10_000,
-});
-
-// 요청 시 토큰 자동 주입
-multipartInstance.interceptors.request.use(
-  (request) => {
-    const accessToken = localStorage.getItem('accessToken');
-    if (accessToken) {
-      request.headers['Authorization'] = `Bearer ${accessToken}`; //헤더에 토큰 넣어줌
-    }
-    return request;
-  },
-  (error) => Promise.reject(error),
-);
-
 //요청 인터셉터로 토큰 자동 주입
 privateInstance.interceptors.request.use(
   (request) => {
@@ -81,3 +63,33 @@ privateInstance.interceptors.request.use(
 //     return Promise.reject(error);                 // 기타 오류는 그대로
 //   },
 // );
+
+// 멀티 파트 데이터 사용 시 skipAuth 옵션을 통해 인증 헤더를 생략할 수 있음.(회원가입-생략, 제안서 작성-포함)
+declare module 'axios' {
+  export interface AxiosRequestConfig {
+    skipAuth?: boolean;
+  }
+  export interface InternalAxiosRequestConfig {
+    skipAuth?: boolean;
+  }
+}
+
+// 파일 업로드 전용 인스턴스 (multipart/form-data)
+export const multipartInstance = axios.create({
+  baseURL: import.meta.env.VITE_SERVER_API_URL,
+  timeout: 10_000,
+});
+
+// 요청 시 토큰 자동 주입
+multipartInstance.interceptors.request.use(
+  (request) => {
+    if (!request.skipAuth) {
+      const accessToken = localStorage.getItem('accessToken');
+      if (accessToken) {
+        request.headers['Authorization'] = `Bearer ${accessToken}`; //헤더에 토큰 넣어줌
+      }
+    }
+    return request;
+  },
+  (error) => Promise.reject(error),
+);

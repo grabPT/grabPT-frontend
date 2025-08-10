@@ -42,12 +42,12 @@ const ProposalFormPage = () => {
   const onSubmit = async (data: DetailProposalForm) => {
     const newSuggestInfo = {
       ...data,
-      sentAt: new Date().toISOString(),
+      sentAt: new Date().toISOString().split('T')[0],
       isAgreed: false,
       requestionId: suggestInfo.requestionId,
     };
     setSuggestInfo(newSuggestInfo);
-    console.log('requestionId', suggestInfo.requestionId);
+    console.log('제안서 data: ', suggestInfo);
     if (newSuggestInfo.requestionId !== null) {
       try {
         await suggestSend({
