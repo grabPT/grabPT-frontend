@@ -18,11 +18,13 @@ interface SignupState {
   oauthProvider: string;
   role: number;
   agreementInfo: SignupUserAgreementDto;
+  profileImageInfo: File | null
 
   setUserInfo: (info: Partial<SignupUserInfoStepDto>) => void;
   setProInfo: (info: Partial<SignupProInfoStepDto>) => void;
   setSportsTypeInfo: (info: Partial<SportsTypeStepDto>) => void;
   setNicknameInfo: (info: Partial<SignupNicknameStepDto>) => void;
+  setProfileImageInfo: (file: File | null) => void;
   setUserName: (info: string) => void;
   setOauthId: (info: string) => void;
   setOauthProvider: (info: string) => void;
@@ -44,7 +46,8 @@ export const useSignupStore = create<
   },
   proInfo: { center: '', career: null, gender: 1, age: null },
   sportsTypeInfo: { categoryId: 0 },
-  nicknameInfo: { nickname: '', profileImageUrl: '' },
+  nicknameInfo: { nickname: ''},
+  profileImageInfo: null,
   username: '김갱주',
   oauthId: 'abcd1234',
   oauthProvider: 'kakao',
@@ -56,6 +59,7 @@ export const useSignupStore = create<
   setSportsTypeInfo: (info) =>
     set((state) => ({ sportsTypeInfo: { ...state.sportsTypeInfo, ...info } })),
   setNicknameInfo: (info) => set((state) => ({ nicknameInfo: { ...state.nicknameInfo, ...info } })),
+  setProfileImageInfo: (info) => set(() => ({ profileImageInfo: info })),
   setUserName: (info) => set(() => ({ username: info })),
   setOauthId: (info) => set(() => ({ oauthId: info })),
   setOauthProvider: (info) => set(() => ({ oauthProvider: info })),
@@ -78,7 +82,8 @@ export const useSignupStore = create<
       },
       proInfo: { center: '', career: null, gender: 1, age: null },
       sportsTypeInfo: { categoryId: 0 },
-      nicknameInfo: { nickname: '', profileImageUrl: '' },
+      nicknameInfo: { nickname: ''},
+      profileImageInfo: null,
       username: '',
       oauthId: '',
       oauthProvider: '',
@@ -97,7 +102,7 @@ export const useSignupStore = create<
       phoneNum: state.userInfo.phoneNum,
       address: state.userInfo.address,
       nickname: state.nicknameInfo.nickname,
-      profileImageUrl: state.nicknameInfo.profileImageUrl,
+      profileImageInfo: state.profileImageInfo,
       agreedTermsIds: state.agreementInfo.agreedTermsId,
       agreeMarketing: state.agreementInfo.agreeMarketing,
     };
@@ -114,7 +119,7 @@ export const useSignupStore = create<
       phoneNum: state.userInfo.phoneNum,
       address: state.userInfo.address,
       nickname: state.nicknameInfo.nickname,
-      profileImageUrl: state.nicknameInfo.profileImageUrl,
+      profileImage: state.profileImageInfo,
       agreedTermsIds: state.agreementInfo.agreedTermsId,
       agreeMarketing: state.agreementInfo.agreeMarketing,
       // 전문가 추가 정보

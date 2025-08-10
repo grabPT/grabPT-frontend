@@ -1,7 +1,6 @@
 import { axiosInstance } from '@/features/Signup/apis/axios';
 import type {
   LogoutDto,
-  ProSignupRequestDto,
   SmsSendRequestDto,
   SmsVerifyRequestDto,
 BaseSignupRequestDto,
@@ -9,7 +8,7 @@ SignupProInfoStepDto
 } from '@/features/Signup/types/Auth';
 import { multipartInstance } from '@/libs/axios';
 import type { CommonResponseDto } from '@/types/commonResponseDto';
-
+//머지 후 skipAuth 추가할것 
 export const postUserSignup = async (
   data: BaseSignupRequestDto,
   profileImage: File | null,
