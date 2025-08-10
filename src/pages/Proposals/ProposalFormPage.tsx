@@ -47,7 +47,7 @@ const ProposalFormPage = () => {
       requestionId: suggestInfo.requestionId,
     };
     setSuggestInfo(newSuggestInfo);
-    console.log('requestionId', suggestInfo.requestionId);
+    console.log('제안서 data: ', suggestInfo);
     if (newSuggestInfo.requestionId !== null) {
       try {
         await suggestSend({
