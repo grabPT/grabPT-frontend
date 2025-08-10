@@ -27,7 +27,6 @@ export type SignupProInfoStepDto = {
 
 export type SignupNicknameStepDto = {
   nickname: string;
-  profileImageUrl: string;
 };
 export type UserSignupRequestDto = {
   data: BaseSignupRequestDto;
