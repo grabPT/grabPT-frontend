@@ -18,7 +18,7 @@ interface SignupState {
   oauthProvider: string;
   role: number;
   agreementInfo: SignupUserAgreementDto;
-  profileImageInfo: File | null
+  profileImageInfo: File | null;
 
   setUserInfo: (info: Partial<SignupUserInfoStepDto>) => void;
   setProInfo: (info: Partial<SignupProInfoStepDto>) => void;
@@ -37,6 +37,7 @@ export const useSignupStore = create<
   SignupState & {
     getUserSignupDto: () => any;
     getProSignupDto: () => any;
+    getProfileImageInfo: () => File | null;
   }
 >((set, get) => ({
   userInfo: {
@@ -46,7 +47,7 @@ export const useSignupStore = create<
   },
   proInfo: { center: '', career: null, gender: 1, age: null },
   sportsTypeInfo: { categoryId: 0 },
-  nicknameInfo: { nickname: ''},
+  nicknameInfo: { nickname: '' },
   profileImageInfo: null,
   username: '김갱주',
   oauthId: 'abcd1234',
@@ -82,7 +83,7 @@ export const useSignupStore = create<
       },
       proInfo: { center: '', career: null, gender: 1, age: null },
       sportsTypeInfo: { categoryId: 0 },
-      nicknameInfo: { nickname: ''},
+      nicknameInfo: { nickname: '' },
       profileImageInfo: null,
       username: '',
       oauthId: '',
@@ -102,10 +103,13 @@ export const useSignupStore = create<
       phoneNum: state.userInfo.phoneNum,
       address: state.userInfo.address,
       nickname: state.nicknameInfo.nickname,
-      profileImageInfo: state.profileImageInfo,
       agreedTermsIds: state.agreementInfo.agreedTermsId,
       agreeMarketing: state.agreementInfo.agreeMarketing,
     };
+  },
+  getProfileImageInfo: () => {
+    const state = get();
+    return state.profileImageInfo;
   },
   getProSignupDto: () => {
     const state = get();
@@ -119,7 +123,6 @@ export const useSignupStore = create<
       phoneNum: state.userInfo.phoneNum,
       address: state.userInfo.address,
       nickname: state.nicknameInfo.nickname,
-      profileImage: state.profileImageInfo,
       agreedTermsIds: state.agreementInfo.agreedTermsId,
       agreeMarketing: state.agreementInfo.agreeMarketing,
       // 전문가 추가 정보

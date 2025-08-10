@@ -1,14 +1,14 @@
 import { axiosInstance } from '@/features/Signup/apis/axios';
 import type {
+  BaseSignupRequestDto,
   LogoutDto,
+  SignupProInfoStepDto,
   SmsSendRequestDto,
   SmsVerifyRequestDto,
-BaseSignupRequestDto,
-SignupProInfoStepDto
 } from '@/features/Signup/types/Auth';
 import { multipartInstance } from '@/libs/axios';
 import type { CommonResponseDto } from '@/types/commonResponseDto';
-//머지 후 skipAuth 추가할것 
+
 export const postUserSignup = async (
   data: BaseSignupRequestDto,
   profileImage: File | null,
@@ -17,7 +17,7 @@ export const postUserSignup = async (
   form.append('data', new Blob([JSON.stringify(data)], { type: 'application/json' })); //data 주입
 
   if (profileImage) {
-      form.append('profileImage', profileImage);
+    form.append('profileImage', profileImage);
   }
   //콘솔 출력(나중에 지우거나 주석 처리)
   for (const [key, value] of form.entries()) {
@@ -27,11 +27,11 @@ export const postUserSignup = async (
     blob.text().then(console.log);
   }
 
-  const { data: responseData } = await multipartInstance.post('/auth/user-signup', form);
+  const { data: responseData } = await multipartInstance.post('/api/auth/user-signup', form, {
+    skipAuth: true,
+  });
   return responseData;
 };
-
-
 
 export const postProSignup = async (
   data: BaseSignupRequestDto & SignupProInfoStepDto,
@@ -41,7 +41,7 @@ export const postProSignup = async (
   form.append('data', new Blob([JSON.stringify(data)], { type: 'application/json' })); //data 주입
 
   if (profileImage) {
-      form.append('profileImage', profileImage);
+    form.append('profileImage', profileImage);
   }
   //콘솔 출력(나중에 지우거나 주석 처리)
   for (const [key, value] of form.entries()) {
@@ -50,27 +50,29 @@ export const postProSignup = async (
 
     blob.text().then(console.log);
   }
-    const { data: responseData } = await multipartInstance.post('/auth/pro-signup', form);
+  const { data: responseData } = await multipartInstance.post('/api/auth/pro-signup', form, {
+    skipAuth: true,
+  });
   return responseData;
 };
 
 export const postSmsVerify = async (
   body: SmsVerifyRequestDto,
 ): Promise<CommonResponseDto<string>> => {
-  const { data } = await axiosInstance.post('/sms/verify-sms', body);
+  const { data } = await axiosInstance.post('/api/sms/verify-sms', body);
   return data;
 };
 export const postSmsSend = async (body: SmsSendRequestDto): Promise<CommonResponseDto<string>> => {
-  const { data } = await axiosInstance.post('/sms/send', body);
+  const { data } = await axiosInstance.post('/api/sms/send', body);
   return data;
 };
 export const getCheckNickname = async (nickname: string): Promise<CommonResponseDto<string>> => {
-  const { data } = await axiosInstance.get('/auth/check-nickname', {
+  const { data } = await axiosInstance.get('/api/auth/check-nickname', {
     params: { nickname },
   });
   return data;
 };
 export const postLogout = async (body: LogoutDto): Promise<CommonResponseDto<string>> => {
-  const { data } = await axiosInstance.post('/auth/logout', body);
+  const { data } = await axiosInstance.post('/api/auth/logout', body);
   return data;
 };

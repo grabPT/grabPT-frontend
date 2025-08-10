@@ -49,15 +49,21 @@ const Signup = () => {
         const payload = useSignupStore.getState().getUserSignupDto();
 
         console.log('📦 보내는 user-signup payload:', payload); //
-        userSignup(useSignupStore.getState().getUserSignupDto(), {
-          onSuccess: (res) => {
-            console.log('User signup success:', res);
-            nav('/');
+        userSignup(
+          {
+            data: useSignupStore.getState().getUserSignupDto(),
+            profileImage: useSignupStore.getState().getProfileImageInfo(),
           },
-          onError: (err) => {
-            console.error('User signup failed:', err);
+          {
+            onSuccess: (res) => {
+              console.log('User signup success:', res);
+              nav('/');
+            },
+            onError: (err) => {
+              console.error('User signup failed:', err);
+            },
           },
-        });
+        );
       } else if (role === 2) {
         proSignup(useSignupStore.getState().getProSignupDto(), {
           onSuccess: (res) => {
@@ -82,12 +88,12 @@ const Signup = () => {
       </div>
 
       {/* 본문 (약관/정보입력/거주지 선택 등) */}
-      {step === 5 && <AgreementStep onNext={handleNext} />}
+      {step === 0 && <AgreementStep onNext={handleNext} />}
       {step === 1 && <UserTypeStep onNext={handleNext} />}
       {step === 2 && <UserInfoStep onNext={handleNext} />}
       {step === 3 && <ExpertInfoStep onNext={handleNext} />}
       {step === 4 && <SportsTypeStep onNext={handleNext} />}
-      {step === 0 && <NickNameStep onNext={handleNext} />}
+      {step === 5 && <NickNameStep onNext={handleNext} />}
     </div>
   );
 };
