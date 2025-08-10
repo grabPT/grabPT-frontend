@@ -33,9 +33,9 @@ const NickNameStep = ({ onNext }: NicknameStepProps) => {
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const fileUrl = URL.createObjectURL(file);
-    setNicknameInfo({ ...nicknameInfo, profileImageUrl: fileUrl });
-    setPreviewUrl(fileUrl);
+    const previews = URL.createObjectURL(file);
+    setNicknameInfo({ ...nicknameInfo, profileImageUrl: previews });
+    setPreviewUrl(previews);
   };
   // 닉네임 중복 확인 로직
   const handleCheckNickname = () => {

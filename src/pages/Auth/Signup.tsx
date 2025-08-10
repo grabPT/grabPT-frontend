@@ -82,12 +82,12 @@ const Signup = () => {
       </div>
 
       {/* 본문 (약관/정보입력/거주지 선택 등) */}
-      {step === 0 && <AgreementStep onNext={handleNext} />}
+      {step === 5 && <AgreementStep onNext={handleNext} />}
       {step === 1 && <UserTypeStep onNext={handleNext} />}
       {step === 2 && <UserInfoStep onNext={handleNext} />}
       {step === 3 && <ExpertInfoStep onNext={handleNext} />}
       {step === 4 && <SportsTypeStep onNext={handleNext} />}
-      {step === 5 && <NickNameStep onNext={handleNext} />}
+      {step === 0 && <NickNameStep onNext={handleNext} />}
     </div>
   );
 };

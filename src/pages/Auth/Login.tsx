@@ -55,8 +55,7 @@ const Login = () => {
                   <LoginButton
                     color="kakao"
                     onClick={() =>
-                      (window.location.href =
-                        '           https://api.grabpt.com/oauth2/authorization/kakao')
+                      (window.location.href = 'https://api.grabpt.com/oauth2/authorization/kakao')
                     }
                   >
                     <div className="flex items-center gap-2">
