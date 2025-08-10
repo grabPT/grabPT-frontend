@@ -24,7 +24,7 @@ export const postSuggest = async (
   }
 
   const { data: responseData } = await multipartInstance.post('/api/suggestion', form, {
-    skipAuth: true,
+    skipAuth: false,
   });
   return responseData;
 };
