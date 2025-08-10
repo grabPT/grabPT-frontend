@@ -9,12 +9,7 @@ export const postSuggest = async (
   const form = new FormData();
 
   form.append('data', new Blob([JSON.stringify(data)], { type: 'application/json' })); //data 주입
-  // form.append('price', String(data.price));
-  // form.append('sessionCount', String(data.sessionCount));
-  // form.append('message', data.message);
-  // form.append('location', data.location);
-  // form.append('sentAt', data.sentAt);
-  // form.append('isAgreed', String(data.isAgreed));
+
 
   if (photos?.length) {
     photos.forEach((file) => {

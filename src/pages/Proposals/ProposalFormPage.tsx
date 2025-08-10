@@ -42,7 +42,7 @@ const ProposalFormPage = () => {
   const onSubmit = async (data: DetailProposalForm) => {
     const newSuggestInfo = {
       ...data,
-      sentAt: new Date().toISOString(),
+      sentAt: new Date().toISOString().split('T')[0], // 현재 날짜를 'YYYY-MM-DD' 형식으로 저장
       isAgreed: false,
       requestionId: suggestInfo.requestionId,
     };
