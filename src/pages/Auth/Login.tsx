@@ -56,7 +56,7 @@ const Login = () => {
                     color="kakao"
                     onClick={() =>
                       (window.location.href =
-                        'http://43.203.91.190:8080/oauth2/authorization/kakao')
+                        '           https://api.grabpt.com/oauth2/authorization/kakao')
                     }
                   >
                     <div className="flex items-center gap-2">
@@ -73,8 +73,7 @@ const Login = () => {
                   <LoginButton
                     color="naver"
                     onClick={() =>
-                      (window.location.href =
-                        'http://43.203.91.190:8080/oauth2/authorization/naver')
+                      (window.location.href = 'https://api.grabpt.com/oauth2/authorization/naver')
                     }
                   >
                     <div className="flex items-center gap-2">
@@ -91,8 +90,7 @@ const Login = () => {
                   <LoginButton
                     color="google"
                     onClick={() =>
-                      (window.location.href =
-                        'http://43.203.91.190:8080/oauth2/authorization/google')
+                      (window.location.href = 'https://api.grabpt.com/oauth2/authorization/google')
                     }
                   >
                     <div className="flex items-center gap-2">
