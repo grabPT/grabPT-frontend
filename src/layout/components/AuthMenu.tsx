@@ -49,7 +49,7 @@ function AuthMenu() {
         }}
         className="mr-3 rounded-full bg-orange-300 p-2 text-sm text-white"
       >
-        U
+        3
       </button>
       {/* expert로 로그인*/}
       <button
