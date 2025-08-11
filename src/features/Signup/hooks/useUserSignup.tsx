@@ -6,7 +6,7 @@ import type { CommonResponseDto } from '@/types/commonResponseDto';
 
 export function useUserSignup() {
   return useMutation<CommonResponseDto<string>, Error, UserSignupRequestDto>({
-    mutationFn: postUserSignup,
+    mutationFn: ({ data, profileImage }) => postUserSignup(data, profileImage),
     onSuccess: (data) => {
       console.log('일반 회원가입 요청 성공:', data);
     },

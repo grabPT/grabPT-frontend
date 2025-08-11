@@ -15,12 +15,11 @@ interface NicknameStepProps {
   onNext: () => void;
 }
 
-interface NicknameInfoFormValues {
+export interface NicknameInfoFormValues {
   nickname: string;
-  profileImageUrl: string;
 }
 const NickNameStep = ({ onNext }: NicknameStepProps) => {
-  const { nicknameInfo, setNicknameInfo } = useSignupStore();
+  const { nicknameInfo, setNicknameInfo, setProfileImageInfo } = useSignupStore();
   const { mutate: checkNickname } = useCheckNickname();
 
   // 프로필 사진 미리보기 URL
@@ -33,9 +32,9 @@ const NickNameStep = ({ onNext }: NicknameStepProps) => {
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const fileUrl = URL.createObjectURL(file);
-    setNicknameInfo({ ...nicknameInfo, profileImageUrl: fileUrl });
-    setPreviewUrl(fileUrl);
+    const preview = URL.createObjectURL(file);
+    setProfileImageInfo(file);
+    setPreviewUrl(preview);
   };
   // 닉네임 중복 확인 로직
   const handleCheckNickname = () => {
@@ -60,7 +59,6 @@ const NickNameStep = ({ onNext }: NicknameStepProps) => {
     resolver: zodResolver(nicknameInfoSchema),
     defaultValues: {
       nickname: nicknameInfo.nickname,
-      profileImageUrl: nicknameInfo.profileImageUrl ?? '',
     },
   });
   console.log(errors);
@@ -74,7 +72,6 @@ const NickNameStep = ({ onNext }: NicknameStepProps) => {
     setNicknameInfo({
       ...nicknameInfo,
       nickname: data.nickname,
-      profileImageUrl: nicknameInfo.profileImageUrl,
     });
     console.log(signupStore);
     onNext();

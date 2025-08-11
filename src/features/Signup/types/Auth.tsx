@@ -27,11 +27,16 @@ export type SignupProInfoStepDto = {
 
 export type SignupNicknameStepDto = {
   nickname: string;
-  profileImageUrl: string;
 };
-export type UserSignupRequestDto = BaseSignupRequestDto;
-export type ProSignupRequestDto = BaseSignupRequestDto & SignupProInfoStepDto;
+export type UserSignupRequestDto = {
+  data: BaseSignupRequestDto;
+  profileImage: File | null;
+};
 
+export type ProSignupRequestDto = {
+  data: BaseSignupRequestDto & SignupProInfoStepDto;
+  profileImage: File | null;
+};
 export type AddressRequest = {
   city: string;
   district: string;

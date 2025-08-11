@@ -22,5 +22,4 @@ export const proInfoSchema = z.object({
 
 export const nicknameInfoSchema = z.object({
   nickname: z.string().min(1, { message: '닉네임을 입력하세요' }),
-  profileImageUrl: z.string(),
 });

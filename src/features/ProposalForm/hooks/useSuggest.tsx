@@ -13,7 +13,7 @@ export const useSuggest = () => {
   return useMutation<CommonResponseDto<SuggestResponseDto>, Error, SuggestVariables>({
     mutationFn: ({ data, photos }) => postSuggest(data, photos),
     onSuccess: (data) => {
-      console.log('제안서 작성 요청 성공:', data);
+      console.log('제안서 작성 요청 성공, 제안서 Id:', data);
     },
     onError: (error) => {
       console.error('제안서 작성 요청 실패:', error);
