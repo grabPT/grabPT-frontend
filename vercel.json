@@ -1,0 +1,16 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://api.grabpt.com/api/$1"
+    },
+    {
+      "source": "/oauth2/(.*)",
+      "destination": "https://api.grabpt.com/oauth2/$1"
+    },
+    {
+      "source": "/login/(.*)",
+      "destination": "https://api.grabpt.com/login/$1"
+    }
+  ]
+}
