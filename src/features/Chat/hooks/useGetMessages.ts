@@ -16,7 +16,7 @@ export const useGetMessagesInfinite = (params: getMessagesRequestDto) => {
   const roomId = params.roomId;
 
   return useInfiniteQuery<getMessagesResponseDto, Error, Exposed>({
-    queryKey: ['messagesInfinite', roomId],
+    queryKey: ['Chat', roomId],
 
     // 첫 호출은 cursor 미포함
     initialPageParam: undefined,

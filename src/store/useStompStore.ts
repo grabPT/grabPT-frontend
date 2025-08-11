@@ -50,7 +50,7 @@ export const useStompStore = create<StompState>((set, get) => ({
     const { client } = get();
     if (!client || !client.connected) return null;
     return client.subscribe(path, (message) => {
-      console.log('[WS IN]', path, message.body);
+      console.log('[WS IN]', `경로: ${path}`, message.body);
       try {
         const parsed = JSON.parse(message.body);
         // parses는 내 콜백함수의 인자로, message는 스톰프의 IMessag임(원본프레임)
