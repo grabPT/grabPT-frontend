@@ -3,16 +3,17 @@ import { useEffect, useState } from 'react';
 
 import { privateInstance } from '@/libs/axios';
 import { useStompStore } from '@/store/useStompStore';
+import { useUserRoleStore } from '@/store/useUserRoleStore';
 
 // 당신 프로젝트 axios 인스턴스
 
 async function fetchUnreadTotal(): Promise<number> {
   const { data } = await privateInstance.get('/chat/unreadCount', { withCredentials: true });
-  console.log(data);
   return data?.isSuccess ? (data.result as number) : 0;
 }
 
-export function useUnreadCount(userId?: number | null) {
+export function useUnreadCount() {
+  const userId = useUserRoleStore((s) => s.userId);
   const connected = useStompStore((s) => s.connected);
   const subscribe = useStompStore((s) => s.subscribe);
   const unsubscribe = useStompStore((s) => s.unsubscribe);
@@ -32,7 +33,7 @@ export function useUnreadCount(userId?: number | null) {
         const initial = await fetchUnreadTotal();
         if (!cancelled) setCount(initial);
       } catch {
-        /* noop */
+        console.log('unReadCount 받아오기 실패');
       }
 
       // STOMP 구독
@@ -49,6 +50,6 @@ export function useUnreadCount(userId?: number | null) {
     };
   }, [userId, connected, subscribe, unsubscribe]);
 
-  console.log(`unReadCount : ${count}`);
+  console.log(`api로 받아온 ${userId} unReadCount : ${count}`);
   return count;
 }
