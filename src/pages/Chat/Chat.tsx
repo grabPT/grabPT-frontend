@@ -1,11 +1,10 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { SearchIcon } from 'lucide-react';
 
-import ChatSendIcon from '@/features/Chat/assets/ChatSendIcon.svg';
-import ClipIcon from '@/features/Chat/assets/ClipIcon.svg';
 import ChatCard from '@/features/Chat/components/ChatCard';
 import { ChatInfo } from '@/features/Chat/components/ChatInfo';
+import { MessageInput } from '@/features/Chat/components/MessageInput';
 import {
   type sendMessageRequestDto,
   useChatRoomSocket,
@@ -15,6 +14,8 @@ import type { ChatRoomListItemType } from '@/features/Chat/types/getChatRoomList
 import Header from '@/layout/components/Header';
 import { useUserRoleStore } from '@/store/useUserRoleStore';
 
+// 경로 맞춰주세요
+
 export const Chat = () => {
   const [keyword, setKeyword] = useState('');
   const handleSearch = () => {
@@ -23,36 +24,37 @@ export const Chat = () => {
 
   const [selectedChat, setSelectedChat] = useState<ChatRoomListItemType | null>(null);
 
-  // ✅ 전송만 쓰는 소켓 훅 (구독 off)
+  // 전송만 쓰는 소켓 훅 (구독 off)
   const { sendMessage, connected } = useChatRoomSocket(
     selectedChat?.chatRoomId,
-    {}, // 핸들러 없음
-    { enableMessage: false, enableReadStatus: false, enableTyping: false },
+    {},
+    { enableMessage: false, enableReadStatus: false },
   );
-
-  const [text, setText] = useState('');
 
   const { userId } = useUserRoleStore();
 
-  const handleSend = () => {
-    const body = text.trim();
-    if (!selectedChat || !connected || !body) return;
+  // 입력컴포넌트 -> 부모로 전송 콜백
+  const sendText = useCallback(
+    (body: string) => {
+      if (!selectedChat || !connected) return;
 
-    const dto: sendMessageRequestDto = {
-      roomId: selectedChat.chatRoomId,
-      senderId: userId ?? 1000000000,
-      content: body,
-      messageType: 'TEXT',
-    };
+      const dto: sendMessageRequestDto = {
+        roomId: selectedChat.chatRoomId,
+        senderId: userId ?? 1000000000,
+        content: body,
+        messageType: 'TEXT',
+      };
 
-    // 서버가 내가 보낸 것도 브로드캐스트하므로 캐시 직접 건드릴 필요 없음
-    sendMessage(dto, { 'content-type': 'application/json;charset=UTF-8' });
-    setText('');
-  };
+      // 서버가 나에게도 브로드캐스트하므로 캐시 조작 불필요
+      sendMessage(dto, { 'content-type': 'application/json;charset=UTF-8' });
+    },
+    [selectedChat, connected, userId, sendMessage],
+  );
 
   const { data: chatRoomList } = useGetChatRoomList({});
-  console.log(chatRoomList);
-  // 채팅 선택 핸들러
+  // 필요시 데이터 변경시에만 로그 출력
+  // useEffect(() => { console.log(chatRoomList); }, [chatRoomList]);
+
   const handleChatSelect = (chat: ChatRoomListItemType) => {
     setSelectedChat(chat);
   };
@@ -62,6 +64,7 @@ export const Chat = () => {
       <Header />
 
       <div className="flex h-full flex-1">
+        {/* 좌측: 채팅방 리스트 */}
         <div className="flex h-full w-[26.125rem] flex-col items-center border-t-1 border-r-1 border-gray-300 bg-white">
           <div className="sticky top-[70px] z-10 w-[22rem] bg-white pt-3">
             <div className="h-10 w-full rounded-full bg-gradient-to-r from-[#003EFB] to-[#FF00B2] p-[3px]">
@@ -82,7 +85,7 @@ export const Chat = () => {
           <div className="w-full flex-1 overflow-y-auto pt-5">
             {chatRoomList?.map((chat, idx) => (
               <div
-                key={idx}
+                key={idx} // 가능하면 chat.chatRoomId 사용 권장
                 className={`${selectedChat == chat && 'bg-white'} flex h-20 w-full cursor-pointer items-center bg-white px-3 duration-150 hover:bg-gray-300 hover:ease-in-out`}
                 onClick={() => handleChatSelect(chat)}
               >
@@ -92,6 +95,7 @@ export const Chat = () => {
           </div>
         </div>
 
+        {/* 우측: 채팅 상세 + 입력 */}
         <div className="flex h-full w-full flex-col bg-white">
           {selectedChat ? (
             <>
@@ -100,30 +104,7 @@ export const Chat = () => {
                 name={selectedChat.roomName}
                 img={selectedChat.otherUserProfile}
               />
-
-              <div className="sticky bottom-0 z-10 rounded-t-4xl bg-white p-4 shadow-[4px_4px_18px_10px_rgba(0,0,0,0.15)]">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-[3.75rem] flex-1 items-center rounded-full bg-gradient-to-r from-[#003EFB] to-[#FF00B2] p-[3px]">
-                    <div className="flex h-full w-full items-center gap-3 rounded-full bg-white px-4">
-                      <input
-                        type="text"
-                        placeholder="메시지를 입력하세요"
-                        className="font-inter text -xl h-full w-full leading-[16px] font-semibold text-black placeholder-[#CCCCCC] outline-none"
-                        value={text}
-                        onChange={(e) => setText(e.target.value)}
-                        onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-                      />
-                      <img src={ClipIcon} alt="클립 아이콘" className="h-6 w-6 cursor-pointer" />
-                      <img
-                        src={ChatSendIcon}
-                        alt="전송 아이콘"
-                        className="h-6 w-6 cursor-pointer"
-                        onClick={handleSend}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <MessageInput onSend={sendText} />
             </>
           ) : (
             <div className="flex flex-1 items-center justify-center text-gray-400">

@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import { Link, useNavigate } from 'react-router-dom';
 
+import { getUnreadCount } from '@/apis/getUnreadCount';
 import { getAccessToken } from '@/apis/test';
 import Alert from '@/assets/images/Alert.png';
 import Chat from '@/assets/images/Chat.png';
@@ -9,6 +10,7 @@ import HeaderProfile from '@/assets/images/HeaderProfile.png';
 import Button from '@/components/Button';
 import ROUTES from '@/constants/routes';
 import ProfileDropdown from '@/layout/components/ProfileDropdown';
+import { useUnreadStore } from '@/store/useUnreadStore';
 import { useUserRoleStore } from '@/store/useUserRoleStore';
 
 function AuthMenu() {
@@ -16,33 +18,52 @@ function AuthMenu() {
 
   const { isLoggedIn, LogIn, LogOut, setUserId, isExpert, setUser, setExpert } = useUserRoleStore();
   const [isOpenProfileDropdown, setIsOpenProfileDropdown] = useState<boolean>(false);
-
+  const unreadCount = useUnreadStore((s) => s.unreadCount);
   return (
     <div className="flex items-center">
       {/* 유저로 로그인 */}
       <button
         type="button"
-        onClick={() => {
+        onClick={async () => {
           getAccessToken(2);
           setUserId(2);
           LogIn();
           setUser();
+          const initial = await getUnreadCount(); // 4) 초기 unread 1회 호출
+          useUnreadStore.getState().setUnReadCount(initial.result);
+          console.log(`현재unreadCount : ${initial.result}`);
         }}
         className="mr-3 rounded-full bg-orange-300 p-2 text-sm text-white"
       >
-        U
+        2
+      </button>
+      <button
+        type="button"
+        onClick={async () => {
+          getAccessToken(3);
+          setUserId(3);
+          LogIn();
+          setUser();
+          const initial = await getUnreadCount(); // 4) 초기 unread 1회 호출
+          useUnreadStore.getState().setUnReadCount(initial.result);
+        }}
+        className="mr-3 rounded-full bg-orange-300 p-2 text-sm text-white"
+      >
+        3
       </button>
       {/* expert로 로그인*/}
       <button
         type="button"
-        onClick={() => {
+        onClick={async () => {
           getAccessToken(61);
           LogIn();
           setExpert();
+          const initial = await getUnreadCount(); // 4) 초기 unread 1회 호출
+          useUnreadStore.getState().setUnReadCount(initial.result);
         }}
         className="mr-6 cursor-pointer rounded-full bg-orange-600 p-2 text-sm text-white"
       >
-        E
+        E(61)
       </button>
       <button
         type="button"
@@ -59,12 +80,19 @@ function AuthMenu() {
       {isLoggedIn ? (
         <div className="flex h-full items-center gap-5">
           <div className="flex h-[21px] gap-[21px]">
-            <img
-              src={Chat}
-              alt="채팅"
-              className="cursor-pointer"
-              onClick={() => navigate(ROUTES.CHAT.ROOT)}
-            />
+            <div className="relative">
+              {unreadCount > 0 && (
+                <div className="absolute bottom-3 left-3 z-[3000] rounded-full bg-red-500 px-1.5 text-center text-[12px] text-white">
+                  {unreadCount}
+                </div>
+              )}
+              <img
+                src={Chat}
+                alt="채팅"
+                className="h-full cursor-pointer"
+                onClick={() => navigate(ROUTES.CHAT.ROOT)}
+              />
+            </div>
             <img
               src={Alert}
               alt="알림"

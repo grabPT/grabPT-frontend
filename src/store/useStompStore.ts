@@ -46,16 +46,17 @@ export const useStompStore = create<StompState>((set, get) => ({
     set({ client: null, connected: false });
   },
 
-  subscribe: (dest, cb) => {
+  subscribe: (path, callBackFn) => {
     const { client } = get();
     if (!client || !client.connected) return null;
-    return client.subscribe(dest, (msg) => {
-      console.log('[WS IN]', dest, msg.body);
+    return client.subscribe(path, (message) => {
+      console.log('[WS IN]', `경로: ${path}`, message.body);
       try {
-        const parsed = JSON.parse(msg.body);
-        cb(parsed, msg);
+        const parsed = JSON.parse(message.body);
+        // parses는 내 콜백함수의 인자로, message는 스톰프의 IMessag임(원본프레임)
+        callBackFn(parsed, message);
       } catch {
-        cb(msg.body, msg);
+        callBackFn(message.body, message);
       }
     });
   },
