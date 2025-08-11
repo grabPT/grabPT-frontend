@@ -25,7 +25,14 @@ const ChatCard = ({ chat }: ChatCardProps) => {
       {/* {img}
       </img> */}
       <div className="flex h-12 w-full max-w-3/4 flex-col justify-start gap-2">
-        <div className="text-[1rem] font-extrabold">{chat.roomName}</div>
+        <div className="flex justify-between">
+          <div className="text-[1rem] font-extrabold">{chat.roomName}</div>
+          {chat.unreadCount > 0 && (
+            <div className="flex items-center rounded-full bg-red-500 px-2 text-center text-[0.75rem] font-extrabold text-white">
+              {chat.unreadCount}
+            </div>
+          )}
+        </div>
         <div className="flex items-center justify-between gap-2">
           <div className="truncate overflow-hidden text-[0.875rem] font-bold whitespace-nowrap text-[#A6A6A6]">
             {chat.lastMessage}
