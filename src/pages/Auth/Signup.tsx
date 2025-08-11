@@ -49,15 +49,21 @@ const Signup = () => {
         const payload = useSignupStore.getState().getUserSignupDto();
 
         console.log('📦 보내는 user-signup payload:', payload); //
-        userSignup(useSignupStore.getState().getUserSignupDto(), {
-          onSuccess: (res) => {
-            console.log('User signup success:', res);
-            nav('/');
+        userSignup(
+          {
+            data: useSignupStore.getState().getUserSignupDto(),
+            profileImage: useSignupStore.getState().getProfileImageInfo(),
           },
-          onError: (err) => {
-            console.error('User signup failed:', err);
+          {
+            onSuccess: (res) => {
+              console.log('User signup success:', res);
+              nav('/');
+            },
+            onError: (err) => {
+              console.error('User signup failed:', err);
+            },
           },
-        });
+        );
       } else if (role === 2) {
         proSignup(useSignupStore.getState().getProSignupDto(), {
           onSuccess: (res) => {
