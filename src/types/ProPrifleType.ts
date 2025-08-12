@@ -11,6 +11,7 @@ export type ProProfileType = {
   proId: number;
   profileImageUrl: string;
   proName: string;
+  userName: string;
   center: string | null;
   categoryName: string;
   averageRating: number;

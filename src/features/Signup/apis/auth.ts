@@ -66,7 +66,7 @@ export const postSmsSend = async (body: SmsSendRequestDto): Promise<CommonRespon
   const { data } = await axiosInstance.post('/api/sms/send', body);
   return data;
 };
-export const getCheckNickname = async (nickname: string): Promise<CommonResponseDto<string>> => {
+export const getCheckNickname = async (nickname: string): Promise<CommonResponseDto<boolean>> => {
   const { data } = await axiosInstance.get('/api/auth/check-nickname', {
     params: { nickname },
   });

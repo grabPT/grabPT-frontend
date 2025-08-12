@@ -5,7 +5,7 @@ import { useGetMyRequestsList } from '@/hooks/useGetMyRequestsList';
 import { useProProfileQuery } from '@/hooks/useGetProProfile';
 
 const ExpertMainPage = () => {
-  const { data, isLoading, isError } = useProProfileQuery(5); //임시로 userId 5번 설정
+  const { data, isLoading, isError } = useProProfileQuery();
   const profileData = data?.result;
   // 임시로 요청서 데이터를 가져오는 훅 사용(전문가 전용이 있으면 교체할 것)
   const { data: requests } = useGetMyRequestsList({ page: 1, size: 40 });
@@ -17,7 +17,7 @@ const ExpertMainPage = () => {
   return (
     <section className="mt-[70px] mb-[140px] flex flex-col items-center">
       <h1 className="text-[40px] font-bold">
-        안녕하세요! {profileData?.proName} <span className="text-button">전문가</span>님!
+        안녕하세요! {profileData?.userName} <span className="text-button">전문가</span>님!
       </h1>
 
       <div className="mt-[66px]">

@@ -3,7 +3,7 @@
 이미지, 닉네임, 위치 정보 부분 컴포넌트 입니다.
 */
 interface UserRequestHeaderProps {
-  nickName: string;
+  nickName?: string;
   location: string;
 }
 

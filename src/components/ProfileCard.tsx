@@ -28,11 +28,11 @@ const ProfileCard = ({ profileData }: ProfileCardProps) => {
         <div className="flex flex-col justify-between">
           <p className="text-2xl leading-[140%] font-semibold">{profileData?.categoryName}</p>
           <p className="text-sm leading-none font-semibold tracking-[0.5em] text-[#697077]">
-            박수민
+            {profileData?.userName}
           </p>
           <p className="text-[10px] font-semibold text-[#013EFB]">{profileData?.center}</p>
           {/* 별이 벗어나는 버그가 있었는데 flex적용하니까 고쳐짐. 이유는 모름;; */}
-          <StarRating rating={4} size={14} fontSize={10} />
+          <StarRating rating={profileData?.averageRating} size={14} fontSize={10} />
         </div>
       </div>
 

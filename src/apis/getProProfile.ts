@@ -1,16 +1,12 @@
-import { publicInstance } from '@/libs/axios';
+import { privateInstance } from '@/libs/axios';
 import type { getProPrifleResponseDto } from '@/types/ProPrifleType';
 
-//pro profile 받아오기
-export const getProProfile = async (userId: number) => {
+export const getProProfile = async () => {
   try {
-    const response = await publicInstance.get<getProPrifleResponseDto>('/mypage/pro', {
-      params: { userId },
-    });
-    //console.log(response);
+    const response = await privateInstance.get<getProPrifleResponseDto>('/mypage/pro');
     return response.data;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw Error('axios 에러');
   }
 };

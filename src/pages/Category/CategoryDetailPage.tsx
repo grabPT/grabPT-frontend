@@ -32,7 +32,7 @@ const CategoryDetailPage = () => {
     [expertsList],
   );
 
-  const loc = userData?.address.street;
+  const loc = userData?.address[0].city;
 
   useEffect(() => {
     if (loc) setLocation(loc);
@@ -42,7 +42,7 @@ const CategoryDetailPage = () => {
   if (!sport) return <Navigate to="/category" replace />;
 
   return (
-    <div className="mx-auto flex w-auto flex-col justify-center pt-[155px] 2xl:w-[1480px]">
+    <div className="mx-auto flex w-auto flex-col justify-center pt-[100px] 2xl:w-[1480px]">
       <div className="flex items-start gap-[10px]">
         <p className="leading-[100%] font-extrabold sm:text-[24px] xl:text-[30px]">{sport.label}</p>
         <div className="mt-[19.5px] ml-[10px] h-[17px] w-[152px]">

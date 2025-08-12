@@ -4,16 +4,23 @@ import ImageSlide from '@/components/ImageSlide';
 import ProfileCard from '@/components/ProfileCard';
 import { TitleLine } from '@/components/TitleLine';
 import MypageSection from '@/features/Mypage/components/MypageSection';
+import { useProProfileQuery } from '@/hooks/useGetProProfile';
 
 //스타일 통일 될 경우 TileLine 컴포넌트로 통일
 
 const ExpertProfile = () => {
+  const { data, isLoading, isError } = useProProfileQuery();
+  const profileData = data?.result;
+
   const images = Array.from({ length: 7 }, () => MockImage);
+
+  if (isLoading) return <div>로딩 중...</div>;
+  if (isError || !profileData) return <div>에러 발생</div>;
   return (
     <div className="mt-16 flex flex-col items-center gap-12">
       {/* 프로필 컴포넌트 */}
       <div className="flex justify-center px-[77px]">
-        <ProfileCard />
+        <ProfileCard profileData={profileData} />
       </div>
 
       {/* 전문가소개 */}

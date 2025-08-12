@@ -50,7 +50,7 @@ import Hashtag from './Hashtag';
 // export default RequestCard;
 
 interface RequestCardInMainProps {
-  name: string;
+  name?: string;
   location: string;
   tags: Tags;
   text: string;
@@ -65,7 +65,7 @@ const RequestCardInMain = ({ name, location, tags, text, id }: RequestCardInMain
     ...tags.availableTimes.map((time) => TIME_SLOT_LABELS[time]),
     daysPerWeek,
   ];
-  console.log(tagsResult);
+  //console.log(tagsResult);
   return (
     <div
       onClick={() => navigate(urlFor.requestDetail(id))}

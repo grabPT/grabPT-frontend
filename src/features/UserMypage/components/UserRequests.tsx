@@ -23,7 +23,7 @@ const UserRequests = () => {
           <RequestCard
             key={`${page}-${idx}`}
             location={rq.location}
-            name={data?.username ?? '사용자'}
+            name={data?.name ?? '사용자'}
             tags={{
               availableTimes: rq.availableTimes,
               daysPerWeek: rq.availableDays.length,

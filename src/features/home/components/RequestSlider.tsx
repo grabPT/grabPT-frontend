@@ -27,7 +27,7 @@ function RequestSlider({ title, requests }: RequestSliderProps) {
     dots: true,
     beforeChange: (_: number, next: number) => setCurrentSlide(next),
     nextArrow: <NextArrow />,
-    prevArrow: currentSlide === 0 ? <></> : <PrevArrow />,
+    prevArrow: currentSlide === 0 ? undefined : <PrevArrow />,
     responsive: [
       { breakpoint: 1536, settings: { slidesToShow: 3 } },
       { breakpoint: 1280, settings: { slidesToShow: 2 } },
@@ -35,7 +35,9 @@ function RequestSlider({ title, requests }: RequestSliderProps) {
     ],
   };
   //임시방편용 사용자 이름
-  const { username } = useGetUserInfo().data ?? { username: '사용자' };
+  const token = localStorage.getItem('accessToken') ?? undefined;
+  const { data: userInfo } = useGetUserInfo(token);
+  const name = userInfo?.name;
   return (
     <section
       ref={containerRef}
@@ -51,7 +53,7 @@ function RequestSlider({ title, requests }: RequestSliderProps) {
             <div key={i} className="h-[230px] px-4">
               <RequestCardInMain
                 id={r.requestId}
-                name={username}
+                name={name ?? '사용자'}
                 location={r.location}
                 tags={{
                   availableTimes: r.availableTimes,

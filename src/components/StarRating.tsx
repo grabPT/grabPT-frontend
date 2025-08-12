@@ -2,7 +2,7 @@ import Rating from '@mui/material/Rating';
 import clsx from 'clsx';
 
 interface StarRatingProps {
-  rating: number;
+  rating: number | undefined;
   size?: number;
   fontSize?: number;
 }
@@ -22,7 +22,7 @@ const StarRating = ({ rating, size, fontSize }: StarRatingProps) => {
         }}
       />
       <p className={clsx('text-[12px] leading-none font-bold', fontSizeClass)}>
-        {rating.toFixed(1)}
+        {rating?.toFixed(1)}
       </p>
     </div>
   );

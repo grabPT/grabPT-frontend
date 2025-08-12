@@ -3,10 +3,9 @@ import { useQuery } from '@tanstack/react-query';
 import { getProProfile } from '@/apis/getProProfile';
 import type { getProPrifleResponseDto } from '@/types/ProPrifleType';
 
-export const useProProfileQuery = (userId: number) => {
+export const useProProfileQuery = () => {
   return useQuery<getProPrifleResponseDto>({
-    queryKey: ['pro-profile', userId],
-    queryFn: () => getProProfile(userId),
-    enabled: !!userId, // userId 있을 때만 허용
+    queryKey: ['pro-profile'], // userId 제거
+    queryFn: getProProfile, // 바로 함수 참조 가능
   });
 };
