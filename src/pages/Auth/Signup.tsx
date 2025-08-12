@@ -75,7 +75,10 @@ const Signup = () => {
           },
         );
       } else if (role === 2) {
-        proSignup(useSignupStore.getState().getProSignupDto(), {
+        proSignup({
+          data:useSignupStore.getState().getProSignupDto(),
+          profileImage:useSignupStore.getState().getProfileImageInfo(),
+         }, {
           onSuccess: (res) => {
             console.log('Pro signup success:', res);
             nav('/expert');
