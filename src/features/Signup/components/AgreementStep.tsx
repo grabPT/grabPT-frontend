@@ -4,8 +4,8 @@ import FrontBtn from '@/features/Signup/assets/FrontBtn.png';
 import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
 import AgreementModal from '@/features/Signup/components/AgreementModal';
 import SignupBtn from '@/features/Signup/components/SignupBtn';
-import { useSignupStore } from '@/store/useSignupStore';
 import { useGetSocialInfo } from '@/features/Signup/hooks/useGetSocialInfo';
+import { useSignupStore } from '@/store/useSignupStore';
 
 interface AgreementStepProps {
   onNext: () => void;
@@ -14,7 +14,7 @@ interface AgreementStepProps {
 const AgreementStep = ({ onNext }: AgreementStepProps) => {
   const { agreementInfo, setAgreementInfo } = useSignupStore();
   const socialLoginData = useGetSocialInfo();
-  const {setSocialLoginInfo, setUserInfo} = useSignupStore();
+  const { setSocialLoginInfo, setUserInfo } = useSignupStore();
   //상세 설명 모달
   const [isModalOpen, setIsModalOpen] = useState<number | null>(null);
   // checkedList

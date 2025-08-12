@@ -23,7 +23,7 @@ export type sendMessageRequestDto = {
   roomId: number;
   senderId: number;
   content: string;
-  messageType: 'TEXT';
+  messageType: 'TEXT' | 'IMGAE' | 'FILE';
 };
 
 // 웹소켓 이벤트 래퍼
