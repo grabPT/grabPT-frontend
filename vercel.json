@@ -11,6 +11,8 @@
     {
       "source": "/login/(.*)",
       "destination": "https://api.grabpt.com/login/$1"
-    }
+    },
+    { "source": "/api/:path*", "destination": "https://api.grabpt.com/:path*" },
+    { "source": "/((?!api).*)", "destination": "/" }
   ]
 }
