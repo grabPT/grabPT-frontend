@@ -6,6 +6,7 @@ import ClipIcon from '@/features/Chat/assets/ClipIcon.svg';
 
 type Props = {
   onSend: (text: string) => void;
+  pendingFile: File | null;
   onFileSelect?: (file: File | null) => void;
   onSendFile?: (file: File) => void; // ← 추가
   sending?: boolean; // ← 선택: 전송 중 버튼 잠금

@@ -71,7 +71,7 @@ export const Chat = () => {
         },
       );
     },
-    [selectedChat, uploadFile],
+    [selectedChat, sendMessage, uploadFile, userId],
   );
 
   return (
@@ -93,6 +93,7 @@ export const Chat = () => {
               />
               <MessageInput
                 onSend={sendText}
+                pendingFile={pendingFile}
                 onFileSelect={setPendingFile}
                 onSendFile={sendFile}
                 sending={isUploading}
