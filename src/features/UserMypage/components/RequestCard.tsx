@@ -9,7 +9,7 @@ interface RequestCardProps {
   name: string;
   tags: Tags;
   content: string;
-  address:string;
+  address: string;
 }
 
 const RequestCard = ({ name, tags, content, address }: RequestCardProps) => {

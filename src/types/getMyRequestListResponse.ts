@@ -21,7 +21,7 @@ export type MyRequestListItemType = {
   requestId: number;
   imageURL: string;
   userId: number;
-  address:Address;
+  address: Address;
   availableTimes: TimeSlot[];
   availableDays: string[];
   categoryName: string;

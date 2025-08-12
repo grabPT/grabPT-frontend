@@ -13,7 +13,7 @@ const MatchingStatusCard = ({ match }: MatchingStatusCardProps) => {
 
   return (
     <div className="flex h-[48px] w-[380px] items-center">
-      <UserRequestHeader nickName={match.nickname} location={match.region} />
+      <UserRequestHeader nickName={match.nickname} address={match.region} />
       {/* 오른쪽: 횟수 | 가격 ● */}
       <div className="flex items-center">
         {/* 횟수 + 구분선 + 가격 */}
