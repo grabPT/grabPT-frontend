@@ -40,7 +40,7 @@ function AuthMenu() {
       <button
         type="button"
         onClick={async () => {
-          getAccessToken(3);
+          await getAccessToken(3);
           setUserId(3);
           LogIn();
           setUser();
@@ -55,7 +55,8 @@ function AuthMenu() {
       <button
         type="button"
         onClick={async () => {
-          getAccessToken(61);
+          await getAccessToken(156);
+          setUserId(156);
           LogIn();
           setExpert();
           const initial = await getUnreadCount(); // 4) 초기 unread 1회 호출
@@ -69,6 +70,7 @@ function AuthMenu() {
         type="button"
         onClick={() => {
           setUserId(null);
+          localStorage.removeItem('accessToken');
           LogOut();
         }}
         className="mr-6 cursor-pointer rounded-full bg-red-500 p-2 text-sm text-white"

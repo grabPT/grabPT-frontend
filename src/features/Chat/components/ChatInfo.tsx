@@ -6,6 +6,7 @@ import { ChatText } from '@/features/Chat/components/ChatText';
 import { useChatRoomSocket } from '@/features/Chat/hooks/useChatRoomSocket';
 import { useGetMessagesInfinite } from '@/features/Chat/hooks/useGetMessages';
 import { usePostReadWhenEnter } from '@/features/Chat/hooks/usePostReadWhenEnter';
+import { usePostReadWhenExist } from '@/features/Chat/hooks/usePostReadWhenExist';
 import type { messageType } from '@/features/Chat/types/getMessagesType';
 import { upsertIncomingMessage } from '@/utils/castCache';
 import { onErrorImage } from '@/utils/onErrorImage';
@@ -22,11 +23,14 @@ export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
   // ─────────────────────────────────────────────────────────────
   const queryClient = useQueryClient();
 
-  const { mutate } = usePostReadWhenEnter(roomId);
+  const { mutate: readWhenEnter } = usePostReadWhenEnter(roomId);
+
   useEffect(() => {
     if (!roomId) return;
-    mutate(roomId);
-  }, [roomId, mutate]);
+    readWhenEnter(roomId);
+  }, [roomId, readWhenEnter]);
+
+  const { mutate: readWhenExist } = usePostReadWhenExist(roomId);
 
   // ─────────────────────────────────────────────────────────────
   // 2) 소켓 핸들러: 메시지 수신, 읽음상태 수신
@@ -34,13 +38,10 @@ export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
   const onMessage = (message: messageType) => {
     // 캐시에 새 메시지 반영 (리렌더 후 scroll은 아래 effect에서 처리)
     upsertIncomingMessage(queryClient, roomId, message);
-    // 과거: rAF로 즉시 스크롤. 현재는 effect에서 최신 메시지 기준으로 처리.
-    // requestAnimationFrame(() => bottomRef.current?.scrollIntoView({ block: 'end' }));
+    readWhenExist(roomId);
   };
 
   const onReadStatus = (payload: { messageId: number; readCount: number }) => {
-    console.log('read-status에서 문자옴', payload);
-
     // 캐시 내 해당 messageId의 readCount 갱신
     queryClient.setQueryData(['Chat', roomId], (prev: any) => {
       if (!prev) return prev;
@@ -58,15 +59,6 @@ export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
                   m.messageId === payload.messageId ? { ...m, readCount: payload.readCount } : m,
                 ),
               },
-            };
-          }
-          // 혹은 page.messages 형태인 경우(혼합 대응)
-          if (page.messages) {
-            return {
-              ...page,
-              messages: page.messages.map((m: messageType) =>
-                m.messageId === payload.messageId ? { ...m, readCount: payload.readCount } : m,
-              ),
             };
           }
           return page;
@@ -153,7 +145,7 @@ export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
   const isNearBottom = () => {
     const el = scrollRef.current;
     if (!el) return true;
-    const GAP = 120; // px: 바닥 인근으로 판단할 threshold
+    const GAP = 800; // px: 바닥 인근으로 판단할 threshold
     return el.scrollHeight - el.scrollTop - el.clientHeight < GAP;
   };
 
