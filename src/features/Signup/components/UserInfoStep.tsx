@@ -120,15 +120,9 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
     script.async = true;
     document.body.appendChild(script);
   }, []);
-  // email을 watch로 관리: kakao는 사용자가 입력하면 store에 즉시 반영,
-  // 그 외 공급자는 store 값을 폼에 유지(읽기 전용이므로).
+  // email 동기화: 카카오는 사용자가 입력한 값을 RHF가 관리하고, 비-카카오는 스토어 값을 폼에 유지
   useEffect(() => {
-    if (oauthProvider === 'kakao') {
-      if (userInfo.email !== email) {
-        setUserInfo({ ...userInfo, email });
-      }
-    } else {
-      // 읽기 전용 환경에서는 store의 값을 계속 표시
+    if (oauthProvider !== 'kakao') {
       if (email !== userInfo.email) {
         setValue('email', userInfo.email || '', {
           shouldDirty: false,
@@ -137,8 +131,7 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
         });
       }
     }
-    console.log(email);
-  }, [email, oauthProvider, userInfo, setUserInfo, setValue]);
+  }, [oauthProvider, email, userInfo.email, setValue]);
 
   //폼 검사 에러 메시지 출력
   const getUserErrorMessage = () => {
