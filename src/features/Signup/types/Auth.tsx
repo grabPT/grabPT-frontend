@@ -9,11 +9,11 @@ export type BaseSignupRequestDto = SignupUserInfoStepDto &
     oauthProvider: string;
     role: number;
   };
-export type SocialLoginInfo = {
-  email?: string | null;
-  username: string;
+export type SocialLoginResponseDto = {
+  oauthEmail: string | null;
+  oauthName: string;
   oauthId: string;
-  oauthProvider: 'kakao' | 'naver' | 'google' | '';
+  oauthProvider: string;
 };
 export type SignupUserAgreementDto = {
   agreedTermsId: number[];

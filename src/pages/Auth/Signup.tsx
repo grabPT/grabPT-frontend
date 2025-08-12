@@ -9,18 +9,29 @@ import NickNameStep from '@/features/Signup/components/NicknameStep';
 import SportsTypeStep from '@/features/Signup/components/SportsTypeStep';
 import UserInfoStep from '@/features/Signup/components/UserInfoStep';
 import UserTypeStep from '@/features/Signup/components/UserTypeStep';
-import { useGetSocialInfo } from '@/features/Signup/hooks/useGetSocialInfo';
 import { useProSignup } from '@/features/Signup/hooks/useProSignup';
 import { useUserSignup } from '@/features/Signup/hooks/useUserSignup';
 import { useSignupStore } from '@/store/useSignupStore';
 
 const Signup = () => {
   const nav = useNavigate();
-  const { role, setSocialLoginInfo } = useSignupStore();
+  const { role, setUserInfo, setOauthId, setOauthProvider, setUserName } = useSignupStore();
   const [step, setStep] = useState<number>(0);
   const { mutate: userSignup } = useUserSignup();
   const { mutate: proSignup } = useProSignup();
-  const socialLoginData = useGetSocialInfo();
+
+  // 쿠키 값 가져오기
+  function getCookieValue(name: string) {
+    const match = document.cookie.split('; ').find((row) => row.startsWith(name + '='));
+    return match ? match.split('=')[1] : '';
+  }
+  //쿠키 디코딩 로직
+  function decodeBase64Utf8(base64String: string) {
+    if (!base64String) return '';
+    const binary = atob(base64String);
+    const bytes = Uint8Array.from(binary, (c) => c.charCodeAt(0));
+    return new TextDecoder().decode(bytes);
+  }
 
   const handleNext = () => {
     if (role === 2 && step === 2) {
@@ -46,6 +57,10 @@ const Signup = () => {
   };
 
   useEffect(() => {
+    setOauthId(decodeBase64Utf8(getCookieValue('oauthId') || ''));
+    setOauthProvider(decodeBase64Utf8(getCookieValue('oauthProvider') || ''));
+    setUserName(decodeBase64Utf8(getCookieValue('oauthName') || ''));
+    setUserInfo({ email: decodeBase64Utf8(getCookieValue('oauthEmail') || '') });
     if (step === 6) {
       if (role === 1) {
         const payload = useSignupStore.getState().getUserSignupDto();
@@ -80,15 +95,14 @@ const Signup = () => {
     }
   }, [
     nav,
-    step,
-    role,
-    userSignup,
     proSignup,
-    setSocialLoginInfo,
-    socialLoginData.data?.username,
-    socialLoginData.data?.oauthId,
-    socialLoginData.data?.oauthProvider,
-    socialLoginData.data?.email,
+    role,
+    setOauthId,
+    setOauthProvider,
+    setUserInfo,
+    setUserName,
+    step,
+    userSignup,
   ]);
 
   return (
