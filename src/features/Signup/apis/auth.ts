@@ -1,12 +1,13 @@
-import { axiosInstance } from '@/features/Signup/apis/axios';
+import { END_POINT } from '@/constants/endPoints';
 import type {
   BaseSignupRequestDto,
   LogoutDto,
   SignupProInfoStepDto,
   SmsSendRequestDto,
   SmsVerifyRequestDto,
+  SocialLoginInfo,
 } from '@/features/Signup/types/Auth';
-import { multipartInstance } from '@/libs/axios';
+import { multipartInstance, publicInstance } from '@/libs/axios';
 import type { CommonResponseDto } from '@/types/commonResponseDto';
 
 export const postUserSignup = async (
@@ -27,9 +28,13 @@ export const postUserSignup = async (
     blob.text().then(console.log);
   }
 
-  const { data: responseData } = await multipartInstance.post('/api/auth/user-signup', form, {
-    skipAuth: true,
-  });
+  const { data: responseData } = await multipartInstance.post(
+    END_POINT.AUTH.SIGNUP.userSignup,
+    form,
+    {
+      skipAuth: true,
+    },
+  );
   return responseData;
 };
 
@@ -50,29 +55,38 @@ export const postProSignup = async (
 
     blob.text().then(console.log);
   }
-  const { data: responseData } = await multipartInstance.post('/api/auth/pro-signup', form, {
-    skipAuth: true,
-  });
+  const { data: responseData } = await multipartInstance.post(
+    END_POINT.AUTH.SIGNUP.proSignup,
+    form,
+    {
+      skipAuth: true,
+    },
+  );
   return responseData;
 };
 
+export const getSocialLoginInfo = async (): Promise<CommonResponseDto<SocialLoginInfo>> => {
+  const { data } = await publicInstance.get(END_POINT.AUTH.SOCIAL_INFO);
+  console.log('소셜 로그인 정보:', data);
+  return data;
+};
 export const postSmsVerify = async (
   body: SmsVerifyRequestDto,
 ): Promise<CommonResponseDto<string>> => {
-  const { data } = await axiosInstance.post('/api/sms/verify-sms', body);
+  const { data } = await publicInstance.post(END_POINT.AUTH.SMS_VERIFY.verify, body);
   return data;
 };
 export const postSmsSend = async (body: SmsSendRequestDto): Promise<CommonResponseDto<string>> => {
-  const { data } = await axiosInstance.post('/api/sms/send', body);
+  const { data } = await publicInstance.post(END_POINT.AUTH.SMS_VERIFY.send, body);
   return data;
 };
 export const getCheckNickname = async (nickname: string): Promise<CommonResponseDto<boolean>> => {
-  const { data } = await axiosInstance.get('/api/auth/check-nickname', {
+  const { data } = await publicInstance.get(END_POINT.AUTH.NICKNAME_CHECK, {
     params: { nickname },
   });
   return data;
 };
 export const postLogout = async (body: LogoutDto): Promise<CommonResponseDto<string>> => {
-  const { data } = await axiosInstance.post('/api/auth/logout', body);
+  const { data } = await publicInstance.post(END_POINT.AUTH.LOGOUT, body);
   return data;
 };

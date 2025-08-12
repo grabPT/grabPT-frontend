@@ -22,9 +22,7 @@ interface UserInfoFormValues {
 
 const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
   //store에서 업데이트할 목록 불러오기
-  const { userInfo, setUserInfo } = useSignupStore();
-  //소셜 로그인 정보 불러오기
-  // const {socialInfo:data} = useSocialLogin();
+  const { userInfo, socialLoginInfo, setUserInfo } = useSignupStore();
   //유효성 검사
   const {
     register,
@@ -37,7 +35,7 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
     mode: 'onChange',
     resolver: zodResolver(userInfoSchema),
     defaultValues: {
-      email: userInfo.email,
+      email: userInfo.email || '',
       address: `${userInfo.address.city} ${userInfo.address.district}`,
       specAddress: userInfo.address.specAddress,
       phoneNum: userInfo.phoneNum,
@@ -52,7 +50,6 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
       alert('전화번호 인증을 완료해주세요.');
       return;
     }
-
     setUserInfo({
       ...userInfo,
       email: data.email,
@@ -199,7 +196,7 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
                 placeholder="이메일"
                 //이메일 같은 경우 카카오는 입력받아서 나머지는 받아온 이메일을 띄워줘야함 oauthprovider로 구분
                 className="rounded-[0.625rem] border border-[#BDBDBD] py-[0.8rem] pl-4 text-[#616161]"
-                // {socialInfo?.ouathProvider==='kakao' ? '' : 'readOnly'}
+                readOnly={socialLoginInfo.oauthProvider !== 'kakao'}
               />
             </div>
             <div className="flex flex-col gap-1">
@@ -316,17 +313,18 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
           </div>
         </div>
         {postModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20">
-            <div
-              id="daum-postcode"
-              className="relative flex h-[600px] w-[600px] items-center justify-center rounded-[0.625rem] bg-white shadow-lg"
-            />
-            <button
-              onClick={() => setPostModalOpen(false)}
-              className="absolute top-[16rem] right-[19.5rem] h-6 w-6 cursor-pointer rounded-full text-gray-500 hover:bg-gray-400 hover:text-white"
-            >
-              ✕
-            </button>
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/20"
+            onClick={() => setPostModalOpen(false)}
+            role="dialog"
+            aria-modal="true"
+          >
+            <div className="relative p-8" onClick={(e) => e.stopPropagation()}>
+              <div
+                id="daum-postcode"
+                className="flex h-[600px] w-[600px] items-center justify-center rounded-[0.625rem] bg-white shadow-lg"
+              />
+            </div>
           </div>
         )}
       </div>

@@ -1,7 +1,19 @@
 import type { SportsSlugType } from '@/types/SportsType';
 
 export const END_POINT = {
-  AUTH: {},
+  AUTH: {
+    SIGNUP: {
+      userSignup: '/api/auth/user-signup',
+      proSignup: '/api/auth/pro-signup',
+    },
+    SMS_VERIFY: {
+      send: '/api/sms/send',
+      verify: '/api/sms/verify-sms',
+    },
+    NICKNAME_CHECK: '/api/auth/check-nickname',
+    LOGOUT: '/api/auth/logout',
+    SOCIAL_INFO: '/auth/api/temp-info',
+  },
 
   HOME: {},
 

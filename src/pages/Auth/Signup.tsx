@@ -9,16 +9,18 @@ import NickNameStep from '@/features/Signup/components/NicknameStep';
 import SportsTypeStep from '@/features/Signup/components/SportsTypeStep';
 import UserInfoStep from '@/features/Signup/components/UserInfoStep';
 import UserTypeStep from '@/features/Signup/components/UserTypeStep';
+import { useGetSocialInfo } from '@/features/Signup/hooks/useGetSocialInfo';
 import { useProSignup } from '@/features/Signup/hooks/useProSignup';
 import { useUserSignup } from '@/features/Signup/hooks/useUserSignup';
 import { useSignupStore } from '@/store/useSignupStore';
 
 const Signup = () => {
   const nav = useNavigate();
-  const { role } = useSignupStore();
+  const { role, setSocialLoginInfo } = useSignupStore();
   const [step, setStep] = useState<number>(0);
   const { mutate: userSignup } = useUserSignup();
   const { mutate: proSignup } = useProSignup();
+  const socialLoginData = useGetSocialInfo();
 
   const handleNext = () => {
     if (role === 2 && step === 2) {
@@ -76,7 +78,18 @@ const Signup = () => {
         });
       }
     }
-  }, [nav, step, role, userSignup, proSignup]);
+  }, [
+    nav,
+    step,
+    role,
+    userSignup,
+    proSignup,
+    setSocialLoginInfo,
+    socialLoginData.data?.username,
+    socialLoginData.data?.oauthId,
+    socialLoginData.data?.oauthProvider,
+    socialLoginData.data?.email,
+  ]);
 
   return (
     <div className="relative flex h-dvh w-full items-center justify-center bg-gradient-to-bl from-[#8CAFFF] to-[#FFFFFF]">

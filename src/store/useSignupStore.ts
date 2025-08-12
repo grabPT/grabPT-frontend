@@ -5,6 +5,7 @@ import type {
   SignupProInfoStepDto,
   SignupUserAgreementDto,
   SignupUserInfoStepDto,
+  SocialLoginInfo,
 } from '@/features/Signup/types/Auth';
 import type { SportsTypeStepDto } from '@/types/SportsTypeStepDto';
 
@@ -13,9 +14,7 @@ interface SignupState {
   proInfo: SignupProInfoStepDto;
   sportsTypeInfo: SportsTypeStepDto;
   nicknameInfo: SignupNicknameStepDto;
-  username: string;
-  oauthId: string;
-  oauthProvider: string;
+  socialLoginInfo: SocialLoginInfo;
   role: number;
   agreementInfo: SignupUserAgreementDto;
   profileImageInfo: File | null;
@@ -25,9 +24,7 @@ interface SignupState {
   setSportsTypeInfo: (info: Partial<SportsTypeStepDto>) => void;
   setNicknameInfo: (info: Partial<SignupNicknameStepDto>) => void;
   setProfileImageInfo: (file: File | null) => void;
-  setUserName: (info: string) => void;
-  setOauthId: (info: string) => void;
-  setOauthProvider: (info: string) => void;
+  setSocialLoginInfo: (info: SocialLoginInfo) => void;
   setRole: (info: number) => void;
   setAgreementInfo: (info: Partial<SignupUserAgreementDto>) => void;
   reset: () => void;
@@ -41,7 +38,7 @@ export const useSignupStore = create<
   }
 >((set, get) => ({
   userInfo: {
-    email: 'kkim02@gmail.com',
+    email: '',
     phoneNum: '',
     address: { city: '', district: '', street: '', streetCode: '', zipcode: '', specAddress: '' },
   },
@@ -49,9 +46,7 @@ export const useSignupStore = create<
   sportsTypeInfo: { categoryId: 0 },
   nicknameInfo: { nickname: '' },
   profileImageInfo: null,
-  username: '김갱주',
-  oauthId: 'abcd1234',
-  oauthProvider: 'kakao',
+  socialLoginInfo: { username: '', oauthId: '', oauthProvider: '', email: null },
   role: 0,
   agreementInfo: { agreedTermsId: [], agreeMarketing: false },
 
@@ -61,9 +56,8 @@ export const useSignupStore = create<
     set((state) => ({ sportsTypeInfo: { ...state.sportsTypeInfo, ...info } })),
   setNicknameInfo: (info) => set((state) => ({ nicknameInfo: { ...state.nicknameInfo, ...info } })),
   setProfileImageInfo: (info) => set(() => ({ profileImageInfo: info })),
-  setUserName: (info) => set(() => ({ username: info })),
-  setOauthId: (info) => set(() => ({ oauthId: info })),
-  setOauthProvider: (info) => set(() => ({ oauthProvider: info })),
+  setSocialLoginInfo: (info) =>
+    set((state) => ({ socialLoginInfo: { ...state.socialLoginInfo, ...info } })),
   setRole: (info) => set(() => ({ role: info })),
   setAgreementInfo: (info) =>
     set((state) => ({ agreementInfo: { ...state.agreementInfo, ...info } })),
@@ -85,18 +79,21 @@ export const useSignupStore = create<
       sportsTypeInfo: { categoryId: 0 },
       nicknameInfo: { nickname: '' },
       profileImageInfo: null,
-      username: '',
-      oauthId: '',
-      oauthProvider: '',
+      socialLoginInfo: {
+        username: '',
+        oauthId: '',
+        oauthProvider: '',
+        email: null,
+      },
       role: 0,
       agreementInfo: { agreedTermsId: [], agreeMarketing: false },
     }),
   getUserSignupDto: () => {
     const state = get();
     return {
-      username: state.username,
-      oauthId: state.oauthId,
-      oauthProvider: state.oauthProvider,
+      username: state.socialLoginInfo.username,
+      oauthId: state.socialLoginInfo.oauthId,
+      oauthProvider: state.socialLoginInfo.oauthProvider,
       role: state.role,
       categoryId: state.sportsTypeInfo.categoryId,
       email: state.userInfo.email,
@@ -114,9 +111,9 @@ export const useSignupStore = create<
   getProSignupDto: () => {
     const state = get();
     return {
-      username: state.username,
-      oauthId: state.oauthId,
-      oauthProvider: state.oauthProvider,
+      username: state.socialLoginInfo.username,
+      oauthId: state.socialLoginInfo.oauthId,
+      oauthProvider: state.socialLoginInfo.oauthProvider,
       role: state.role,
       categoryId: state.sportsTypeInfo.categoryId,
       email: state.userInfo.email,
