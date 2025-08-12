@@ -1,12 +1,13 @@
 import type { messageType } from '@/features/Chat/types/getMessagesType';
-import DefaultProfile from '@/features/Signup/assets/DefaultProfile.svg';
 import { useUserRoleStore } from '@/store/useUserRoleStore';
+import { onErrorImage } from '@/utils/onErrorImage';
 
 interface ChatTextProps {
   chat: messageType;
+  imageUrl: string;
 }
 
-export const ChatText = ({ chat }: ChatTextProps) => {
+export const ChatText = ({ chat, imageUrl }: ChatTextProps) => {
   const { userId } = useUserRoleStore();
   const isMe = chat.senderId === userId;
   const timeAgo = new Date(chat.sendAt).toLocaleTimeString('ko-KR', {
@@ -76,7 +77,8 @@ export const ChatText = ({ chat }: ChatTextProps) => {
       {!isMe && (
         <div className="self-end">
           <img
-            src={DefaultProfile}
+            src={imageUrl}
+            onError={onErrorImage}
             alt="프로필 이미지"
             className="h-12 w-12 items-end rounded-full"
           />

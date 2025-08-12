@@ -1,6 +1,8 @@
 // MessageInput.tsx
 import { memo, useCallback, useRef, useState } from 'react';
 
+import imageCompression from 'browser-image-compression';
+
 import ChatSendIcon from '@/features/Chat/assets/ChatSendIcon.svg';
 import ClipIcon from '@/features/Chat/assets/ClipIcon.svg';
 
@@ -27,11 +29,19 @@ export const MessageInput = memo(function MessageInput({
   }, [sending]);
 
   const handleFileChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files?.[0] ?? null;
-      setSelectedFile(file);
-      onFileSelect?.(file);
-      e.currentTarget.value = '';
+    async (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files && e.target.files[0]) {
+        const file = e.target.files[0];
+        const options = { maxSizeMB: 1, maxWidthOrHeight: 1024 };
+        try {
+          const compressedFile = await imageCompression(file, options);
+          setSelectedFile(compressedFile);
+          onFileSelect?.(file);
+          e.currentTarget.value = '';
+        } catch (error) {
+          console.error(error);
+        }
+      }
     },
     [onFileSelect],
   );

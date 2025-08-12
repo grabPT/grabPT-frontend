@@ -255,7 +255,7 @@ export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
                   })}
                 </div>
               )}
-              <ChatText chat={message} />
+              <ChatText chat={message} imageUrl={img} />
             </div>
           );
         })}
