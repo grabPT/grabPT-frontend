@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 
@@ -5,12 +7,20 @@ import Banner from '@/components/Banner';
 import RealtimeMatchingStatus from '@/components/RealtimeMatchingStatus';
 import RequestSlider from '@/features/home/components/RequestSlider';
 import UserSearchSection from '@/features/home/components/UserSearchSection';
+import { useDecodedCookie } from '@/hooks/useDecodedCookies';
 import { useGetMyRequestsList } from '@/hooks/useGetMyRequestsList';
 import { useUserRoleStore } from '@/store/useUserRoleStore';
 
 const UserMainPage = () => {
   const { isLoggedIn } = useUserRoleStore();
   const { data: requests } = useGetMyRequestsList({ page: 1, size: 40 });
+  const accessToken = useDecodedCookie('accessToken');
+  const refreshToken = useDecodedCookie('refreshToken');
+  useEffect(() => {
+    localStorage.setItem(accessToken, accessToken);
+    localStorage.setItem(refreshToken, refreshToken);
+  }, [accessToken, refreshToken]);
+
   return (
     <div className="flex flex-col items-center justify-center">
       <UserSearchSection />

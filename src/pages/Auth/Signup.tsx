@@ -11,6 +11,7 @@ import UserInfoStep from '@/features/Signup/components/UserInfoStep';
 import UserTypeStep from '@/features/Signup/components/UserTypeStep';
 import { useProSignup } from '@/features/Signup/hooks/useProSignup';
 import { useUserSignup } from '@/features/Signup/hooks/useUserSignup';
+import { useDecodedCookie } from '@/hooks/useDecodedCookies';
 import { useSignupStore } from '@/store/useSignupStore';
 
 const Signup = () => {
@@ -19,19 +20,6 @@ const Signup = () => {
   const [step, setStep] = useState<number>(0);
   const { mutate: userSignup } = useUserSignup();
   const { mutate: proSignup } = useProSignup();
-
-  // 쿠키 값 가져오기
-  function getCookieValue(name: string) {
-    const match = document.cookie.split('; ').find((row) => row.startsWith(name + '='));
-    return match ? match.split('=')[1] : '';
-  }
-  //쿠키 디코딩 로직
-  function decodeBase64Utf8(base64String: string) {
-    if (!base64String) return '';
-    const binary = atob(base64String);
-    const bytes = Uint8Array.from(binary, (c) => c.charCodeAt(0));
-    return new TextDecoder().decode(bytes);
-  }
 
   const handleNext = () => {
     if (role === 2 && step === 2) {
@@ -55,10 +43,10 @@ const Signup = () => {
       setStep((prev) => prev - 1);
     }
   };
-  const oauthId = decodeBase64Utf8(getCookieValue('oauthId') || '');
-  const oauthProvider = decodeBase64Utf8(getCookieValue('oauthProvider') || '');
-  const username = decodeBase64Utf8(getCookieValue('oauthName') || '');
-  const email = decodeBase64Utf8(getCookieValue('oauthEmail') || '');
+  const oauthId = useDecodedCookie('oauthId') || '';
+  const oauthProvider = useDecodedCookie('oauthProvider') || '';
+  const username = useDecodedCookie('oauthName') || '';
+  const email = useDecodedCookie('oauthEmail') || '';
   useEffect(() => {
     setOauthId(oauthId);
     setOauthProvider(oauthProvider);
@@ -90,7 +78,7 @@ const Signup = () => {
         proSignup(useSignupStore.getState().getProSignupDto(), {
           onSuccess: (res) => {
             console.log('Pro signup success:', res);
-            nav('/');
+            nav('/expert');
           },
           onError: (err) => {
             console.error('Pro signup failed:', err);

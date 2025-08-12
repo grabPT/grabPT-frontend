@@ -1,6 +1,9 @@
+import { useEffect } from 'react';
+
 import Banner from '@/components/Banner';
 import ProfileCard from '@/components/ProfileCard';
 import RequestSlider from '@/features/home/components/RequestSlider';
+import { useDecodedCookie } from '@/hooks/useDecodedCookies';
 import { useGetMyRequestsList } from '@/hooks/useGetMyRequestsList';
 import { useProProfileQuery } from '@/hooks/useGetProProfile';
 
@@ -10,7 +13,12 @@ const ExpertMainPage = () => {
   // 임시로 요청서 데이터를 가져오는 훅 사용(전문가 전용이 있으면 교체할 것)
   const { data: requests } = useGetMyRequestsList({ page: 1, size: 40 });
   console.log(profileData);
-
+  const accessToken = useDecodedCookie('accessToken');
+  const refreshToken = useDecodedCookie('refreshToken');
+  useEffect(() => {
+    localStorage.setItem(accessToken, accessToken);
+    localStorage.setItem(refreshToken, refreshToken);
+  }, [accessToken, refreshToken]);
   if (isLoading) return <div>로딩 중...</div>;
   if (isError || !profileData) return <div>에러 발생</div>;
 
