@@ -20,17 +20,34 @@ const Signup = () => {
   const { mutate: userSignup } = useUserSignup();
   const { mutate: proSignup } = useProSignup();
   const getCookieValue = (key: string): string => {
-    const rawValue =
-      document.cookie
-        .split('; ')
-        .map((cookie) => cookie.split('='))
-        .find(([cookieKey]) => cookieKey === key)?.[1] || '';
+    const pair = document.cookie
+      .split('; ')
+      .find((row) => row.startsWith(`${key}=`));
 
-    try {
-      return decodeURIComponent(rawValue);
-    } catch {
-      return rawValue; // 디코딩 실패 시 원본 반환
+    if (!pair) return '';
+
+    // preserve '=' characters inside the value by slicing after the first '='
+    const raw = pair.slice(pair.indexOf('=') + 1);
+
+    // remove surrounding quotes if present (some servers quote cookie values)
+    const unquoted = raw.replace(/^"(.*)"$/, '$1');
+
+    // application/x-www-form-urlencoded uses '+' for space
+    const plusNormalized = unquoted.replace(/\+/g, ' ');
+
+    // try up to 3 decode passes in case of double-encoding
+    let out = plusNormalized;
+    for (let i = 0; i < 3; i++) {
+      try {
+        const next = decodeURIComponent(out);
+        if (next === out) break; // stop if no further changes
+        out = next;
+      } catch {
+        break; // stop on malformed sequences
+      }
     }
+
+    return out;
   };
 
   const handleNext = () => {
