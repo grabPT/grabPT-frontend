@@ -27,5 +27,9 @@ export type getMyReviewsListItemType = {
   residence: string;
   rating: number;
   content: string;
+  center?: string;
+  proId?: number;
+  proNickName?: string;
+  imageURL?: string;
 };
 export type getMyReviewsListResponseDto = CommonResponseDto<getMyReviewsListResultType>;

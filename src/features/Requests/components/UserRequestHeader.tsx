@@ -5,22 +5,32 @@
 interface UserRequestHeaderProps {
   nickName?: string;
   location: string;
+  profileImg?: string;
 }
 
-const UserRequestHeader = ({ nickName }: UserRequestHeaderProps) => {
+const UserRequestHeader = ({ nickName, profileImg, location }: UserRequestHeaderProps) => {
   return (
     <div className="flex flex-row items-center">
       <div className="mr-3 flex h-12 w-12 items-center justify-center rounded-full bg-gray-300">
-        <svg className="h-6 w-6 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
-          <path
-            fillRule="evenodd"
-            d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-            clipRule="evenodd"
+        {profileImg ? (
+          <img
+            src={profileImg}
+            alt="profile"
+            className="h-[50px] w-[50px] rounded-full object-cover"
           />
-        </svg>
+        ) : (
+          <svg className="h-6 w-6 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fillRule="evenodd"
+              d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+              clipRule="evenodd"
+            />
+          </svg>
+        )}
       </div>
       <div className="flex w-auto flex-col">
         <h3 className="text-[18px] font-semibold text-gray-900">{nickName}</h3>
+        <div className="text-[12px] leading-[140%] font-semibold text-[#7A7A7A]">{location}</div>
       </div>
     </div>
   );

@@ -11,7 +11,10 @@ const UserRequests = () => {
   /** 실제 환경에선 API 응답으로 교체 */
   const { data: myRequestsList, isPending, error } = useGetMyRequestsList({ page, size: 5 });
   //닉네임 정보를 스토어에서 가져와서 지그믕ㄴ 제대로 안 뜰 수도 있음(임시방편)
-  const { data } = useGetUserInfo();
+  const token = localStorage.getItem('accessToken') ?? undefined;
+  const { data } = useGetUserInfo(token);
+
+  const location = `${data?.address[0].city} ${data?.address[0].district} ${data?.address[0].street}`;
   const total = myRequestsList?.totalPages ?? 1;
   if (error) return <ErrorComponent />;
   return (
@@ -22,8 +25,9 @@ const UserRequests = () => {
         {myRequestsList?.content.map((rq, idx) => (
           <RequestCard
             key={`${page}-${idx}`}
-            location={rq.location}
-            name={data?.name ?? '사용자'}
+            location={location}
+            name={data?.nickname ?? '사용자'}
+            profileImg={data?.profileImageUrl}
             tags={{
               availableTimes: rq.availableTimes,
               daysPerWeek: rq.availableDays.length,

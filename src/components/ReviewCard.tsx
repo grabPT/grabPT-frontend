@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { useNavigate } from 'react-router-dom';
 
 import Profile from '@/assets/images/HeaderProfile.png';
 import XIcon from '@/assets/images/x.png';
@@ -7,16 +8,26 @@ import StarRating from '@/components/StarRating';
 import { useUserRoleStore } from '@/store/useUserRoleStore';
 
 interface ReviewCardProps {
-  name: string;
-  location: string;
+  name?: string;
+  location?: string;
   rating: number; // 0‒5
   content: string;
+  center?: string;
+  proId?: number;
+  proNickName?: string;
+  imageURL?: string;
 }
 
-const ReviewCard = ({ name, location, rating, content }: ReviewCardProps) => {
+const ReviewCard = ({ rating, content, center, proId, proNickName, imageURL }: ReviewCardProps) => {
   const { isExpert } = useUserRoleStore();
+  const navigate = useNavigate();
+
+  const boxClick = () => {
+    navigate(`/expert/${proId}`);
+  };
+
   return (
-    <Box>
+    <Box onClick={boxClick} className="cursor-pointer">
       <div className="relative flex w-full flex-col p-[10px] pt-[15px]">
         {/* 삭제버튼 */}
         <img
@@ -29,13 +40,13 @@ const ReviewCard = ({ name, location, rating, content }: ReviewCardProps) => {
         <div className="flex gap-[11px]">
           {/* 아바타 */}
           <div>
-            <img src={Profile} alt="profile" className="h-[47px]" />
+            <img src={imageURL ?? Profile} alt="profile" className="h-[47px]" />
           </div>
 
           <div className="flex flex-col">
-            <span className="text-[16px] leading-[140%] font-semibold">{name}</span>
-            <span className="text-[10px] leading-[140%] font-semibold text-[#7A7A7A]">
-              {location}
+            <span className="text-[16px] leading-[140%] font-semibold">To. {proNickName}</span>
+            <span className="text-[12px] leading-[140%] font-semibold text-[#7A7A7A]">
+              {center}
             </span>
             <StarRating rating={rating} size={10} fontSize={6} />
           </div>

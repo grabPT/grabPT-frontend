@@ -10,9 +10,10 @@ interface RequestCardProps {
   tags: Tags;
   content: string;
   location: string;
+  profileImg?: string;
 }
 
-const RequestCard = ({ name, tags, content, location }: RequestCardProps) => {
+const RequestCard = ({ name, tags, content, location, profileImg }: RequestCardProps) => {
   const daysPerWeek = `주 ${tags.daysPerWeek}회`;
 
   const tagsResult = [
@@ -31,12 +32,16 @@ const RequestCard = ({ name, tags, content, location }: RequestCardProps) => {
         <div className="flex items-start gap-[11px]">
           {/* 아바타 */}
           <div>
-            <img src={Profile} alt="profile" className="h-[47px]" />
+            <img
+              src={profileImg ?? Profile}
+              alt="profile"
+              className="h-[50px] w-[50px] rounded-full"
+            />
           </div>
 
           <div className="flex flex-col">
             <span className="text-[16px] leading-[140%] font-semibold">{name}</span>
-            <span className="text-[10px] leading-[140%] font-semibold text-[#7A7A7A]">
+            <span className="text-[12px] leading-[140%] font-semibold text-[#7A7A7A]">
               {location}
             </span>
           </div>

@@ -22,6 +22,10 @@ const UserReviews = () => {
               location={rv.residence}
               rating={rv.rating}
               content={rv.content}
+              proNickName={rv.proNickName}
+              center={rv.center}
+              proId={rv.proId}
+              imageURL={rv.imageURL}
             />
           </div>
         ))}

@@ -4,7 +4,7 @@ import Button from '@/components/Button';
 import ErrorComponent from '@/components/ErrorComponent';
 import Pagination from '@/components/Pagination';
 import RequestsStatusCard from '@/features/Requests/components/RequestsStatusCard';
-import { useGetRequestsList } from '@/features/Requests/hooks/useGetMyRequestsList';
+import { useGetMatchingRequestsList } from '@/features/Requests/hooks/useGetMyRequestsList';
 import { useSortRequestsStore } from '@/store/useSortRequestsStore';
 
 const RequestsListPage = () => {
@@ -23,7 +23,7 @@ const RequestsListPage = () => {
     data: requestsList,
     isPending,
     error,
-  } = useGetRequestsList({ sortBy: sort, page, size: 6 });
+  } = useGetMatchingRequestsList({ sortBy: sort, page, size: 6 });
 
   /* 총 페이지 (백엔드 값이 최우선) */
   const totalPages = requestsList?.totalPages ?? 1;

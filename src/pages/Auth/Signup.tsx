@@ -64,7 +64,7 @@ const Signup = () => {
     setOauthProvider(oauthProvider);
     setUserName(username);
     // 이메일은 "카카오 외" 공급자이고 쿠키에 값이 있을 때만 초기화 (빈 문자열로 덮어쓰지 않도록)
-    if (oauthProvider !== 'kakao' && email!== '') {
+    if (oauthProvider !== 'kakao' && email !== '') {
       setUserInfo({ email });
     }
     if (step === 6) {

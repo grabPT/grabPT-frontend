@@ -26,5 +26,11 @@ export const QUERY_KEYS = {
     list: (parmas: getChatRoomListRequestDto) => ['chatList', parmas.keyword],
     messages: (params: getMessagesRequestDto) => ['messages', params.roomId, params.cursor],
   },
+  matcingRequestsList: (params: getRequestsListRequestDto) => [
+    'matchingreqeustsList',
+    params.sortBy,
+    params.page,
+    params.size,
+  ],
   // …다른 키들
 };
