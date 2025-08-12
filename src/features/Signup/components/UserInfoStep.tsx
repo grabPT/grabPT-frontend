@@ -22,7 +22,7 @@ interface UserInfoFormValues {
 
 const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
   //store에서 업데이트할 목록 불러오기
-  const { userInfo, setUserInfo,oauthProvider } = useSignupStore();
+  const { userInfo, setUserInfo, oauthProvider } = useSignupStore();
   //유효성 검사
   const {
     register,
