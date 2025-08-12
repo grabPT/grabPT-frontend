@@ -7,6 +7,7 @@ import {
   type sendMessageRequestDto,
   useChatRoomSocket,
 } from '@/features/Chat/hooks/useChatRoomSocket';
+import { usePostFile } from '@/features/Chat/hooks/usePostFile';
 import type { ChatRoomListItemType } from '@/features/Chat/types/getChatRoomListType';
 import Header from '@/layout/components/Header';
 import { useUserRoleStore } from '@/store/useUserRoleStore';
@@ -15,6 +16,7 @@ import { useUserRoleStore } from '@/store/useUserRoleStore';
 
 export const Chat = () => {
   const [selectedChat, setSelectedChat] = useState<ChatRoomListItemType | null>(null);
+  const [pendingFile, setPendingFile] = useState<File | null>(null);
 
   // 전송만 쓰는 소켓 훅 (구독 off)
   const { sendMessage, connected } = useChatRoomSocket(
@@ -43,6 +45,35 @@ export const Chat = () => {
     [selectedChat, connected, userId, sendMessage],
   );
 
+  // 파일 업로드
+  const { mutate: uploadFile, isPending: isUploading } = usePostFile();
+
+  const sendFile = useCallback(
+    (file: File) => {
+      if (!selectedChat) return;
+      uploadFile(
+        { roomId: selectedChat.chatRoomId, file },
+        {
+          onSuccess: (res) => {
+            // 서버가 STOMP로 브로드캐스트해주면 캐시 조작 불필요
+            console.log('파일 업로드 성공', res);
+            const dto: sendMessageRequestDto = {
+              roomId: selectedChat.chatRoomId,
+              senderId: userId ?? 1000000000,
+              content: res.result.content,
+              messageType: res.result.messageType,
+            };
+            sendMessage(dto, { 'content-type': 'application/json;charset=UTF-8' });
+          },
+          onSettled: () => {
+            setPendingFile(null); // 부모 상태 정리
+          },
+        },
+      );
+    },
+    [selectedChat, sendMessage, uploadFile, userId],
+  );
+
   return (
     <div className="flex h-screen flex-col overflow-hidden">
       <Header />
@@ -60,7 +91,13 @@ export const Chat = () => {
                 name={selectedChat.roomName}
                 img={selectedChat.otherUserProfile}
               />
-              <MessageInput onSend={sendText} />
+              <MessageInput
+                onSend={sendText}
+                pendingFile={pendingFile}
+                onFileSelect={setPendingFile}
+                onSendFile={sendFile}
+                sending={isUploading}
+              />
             </>
           ) : (
             <div className="flex flex-1 items-center justify-center text-gray-400">
