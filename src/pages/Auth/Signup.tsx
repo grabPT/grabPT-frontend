@@ -75,6 +75,8 @@ const Signup = () => {
           },
         );
       } else if (role === 2) {
+        const payload = useSignupStore.getState().getProSignupDto();
+        console.log('📦 보내는 user-signup payload:', payload); //
         proSignup(
           {
             data: useSignupStore.getState().getProSignupDto(),

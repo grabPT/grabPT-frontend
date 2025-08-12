@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+import { useDecodedCookie } from '@/hooks/useDecodedCookies';
+
 // 헤더 없는 요청 인스턴스 (로그인, 회원가입, 실시간요청현황 열람 등 guest용)
 export const publicInstance = axios.create({
   baseURL: import.meta.env.VITE_SERVER_API_URL,
@@ -16,19 +18,20 @@ export const privateInstance = axios.create({
   baseURL: import.meta.env.VITE_SERVER_API_URL,
   headers: { 'Content-Type': 'application/json' },
   timeout: 10_000,
+  withCredentials: true,
 });
 
 //요청 인터셉터로 토큰 자동 주입
-privateInstance.interceptors.request.use(
-  (request) => {
-    const accessToken = localStorage.getItem('accessToken');
-    if (accessToken) {
-      request.headers['Authorization'] = `Bearer ${accessToken}`;
-    }
-    return request;
-  },
-  (error) => Promise.reject(error),
-);
+// privateInstance.interceptors.request.use(
+//   (request) => {
+// const accessToken = useDecodedCookie('accessToken');
+//     if (accessToken) {
+//       request.headers['Authorization'] = `Bearer ${accessToken}`;
+//     }
+//     return request;
+//   },
+//   (error) => Promise.reject(error),
+// );
 
 // // 응답 인터셉터 - 401일 때 리프레쉬 토큰을 이용하여 액세스 토큰 재발급
 // privateInstance.interceptors.response.use(
@@ -84,7 +87,7 @@ export const multipartInstance = axios.create({
 multipartInstance.interceptors.request.use(
   (request) => {
     if (!request.skipAuth) {
-      const accessToken = localStorage.getItem('accessToken');
+      const accessToken = useDecodedCookie('accessToken');
       if (accessToken) {
         request.headers['Authorization'] = `Bearer ${accessToken}`; //헤더에 토큰 넣어줌
       }
