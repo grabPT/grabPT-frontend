@@ -19,36 +19,42 @@ const Signup = () => {
   const [step, setStep] = useState<number>(0);
   const { mutate: userSignup } = useUserSignup();
   const { mutate: proSignup } = useProSignup();
-  const getCookieValue = (key: string): string => {
-    const pair = document.cookie
-      .split('; ')
-      .find((row) => row.startsWith(`${key}=`));
 
-    if (!pair) return '';
 
-    // preserve '=' characters inside the value by slicing after the first '='
-    const raw = pair.slice(pair.indexOf('=') + 1);
+// 특정 쿠키 값 가져오기
+function getCookieValue(name:string) {
+  const match = document.cookie
+    .split('; ')
+    .find(row => row.startsWith(name + '='));
+  return match ? match.split('=')[1] : '';
+}
 
-    // remove surrounding quotes if present (some servers quote cookie values)
-    const unquoted = raw.replace(/^"(.*)"$/, '$1');
+// Base64 → UTF-8 문자열 변환
+function decodeBase64Utf8(base64String:string) {
+  if (!base64String) return '';
+  const binary = atob(base64String); // 표준 Base64 → binary string
+  const bytes = Uint8Array.from(binary, c => c.charCodeAt(0));
+  return new TextDecoder().decode(bytes); // UTF-8 문자열로 변환
+}
+// 사용 예시
+const email = decodeBase64Utf8(getCookieValue('oauthEmail'));
+const name = decodeBase64Utf8(getCookieValue('oauthName'));
+const oauthId = decodeBase64Utf8(getCookieValue('oauthId'));
+const provider = decodeBase64Utf8(getCookieValue('oauthProvider'));
 
-    // application/x-www-form-urlencoded uses '+' for space
-    const plusNormalized = unquoted.replace(/\+/g, ' ');
+console.log({ email, name, oauthId, provider });
 
-    // try up to 3 decode passes in case of double-encoding
-    let out = plusNormalized;
-    for (let i = 0; i < 3; i++) {
-      try {
-        const next = decodeURIComponent(out);
-        if (next === out) break; // stop if no further changes
-        out = next;
-      } catch {
-        break; // stop on malformed sequences
-      }
-    }
 
-    return out;
-  };
+
+  // const getCookieValue = (key: string): string => {
+  //   const rawValue =
+  //     document.cookie
+  //       .split('; ')
+  //       .map((cookie) => cookie.split('='))
+  //       .find(([cookieKey]) => cookieKey === key)?.[1] || '';
+
+  //   return decodeURIComponent(rawValue);
+  // };
 
   const handleNext = () => {
     if (role === 2 && step === 2) {
@@ -74,15 +80,15 @@ const Signup = () => {
   };
 
   useEffect(() => {
-    setOauthId(getCookieValue('oauthId') || '');
-    setOauthProvider(getCookieValue('oauthProvider') || '');
-    setUserName(getCookieValue('OauthName') || '');
-    setUserInfo({ email: getCookieValue('oauthEmail') || '' });
+    setOauthId(decodeBase64Utf8(getCookieValue('oauthId') || ''));
+    setOauthProvider(decodeBase64Utf8(getCookieValue('oauthProvider') || ''));
+    setUserName(decodeBase64Utf8(getCookieValue('OauthName') || ''));
+    setUserInfo({ email: decodeBase64Utf8(getCookieValue('oauthEmail') || '' )});
     console.log('쿠키 값 확인:', {
-      oauthId: getCookieValue('oauthId'),
-      oauthProvider: getCookieValue('oauthProvider'),
-      oauthName: getCookieValue('OauthName'),
-      oauthEmail: getCookieValue('oauthEmail'),
+      oauthId: decodeBase64Utf8(getCookieValue('oauthId')),
+      oauthProvider: decodeBase64Utf8(getCookieValue('oauthProvider')),
+      oauthName: decodeBase64Utf8(getCookieValue('oauthName')),
+      oauthEmail: decodeBase64Utf8(getCookieValue('oauthEmail')),
     });
     if (step === 6) {
       if (role === 1) {
