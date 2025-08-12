@@ -75,18 +75,21 @@ const Signup = () => {
           },
         );
       } else if (role === 2) {
-        proSignup({
-          data:useSignupStore.getState().getProSignupDto(),
-          profileImage:useSignupStore.getState().getProfileImageInfo(),
-         }, {
-          onSuccess: (res) => {
-            console.log('Pro signup success:', res);
-            nav('/expert');
+        proSignup(
+          {
+            data: useSignupStore.getState().getProSignupDto(),
+            profileImage: useSignupStore.getState().getProfileImageInfo(),
           },
-          onError: (err) => {
-            console.error('Pro signup failed:', err);
+          {
+            onSuccess: (res) => {
+              console.log('Pro signup success:', res);
+              nav('/expert');
+            },
+            onError: (err) => {
+              console.error('Pro signup failed:', err);
+            },
           },
-        });
+        );
       }
     }
   }, [
