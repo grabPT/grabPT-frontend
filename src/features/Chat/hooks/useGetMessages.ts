@@ -39,11 +39,11 @@ export const useGetMessagesInfinite = (params: getMessagesRequestDto) => {
     }),
 
     enabled: Boolean(roomId),
-    staleTime: 300_000,
+    staleTime: 0,
     gcTime: 300_000,
     retry: 2,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
+    refetchOnReconnect: true,
   });
 };

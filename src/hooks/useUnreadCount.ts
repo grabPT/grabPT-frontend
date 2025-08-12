@@ -1,6 +1,8 @@
 // src/hooks/useUnreadCount.ts
 import { useEffect, useState } from 'react';
 
+import { useQueryClient } from '@tanstack/react-query';
+
 import { privateInstance } from '@/libs/axios';
 import { useStompStore } from '@/store/useStompStore';
 import { useUserRoleStore } from '@/store/useUserRoleStore';
@@ -13,6 +15,7 @@ async function fetchUnreadTotal(): Promise<number> {
 }
 
 export function useUnreadCount() {
+  const queryClient = useQueryClient();
   const userId = useUserRoleStore((s) => s.userId);
   const connected = useStompStore((s) => s.connected);
   const subscribe = useStompStore((s) => s.subscribe);
@@ -31,6 +34,7 @@ export function useUnreadCount() {
       // 초기값 REST
       try {
         const initial = await fetchUnreadTotal();
+        console.log(`api로 받아온 ${userId} unReadCount : ${count}`);
         if (!cancelled) setCount(initial);
       } catch {
         console.log('unReadCount 받아오기 실패');
@@ -48,8 +52,7 @@ export function useUnreadCount() {
       cancelled = true;
       unsubscribe(sub);
     };
-  }, [userId, connected, subscribe, unsubscribe]);
+  }, [userId, connected, subscribe, unsubscribe, queryClient, count]);
 
-  console.log(`api로 받아온 ${userId} unReadCount : ${count}`);
   return count;
 }

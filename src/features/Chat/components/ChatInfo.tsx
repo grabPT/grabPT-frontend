@@ -38,11 +38,13 @@ export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
   const onMessage = (message: messageType) => {
     // 캐시에 새 메시지 반영 (리렌더 후 scroll은 아래 effect에서 처리)
     upsertIncomingMessage(queryClient, roomId, message);
+    queryClient.invalidateQueries({ queryKey: ['chatList'], refetchType: 'active' });
     readWhenExist(roomId);
   };
 
   const onReadStatus = (payload: { messageId: number; readCount: number }) => {
     // 캐시 내 해당 messageId의 readCount 갱신
+    queryClient.invalidateQueries({ queryKey: ['chatList'], refetchType: 'active' });
     queryClient.setQueryData(['Chat', roomId], (prev: any) => {
       if (!prev) return prev;
 
