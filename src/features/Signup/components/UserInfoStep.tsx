@@ -22,7 +22,7 @@ interface UserInfoFormValues {
 
 const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
   //store에서 업데이트할 목록 불러오기
-  const { userInfo, socialLoginInfo, setUserInfo } = useSignupStore();
+  const { userInfo, setUserInfo,oauthProvider } = useSignupStore();
   //유효성 검사
   const {
     register,
@@ -196,7 +196,7 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
                 placeholder="이메일"
                 //이메일 같은 경우 카카오는 입력받아서 나머지는 받아온 이메일을 띄워줘야함 oauthprovider로 구분
                 className="rounded-[0.625rem] border border-[#BDBDBD] py-[0.8rem] pl-4 text-[#616161]"
-                readOnly={socialLoginInfo.oauthProvider !== 'kakao'}
+                readOnly={oauthProvider !== 'kakao'}
               />
             </div>
             <div className="flex flex-col gap-1">

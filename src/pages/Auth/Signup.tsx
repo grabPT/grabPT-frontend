@@ -9,18 +9,29 @@ import NickNameStep from '@/features/Signup/components/NicknameStep';
 import SportsTypeStep from '@/features/Signup/components/SportsTypeStep';
 import UserInfoStep from '@/features/Signup/components/UserInfoStep';
 import UserTypeStep from '@/features/Signup/components/UserTypeStep';
-import { useGetSocialInfo } from '@/features/Signup/hooks/useGetSocialInfo';
 import { useProSignup } from '@/features/Signup/hooks/useProSignup';
 import { useUserSignup } from '@/features/Signup/hooks/useUserSignup';
 import { useSignupStore } from '@/store/useSignupStore';
 
 const Signup = () => {
   const nav = useNavigate();
-  const { role, setSocialLoginInfo } = useSignupStore();
+  const { role, setUserInfo, setOauthId, setOauthProvider, setUserName } = useSignupStore();
   const [step, setStep] = useState<number>(0);
   const { mutate: userSignup } = useUserSignup();
   const { mutate: proSignup } = useProSignup();
-  const socialLoginData = useGetSocialInfo();
+  const getCookieValue = (key: string): string => {
+    const rawValue =
+      document.cookie
+        .split('; ')
+        .map((cookie) => cookie.split('='))
+        .find(([cookieKey]) => cookieKey === key)?.[1] || '';
+
+    try {
+      return decodeURIComponent(rawValue);
+    } catch {
+      return rawValue; // 디코딩 실패 시 원본 반환
+    }
+  };
 
   const handleNext = () => {
     if (role === 2 && step === 2) {
@@ -46,6 +57,16 @@ const Signup = () => {
   };
 
   useEffect(() => {
+    setOauthId(getCookieValue('oauthId') || '');
+    setOauthProvider(getCookieValue('oauthProvider') || '');
+    setUserName(getCookieValue('OauthName') || '');
+    setUserInfo({ email: getCookieValue('oauthEmail') || '' });
+    console.log('쿠키 값 확인:', {
+      oauthId: getCookieValue('oauthId'),
+      oauthProvider: getCookieValue('oauthProvider'),
+      oauthName: getCookieValue('OauthName'),
+      oauthEmail: getCookieValue('oauthEmail'),
+    });
     if (step === 6) {
       if (role === 1) {
         const payload = useSignupStore.getState().getUserSignupDto();
@@ -80,15 +101,14 @@ const Signup = () => {
     }
   }, [
     nav,
-    step,
-    role,
-    userSignup,
     proSignup,
-    setSocialLoginInfo,
-    socialLoginData.data?.username,
-    socialLoginData.data?.oauthId,
-    socialLoginData.data?.oauthProvider,
-    socialLoginData.data?.email,
+    role,
+    setOauthId,
+    setOauthProvider,
+    setUserInfo,
+    setUserName,
+    step,
+    userSignup,
   ]);
 
   return (

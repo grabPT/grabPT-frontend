@@ -12,7 +12,6 @@ export const END_POINT = {
     },
     NICKNAME_CHECK: '/api/auth/check-nickname',
     LOGOUT: '/api/auth/logout',
-    SOCIAL_INFO: '/api/auth/temp-info',
   },
 
   HOME: {},
