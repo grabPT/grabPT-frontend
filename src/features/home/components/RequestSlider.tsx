@@ -6,8 +6,8 @@ import 'slick-carousel/slick/slick.css';
 
 import { NextArrow, PrevArrow } from '@/features/home/components/CustomArrow';
 import RequestCardInMain from '@/features/home/components/RequestCard';
-import { useGetUserInfo } from '@/hooks/useGetUserInfo';
 import type { getMyRequestsListResultType } from '@/types/getMyRequestListResponse';
+import { useSignupStore } from '@/store/useSignupStore';
 
 interface RequestSliderProps {
   title: string;
@@ -36,8 +36,9 @@ function RequestSlider({ title, requests }: RequestSliderProps) {
   };
   //임시방편용 사용자 이름
   const token = localStorage.getItem('accessToken') ?? undefined;
-  const { data: userInfo } = useGetUserInfo(token);
-  const name = userInfo?.name;
+
+  const {nicknameInfo} = useSignupStore();
+  const name = nicknameInfo.nickname;
   return (
     <section
       ref={containerRef}
@@ -54,7 +55,7 @@ function RequestSlider({ title, requests }: RequestSliderProps) {
               <RequestCardInMain
                 id={r.requestId}
                 name={name ?? '사용자'}
-                location={r.location}
+    address={`${r.address.city} ${r.address.district} ${r.address.street}`}
                 tags={{
                   availableTimes: r.availableTimes,
                   daysPerWeek: r.availableDays.length,

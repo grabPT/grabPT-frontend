@@ -9,10 +9,10 @@ interface RequestCardProps {
   name: string;
   tags: Tags;
   content: string;
-  location: string;
+  address:string;
 }
 
-const RequestCard = ({ name, tags, content, location }: RequestCardProps) => {
+const RequestCard = ({ name, tags, content, address }: RequestCardProps) => {
   const daysPerWeek = `주 ${tags.daysPerWeek}회`;
 
   const tagsResult = [
@@ -20,7 +20,6 @@ const RequestCard = ({ name, tags, content, location }: RequestCardProps) => {
     ...tags.availableTimes.map((time) => TIME_SLOT_LABELS[time]),
     daysPerWeek,
   ];
-
   return (
     <Box>
       <div className="relative flex h-full w-full flex-col p-[10px] pt-[15px]">
@@ -37,7 +36,7 @@ const RequestCard = ({ name, tags, content, location }: RequestCardProps) => {
           <div className="flex flex-col">
             <span className="text-[16px] leading-[140%] font-semibold">{name}</span>
             <span className="text-[10px] leading-[140%] font-semibold text-[#7A7A7A]">
-              {location}
+              {address}
             </span>
           </div>
         </div>

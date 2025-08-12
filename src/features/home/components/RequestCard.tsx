@@ -51,13 +51,13 @@ import Hashtag from './Hashtag';
 
 interface RequestCardInMainProps {
   name?: string;
-  location: string;
+  address: string;
   tags: Tags;
   text: string;
   id: number;
 }
 
-const RequestCardInMain = ({ name, location, tags, text, id }: RequestCardInMainProps) => {
+const RequestCardInMain = ({ name, address, tags, text, id }: RequestCardInMainProps) => {
   const navigate = useNavigate();
   const daysPerWeek = `주 ${tags.daysPerWeek}회`;
   const tagsResult = [
@@ -71,7 +71,7 @@ const RequestCardInMain = ({ name, location, tags, text, id }: RequestCardInMain
       onClick={() => navigate(urlFor.requestDetail(id))}
       className="flex h-[220px] max-w-[340px] cursor-pointer flex-col gap-[12px] rounded-xl px-[10px] py-[15px] shadow-[4px_4px_10px_rgba(0,0,0,0.25)] transition-transform duration-200 hover:scale-[1.02] lg:w-[320px] xl:w-[320px] 2xl:w-[340px]"
     >
-      <UserRequestHeader nickName={name} location={location} />
+      <UserRequestHeader nickName={name} address={address} />
       <div className="flex flex-wrap gap-[6px]">
         {tagsResult.map((tag, idx) => (
           <Hashtag key={idx} tag={tag} />

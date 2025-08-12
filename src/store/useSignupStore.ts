@@ -41,7 +41,7 @@ export const useSignupStore = create<
   }
 >((set, get) => ({
   userInfo: {
-    email: 'kkim02@gmail.com',
+    email: '',
     phoneNum: '',
     address: { city: '', district: '', street: '', streetCode: '', zipcode: '', specAddress: '' },
   },
@@ -49,9 +49,9 @@ export const useSignupStore = create<
   sportsTypeInfo: { categoryId: 0 },
   nicknameInfo: { nickname: '' },
   profileImageInfo: null,
-  username: '김갱주',
-  oauthId: 'abcd1234',
-  oauthProvider: 'kakao',
+  username: '',
+  oauthId: '',
+  oauthProvider: '',
   role: 0,
   agreementInfo: { agreedTermsId: [], agreeMarketing: false },
 

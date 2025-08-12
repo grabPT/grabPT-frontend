@@ -4,10 +4,11 @@
 */
 interface UserRequestHeaderProps {
   nickName?: string;
-  location: string;
+  address: string;
 }
 
-const UserRequestHeader = ({ nickName }: UserRequestHeaderProps) => {
+const UserRequestHeader = ({ nickName, address }: UserRequestHeaderProps) => {
+  console.log('address;', address);
   return (
     <div className="flex flex-row items-center">
       <div className="mr-3 flex h-12 w-12 items-center justify-center rounded-full bg-gray-300">
@@ -21,6 +22,7 @@ const UserRequestHeader = ({ nickName }: UserRequestHeaderProps) => {
       </div>
       <div className="flex w-auto flex-col">
         <h3 className="text-[18px] font-semibold text-gray-900">{nickName}</h3>
+        <span className="text-[10px] leading-[140%] font-semibold text-[#7A7A7A]"> {address}</span>
       </div>
     </div>
   );

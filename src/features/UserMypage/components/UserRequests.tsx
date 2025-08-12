@@ -22,7 +22,7 @@ const UserRequests = () => {
         {myRequestsList?.content.map((rq, idx) => (
           <RequestCard
             key={`${page}-${idx}`}
-            location={rq.location}
+            address={`${rq.address.city} ${rq.address.district} ${rq.address.street}`}
             name={data?.name ?? '사용자'}
             tags={{
               availableTimes: rq.availableTimes,
