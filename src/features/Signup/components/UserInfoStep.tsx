@@ -59,9 +59,10 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
         specAddress: data.specAddress,
       },
     });
-    console.log(userInfo);
+    console.log('이메일이 담겨있나용:', userInfo);
     onNext();
   };
+  const email = watch('email');
   const phoneNum = watch('phoneNum');
   const verifyNum = watch('verifyNum');
   //주소 api 모달 띄우기
@@ -119,6 +120,25 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
     script.async = true;
     document.body.appendChild(script);
   }, []);
+  // email을 watch로 관리: kakao는 사용자가 입력하면 store에 즉시 반영,
+  // 그 외 공급자는 store 값을 폼에 유지(읽기 전용이므로).
+  useEffect(() => {
+    if (oauthProvider === 'kakao') {
+      if (userInfo.email !== email) {
+        setUserInfo({ ...userInfo, email });
+      }
+    } else {
+      // 읽기 전용 환경에서는 store의 값을 계속 표시
+      if (email !== userInfo.email) {
+        setValue('email', userInfo.email || '', {
+          shouldDirty: false,
+          shouldTouch: false,
+          shouldValidate: false,
+        });
+      }
+    }
+    console.log(email);
+  }, [email, oauthProvider, userInfo, setUserInfo, setValue]);
 
   //폼 검사 에러 메시지 출력
   const getUserErrorMessage = () => {
