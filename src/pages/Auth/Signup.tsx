@@ -82,7 +82,7 @@ console.log({ email, name, oauthId, provider });
   useEffect(() => {
     setOauthId(decodeBase64Utf8(getCookieValue('oauthId') || ''));
     setOauthProvider(decodeBase64Utf8(getCookieValue('oauthProvider') || ''));
-    setUserName(decodeBase64Utf8(getCookieValue('OauthName') || ''));
+    setUserName(decodeBase64Utf8(getCookieValue('oauthName') || ''));
     setUserInfo({ email: decodeBase64Utf8(getCookieValue('oauthEmail') || '' )});
     console.log('쿠키 값 확인:', {
       oauthId: decodeBase64Utf8(getCookieValue('oauthId')),
