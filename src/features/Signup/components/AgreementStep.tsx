@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import FrontBtn from '@/features/Signup/assets/FrontBtn.png';
 import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
 import AgreementModal from '@/features/Signup/components/AgreementModal';
 import SignupBtn from '@/features/Signup/components/SignupBtn';
-import { useGetSocialInfo } from '@/features/Signup/hooks/useGetSocialInfo';
 import { useSignupStore } from '@/store/useSignupStore';
+import { useGetSocialInfo } from '@/features/Signup/hooks/useGetSocialInfo';
 
 interface AgreementStepProps {
   onNext: () => void;
@@ -14,7 +14,7 @@ interface AgreementStepProps {
 const AgreementStep = ({ onNext }: AgreementStepProps) => {
   const { agreementInfo, setAgreementInfo } = useSignupStore();
   const socialLoginData = useGetSocialInfo();
-  const { setSocialLoginInfo, setUserInfo } = useSignupStore();
+  const {setSocialLoginInfo, setUserInfo} = useSignupStore();
   //상세 설명 모달
   const [isModalOpen, setIsModalOpen] = useState<number | null>(null);
   // checkedList
@@ -32,6 +32,33 @@ const AgreementStep = ({ onNext }: AgreementStepProps) => {
     agreementInfo.agreedTermsId.includes(2) &&
     agreementInfo.agreedTermsId.includes(3) &&
     agreementInfo.agreedTermsId.includes(4);
+  useEffect(() => {
+    // react-query의 data: CommonResponseDto<SocialLoginInfo>
+    const response = socialLoginData.data;
+    const info = response; // ✅ 실제 유저 정보는 response.data 안에 들어있음
+
+    if (!info) {
+      console.warn('social login info 아직 없음 또는 응답 포맷 확인 필요:', response);
+      return;
+    }
+
+    const { username, oauthId, oauthProvider, email } = info;
+
+    setSocialLoginInfo({
+      username: username || '',
+      oauthId: oauthId || '',
+      oauthProvider: oauthProvider || '',
+      email: email ?? null,
+    });
+    setUserInfo({
+      email: email || '',
+    });
+
+    // Debug: 원본 응답과 언랩한 info 모두 출력
+    console.log('socialLogin response(CommonResponseDto):', response);
+    console.log('socialLogin info(unwrapped):', info);
+  }, [setSocialLoginInfo, setUserInfo, socialLoginData.data]);
+
   // 체크박스 로직
   const toggleCheckbox = (index: number) => {
     if (index === 5) {
@@ -58,17 +85,7 @@ const AgreementStep = ({ onNext }: AgreementStepProps) => {
       alert('필수 약관에 모두 동의해주세요');
       return;
     }
-    setSocialLoginInfo({
-      username: socialLoginData.data?.username || '',
-      oauthId: socialLoginData.data?.oauthId || '',
-      oauthProvider: socialLoginData.data?.oauthProvider || '',
-      email: socialLoginData.data?.email || null,
-    });
-    setUserInfo({
-      email: socialLoginData.data?.email || '',
-    });
-    console.log('socialLoginInfo', socialLoginData.data);
-    console.log('userInfo', socialLoginData.data?.email || '');
+
     console.log('agreementInfo', agreementInfo);
     onNext();
   };
