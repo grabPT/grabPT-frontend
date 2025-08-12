@@ -264,6 +264,7 @@ const Dashboard = ({ userInfo }: DashboardProps) => {
             {isEdit && (
               <>
                 <input
+                  aria-label="프로필 숨은 인풋"
                   type="file"
                   accept="image/*"
                   ref={fileInputRef}
