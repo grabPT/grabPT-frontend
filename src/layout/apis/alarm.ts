@@ -4,6 +4,7 @@ import { privateInstance } from '@/libs/axios';
 export const getAlarmList = async (): Promise<getAlarmListResponseDto> => {
   try {
     const response = await privateInstance.get('/api/alarmList', { withCredentials: true });
+    console.log(response);
     return response.data;
   } catch (error) {
     console.error(error);

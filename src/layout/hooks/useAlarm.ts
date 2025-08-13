@@ -9,12 +9,12 @@ import type {
 } from '@/layout/types/alarmType';
 
 export const useGetAlarmList = () => {
-  return useQuery<getAlarmListResponseDto, Error, alarmType>({
+  return useQuery<getAlarmListResponseDto, Error, alarmType[]>({
     queryKey: QUERY_KEYS.alarm,
     queryFn: () => getAlarmList(),
     enabled: true,
     select: (res) => res.result,
-    staleTime: 0, // 5분 동안 fresh
+    staleTime: 1, // 5분 동안 fresh
     gcTime: 300_000, // 5 분 뒤 캐시 정리
     retry: 2, //2번까지 재시도
   });
