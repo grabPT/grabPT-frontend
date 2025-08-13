@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 type AlarmState = {
-  alarmCount: number;
+  alarmCount: number | null;
   setAlarmCount: (n: number) => void;
   resetAlarmCount: () => void;
 };
