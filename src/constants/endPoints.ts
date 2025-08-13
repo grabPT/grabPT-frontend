@@ -51,7 +51,7 @@ export const END_POINT = {
     list: '/chatRoom/list',
     messages: (roomId: number) => `/chatRoom/${roomId}/messages`,
   },
-
+  SETTLEMENT: { settlement: '/api/trainer/dashboard' },
   CONTRACTS: {},
 
   // …필요한 도메인 계속 추가

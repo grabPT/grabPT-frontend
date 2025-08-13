@@ -45,7 +45,7 @@ const ROUTES = {
       REVIEWS: 'reviews',
     },
   },
-
+  EXPERT_SETTLEMENT: '/expert/settlement',
   MATCHING_STATUS: {
     ROOT: '/matching',
 

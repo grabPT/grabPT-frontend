@@ -23,6 +23,7 @@ import ContractDetailPage from '@/pages/Contracts/ContractDetailPage';
 import ContractFormPage from '@/pages/Contracts/ContractFormPage';
 import { ExpertDetail } from '@/pages/ExpertDetail/ExpertDetail';
 import ExpertMainPage from '@/pages/Home/ExpertMainPage';
+import { Settlement } from '@/pages/Home/Settlement';
 import UserMainPage from '@/pages/Home/UserMainPage';
 import MatchingStatusPage from '@/pages/MatchingStatus/MatchingStatusPage';
 import ExpertMypage from '@/pages/MyPage/ExpertMypage';
@@ -118,6 +119,8 @@ const routes: RouteObject[] = [
           { path: ROUTES.CONTRACTS.DETAIL, element: <ContractDetailPage /> },
         ],
       },
+      //정산
+      { path: ROUTES.EXPERT_SETTLEMENT, element: <Settlement /> },
     ],
   },
 

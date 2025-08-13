@@ -32,5 +32,6 @@ export const QUERY_KEYS = {
     params.page,
     params.size,
   ],
+  settlementList: (params: number) => ['settlementList', params],
   // …다른 키들
 };
