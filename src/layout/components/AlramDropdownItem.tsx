@@ -24,8 +24,12 @@ const AlramDropdownItem = ({ alarm }: AlarmDropdownItemProps) => {
     alarm.type === 'MESSAGE' ? chatImage : alarm.type === 'CONTRACT' ? fileImage : textImage;
 
   const timeAgo = useTimeAgo(alarm.createdAt); // 예: "3분 전", "어제", "5일 전"
+
   return (
-    <div className="flex h-[31px] cursor-pointer justify-between gap-3" onClick={handleClick}>
+    <div
+      className="flex cursor-pointer justify-between gap-3 px-2 py-2 hover:bg-gray-300"
+      onClick={handleClick}
+    >
       <img src={imagePath} alt="알람" className="h-full w-7" />
 
       <div className="flex-1">
