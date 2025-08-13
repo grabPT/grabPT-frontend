@@ -27,20 +27,30 @@ function ProfileDropdown() {
   const navigate = useNavigate();
   const { isExpert, LogOut } = useUserRoleStore();
 
-  const navigateToMypage = useCallback(() => {
+  const navigateToMyInfo = useCallback(() => {
     if (isExpert) navigate(ROUTES.MYPAGE.EXPERT);
     else navigate(ROUTES.MYPAGE.USER);
   }, [isExpert, navigate]);
 
+  const navigateToSettlement = useCallback(() => {
+    navigate(ROUTES.EXPERT_SETTLEMENT);
+  }, [navigate]);
+
   /* isExpert 변동 시에만 재계산 */
   const items = useMemo<Item[]>(() => {
     const base: Item[] = [
-      { label: '내정보', onClick: navigateToMypage },
+      { label: '내정보', onClick: navigateToMyInfo },
       { label: '로그아웃', onClick: LogOut },
     ];
 
-    return isExpert ? [base[0], { label: '정산 관리', onClick: navigateToMypage }, base[1]] : base;
-  }, [isExpert, navigateToMypage, LogOut]);
+    return isExpert
+      ? [
+          { label: '내정보', onClick: navigateToMyInfo },
+          { label: '정산 관리', onClick: navigateToSettlement },
+          base[1],
+        ]
+      : base;
+  }, [isExpert, navigateToMyInfo, navigateToSettlement, LogOut]);
 
   return (
     <Box width="" height="" className="flex flex-col rounded-xl bg-white">
