@@ -12,9 +12,9 @@ export const getAlarmList = async (): Promise<getAlarmListResponseDto> => {
   }
 };
 
-export const postReadAlarm = async (alarmId: number): Promise<postAlarmReadResponseDto> => {
+export const patchReadAlarm = async (alarmId: number): Promise<postAlarmReadResponseDto> => {
   try {
-    const { data } = await privateInstance.post(`/api/alarm/${alarmId}/read`, alarmId);
+    const { data } = await privateInstance.patch(`/api/alarm/${alarmId}/read`, alarmId);
     return data;
   } catch (e) {
     console.log(e);

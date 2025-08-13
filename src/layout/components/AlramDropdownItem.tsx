@@ -4,7 +4,7 @@ import chatImage from '@/assets/images/ChatImage.svg';
 import fileImage from '@/assets/images/FileImage.svg';
 import textImage from '@/assets/images/TextImage.svg';
 import { useTimeAgo } from '@/hooks/useTimaAgo';
-import { usePostReadAlarm } from '@/layout/hooks/useAlarm';
+import { usePatchReadAlarm } from '@/layout/hooks/useAlarm';
 import type { alarmType } from '@/layout/types/alarmType';
 
 interface AlarmDropdownItemProps {
@@ -13,7 +13,7 @@ interface AlarmDropdownItemProps {
 const AlramDropdownItem = ({ alarm }: AlarmDropdownItemProps) => {
   const navigate = useNavigate();
 
-  const { mutate: postReadAlarm } = usePostReadAlarm(alarm.id);
+  const { mutate: postReadAlarm } = usePatchReadAlarm(alarm.id);
 
   const handleClick = () => {
     postReadAlarm(alarm.id);

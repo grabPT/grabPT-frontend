@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 import { QUERY_KEYS } from '@/constants/queryKeys';
-import { getAlarmList, postReadAlarm } from '@/layout/apis/alarm';
+import { getAlarmList, patchReadAlarm } from '@/layout/apis/alarm';
 import type {
   alarmType,
   getAlarmListResponseDto,
@@ -20,9 +20,9 @@ export const useGetAlarmList = () => {
   });
 };
 
-export const usePostReadAlarm = (alarmId: number) => {
+export const usePatchReadAlarm = (alarmId: number) => {
   return useMutation<postAlarmReadResponseDto, Error, number>({
-    mutationFn: () => postReadAlarm(alarmId),
+    mutationFn: () => patchReadAlarm(alarmId),
     onSuccess: (data) => {
       console.log('읽음처리 mutate성공', data);
     },
