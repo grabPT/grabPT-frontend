@@ -9,6 +9,7 @@ import Chat from '@/assets/images/Chat.png';
 import HeaderProfile from '@/assets/images/HeaderProfile.png';
 import Button from '@/components/Button';
 import ROUTES from '@/constants/routes';
+import AlarmDropdown from '@/layout/components/AlarmDropdown';
 import ProfileDropdown from '@/layout/components/ProfileDropdown';
 import { useUnreadStore } from '@/store/useUnreadStore';
 import { useUserRoleStore } from '@/store/useUserRoleStore';
@@ -18,6 +19,7 @@ function AuthMenu() {
 
   const { isLoggedIn, LogIn, LogOut, setUserId, isExpert, setUser, setExpert } = useUserRoleStore();
   const [isOpenProfileDropdown, setIsOpenProfileDropdown] = useState<boolean>(false);
+  const [isOpenAlarmDropdown, setIsOpenAlarmDropdown] = useState<boolean>(false);
   const unreadCount = useUnreadStore((s) => s.unreadCount);
   return (
     <div className="flex items-center">
@@ -81,7 +83,7 @@ function AuthMenu() {
       {/*  로그인 여부에 따른 메뉴 */}
       {isLoggedIn ? (
         <div className="flex h-full items-center gap-5">
-          <div className="flex h-[21px] gap-[21px]">
+          <div className="relative flex h-[21px] gap-[21px]">
             <div className="relative">
               {unreadCount > 0 && (
                 <div className="absolute bottom-3 left-3 z-[3000] rounded-full bg-red-500 px-1.5 text-center text-[12px] text-white">
@@ -99,8 +101,136 @@ function AuthMenu() {
               src={Alert}
               alt="알림"
               className="cursor-pointer"
-              onClick={() => navigate(ROUTES.HOME.ROOT)}
+              onClick={() => setIsOpenAlarmDropdown((prev) => !prev)}
             />
+            {isOpenAlarmDropdown && (
+              <div className="absolute top-12 -right-2.5">
+                <AlarmDropdown
+                  alarmList={[
+                    {
+                      id: 3,
+                      userId: 3,
+                      type: 'REQUESTION',
+                      title: '제안서',
+                      content: '제안서 왔서염',
+                      redirectUrl: '/matching/proposal/3',
+                      createdAt: '3분전',
+                      read: false,
+                    },
+                    {
+                      id: 3,
+                      userId: 3,
+                      type: 'REQUESTION',
+                      title: '제안서',
+                      content: '제안서 왔서염',
+                      redirectUrl: '/matching/proposal/3',
+                      createdAt: '3분전',
+                      read: false,
+                    },
+                    {
+                      id: 3,
+                      userId: 3,
+                      type: 'REQUESTION',
+                      title: '제안서',
+                      content: '제안서 왔서염',
+                      redirectUrl: '/matching/proposal/3',
+                      createdAt: '3분전',
+                      read: false,
+                    },
+                    {
+                      id: 3,
+                      userId: 3,
+                      type: 'REQUESTION',
+                      title: '제안서',
+                      content: '제안서 왔서염',
+                      redirectUrl: '/matching/proposal/3',
+                      createdAt: '3분전',
+                      read: false,
+                    },
+                    {
+                      id: 3,
+                      userId: 3,
+                      type: 'REQUESTION',
+                      title: '제안서',
+                      content: '제안서 왔서염',
+                      redirectUrl: '/matching/proposal/3',
+                      createdAt: '3분전',
+                      read: false,
+                    },
+                    {
+                      id: 3,
+                      userId: 3,
+                      type: 'REQUESTION',
+                      title: '제안서',
+                      content: '제안서 왔서염',
+                      redirectUrl: '/matching/proposal/3',
+                      createdAt: '3분전',
+                      read: false,
+                    },
+                    {
+                      id: 3,
+                      userId: 3,
+                      type: 'REQUESTION',
+                      title: '제안서',
+                      content: '제안서 왔서염',
+                      redirectUrl: '/matching/proposal/3',
+                      createdAt: '3분전',
+                      read: false,
+                    },
+                    {
+                      id: 3,
+                      userId: 3,
+                      type: 'REQUESTION',
+                      title: '제안서',
+                      content: '제안서 왔서염',
+                      redirectUrl: '/matching/proposal/3',
+                      createdAt: '3분전',
+                      read: false,
+                    },
+                    {
+                      id: 3,
+                      userId: 3,
+                      type: 'REQUESTION',
+                      title: '제안서',
+                      content: '제안서 왔서염',
+                      redirectUrl: '/matching/proposal/3',
+                      createdAt: '3분전',
+                      read: false,
+                    },
+                    {
+                      id: 3,
+                      userId: 3,
+                      type: 'REQUESTION',
+                      title: '제안서',
+                      content: '제안서 왔서염',
+                      redirectUrl: '/matching/proposal/3',
+                      createdAt: '3분전',
+                      read: false,
+                    },
+                    {
+                      id: 3,
+                      userId: 3,
+                      type: 'REQUESTION',
+                      title: '제안서',
+                      content: '제안서 왔서염',
+                      redirectUrl: '/matching/proposal/3',
+                      createdAt: '3분전',
+                      read: false,
+                    },
+                    {
+                      id: 3,
+                      userId: 3,
+                      type: 'REQUESTION',
+                      title: '제안서',
+                      content: '제안서 왔서염',
+                      redirectUrl: '/matching/proposal/3',
+                      createdAt: '3분전',
+                      read: false,
+                    },
+                  ]}
+                />
+              </div>
+            )}
           </div>
           <div
             className="relative flex h-full items-center"
