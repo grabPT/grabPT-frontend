@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { formatTimeAgo } from '@/utils/formatTimeago';
+import { formatTimeAgo } from '@/utils/formatTimeAgo';
 
 export function useTimeAgo(isoString: string | Date, refreshMs = 60_000) {
   const [, setTick] = useState(0);
