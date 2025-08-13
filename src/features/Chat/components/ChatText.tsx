@@ -30,7 +30,25 @@ export const ChatText = ({ chat, imageUrl }: ChatTextProps) => {
 
   const renderContent = () => {
     if (chat.messageType === 'IMAGE') {
-      return <img src={chat.content} alt="채팅 이미지" className="h-32 w-32 rounded-md" />;
+      const full = chat.content; // 원본 URL
+      return (
+        <a
+          href={full}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block max-w-[min(60vw,420px)]"
+        >
+          <img
+            src={full}
+            alt="채팅 이미지"
+            loading="lazy"
+            decoding="async"
+            referrerPolicy="no-referrer"
+            onError={onErrorImage}
+            className="h-auto max-h-[60vh] w-full rounded-md object-contain"
+          />
+        </a>
+      );
     }
     if (chat.messageType === 'FILE') {
       const fileName = getFileName(chat.content);
