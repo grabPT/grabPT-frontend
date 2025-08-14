@@ -15,7 +15,7 @@ export const PaymentsCard = ({
   ptCount,
 }: IPaymentCard) => {
   return (
-    <div className="flex h-[3.75rem] w-[55rem] items-center rounded-[0.625rem] text-[0.8rem] font-semibold shadow-2xl">
+    <div className="flex h-[3.75rem] w-[55rem] items-center rounded-[0.625rem] text-[0.8rem] font-semibold shadow-[4px_4px_10px_rgba(0,0,0,0.25)]">
       <div className="flex flex-1 items-center gap-3">
         <img src={HeaderProfile} alt="프로필 이미지" className="ml-3 h-5 w-5" />
         <span>{memberName}</span>

@@ -25,8 +25,8 @@ function AuthMenu() {
       <button
         type="button"
         onClick={async () => {
-          getAccessToken(2);
-          setUserId(2);
+          getAccessToken(5);
+          setUserId(5);
           LogIn();
           setUser();
           const initial = await getUnreadCount(); // 4) 초기 unread 1회 호출
