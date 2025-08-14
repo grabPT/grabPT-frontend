@@ -1,7 +1,7 @@
 // routes/guards.tsx
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
-import LoadingMuscle from '@/components/LoadingMuscle';
+// import LoadingMuscle from '@/components/LoadingMuscle';
 import { useRoleStore } from '@/store/useRoleStore';
 
 import type { Role } from './types';

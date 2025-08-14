@@ -3,7 +3,7 @@ import { persist } from 'zustand/middleware';
 
 import type { Role } from '@/routes/types';
 
-export type AuthStatus = 'Loading' | 'Authorized';
+export type AuthStatus = 'Loading' | 'Authorized' | 'Unauthorized';
 interface AuthState {
   status: AuthStatus;
   role: Role | null;
@@ -14,12 +14,12 @@ interface AuthState {
 export const useRoleStore = create<AuthState>()(
   persist(
     (set) => ({
-      status: 'Loading',
+      status: 'Unauthorized',
       role: null,
       isLoggedIn: false,
       setRole: (role: Role) =>
         set({
-          status: role === 'USER' || role === 'EXPERT' ? 'Authorized' : 'Loading',
+          status: role === 'USER' || role === 'EXPERT' ? 'Authorized' : 'Unauthorized',
           role,
           isLoggedIn: role !== null,
         }),
