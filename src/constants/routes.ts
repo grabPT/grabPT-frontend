@@ -9,6 +9,7 @@ const ROUTES = {
   AUTH: {
     LOGIN: '/login',
     SIGNUP: '/signup',
+    CALLBACK: '/authcallback',
   },
   OAUTH: '/auth/callback',
 

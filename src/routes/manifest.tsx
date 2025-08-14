@@ -14,6 +14,7 @@ import UserReviews from '@/features/UserMypage/components/UserReviews';
 import UserSettings from '@/features/UserMypage/components/UserSettings';
 import Layout from '@/layout/Layout';
 import AlarmController from '@/layout/controller/AlarmController';
+import { AuthCallback } from '@/pages/Auth/AuthCallback';
 import Login from '@/pages/Auth/Login';
 import Signup from '@/pages/Auth/Signup';
 import CategoryPage from '@/pages/Category/CategoryPage';
@@ -48,7 +49,7 @@ export const routesManifest: AppRoute[] = [
   /* 온보딩 (게스트 전용) */
   { path: ROUTES.AUTH.LOGIN, element: <Login />, guestOnly: true },
   { path: ROUTES.AUTH.SIGNUP, element: <Signup />, guestOnly: true },
-
+  { path: ROUTES.AUTH.CALLBACK, element: <AuthCallback /> },
   /* 레이아웃 래퍼 */
   {
     path: ROUTES.HOME.ROOT,
