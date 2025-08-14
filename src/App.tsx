@@ -15,6 +15,7 @@ import UserRequests from '@/features/UserMypage/components/UserRequests';
 import UserReviews from '@/features/UserMypage/components/UserReviews';
 import UserSettings from '@/features/UserMypage/components/UserSettings';
 import Layout from '@/layout/Layout';
+import AlarmController from '@/layout/controller/AlarmController';
 import Login from '@/pages/Auth/Login';
 import Signup from '@/pages/Auth/Signup';
 import CategoryPage from '@/pages/Category/CategoryPage';
@@ -143,6 +144,7 @@ export default function App() {
     <>
       <RouterProvider router={router} />
       <UnreadCountController />
+      <AlarmController />
     </>
   );
 }

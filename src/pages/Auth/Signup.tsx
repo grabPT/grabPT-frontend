@@ -67,7 +67,7 @@ const Signup = () => {
           {
             onSuccess: (res) => {
               console.log('User signup success:', res);
-              nav('/');
+              // nav('/');
             },
             onError: (err) => {
               console.error('User signup failed:', err);
@@ -85,7 +85,7 @@ const Signup = () => {
           {
             onSuccess: (res) => {
               console.log('Pro signup success:', res);
-              nav('/expert');
+              // nav('/expert');
             },
             onError: (err) => {
               console.error('Pro signup failed:', err);

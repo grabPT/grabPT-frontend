@@ -16,19 +16,20 @@ export const privateInstance = axios.create({
   baseURL: import.meta.env.VITE_SERVER_API_URL,
   headers: { 'Content-Type': 'application/json' },
   timeout: 10_000,
+  withCredentials: true,
 });
 
-//요청 인터셉터로 토큰 자동 주입
-privateInstance.interceptors.request.use(
-  (request) => {
-    const accessToken = localStorage.getItem('accessToken');
-    if (accessToken) {
-      request.headers['Authorization'] = `Bearer ${accessToken}`;
-    }
-    return request;
-  },
-  (error) => Promise.reject(error),
-);
+// //요청 인터셉터로 토큰 자동 주입
+// privateInstance.interceptors.request.use(
+//   (request) => {
+//     const accessToken = localStorage.getItem('accessToken');
+//     if (accessToken) {
+//       request.headers['Authorization'] = `Bearer ${accessToken}`;
+//     }
+//     return request;
+//   },
+//   (error) => Promise.reject(error),
+// );
 
 // // 응답 인터셉터 - 401일 때 리프레쉬 토큰을 이용하여 액세스 토큰 재발급
 // privateInstance.interceptors.response.use(
@@ -78,18 +79,42 @@ declare module 'axios' {
 export const multipartInstance = axios.create({
   baseURL: import.meta.env.VITE_SERVER_API_URL,
   timeout: 10_000,
+  withCredentials: true,
 });
 
-// 요청 시 토큰 자동 주입
-multipartInstance.interceptors.request.use(
-  (request) => {
-    if (!request.skipAuth) {
-      const accessToken = localStorage.getItem('accessToken');
-      if (accessToken) {
-        request.headers['Authorization'] = `Bearer ${accessToken}`; //헤더에 토큰 넣어줌
-      }
-    }
-    return request;
-  },
-  (error) => Promise.reject(error),
-);
+// // 요청 시 토큰 자동 주입
+// multipartInstance.interceptors.request.use(
+//   (request) => {
+//     if (!request.skipAuth) {
+//       const accessToken = localStorage.getItem('accessToken');
+//       if (accessToken) {
+//         request.headers['Authorization'] = `Bearer ${accessToken}`; //헤더에 토큰 넣어줌
+//       }
+//     }
+//     return request;
+//   },
+//   (error) => Promise.reject(error),
+// );
+
+// https://medium.com/%40velja/token-refresh-with-axios-interceptors-for-a-seamless-authentication-experience-854b06064bde
+// 여기서 찾은 권장패턴입니다. 추후 활성화
+// 토큰 포함 인스턴스
+/*
+export const privateInstance = axios.create({
+  baseURL: import.meta.env.VITE_SERVER_API_URL,
+  headers: { 'Content-Type': 'application/json' },
+  timeout: 10_000,
+  withCredentials: true,
+});
+
+
+
+
+// 파일 업로드 전용 인스턴스 (multipart/form-data)
+export const multipartInstance = axios.create({
+  baseURL: import.meta.env.VITE_SERVER_API_URL,
+  timeout: 10_000,
+  withCredentials: true,
+});
+
+*/
