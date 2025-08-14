@@ -3,13 +3,18 @@ import ProfileCard from '@/components/ProfileCard';
 import RequestSlider from '@/features/home/components/RequestSlider';
 import { useGetMyRequestsList } from '@/hooks/useGetMyRequestsList';
 import { useProProfileQuery } from '@/hooks/useGetProProfile';
+import { useRoleStore } from '@/store/useRoleStore';
+import { useEffect } from 'react';
 
 const ExpertMainPage = () => {
   const { data, isLoading, isError } = useProProfileQuery();
+  const {isLoggedIn} = useRoleStore();
   const profileData = data?.result;
   // 임시로 요청서 데이터를 가져오는 훅 사용(전문가 전용이 있으면 교체할 것)
   const { data: requests } = useGetMyRequestsList({ page: 1, size: 40 });
-  console.log(profileData);
+useEffect(()=>{
+  console.log("전문가 로그인 여부:",isLoggedIn);
+})
 
   if (isLoading) return <div>로딩 중...</div>;
   if (isError || !profileData) return <div>에러 발생</div>;
