@@ -30,8 +30,8 @@ function AuthMenu() {
       <button
         type="button"
         onClick={async () => {
-          getAccessToken(5);
-          setUserId(5);
+          getAccessToken(2);
+          setUserId(2);
           LogIn();
           setUser();
           // 초기 알람 세팅

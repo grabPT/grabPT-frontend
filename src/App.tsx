@@ -1,18 +1,21 @@
+// App.tsx
+import { useEffect } from 'react';
+
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
-import AuthGate from '@/components/AuthGate';
+import { useRoleStore } from '@/store/useRoleStore';
 
 import { buildRoutes } from './routes/builder';
 import { routesManifest } from './routes/manifest';
-import { useMemo } from 'react';
 
 export default function App() {
-  const routes = useMemo(() => buildRoutes(routesManifest), []);
-  const router = useMemo(() => createBrowserRouter(routes), [routes]);
-
+  useEffect(() => {
+    useRoleStore.getState().bootstrap();
+  }, []);
+  const router = createBrowserRouter(buildRoutes(routesManifest));
   return (
-    <AuthGate>
+    <>
       <RouterProvider router={router} />
-    </AuthGate>
+    </>
   );
 }
