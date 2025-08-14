@@ -14,7 +14,6 @@ export default function App() {
     useRoleStore.getState().bootstrap();
   }, []);
   const router = createBrowserRouter(buildRoutes(routesManifest));
-  // App.tsx (핵심만)
   return (
     <AuthGate>
       <RouterProvider router={router} />

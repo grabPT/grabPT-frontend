@@ -11,6 +11,7 @@ import { useRoleStore } from '@/store/useRoleStore';
 
 const Navbar = () => {
   const { role } = useRoleStore();
+  console.log("NaveBar role:",role);
   // const {isExpert} = useUserRoleStore();
   const location = useLocation();
   const [isOpenCategoryDropdown, setIsOpenCategoryDropdown] = useState<boolean>(false);
