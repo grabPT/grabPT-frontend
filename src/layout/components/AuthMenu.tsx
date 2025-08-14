@@ -2,24 +2,26 @@ import { useState } from 'react';
 
 import { Link, useNavigate } from 'react-router-dom';
 
-import { getUnreadCount } from '@/apis/getUnreadCount';
-import { getAccessToken } from '@/apis/test';
+// import { getUnreadCount } from '@/apis/getUnreadCount';
+// import { getAccessToken } from '@/apis/test';
 import Alert from '@/assets/images/Alert.png';
 import Chat from '@/assets/images/Chat.png';
 import HeaderProfile from '@/assets/images/HeaderProfile.png';
 import Button from '@/components/Button';
 import ROUTES from '@/constants/routes';
-import { getAlarmList } from '@/layout/apis/alarm';
+// import { getAlarmList } from '@/layout/apis/alarm';
 import AlarmDropdown from '@/layout/components/AlarmDropdown';
 import ProfileDropdown from '@/layout/components/ProfileDropdown';
 import { useAlarmStore } from '@/store/useAlarmStore';
+// import { useUserRoleStore } from '@/store/useUserRoleStore';
+import { useRoleStore } from '@/store/useRoleStore';
 import { useUnreadStore } from '@/store/useUnreadStore';
-import { useUserRoleStore } from '@/store/useUserRoleStore';
 
 function AuthMenu() {
   const navigate = useNavigate();
 
-  const { isLoggedIn, LogIn, LogOut, setUserId, isExpert, setUser, setExpert } = useUserRoleStore();
+  // const { isLoggedIn, LogIn, LogOut, setUserId, isExpert, setUser, setExpert } = useUserRoleStore();
+  const { isLoggedIn, role } = useRoleStore();
   const [isOpenProfileDropdown, setIsOpenProfileDropdown] = useState<boolean>(false);
   const [isOpenAlarmDropdown, setIsOpenAlarmDropdown] = useState<boolean>(false);
   const unreadCount = useUnreadStore((s) => s.unreadCount);
@@ -27,7 +29,7 @@ function AuthMenu() {
   return (
     <div className="flex items-center">
       {/* 유저로 로그인 */}
-      <button
+      {/* <button
         type="button"
         onClick={async () => {
           getAccessToken(2);
@@ -64,8 +66,9 @@ function AuthMenu() {
       >
         3
       </button>
+      */}
       {/* expert로 로그인*/}
-      <button
+      {/* <button
         type="button"
         onClick={async () => {
           await getAccessToken(156);
@@ -82,8 +85,8 @@ function AuthMenu() {
         className="mr-6 cursor-pointer rounded-full bg-orange-600 p-2 text-sm text-white"
       >
         E(61)
-      </button>
-      <button
+      </button> */}
+      {/* <button
         type="button"
         onClick={() => {
           setUserId(null);
@@ -93,7 +96,7 @@ function AuthMenu() {
         className="mr-6 cursor-pointer rounded-full bg-red-500 p-2 text-sm text-white"
       >
         LogOut
-      </button>
+      </button> */}
 
       {/*  로그인 여부에 따른 메뉴 */}
       {isLoggedIn ? (
@@ -141,7 +144,7 @@ function AuthMenu() {
               className="h-[45px] w-[45px] cursor-pointer"
               onMouseEnter={() => setIsOpenProfileDropdown(true)}
               onClick={() => {
-                if (isExpert) {
+                if (role === 'EXPERT') {
                   navigate(ROUTES.MYPAGE.EXPERT);
                 } else {
                   navigate(ROUTES.MYPAGE.USER);

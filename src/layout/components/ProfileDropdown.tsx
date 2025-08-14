@@ -4,7 +4,9 @@ import { useNavigate } from 'react-router-dom';
 
 import Box from '@/components/Box';
 import ROUTES from '@/constants/routes';
-import { useUserRoleStore } from '@/store/useUserRoleStore';
+import { useLogout } from '@/features/Signup/hooks/useLogout';
+import { useRoleStore } from '@/store/useRoleStore';
+import { decodeCookie } from '@/utils/decodeCookie';
 
 type Item = {
   label: string;
@@ -25,12 +27,13 @@ const DropdownItem = memo(function DropdownItem({ label, onClick }: Item) {
 
 function ProfileDropdown() {
   const navigate = useNavigate();
-  const { isExpert, LogOut } = useUserRoleStore();
-
+  const { role } = useRoleStore();
+  const { mutate: logout } = useLogout();
+  const refreshToken = decodeCookie('refreshToken');
   const navigateToMyInfo = useCallback(() => {
-    if (isExpert) navigate(ROUTES.MYPAGE.EXPERT);
+    if (role === 'EXPERT') navigate(ROUTES.MYPAGE.EXPERT);
     else navigate(ROUTES.MYPAGE.USER);
-  }, [isExpert, navigate]);
+  }, [role, navigate]);
 
   const navigateToSettlement = useCallback(() => {
     navigate(ROUTES.EXPERT_SETTLEMENT);
@@ -40,17 +43,17 @@ function ProfileDropdown() {
   const items = useMemo<Item[]>(() => {
     const base: Item[] = [
       { label: '내정보', onClick: navigateToMyInfo },
-      { label: '로그아웃', onClick: LogOut },
+      { label: '로그아웃', onClick: () => logout({ refreshToken }) },
     ];
 
-    return isExpert
+    return role
       ? [
           { label: '내정보', onClick: navigateToMyInfo },
           { label: '정산 관리', onClick: navigateToSettlement },
           base[1],
         ]
       : base;
-  }, [isExpert, navigateToMyInfo, navigateToSettlement, LogOut]);
+  }, [navigateToMyInfo, role, navigateToSettlement, logout, refreshToken]);
 
   return (
     <Box width="" height="" className="flex flex-col rounded-xl bg-white">
