@@ -5,19 +5,26 @@ import { NavLink, useLocation } from 'react-router-dom';
 
 import ROUTES from '@/constants/routes';
 import CategoryDropdown from '@/layout/components/CategoryDropdown';
-import { useUserRoleStore } from '@/store/useUserRoleStore';
+import { useRoleStore } from '@/store/useRoleStore';
+
+// import { useUserRoleStore } from '@/store/useUserRoleStore';
 
 const Navbar = () => {
-  const { isExpert } = useUserRoleStore();
+  const { role } = useRoleStore();
+  // const {isExpert} = useUserRoleStore();
   const location = useLocation();
   const [isOpenCategoryDropdown, setIsOpenCategoryDropdown] = useState<boolean>(false);
 
   // 페이지 생성 시 path 수정, memo도입 고려
   const menuList = [
     {
-      label: isExpert ? '매칭 현황' : '요청서 작성',
-      path: isExpert ? ROUTES.MATCHING_STATUS.ROOT : ROUTES.MATCHING_STATUS.REQUESTS.NEW,
+      label: role === 'EXPERT' ? '매칭 현황' : '요청서 작성',
+      path: role === 'EXPERT' ? ROUTES.MATCHING_STATUS.ROOT : ROUTES.MATCHING_STATUS.REQUESTS.NEW,
     },
+    //   {
+    //   label: isExpert ? '매칭 현황' : '요청서 작성',
+    //   path: isExpert ? ROUTES.MATCHING_STATUS.ROOT : ROUTES.MATCHING_STATUS.REQUESTS.NEW,
+    // },
     { label: '트레이너 찾기', path: '/나중에설정' },
     { label: '내지역 센터', path: '/나중에설정' },
     { label: '카테고리', path: ROUTES.CATEGORY.ROOT },
