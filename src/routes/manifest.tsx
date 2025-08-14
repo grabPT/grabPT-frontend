@@ -47,8 +47,8 @@ import type { AppRoute } from '@/routes/types';
  */
 export const routesManifest: AppRoute[] = [
   /* 온보딩 (게스트 전용) */
-  { path: ROUTES.AUTH.LOGIN, element: <Login />, guestOnly: true },
-  { path: ROUTES.AUTH.SIGNUP, element: <Signup />, guestOnly: true },
+  { path: ROUTES.AUTH.LOGIN, element: <Login />},
+  { path: ROUTES.AUTH.SIGNUP, element: <Signup /> },
   { path: ROUTES.AUTH.CALLBACK, element: <AuthCallback /> },
   /* 레이아웃 래퍼 */
   {
