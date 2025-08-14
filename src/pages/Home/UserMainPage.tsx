@@ -9,11 +9,14 @@ import UserSearchSection from '@/features/home/components/UserSearchSection';
 // import { useDecodedCookie } from '@/hooks/useDecodedCookies';
 import { useGetMyRequestsList } from '@/hooks/useGetMyRequestsList';
 import { useRoleStore } from '@/store/useRoleStore';
+import { useEffect } from 'react';
 
 const UserMainPage = () => {
   const { isLoggedIn } = useRoleStore();
   const { data: requests } = useGetMyRequestsList({ page: 1, size: 40 });
-console.log("내가 로그인 되어있어",isLoggedIn);
+  useEffect(()=>{
+    console.log('내가 로그인 되어있어', isLoggedIn);
+  })
   return (
     <div className="flex flex-col items-center justify-center">
       <UserSearchSection />
