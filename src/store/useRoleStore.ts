@@ -2,15 +2,13 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 import type { Role } from '@/routes/types';
-import { decodeCookie } from '@/utils/decodeCookie';
 
-type AuthStatus = 'Loading' | 'Guest' | 'Authorized';
-
+export type AuthStatus = 'Loading' | 'Authorized';
 interface AuthState {
   status: AuthStatus;
   role: Role | null;
+  setRole: (role: Role) => void;
   isLoggedIn: boolean;
-  bootstrap: () => Promise<void>;
 }
 
 export const useRoleStore = create<AuthState>()(
@@ -19,30 +17,15 @@ export const useRoleStore = create<AuthState>()(
       status: 'Loading',
       role: null,
       isLoggedIn: false,
-      bootstrap: async () => {
-        // Set timeout at the very top
-        const timeout = setTimeout(() => {
-          set({ status: 'Guest', role: null, isLoggedIn: false });
-        }, 3000); // 3초
-        try {
-          // Cookie-based accessToken retrieval via decoded cookie helper
-          const tokenValue = decodeCookie('accessToken');
-          const roleValue = decodeCookie('role');
-          const token = tokenValue ? decodeURIComponent(tokenValue) : null;
-          const roleRaw = roleValue ? decodeURIComponent(roleValue) : null;
-          if (!token) {
-            set({ status: 'Guest', role: 'GUEST', isLoggedIn: false });
-            return;
-          }
-          const role = roleRaw === '1' ? 'USER' : roleRaw === '2' ? 'EXPERT' : 'GUEST';
-          set({ status: 'Authorized', role, isLoggedIn: true });
-        } finally {
-          clearTimeout(timeout);
-        }
-      },
+      setRole: (role: Role) =>
+        set({
+          status: role === 'USER' || role === 'EXPERT' ? 'Authorized' : 'Loading',
+          role,
+          isLoggedIn: role !== null,
+        }),
     }),
     {
-      name: 'role-store',
+      name: 'role-storage',
     },
   ),
 );
