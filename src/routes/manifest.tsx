@@ -157,7 +157,11 @@ export const routesManifest: AppRoute[] = [
         element: <ProposalFormPage />,
         roles: ['USER', 'EXPERT'],
       },
-      { path: ROUTES.MATCHING_STATUS.PROPOSALS.DETAIL, element: <ProposalDetailPage /> },
+      {
+        path: ROUTES.MATCHING_STATUS.PROPOSALS.DETAIL,
+        element: <ProposalDetailPage />,
+        roles: ['USER', 'EXPERT'],
+      },
 
       // 계약
       {
