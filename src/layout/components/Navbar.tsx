@@ -7,11 +7,9 @@ import ROUTES from '@/constants/routes';
 import CategoryDropdown from '@/layout/components/CategoryDropdown';
 import { useRoleStore } from '@/store/useRoleStore';
 
-// import { useUserRoleStore } from '@/store/useUserRoleStore';
-
 const Navbar = () => {
   const { role } = useRoleStore();
-  // const {isExpert} = useUserRoleStore();
+
   const location = useLocation();
   const [isOpenCategoryDropdown, setIsOpenCategoryDropdown] = useState<boolean>(false);
 
@@ -21,10 +19,6 @@ const Navbar = () => {
       label: role === 'EXPERT' ? '매칭 현황' : '요청서 작성',
       path: role === 'EXPERT' ? ROUTES.MATCHING_STATUS.ROOT : ROUTES.MATCHING_STATUS.REQUESTS.NEW,
     },
-    //   {
-    //   label: isExpert ? '매칭 현황' : '요청서 작성',
-    //   path: isExpert ? ROUTES.MATCHING_STATUS.ROOT : ROUTES.MATCHING_STATUS.REQUESTS.NEW,
-    // },
     { label: '트레이너 찾기', path: '/나중에설정' },
     { label: '내지역 센터', path: '/나중에설정' },
     { label: '카테고리', path: ROUTES.CATEGORY.ROOT },
