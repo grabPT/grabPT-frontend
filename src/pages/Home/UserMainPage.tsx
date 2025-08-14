@@ -8,10 +8,12 @@ import RequestSlider from '@/features/home/components/RequestSlider';
 import UserSearchSection from '@/features/home/components/UserSearchSection';
 // import { useDecodedCookie } from '@/hooks/useDecodedCookies';
 import { useGetMyRequestsList } from '@/hooks/useGetMyRequestsList';
-import { useUserRoleStore } from '@/store/useUserRoleStore';
+// import { useUserRoleStore } from '@/store/useUserRoleStore';
+import { useRoleStore } from '@/store/useRoleStore';
 
 const UserMainPage = () => {
-  const { isLoggedIn } = useUserRoleStore();
+  // const { isLoggedIn } = useUserRoleStore();
+  const { isLoggedIn } = useRoleStore();
   const { data: requests } = useGetMyRequestsList({ page: 1, size: 40 });
   // const accessToken = useDecodedCookie('accessToken');
   // const refreshToken = useDecodedCookie('refreshToken');

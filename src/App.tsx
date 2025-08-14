@@ -10,7 +10,13 @@ import { routesManifest } from './routes/manifest';
 
 export default function App() {
   useEffect(() => {
-    useRoleStore.getState().bootstrap();
+    const state = useRoleStore.getState();
+    console.log('Role Store State:', state);
+
+    state.bootstrap();
+
+    const builtRoutes = buildRoutes(routesManifest);
+    console.log('Built Routes:', builtRoutes);
   }, []);
   const router = createBrowserRouter(buildRoutes(routesManifest));
   return (
