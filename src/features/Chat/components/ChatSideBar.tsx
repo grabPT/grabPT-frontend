@@ -1,16 +1,17 @@
 import { useState } from 'react';
 
+import clsx from 'clsx';
 import { SearchIcon } from 'lucide-react';
 
 import ChatCard from '@/features/Chat/components/ChatCard';
 import { useGetChatRoomList } from '@/features/Chat/hooks/useGetChatRoomList';
 import type { ChatRoomListItemType } from '@/features/Chat/types/getChatRoomListType';
 
-type ChatSideBarProps = {
+interface ChatSideBarProps {
   selectedChatId?: number | null;
   onSelect: (chat: ChatRoomListItemType) => void;
   className?: string; // 필요 시 스타일 확장
-};
+}
 
 export const ChatSideBar = ({ selectedChatId = null, onSelect, className }: ChatSideBarProps) => {
   const [keyword, setKeyword] = useState('');
@@ -20,7 +21,10 @@ export const ChatSideBar = ({ selectedChatId = null, onSelect, className }: Chat
 
   return (
     <aside
-      className={`flex h-full w-[26.125rem] flex-col items-center border-t-1 border-r-1 border-gray-300 bg-white ${className ?? ''}`}
+      className={clsx(
+        'flex h-full w-[26.125rem] flex-col items-center border-t-1 border-r-1 border-gray-300 bg-white',
+        className,
+      )}
     >
       {/* 검색바 */}
       <div className="sticky top-[70px] z-10 w-[22rem] bg-white pt-3">
@@ -53,9 +57,10 @@ export const ChatSideBar = ({ selectedChatId = null, onSelect, className }: Chat
             <button
               type="button"
               key={chat.chatRoomId}
-              className={`flex h-20 w-full cursor-pointer items-center px-3 text-left duration-150 hover:bg-gray-300 hover:ease-in-out ${
-                isSelected ? 'bg-gray-100' : 'bg-white'
-              }`}
+              className={clsx(
+                'flex h-20 w-full cursor-pointer items-center px-3 text-left duration-150 hover:bg-gray-300 hover:ease-in-out',
+                isSelected ? 'bg-gray-200' : 'bg-white',
+              )}
               onClick={() => onSelect(chat)}
             >
               <ChatCard chat={chat} />

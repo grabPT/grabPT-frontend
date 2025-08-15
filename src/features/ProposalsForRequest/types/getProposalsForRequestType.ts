@@ -14,7 +14,7 @@ export type proposalsForRequestItemType = {
   averageRate: number;
   sessionCount: number;
   profileImageUrl: string;
-  proposalId: number;
+  suggestionId: number;
 };
 
 export type getProposalsForRequestResultType = {

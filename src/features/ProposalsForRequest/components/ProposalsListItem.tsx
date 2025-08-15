@@ -15,7 +15,7 @@ const ProposalsListItem = ({ proposal }: ProposalsListItemProps) => {
 
   return (
     <div
-      onClick={() => navigateToProposal(proposal.proposalId)}
+      onClick={() => navigateToProposal(proposal.suggestionId)}
       className="flex h-36 w-4xl cursor-pointer items-center justify-between rounded-2xl bg-[#E6ECFF] px-5 shadow-[0_4px_4px_rgba(0,0,0,0.1)]"
     >
       <div className="flex gap-3.5">

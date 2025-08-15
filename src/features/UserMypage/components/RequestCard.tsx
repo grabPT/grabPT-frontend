@@ -1,6 +1,9 @@
+import { useNavigate } from 'react-router-dom';
+
 import Profile from '@/assets/images/HeaderProfile.png';
 import XIcon from '@/assets/images/x.png';
 import Box from '@/components/Box';
+import { urlFor } from '@/constants/routes';
 import Hashtag from '@/features/home/components/Hashtag';
 import { TIME_SLOT_LABELS } from '@/types/ReqeustsType';
 import type { Tags } from '@/types/Tags';
@@ -11,9 +14,19 @@ interface RequestCardProps {
   content: string;
   location: string;
   profileImg?: string;
+  requestionId: number;
 }
 
-const RequestCard = ({ name, tags, content, location, profileImg }: RequestCardProps) => {
+const RequestCard = ({
+  name,
+  tags,
+  content,
+  location,
+  profileImg,
+  requestionId,
+}: RequestCardProps) => {
+  const navigate = useNavigate();
+
   const daysPerWeek = `주 ${tags.daysPerWeek}회`;
 
   const tagsResult = [
@@ -24,7 +37,10 @@ const RequestCard = ({ name, tags, content, location, profileImg }: RequestCardP
 
   return (
     <Box>
-      <div className="relative flex h-full w-full flex-col p-[10px] pt-[15px]">
+      <div
+        className="relative flex h-full w-full cursor-pointer flex-col p-[10px] pt-[15px]"
+        onClick={() => navigate(urlFor.requestDetail(requestionId))}
+      >
         {/* 닫기 (기능 없음) */}
         <img src={XIcon} alt="close" className="absolute top-2 right-2 h-4 w-4" />
 

@@ -38,21 +38,25 @@ const ProposalsForRequest = () => {
     { label: '제안 목록', to: urlFor.requestProposals(requestionId) },
   ];
 
-  if (proposalsForRequestList.length === 0)
-    return <h1 className="text-center">제안서가 없습니다.</h1>;
   if (isPending) return <LoadingMuscle />;
   if (error) return <ErrorComponent />;
-
   console.log(proposalsForRequestList);
+
   return (
     <section className="flex flex-col items-center py-6">
       {isWriter && <Tabs items={TabItems} width="w-[400px]" />}
-      <div className="flex flex-col gap-12 py-12">
-        {proposalsForRequestList.map((proposal, idx) => (
-          <ProposalsListItem key={idx} proposal={proposal} />
-        ))}
-      </div>
-      <Pagination total={data.totalPages} page={page} onChange={(p) => setPage(p)} />
+      {proposalsForRequestList.length === 0 ? (
+        <h1 className="text-center">제안서가 없습니다.</h1>
+      ) : (
+        <>
+          <div className="flex flex-col gap-12 py-12">
+            {proposalsForRequestList.map((proposal, idx) => (
+              <ProposalsListItem key={idx} proposal={proposal} />
+            ))}
+          </div>
+          <Pagination total={data.totalPages} page={page} onChange={(p) => setPage(p)} />
+        </>
+      )}
     </section>
   );
 };

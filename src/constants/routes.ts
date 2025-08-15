@@ -79,7 +79,7 @@ const ROUTES = {
 
   CONTRACTS: {
     ROOT: '/contracts',
-    NEW: '/contracts/new',
+    NEW: '/contracts/new/:id',
     DETAIL: '/contracts/:id',
   },
 } as const;
@@ -89,6 +89,7 @@ export const urlFor = {
   requestDetail: (id: number | undefined) => `/matching/requests/${id}`,
   requestProposals: (id: number | undefined) => `/matching/requests/${id}/proposals`,
   proposalDetail: (id: number | undefined) => `/matching/proposals/${id}`,
+  contractForm: (id: number | undefined) => `/contracts/new/${id}`,
   contractDetail: (id: number | undefined) => `/contracts/${id}`,
 } as const;
 

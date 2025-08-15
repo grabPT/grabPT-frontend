@@ -24,7 +24,7 @@ const RequestsListPage = () => {
     isPending,
     error,
   } = useGetMatchingRequestsList({ sortBy: sort, page, size: 6 });
-
+  console.log(requestsList);
   /* 총 페이지 (백엔드 값이 최우선) */
   const totalPages = requestsList?.totalPages ?? 1;
 

@@ -28,7 +28,7 @@ const Navbar = () => {
   const hasActive = menuList.some(({ path }) => path === location.pathname);
 
   return (
-    <nav className="absolute top-0 left-1/2 z-50 flex -translate-x-1/2 items-center gap-[68px] max-[1440px]:gap-[20px]">
+    <nav className="xs:gap-[30px] absolute top-0 left-1/2 z-50 flex -translate-x-1/2 items-center sm:gap-0 md:gap-8 lg:gap-24">
       {menuList.map(({ label, path }) => {
         const isCategory = label === '카테고리';
         const isActive = location.pathname === path;
@@ -44,7 +44,7 @@ const Navbar = () => {
               to={path}
               end={path === '/'}
               className={clsx(
-                'relative flex items-center justify-center text-[18px] font-extrabold transition-colors',
+                'relative flex items-center justify-center font-extrabold transition-colors sm:text-sm md:text-base lg:text-[18px]',
                 'after:absolute after:top-full after:left-1/2 after:mt-1 after:-translate-x-1/2',
                 'after:h-0.5 after:w-0 after:bg-current after:transition-[width] after:duration-300 after:content-[""]',
                 'hover:after:w-[120%]',

@@ -39,7 +39,7 @@ const Footer = () => {
           <div className="flex flex-col gap-4 [@media(min-width:1112px)]:gap-[66px]">
             <header className="text-xl">Follow us</header>
             <p>Yes, We are social</p>
-            <img src={FooterIcons} alt="아이콘들" className="h-5 object-cover" />
+            <img src={FooterIcons} alt="아이콘들" className="h-5 object-contain" />
           </div>
         </div>
       </div>

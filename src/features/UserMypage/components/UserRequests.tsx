@@ -24,6 +24,7 @@ const UserRequests = () => {
         {myRequestsList?.content.map((rq, idx) => (
           <RequestCard
             key={`${page}-${idx}`}
+            requestionId={rq.requestId}
             location={location}
             name={data?.nickname ?? '사용자'}
             profileImg={data?.profileImageUrl}
