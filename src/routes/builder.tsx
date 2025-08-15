@@ -3,7 +3,7 @@ import type { RouteObject } from 'react-router-dom';
 
 import { Guard } from '@/routes/guard';
 
-import type { AppRoute } from './types';
+import type { AppRoute } from '../types/Role';
 
 /**
  * 규칙:

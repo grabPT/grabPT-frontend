@@ -35,7 +35,7 @@ import ProposalsForRequest from '@/pages/Requests/ProposalsForRequest';
 import RequestDetailPage from '@/pages/Requests/RequestDetailPage';
 import RequestFormPage from '@/pages/Requests/RequestFormPage';
 import RequestsListPage from '@/pages/Requests/RequestsListPage';
-import type { AppRoute } from '@/routes/types';
+import type { AppRoute } from '@/types/Role';
 
 /**
  * 권한 메모

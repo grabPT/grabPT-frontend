@@ -4,7 +4,7 @@ import { Navigate, Outlet, useLocation } from 'react-router-dom';
 // import LoadingMuscle from '@/components/LoadingMuscle';
 import { useRoleStore } from '@/store/useRoleStore';
 
-import type { Role } from './types';
+import type { Role } from '../types/Role';
 
 export function Guard({ allow, guestOnly }: { allow?: Role[]; guestOnly?: boolean }) {
   const { status, role } = useRoleStore();
@@ -24,7 +24,7 @@ export function Guard({ allow, guestOnly }: { allow?: Role[]; guestOnly?: boolea
       return <Navigate to={`/login?next=${next}`} replace />;
     }
     if (!allow.includes(role!)) {
-      return <Navigate to="/unauthorized" replace />;
+      return <Navigate to="/" replace />;
     }
   }
 

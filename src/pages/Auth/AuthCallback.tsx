@@ -8,10 +8,12 @@ import { decodeCookie } from '@/utils/decodeCookie';
 
 export const AuthCallback = () => {
   const nav = useNavigate();
-  const { setRole } = useRoleStore();
+  const { setRole, setAccessToken } = useRoleStore();
 
   useEffect(() => {
+    const accessTokenRaw = decodeCookie('accessToken');
     const roleRaw = decodeCookie('role');
+    setAccessToken(accessTokenRaw);
     if (roleRaw === 'EXPERT') {
       setRole('EXPERT');
       nav('/expert', { replace: true });
@@ -22,7 +24,7 @@ export const AuthCallback = () => {
       setRole('GUEST');
       nav('/', { replace: true });
     }
-  }, [nav, setRole]);
+  }, [nav,setAccessToken, setRole]);
 
   return <LoadingMuscle />;
 };
