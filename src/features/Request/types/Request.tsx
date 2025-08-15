@@ -27,6 +27,6 @@ export type RequestResponseDto = {
 //수정 창에 필요한 타입
 export type RequestDetailPageResponse = RequestRequestDto & {
   nickname: string;
-  profileImage: string;
+  profileImageUrl: string;
   requestionId: number;
 };
