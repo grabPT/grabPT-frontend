@@ -63,7 +63,7 @@ export const routesManifest: AppRoute[] = [
       </>
     ),
     errorElement: <>없는 페이지입니다.</>,
-
+    roles: ['EXPERT', 'GUEST', 'USER'],
     children: [
       // 홈
       { index: true, element: <UserMainPage />, roles: ['USER', 'GUEST'] }, // 필요 시 roles: ['USER']

@@ -14,7 +14,7 @@ export const useLogout = () => {
     onSuccess: (data) => {
       console.log('로그아웃 요청 성공:', data);
       setRole('GUEST');
-      nav('/');
+      nav('/', { replace: true });
     },
     onError: (error) => {
       console.error('로그아웃 요청 실패:', error);
