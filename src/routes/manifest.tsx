@@ -47,6 +47,7 @@ import type { AppRoute } from '@/types/Role';
  */
 export const routesManifest: AppRoute[] = [
   /* 온보딩 (게스트 전용) */
+  // 나중에 guestOnly 옵션 추가해여함
   { path: ROUTES.AUTH.LOGIN, element: <Login /> },
   { path: ROUTES.AUTH.SIGNUP, element: <Signup /> },
   { path: ROUTES.AUTH.CALLBACK, element: <AuthCallback /> },
@@ -65,8 +66,8 @@ export const routesManifest: AppRoute[] = [
 
     children: [
       // 홈
-      { index: true, element: <UserMainPage /> }, // 필요 시 roles: ['USER']
-      { path: ROUTES.HOME.EXPERT, element: <ExpertMainPage /> }, // 필요 시 roles: ['EXPERT']
+      { index: true, element: <UserMainPage />, roles: ['USER'] }, // 필요 시 roles: ['USER']
+      { path: ROUTES.HOME.EXPERT, element: <ExpertMainPage />, roles: ['EXPERT'] }, // 필요 시 roles: ['EXPERT']
 
       // 카테고리
       { path: 'category/*', element: <CategoryPage /> },
