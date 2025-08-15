@@ -20,12 +20,12 @@ export const useRoleStore = create<AuthState>()(
       role: null,
       accessToken: null,
       isLoggedIn: false,
-      setAccessToken: (accessToken) => set({ accessToken: accessToken }),
+      setAccessToken: (accessToken) => set({ accessToken: accessToken ?? null }),
       setRole: (role: Role) =>
         set({
           status: role === 'USER' || role === 'EXPERT' ? 'Authorized' : 'Unauthorized',
           role,
-          isLoggedIn: role !== null,
+          isLoggedIn: role === 'USER' || role === 'EXPERT',
         }),
     }),
     {

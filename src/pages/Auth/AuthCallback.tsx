@@ -16,7 +16,8 @@ export const AuthCallback = () => {
 
     if (roleRaw === 'EXPERT') {
       setRole('EXPERT');
-      console.log(accessTokenRaw);
+      console.log('cookie:', document.cookie);
+console.log('accessTokenRaw:', accessTokenRaw);;
       setAccessToken(accessTokenRaw);
       nav('/expert', { replace: true });
     } else if (roleRaw === 'USER') {
