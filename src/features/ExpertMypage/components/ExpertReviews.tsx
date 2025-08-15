@@ -8,11 +8,6 @@ const ExpertReviews = () => {
   const [page, setPage] = useState(1);
   const { data: reviews } = useGetExpertReviews({ page, size: 6 });
   const total = reviews?.totalPages ?? 1;
-  localStorage.setItem(
-    'accessToken',
-    'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJreXVuZ2pqb29AZ21haWwuY29tIiwicm9sZSI6IlBSTyIsImlhdCI6MTc1NTI2NDUwMiwiZXhwIjoxNzU1Mjc4OTAyfQ.2RkO-RnkeVIJB5kAu6-QtTD2OUFNaOugJe9A6-o85no',
-  );
-
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="mt-[50px] flex w-[800px] flex-col gap-[30px]">
