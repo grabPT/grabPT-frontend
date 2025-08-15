@@ -48,8 +48,8 @@ import type { AppRoute } from '@/types/Role';
 export const routesManifest: AppRoute[] = [
   /* 온보딩 (게스트 전용) */
   // 나중에 guestOnly 옵션 추가해여함
-  { path: ROUTES.AUTH.LOGIN, element: <Login />, guestOnly: true },
-  { path: ROUTES.AUTH.SIGNUP, element: <Signup />, guestOnly: true },
+  { path: ROUTES.AUTH.LOGIN, element: <Login />, roles: ['GUEST'] },
+  { path: ROUTES.AUTH.SIGNUP, element: <Signup />, roles: ['GUEST'] },
   { path: ROUTES.AUTH.CALLBACK, element: <AuthCallback /> },
   /* 레이아웃 래퍼 */
   {
