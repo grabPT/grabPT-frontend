@@ -66,7 +66,7 @@ export const routesManifest: AppRoute[] = [
 
     children: [
       // 홈
-      { index: true, element: <UserMainPage />, roles: ['USER','GUEST'] }, // 필요 시 roles: ['USER']
+      { index: true, element: <UserMainPage />, roles: ['USER', 'GUEST'] }, // 필요 시 roles: ['USER']
       { path: ROUTES.HOME.EXPERT, element: <ExpertMainPage />, roles: ['EXPERT'] }, // 필요 시 roles: ['EXPERT']
 
       // 카테고리
