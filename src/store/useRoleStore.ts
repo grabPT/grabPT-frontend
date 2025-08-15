@@ -5,7 +5,6 @@ import type { Role } from '@/types/Role';
 
 interface AuthState {
   role: Role | null;
-
   setRole: (role: Role) => void;
   isLoggedIn: boolean;
 }
@@ -13,8 +12,7 @@ interface AuthState {
 export const useRoleStore = create<AuthState>()(
   persist(
     (set) => ({
-      status: 'Unauthorized',
-      role: null,
+      role: 'GUEST',
       accessToken: null,
       isLoggedIn: false,
       setRole: (role: Role) =>
