@@ -7,7 +7,7 @@ import { useRoleStore } from '@/store/useRoleStore';
 import type { Role } from '../types/Role';
 
 export function Guard({ allow, guestOnly }: { allow?: Role[]; guestOnly?: boolean }) {
-  const { status, role } = useRoleStore();
+  const { role } = useRoleStore();
   const location = useLocation();
 
   if (status === 'Loading') return <LoadingMuscle />;
@@ -19,11 +19,8 @@ export function Guard({ allow, guestOnly }: { allow?: Role[]; guestOnly?: boolea
 
   // 권한 제한
   if (allow?.length) {
-    if (status !== 'Authorized') {
+    if (role === 'GUEST') {
       const next = encodeURIComponent(location.pathname + location.search);
-      if (role === 'GUEST') {
-        return <Navigate to="/" replace />;
-      }
       return <Navigate to={`/login?next=${next}`} replace />;
     }
     if (!allow.includes(role!)) {
