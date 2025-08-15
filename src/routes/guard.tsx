@@ -1,7 +1,6 @@
 // routes/guards.tsx
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
-import LoadingMuscle from '@/components/LoadingMuscle';
 import { useRoleStore } from '@/store/useRoleStore';
 
 import type { Role } from '../types/Role';
@@ -10,11 +9,9 @@ export function Guard({ allow, guestOnly }: { allow?: Role[]; guestOnly?: boolea
   const { role } = useRoleStore();
   const location = useLocation();
 
-  if (status === 'Loading') return <LoadingMuscle />;
-
   // 게스트만 접근 가능 (로그인 상태면 튕김)
   if (guestOnly) {
-    return status === 'Authorized' ? <Navigate to="/" replace /> : <Outlet />;
+    return <Navigate to="/" replace />;
   }
 
   // 권한 제한
