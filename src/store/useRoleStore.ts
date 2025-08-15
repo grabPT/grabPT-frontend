@@ -7,8 +7,7 @@ export type AuthStatus = 'Loading' | 'Authorized' | 'Unauthorized';
 interface AuthState {
   status: AuthStatus;
   role: Role | null;
-  accessToken: string | null;
-  setAccessToken: (accessToken: string | null) => void;
+
   setRole: (role: Role) => void;
   isLoggedIn: boolean;
 }
@@ -20,7 +19,6 @@ export const useRoleStore = create<AuthState>()(
       role: null,
       accessToken: null,
       isLoggedIn: false,
-      setAccessToken: (accessToken) => set({ accessToken: accessToken ?? null }),
       setRole: (role: Role) =>
         set({
           status: role === 'USER' || role === 'EXPERT' ? 'Authorized' : 'Unauthorized',
