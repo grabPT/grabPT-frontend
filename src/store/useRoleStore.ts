@@ -13,7 +13,6 @@ export const useRoleStore = create<AuthState>()(
   persist(
     (set) => ({
       role: 'GUEST',
-      accessToken: null,
       isLoggedIn: false,
       setRole: (role: Role) =>
         set({
