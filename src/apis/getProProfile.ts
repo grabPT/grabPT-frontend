@@ -1,9 +1,9 @@
 import { privateInstance } from '@/libs/axios';
-import type { getProPrifleResponseDto } from '@/types/ProPrifleType';
+import type { getProProfileResponseDto } from '@/types/ProPrifleType';
 
 export const getProProfile = async () => {
   try {
-    const response = await privateInstance.get<getProPrifleResponseDto>('/mypage/pro');
+    const response = await privateInstance.get<getProProfileResponseDto>('/mypage/pro');
     return response.data;
   } catch (error) {
     console.error(error);

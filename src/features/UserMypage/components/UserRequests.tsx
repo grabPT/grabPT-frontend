@@ -10,9 +10,8 @@ const UserRequests = () => {
   const [page, setPage] = useState(1);
   /** 실제 환경에선 API 응답으로 교체 */
   const { data: myRequestsList, isPending, error } = useGetMyRequestsList({ page, size: 5 });
-  //닉네임 정보를 스토어에서 가져와서 지그믕ㄴ 제대로 안 뜰 수도 있음(임시방편)
-  const token = localStorage.getItem('accessToken') ?? undefined;
-  const { data } = useGetUserInfo(token);
+  //닉네임 정보를 스토어에서 가져와서 제대로 안 뜰 수도 있음(임시방편)
+  const { data } = useGetUserInfo();
 
   const location = `${data?.address[0].city} ${data?.address[0].district} ${data?.address[0].street}`;
   const total = myRequestsList?.totalPages ?? 1;

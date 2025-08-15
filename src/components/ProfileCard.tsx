@@ -14,7 +14,7 @@ const ProfileCard = ({ profileData }: ProfileCardProps) => {
 
   return (
     // 좌우패딩불일치, 일단34로 작업함
-    <div className="flex h-[115px] w-[926px] items-center justify-between rounded-[30px] border-[1.5px] border-[#b8b8b8] px-[34px]">
+    <div className="xs:w-[340px] flex h-[115px] items-center justify-between rounded-[30px] border-[1.5px] border-[#b8b8b8] px-[34px] sm:w-[600px] md:w-[926px]">
       <div className="flex gap-[30px]">
         <img
           src={profileData?.profileImageUrl || Profile}
@@ -36,7 +36,7 @@ const ProfileCard = ({ profileData }: ProfileCardProps) => {
         </div>
       </div>
 
-      <div className="flex h-full items-end py-[17px]">
+      <div className="xs:hidden h-full items-end py-[17px] sm:flex">
         <button
           className="h-[26px] w-[88px] cursor-pointer rounded-[10px] bg-[#003EFB] px-[20px] py-[8px] text-[10px] leading-0 font-semibold text-white"
           onClick={() => navigate(ROUTES.MYPAGE.EXPERT)}

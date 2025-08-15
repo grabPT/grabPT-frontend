@@ -35,8 +35,7 @@ function RequestSlider({ title, requests }: RequestSliderProps) {
     ],
   };
   //임시방편용 사용자 이름
-  const token = localStorage.getItem('accessToken') ?? undefined;
-  const { data: userInfo } = useGetUserInfo(token);
+  const { data: userInfo } = useGetUserInfo();
   const name = userInfo?.nickname;
   const location = `${userInfo?.address[0].city} ${userInfo?.address[0].district} ${userInfo?.address[0].street}`;
   return (

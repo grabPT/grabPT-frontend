@@ -6,8 +6,7 @@ import { useGetUserInfo } from '@/hooks/useGetUserInfo';
 
 const ExpertDashboard = () => {
   const [userInfo, setUserInfo] = useState<UserInfo>();
-  const token = localStorage.getItem('accessToken') ?? undefined;
-  const { data } = useGetUserInfo(token);
+  const { data } = useGetUserInfo();
   useEffect(() => {
     if (data) setUserInfo(data);
   }, [data]);

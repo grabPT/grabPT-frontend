@@ -1,5 +1,5 @@
 // src/apis/user.ts
-import { publicInstance } from '@/libs/axios';
+import { privateInstance } from '@/libs/axios';
 
 export interface Address {
   city: string;
@@ -31,16 +31,13 @@ export interface ApiResponse<T> {
 export type GetUserInfoResponse = ApiResponse<UserInfo>;
 
 /** accessToken으로 사용자 정보 조회 */
-export async function getUserInfo(accessToken: string): Promise<GetUserInfoResponse> {
+
+export async function getUserInfo(): Promise<GetUserInfoResponse> {
   try {
-    const { data } = await publicInstance.get<ApiResponse<UserInfo>>('/mypage', {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    const { data } = await privateInstance.get<ApiResponse<UserInfo>>('/mypage');
     return data;
   } catch (error) {
     console.error(error);
-    throw new Error('GET /api/users/info 실패');
+    throw new Error('GET /mypage 실패');
   }
 }

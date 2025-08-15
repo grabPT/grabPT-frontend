@@ -23,7 +23,7 @@ const CommentBox = ({
       {/* 입력 영역 */}
       {/* 추후 반응형 */}
       <textarea
-        className="h-[433px] w-full resize-none rounded-[10px] border border-[#CCCCCC] bg-[#F5F5F5] p-4 text-[15px] font-normal placeholder:text-[#CCCCCC] focus:border-gray-400 focus:outline-none"
+        className="h-[300px] w-full resize-none rounded-[10px] border border-[#CCCCCC] bg-[#F5F5F5] p-4 text-[15px] font-normal placeholder:text-[#CCCCCC] focus:border-gray-400 focus:outline-none"
         placeholder={placeholder}
         maxLength={max}
         value={value}
