@@ -2,8 +2,7 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
 import { useRoleStore } from '@/store/useRoleStore';
-
-import type { Role } from '../types/Role';
+import type { Role } from '@/types/Role';
 
 export function Guard({ allow, guestOnly }: { allow?: Role[]; guestOnly?: boolean }) {
   const { role } = useRoleStore();
