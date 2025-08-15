@@ -21,6 +21,9 @@ export function Guard({ allow, guestOnly }: { allow?: Role[]; guestOnly?: boolea
   if (allow?.length) {
     if (status !== 'Authorized') {
       const next = encodeURIComponent(location.pathname + location.search);
+      if (role === 'GUEST') {
+        return <Navigate to="/" replace />;
+      }
       return <Navigate to={`/login?next=${next}`} replace />;
     }
     if (!allow.includes(role!)) {
@@ -31,6 +34,5 @@ export function Guard({ allow, guestOnly }: { allow?: Role[]; guestOnly?: boolea
       }
     }
   }
-
   return <Outlet />;
 }
