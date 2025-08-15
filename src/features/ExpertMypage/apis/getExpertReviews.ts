@@ -4,11 +4,11 @@ import type {
   getExpertReviewsRequest,
   getExpertReviewsResponse,
 } from '@/features/ExpertMypage/types/getExpertReviews';
-import { publicInstance } from '@/libs/axios';
+import { privateInstance } from '@/libs/axios';
 
 export const getExpertReviews = async (params: getExpertReviewsRequest) => {
   try {
-    const { data } = await publicInstance.get<getExpertReviewsResponse>(
+    const { data } = await privateInstance.get<getExpertReviewsResponse>(
       END_POINT.MYPROPAGE.REVIEWS.reviews,
       { params },
     );
