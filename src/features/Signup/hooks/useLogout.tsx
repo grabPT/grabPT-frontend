@@ -14,7 +14,12 @@ export const useLogout = () => {
     onSuccess: (data) => {
       console.log('로그아웃 요청 성공:', data);
       setRole('GUEST');
-      nav('/', { replace: true });
+      //microTask를 통해 role을 먼저 바꾸고 nav 진행
+      if (typeof queueMicrotask === 'function') {
+        queueMicrotask(() => nav('/', { replace: true }));
+      } else {
+        setTimeout(() => nav('/', { replace: true }), 0);
+      }
     },
     onError: (error) => {
       console.error('로그아웃 요청 실패:', error);
