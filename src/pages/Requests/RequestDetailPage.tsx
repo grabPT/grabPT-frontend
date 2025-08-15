@@ -183,7 +183,7 @@ const RequestDetailPage = () => {
         <img
           src={data?.profileImageUrl}
           alt="요청서 프로필"
-          className="h-full"
+          className="w-[3.125rem] h-[3.125rem] rounded-full"
           onError={onErrorImage}
         />
         <span className="text-4xl font-extrabold">
