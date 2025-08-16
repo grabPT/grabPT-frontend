@@ -46,10 +46,10 @@ function ProfileDropdown() {
       { label: '로그아웃', onClick: () => logout({ refreshToken }) },
     ];
 
-    return role
+    return role === 'EXPERT'
       ? [
           { label: '내정보', onClick: navigateToMyInfo },
-          { label: '정산 관리', onClick: navigateToSettlement },
+          { label: '정산 리', onClick: navigateToSettlement },
           base[1],
         ]
       : base;

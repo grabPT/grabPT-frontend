@@ -8,7 +8,7 @@ import LoadingMuscle from '@/components/LoadingMuscle';
 import MatchingStatusCard from '@/components/MatchingStatusCard';
 import ROUTES from '@/constants/routes';
 import { useGetRealtimeMatching } from '@/hooks/useGetRealtimeMatching';
-import { useUserRoleStore } from '@/store/useUserRoleStore';
+import { useRoleStore } from '@/store/useRoleStore';
 import type {} from '@/types/RealtimeMatchingType';
 import type { SportsSlugType } from '@/types/SportsType';
 
@@ -21,14 +21,14 @@ interface RealtimeMatchingStatusProps {
 const RealtimeMatchingStatus = ({ categoryType }: RealtimeMatchingStatusProps) => {
   const { data: matchingList, error, isPending } = useGetRealtimeMatching(categoryType);
   const navigate = useNavigate();
-  const { isLoggedIn, isExpert } = useUserRoleStore();
+  const { isLoggedIn, role } = useRoleStore();
   const [cardCount, setCardCount] = useState(8);
 
   const handleRequestWriteClick = () => {
     if (!isLoggedIn) {
       alert('로그인이 필요합니다.');
       navigate(ROUTES.AUTH.LOGIN);
-    } else if (isExpert) {
+    } else if (role === 'EXPERT') {
       alert('전문가 계정은 요청서를 작성할 수 없습니다.');
     } else navigate(ROUTES.MATCHING_STATUS.REQUESTS.NEW);
   };

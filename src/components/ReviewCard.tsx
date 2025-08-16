@@ -5,7 +5,7 @@ import Profile from '@/assets/images/HeaderProfile.png';
 import XIcon from '@/assets/images/x.png';
 import Box from '@/components/Box';
 import StarRating from '@/components/StarRating';
-import { useUserRoleStore } from '@/store/useUserRoleStore';
+import { useRoleStore } from '@/store/useRoleStore';
 
 interface ReviewCardProps {
   name?: string;
@@ -19,7 +19,7 @@ interface ReviewCardProps {
 }
 
 const ReviewCard = ({ rating, content, center, proId, proNickName, imageURL }: ReviewCardProps) => {
-  const { isExpert } = useUserRoleStore();
+  const { role } = useRoleStore();
   const navigate = useNavigate();
 
   const boxClick = () => {
@@ -33,7 +33,7 @@ const ReviewCard = ({ rating, content, center, proId, proNickName, imageURL }: R
         <img
           src={XIcon}
           alt="close"
-          className={clsx('absolute top-2 right-2 h-4 w-4', isExpert && 'hidden')}
+          className={clsx('absolute top-2 right-2 h-4 w-4', role === 'EXPERT' && 'hidden')}
         />
 
         {/* 상단 정보 */}
