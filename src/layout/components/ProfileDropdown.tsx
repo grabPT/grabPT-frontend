@@ -49,7 +49,7 @@ function ProfileDropdown() {
     return role === 'EXPERT'
       ? [
           { label: '내정보', onClick: navigateToMyInfo },
-          { label: '정산 리', onClick: navigateToSettlement },
+          { label: '정산 등록', onClick: navigateToSettlement },
           base[1],
         ]
       : base;
