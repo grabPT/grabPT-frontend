@@ -92,15 +92,12 @@ function AuthMenu() {
       ) : (
         <>
           <div className="flex h-full w-[96px] items-center justify-center">
-            <Link to={ROUTES.AUTH.LOGIN} className="font-extrabold text-black">
-              로그인
-            </Link>
+            <Button>
+              <Link to={ROUTES.AUTH.LOGIN} className="font-extrabold text-black">
+                로그인
+              </Link>
+            </Button>
           </div>
-          <Button>
-            <Link to={ROUTES.AUTH.SIGNUP} className="text-white">
-              회원가입
-            </Link>
-          </Button>
         </>
       )}
     </div>
