@@ -1,9 +1,23 @@
-import axios from 'axios';
+import axios, { type AxiosError, type AxiosInstance, type AxiosRequestConfig } from 'axios';
 
-import ROUTES from '@/constants/routes';
-import { postReissue } from '@/features/Signup/apis/auth';
+// 상단: 필요 타입/함수 import (리프레시 API 경로는 프로젝트에 맞게 유지)
 
-// 헤더 없는 요청 인스턴스 (로그인, 회원가입, 실시간요청현황 열람 등 guest용)
+import { refreshSession } from '@/utils/refreshSession';
+
+// ---- 동시 리프레시 방지 상태 & 큐 타입 ----
+type RetryQueueItem = {
+  resolve: (value: any) => void;
+  reject: (reason?: any) => void;
+  config: AxiosRequestConfig;
+};
+
+let isRefreshing = false; // 지금 리프레시 중인지
+const retryQueue: RetryQueueItem[] = []; // 리프레시 동안 재시도 대기열
+
+// 인증 엔드포인트(자체)는 인터셉터 재귀에서 제외하기 위한 패턴
+const AUTH_PATH_REGEX = /\/auth\/(login|reissue|logout)/;
+
+// 헤더 없는 요청 인스턴스 (실시간 요청 현황 열람 등 guest용)
 export const publicInstance = axios.create({
   baseURL: import.meta.env.VITE_SERVER_API_URL,
   headers: { 'Content-Type': 'application/json' },
@@ -11,6 +25,75 @@ export const publicInstance = axios.create({
   withCredentials: false, // 쿠키/세션 차단 속성
   // validateStatus: (status) => status < 500, // 4xx도 클라이언트에서 처리 => 할 줄 몰라서 꺼버림 ㅎ
 });
+
+// 리프레시 종료 시 큐에 쌓인 원 요청들 일괄 처리
+function processQueue(error: any) {
+  while (retryQueue.length) {
+    const { resolve, reject, config } = retryQueue.shift()!;
+    if (error) {
+      reject(error);
+    } else {
+      // 쿠키가 갱신되었으므로 같은 인스턴스로 원요청 재시도 (다음 단계에서 인스턴스 주입)
+      privateInstance.request(config).then(resolve).catch(reject);
+    }
+  }
+}
+
+// 공통 응답 인터셉터 부착: 401 처리 + 중복 리프레시 방지 + 큐 재시도
+function attachAuthInterceptors(instance: AxiosInstance) {
+  instance.interceptors.response.use(
+    (response) => response,
+    async (error: AxiosError) => {
+      const status = error.response?.status;
+      const originalRequest = (error.config || {}) as AxiosRequestConfig & {
+        _retry?: boolean;
+        skipAuth?: boolean;
+      };
+
+      // 인증 관련 엔드포인트 또는 skipAuth 요청은 우회
+      const url = typeof originalRequest.url === 'string' ? originalRequest.url : '';
+      const isAuthEndpoint = AUTH_PATH_REGEX.test(url);
+
+      if (status === 401 && !originalRequest?.skipAuth && !isAuthEndpoint) {
+        // 동일 요청 무한 루프 방지
+        if (originalRequest._retry) {
+          return Promise.reject(error);
+        }
+        originalRequest._retry = true;
+
+        try {
+          // 진행 중 리프레시에 합류, 없으면 새로 시작
+          if (!isRefreshing) {
+            isRefreshing = true;
+            refreshSession()
+              .then(() => {
+                processQueue(null);
+              })
+              .catch((refreshErr) => {
+                processQueue(refreshErr);
+                throw refreshErr;
+              })
+              .finally(() => {
+                isRefreshing = false;
+              });
+          }
+
+          // 현재 요청을 큐에 등록하고, 리프레시 완료까지 대기
+          const retryResult = await new Promise((resolve, reject) => {
+            retryQueue.push({ resolve, reject, config: originalRequest });
+          });
+          return retryResult;
+        } catch (refreshErr) {
+          // 리프레시 실패: 세션 종료 처리
+          window.location.href = '/login';
+          return Promise.reject(refreshErr);
+        }
+      }
+
+      return Promise.reject(error);
+    },
+  );
+}
 
 // https://medium.com/%40velja/token-refresh-with-axios-interceptors-for-a-seamless-authentication-experience-854b06064bde
 // 여기서 찾은 권장패턴입니다. 추후 활성화
@@ -34,24 +117,37 @@ export const privateInstance = axios.create({
 //   (error) => Promise.reject(error),
 // );
 
-// 응답 인터셉터 - 401일 때 리프레쉬 토큰을 이용하여 액세스 토큰 재발급
+// // 응답 인터셉터 - 401일 때 리프레쉬 토큰을 이용하여 액세스 토큰 재발급
 // privateInstance.interceptors.response.use(
 //   (response) => response, // 정상 응답은 그대로 반환
 //   async (error) => {
-//     const originalRequest = error.config as any;
-//     if (error?.response?.status === 401 && !originalRequest?._retry && !originalRequest?.skipAuth) {
-//       originalRequest._retry = true; // 무한 루프 방지
+//     const originalRequest = error.config;
+//     if (error.response.status === 401 && !originalRequest._retry) {
+//       originalRequest._retry = true;              // 무한 루프 방지
 //       try {
-//         await postReissue();
-//         // After refresh, cookies are updated; retry the original request
-//         return privateInstance(originalRequest);
+//         const refreshToken = localStorage.getItem('refreshToken');
+//         // 리프레시 토큰으로 새 액세스 토큰 요청
+//         const res = await axios.post('https://your.auth.server/refresh', {
+//           refreshToken,
+//         });
+//         const { accessToken, refreshToken: newRefresh } = res.data;
+
+//         localStorage.setItem('accessToken', accessToken);
+//         localStorage.setItem('refreshToken', newRefresh);
+
+//         privateInstance.defaults.headers.common['Authorization'] =
+//           `Bearer ${accessToken}`;
+
+//         return privateInstance(originalRequest);     // 원 요청 재시도
 //       } catch (refreshErr) {
-//         // On refresh failure, redirect to login (cookies are httpOnly; nothing to clear here)
-//         window.location.href = ROUTES.AUTH.LOGIN;
+//         console.error('Token refresh failed:', refreshErr);
+//         localStorage.removeItem('accessToken');
+//         localStorage.removeItem('refreshToken');
+//         window.location.href = '/login';           // 로그인 화면으로 이동
 //         return Promise.reject(refreshErr);
 //       }
 //     }
-//     return Promise.reject(error);
+//     return Promise.reject(error);                 // 기타 오류는 그대로
 //   },
 // );
 
@@ -74,23 +170,8 @@ export const multipartInstance = axios.create({
   withCredentials: true,
 });
 
-multipartInstance.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const originalRequest = error.config as any;
-    if (error?.response?.status === 401 && !originalRequest?._retry && !originalRequest?.skipAuth) {
-      originalRequest._retry = true;
-      try {
-        await postReissue();
-        return multipartInstance(originalRequest);
-      } catch (refreshErr) {
-        window.location.href = ROUTES.AUTH.LOGIN;
-        return Promise.reject(refreshErr);
-      }
-    }
-    return Promise.reject(error);
-  },
-);
+attachAuthInterceptors(privateInstance);
+attachAuthInterceptors(multipartInstance);
 
 // // 요청 시 토큰 자동 주입
 // multipartInstance.interceptors.request.use(
