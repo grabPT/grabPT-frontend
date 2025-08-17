@@ -9,6 +9,7 @@ interface AuthState {
   setUserId: (id: number) => void;
   setRole: (role: Role) => void;
   isLoggedIn: boolean;
+  resetAuth: () => void;
 }
 
 export const useRoleStore = create<AuthState>()(
@@ -24,6 +25,12 @@ export const useRoleStore = create<AuthState>()(
         set({
           role,
           isLoggedIn: role === 'USER' || role === 'EXPERT',
+        }),
+      resetAuth: () =>
+        set({
+          role: 'GUEST',
+          userId: null,
+          isLoggedIn: false,
         }),
     }),
     {
