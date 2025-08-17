@@ -103,7 +103,7 @@ function attachAuthInterceptors(instance: AxiosInstance) {
             console.error('[INTCPT] server-error', status, 'url=', url);
           }
           // 리프레시 실패: 세션 종료 처리
-          window.location.href = '/login';
+          // window.location.href = '/login';
           return Promise.reject(refreshErr);
         }
       }
