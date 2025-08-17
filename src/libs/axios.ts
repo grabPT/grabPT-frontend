@@ -43,6 +43,7 @@ function attachAuthInterceptors(instance: AxiosInstance) {
   instance.interceptors.response.use(
     (response) => response,
     async (error: AxiosError) => {
+      console.log('[INTCPT] status=', error.response?.status, 'url=', error.config?.url);
       console.log('여기는 들어왔음?');
       const status = error.response?.status;
       const originalRequest = (error.config || {}) as AxiosRequestConfig & {
@@ -170,7 +171,7 @@ export const multipartInstance = axios.create({
   withCredentials: true,
 });
 
-attachAuthInterceptors(publicInstance);   // 임시: 어떤 인스턴스가 401을 받는지 확인용
+attachAuthInterceptors(publicInstance); // 임시: 어떤 인스턴스가 401을 받는지 확인용
 attachAuthInterceptors(privateInstance);
 attachAuthInterceptors(multipartInstance);
 
