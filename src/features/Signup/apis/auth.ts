@@ -84,3 +84,9 @@ export const postLogout = async (body: LogoutDto): Promise<CommonResponseDto<str
   const { data } = await publicInstance.post(END_POINT.AUTH.LOGOUT, body);
   return data;
 };
+
+export const postReissue = async (): Promise<CommonResponseDto<void>> => {
+  const { data } = await publicInstance.post(END_POINT.AUTH.REISSUE, {}, { withCredentials: true,skipAuth:true });
+  console.log('reissue 성공인가??',data);
+  return data;
+};

@@ -1,3 +1,5 @@
+import ROUTES from '@/constants/routes';
+import { postReissue } from '@/features/Signup/apis/auth';
 import axios from 'axios';
 
 // 헤더 없는 요청 인스턴스 (로그인, 회원가입, 실시간요청현황 열람 등 guest용)
@@ -19,6 +21,8 @@ export const privateInstance = axios.create({
   withCredentials: true,
 });
 
+
+
 // //요청 인터셉터로 토큰 자동 주입
 // privateInstance.interceptors.request.use(
 //   (request) => {
@@ -31,47 +35,40 @@ export const privateInstance = axios.create({
 //   (error) => Promise.reject(error),
 // );
 
-// // 응답 인터셉터 - 401일 때 리프레쉬 토큰을 이용하여 액세스 토큰 재발급
-// privateInstance.interceptors.response.use(
-//   (response) => response, // 정상 응답은 그대로 반환
-//   async (error) => {
-//     const originalRequest = error.config;
-//     if (error.response.status === 401 && !originalRequest._retry) {
-//       originalRequest._retry = true;              // 무한 루프 방지
-//       try {
-//         const refreshToken = localStorage.getItem('refreshToken');
-//         // 리프레시 토큰으로 새 액세스 토큰 요청
-//         const res = await axios.post('https://your.auth.server/refresh', {
-//           refreshToken,
-//         });
-//         const { accessToken, refreshToken: newRefresh } = res.data;
-
-//         localStorage.setItem('accessToken', accessToken);
-//         localStorage.setItem('refreshToken', newRefresh);
-
-//         privateInstance.defaults.headers.common['Authorization'] =
-//           `Bearer ${accessToken}`;
-
-//         return privateInstance(originalRequest);     // 원 요청 재시도
-//       } catch (refreshErr) {
-//         console.error('Token refresh failed:', refreshErr);
-//         localStorage.removeItem('accessToken');
-//         localStorage.removeItem('refreshToken');
-//         window.location.href = '/login';           // 로그인 화면으로 이동
-//         return Promise.reject(refreshErr);
-//       }
-//     }
-//     return Promise.reject(error);                 // 기타 오류는 그대로
-//   },
-// );
+// 응답 인터셉터 - 401일 때 리프레쉬 토큰을 이용하여 액세스 토큰 재발급
+privateInstance.interceptors.response.use(
+  (response) => response, // 정상 응답은 그대로 반환
+  async (error) => {
+    const originalRequest = error.config as any;
+    if (
+      error?.response?.status === 401 &&
+      !originalRequest?._retry &&
+      !originalRequest?.skipAuth
+    ) {
+      originalRequest._retry = true; // 무한 루프 방지 
+      try {
+        await postReissue();
+        // After refresh, cookies are updated; retry the original request
+        return privateInstance(originalRequest);
+      } catch (refreshErr) {
+        // On refresh failure, redirect to login (cookies are httpOnly; nothing to clear here)
+        window.location.href = ROUTES.AUTH.LOGIN;
+        return Promise.reject(refreshErr);
+      }
+    }
+    return Promise.reject(error);
+  },
+);
 
 // 멀티 파트 데이터 사용 시 skipAuth 옵션을 통해 인증 헤더를 생략할 수 있음.(회원가입-생략, 제안서 작성-포함)
 declare module 'axios' {
   export interface AxiosRequestConfig {
     skipAuth?: boolean;
+    _retry?: boolean;
   }
   export interface InternalAxiosRequestConfig {
     skipAuth?: boolean;
+    _retry?: boolean;
   }
 }
 
@@ -81,6 +78,28 @@ export const multipartInstance = axios.create({
   timeout: 10_000,
   withCredentials: true,
 });
+
+multipartInstance.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config as any;
+    if (
+      error?.response?.status === 401 &&
+      !originalRequest?._retry &&
+      !originalRequest?.skipAuth
+    ) {
+      originalRequest._retry = true;
+      try {
+        await postReissue();
+        return multipartInstance(originalRequest);
+      } catch (refreshErr) {
+        window.location.href = ROUTES.AUTH.LOGIN
+        return Promise.reject(refreshErr);
+      }
+    }
+    return Promise.reject(error);
+  },
+);
 
 // // 요청 시 토큰 자동 주입
 // multipartInstance.interceptors.request.use(
