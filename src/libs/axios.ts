@@ -1,5 +1,6 @@
 import axios, { type AxiosError, type AxiosInstance, type AxiosRequestConfig } from 'axios';
 
+import { END_POINT } from '@/constants/endPoints';
 // 상단: 필요 타입/함수 import (리프레시 API 경로는 프로젝트에 맞게 유지)
 
 import { refreshSession } from '@/utils/refreshSession';
@@ -13,9 +14,6 @@ type RetryQueueItem = {
 
 let isRefreshing = false; // 지금 리프레시 중인지
 const retryQueue: RetryQueueItem[] = []; // 리프레시 동안 재시도 대기열
-
-// 인증 엔드포인트(자체)는 인터셉터 재귀에서 제외하기 위한 패턴
-const AUTH_PATH_REGEX = /\/auth\/(login|reissue|logout)/;
 
 // 헤더 없는 요청 인스턴스 (실시간 요청 현황 열람 등 guest용)
 export const publicInstance = axios.create({
@@ -52,7 +50,7 @@ function attachAuthInterceptors(instance: AxiosInstance) {
 
       // 인증 관련 엔드포인트 또는 skipAuth 요청은 우회
       const url = typeof originalRequest.url === 'string' ? originalRequest.url : '';
-      const isAuthEndpoint = AUTH_PATH_REGEX.test(url);
+      const isAuthEndpoint = END_POINT.AUTH.REGEX.test(url);
 
       if (status === 401 && !originalRequest?.skipAuth && !isAuthEndpoint) {
         // 동일 요청 무한 루프 방지

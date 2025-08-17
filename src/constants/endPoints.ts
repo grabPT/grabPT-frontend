@@ -10,9 +10,10 @@ export const END_POINT = {
       send: '/api/sms/send',
       verify: '/api/sms/verify-sms',
     },
-    REISSUE: 'api/auth/reissue',
+    REISSUE: '/api/auth/reissue',
     NICKNAME_CHECK: '/api/auth/check-nickname',
     LOGOUT: '/api/auth/logout',
+    REGEX: /\/api\/auth\/(login|reissue|refresh|logout)/,
   },
 
   HOME: {},
