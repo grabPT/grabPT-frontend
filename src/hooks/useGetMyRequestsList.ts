@@ -8,11 +8,11 @@ import type {
   getMyRequestsListResultType,
 } from '@/types/getMyRequestListResponse';
 
-export const useGetMyRequestsList = (params: getMyInfoListRequestDto) =>
+export const useGetMyRequestsList = (params: getMyInfoListRequestDto, enabled: boolean) =>
   useQuery<getMyRequestsListResponseDto, Error, getMyRequestsListResultType>({
     queryKey: QUERY_KEYS.myRequestsList(params),
     queryFn: () => getMyRequestsList(params),
-    enabled: Boolean(params),
+    enabled,
     select: (res) => res.result,
     staleTime: 5_000,
     gcTime: 300_000,

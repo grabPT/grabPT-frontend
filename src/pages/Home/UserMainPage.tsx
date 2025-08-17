@@ -11,7 +11,7 @@ import { useRoleStore } from '@/store/useRoleStore';
 
 const UserMainPage = () => {
   const { isLoggedIn } = useRoleStore();
-  const { data: requests } = useGetMyRequestsList({ page: 1, size: 40 });
+  const { data: requests } = useGetMyRequestsList({ page: 1, size: 40 }, isLoggedIn);
 
   return (
     <div className="flex flex-col items-center justify-center">
