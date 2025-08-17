@@ -93,7 +93,7 @@ function attachAuthInterceptors(instance: AxiosInstance) {
           }
 
           // 현재 요청을 큐에 등록하고, 리프레시 완료까지 대기
-          const retryResult = await new Promise((resolve, reject) => {
+          const retryResult = await new Promise<any>((resolve, reject) => {
             retryQueue.push({ resolve, reject, config: originalRequest });
           });
           return retryResult;
@@ -112,6 +112,9 @@ function attachAuthInterceptors(instance: AxiosInstance) {
         console.warn('[INTCPT] network-like error:', error.message);
         return Promise.reject(error);
       }
+
+      // 위 조건에 해당하지 않는 모든 에러는 그대로 전파하여 호출부가 명확히 처리하도록 함
+      return Promise.reject(error);
     },
   );
 }

@@ -13,7 +13,7 @@ export const END_POINT = {
     REISSUE: '/api/auth/reissue',
     NICKNAME_CHECK: '/api/auth/check-nickname',
     LOGOUT: '/api/auth/logout',
-    REGEX: /\/api\/auth\/(login|reissue|refresh|logout)/,
+    REGEX: /\/api\/auth\/(reissue|logout)/,
   },
 
   HOME: {},
