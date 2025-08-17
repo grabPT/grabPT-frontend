@@ -5,8 +5,8 @@ import type { Role } from '@/types/Role';
 
 interface AuthState {
   role: Role | null;
-  userId: number |null;
-  setUserId:(id:number) => void;
+  userId: number | null;
+  setUserId: (id: number) => void;
   setRole: (role: Role) => void;
   isLoggedIn: boolean;
 }
@@ -17,7 +17,7 @@ export const useRoleStore = create<AuthState>()(
       role: 'GUEST',
       userId: null,
       isLoggedIn: false,
-      setUserId(id:number) {
+      setUserId(id: number) {
         set({ userId: id });
       },
       setRole: (role: Role) =>
