@@ -7,7 +7,7 @@ export async function refreshSession(): Promise<void> {
     const res = await postReissue();
     console.log('[reissue] done:', res?.isSuccess ?? '(no status)', res?.result ?? '(no data)');
   } catch (e: any) {
-    console.error('[reissue] failed:', e?.response?.status, e?.response?.data ?? e?.message);
+    console.error('[reissue] failed:', e);
     throw e; // 기존 동작 유지
   }
 }
