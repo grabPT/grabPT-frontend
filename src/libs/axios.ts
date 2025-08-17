@@ -44,6 +44,19 @@ function attachAuthInterceptors(instance: AxiosInstance) {
     (response) => response,
     async (error: AxiosError) => {
       console.log('[INTCPT] status=', error.response?.status, 'url=', error.config?.url);
+      // 어떤 인스턴스가 실패했는지(쿠키 동반 여부)
+      console.log('[INTCPT] withCreds=', instance.defaults.withCredentials);
+
+      // 서버가 에러 본문을 줬다면 같이 확인 (스택/메시지/에러코드 등)
+      console.log('[INTCPT] data=', (error.response as any)?.data);
+
+      // 원 요청의 헤더/플래그를 빠르게 확인
+      console.log('[INTCPT] original headers=', (error.config || {}).headers);
+      console.log(
+        '[INTCPT] flags _retry/skipAuth=',
+        (error.config as any)?._retry,
+        (error.config as any)?.skipAuth,
+      );
       console.log('여기는 들어왔음?');
       const status = error.response?.status;
       const originalRequest = (error.config || {}) as AxiosRequestConfig & {
@@ -85,13 +98,20 @@ function attachAuthInterceptors(instance: AxiosInstance) {
           });
           return retryResult;
         } catch (refreshErr) {
+          // 5xx는 서버 쪽 문제 추적용으로 한 줄 더
+          if (status && status >= 500) {
+            console.error('[INTCPT] server-error', status, 'url=', url);
+          }
           // 리프레시 실패: 세션 종료 처리
           window.location.href = '/login';
           return Promise.reject(refreshErr);
         }
       }
 
-      return Promise.reject(error);
+      if (!error.response) {
+        console.warn('[INTCPT] network-like error:', error.message);
+        return Promise.reject(error);
+      }
     },
   );
 }
