@@ -1,7 +1,7 @@
 import { Navigate } from 'react-router-dom';
 
 import ROUTES from '@/constants/routes';
-import UnreadCountController from '@/features/Chat/controller/UnreadCountController';
+// import UnreadCountController from '@/features/Chat/controller/UnreadCountController';
 import { ExpertDetailInfo } from '@/features/ExpertDetail/components/ExpertDetailInfo';
 import ExpertDetailReviews from '@/features/ExpertDetail/components/ExpertDetailReviews';
 import ExpertCredentials from '@/features/ExpertMypage/components/ExpertCredentials';
@@ -13,7 +13,7 @@ import UserRequests from '@/features/UserMypage/components/UserRequests';
 import UserReviews from '@/features/UserMypage/components/UserReviews';
 import UserSettings from '@/features/UserMypage/components/UserSettings';
 import Layout from '@/layout/Layout';
-import AlarmController from '@/layout/controller/AlarmController';
+// import AlarmController from '@/layout/controller/AlarmController';
 import { AuthCallback } from '@/pages/Auth/AuthCallback';
 import Login from '@/pages/Auth/Login';
 import Signup from '@/pages/Auth/Signup';
@@ -58,8 +58,8 @@ export const routesManifest: AppRoute[] = [
       <>
         <Layout />
         {/* 필요 시 전역 컨트롤러를 레이아웃 안으로 이동 */}
-        <UnreadCountController />
-        <AlarmController />
+        {/* <UnreadCountController />
+        <AlarmController /> */}
       </>
     ),
     errorElement: <>없는 페이지입니다.</>,
