@@ -9,9 +9,16 @@ interface SignatureBoxProps {
   value: string | null;
   onChange: (url: string) => void;
   isCanEdit: boolean;
+  initialImageUrl: string | undefined;
 }
 
-const SignatureBox = ({ title, value, onChange, isCanEdit }: SignatureBoxProps) => {
+const SignatureBox = ({
+  title,
+  value,
+  onChange,
+  isCanEdit,
+  initialImageUrl,
+}: SignatureBoxProps) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -39,9 +46,11 @@ const SignatureBox = ({ title, value, onChange, isCanEdit }: SignatureBoxProps) 
             onSave={(url) => onChange(url)}
           />
         </>
+      ) : initialImageUrl ? (
+        <img className="h-[160px] w-[260px]" src={initialImageUrl} aria-label="서명" />
       ) : (
         <div className="flex h-[160px] w-[260px] items-center justify-center bg-white text-center text-xs text-gray-400">
-          상대싸인불러오기~없으면빈칸~
+          아직 서명하지 않았습니다.
         </div>
       )}
     </>

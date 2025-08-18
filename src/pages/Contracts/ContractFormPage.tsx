@@ -73,6 +73,9 @@ const ContractFormPage = () => {
     };
   }, [data]);
 
+  const userInitialSignUrl = data?.userInfo?.signUrl || null;
+  const expertInitialSignUrl = data?.proInfo?.signUrl || null;
+
   // 업로드 훅 (user/pro 각각)
   const { mutate: uploadUserSign, isPending: uploadingUser } = usePostUserSignatureFile();
   const { mutate: uploadProSign, isPending: uploadingPro } = usePostProSignatureFile();
@@ -181,12 +184,14 @@ const ContractFormPage = () => {
                 value={memberSign}
                 onChange={setMemberSign}
                 isCanEdit={!isExpert}
+                initialImageUrl={userInitialSignUrl ?? undefined}
               />
               <SignatureBox
                 title="전문가"
                 value={expertSign}
                 onChange={setExpertSign}
                 isCanEdit={isExpert}
+                initialImageUrl={expertInitialSignUrl ?? undefined}
               />
             </div>
           </div>
