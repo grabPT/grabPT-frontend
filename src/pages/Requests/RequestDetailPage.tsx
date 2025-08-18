@@ -125,7 +125,6 @@ const RequestDetailPage = () => {
       })();
     }
   };
-
   /* 목적(다중) */
   const selectedPurposes = watch('purpose');
   //기타 포함 시 입력창 보임
@@ -187,7 +186,7 @@ const RequestDetailPage = () => {
           onError={onErrorImage}
         />
         <span className="text-4xl font-extrabold">
-          {data?.location} {data?.nickname}
+          {data?.location?.substring(2)} {data?.nickname}
           {/* {category} */}
         </span>
         <span className="text-2xl leading-none font-bold"> 님의 요청서입니다.</span>
