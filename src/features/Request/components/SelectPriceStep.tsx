@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import { SPORTS } from '@/constants/sports';
 import { useGetUserInfo } from '@/hooks/useGetUserInfo';
@@ -15,7 +15,10 @@ const SelectPriceStep = () => {
   const addressStr = primaryAddress
     ? `${primaryAddress.city} ${primaryAddress.district} ${primaryAddress.street}`
     : '';
-
+  useEffect(() => {
+    if (isPending) return;
+    setPriceInfo({ ...priceInfo, location: addressStr });
+  }, [isPending, addressStr, priceInfo.location, setPriceInfo, priceInfo]);
   //스토어에 저장된 종목 categorId를 기반으로 해당 종목 이름 가져오기
   const sport = SPORTS.find((s) => s.id === sportsTypeInfo.categoryId);
   /** 총액 계산 */
@@ -61,7 +64,6 @@ const SelectPriceStep = () => {
                 setPriceInfo({
                   ...priceInfo,
                   sessionCount: value,
-                  location: addressStr,
                 });
               }}
               className="h-12 w-full rounded-lg border border-gray-300 pr-12 pl-15 text-center text-lg outline-none focus:border-blue-500"
@@ -105,7 +107,10 @@ const SelectPriceStep = () => {
 
         {/* 안내 문구 ------------------------------------------- */}
         <p className="text-xs">
-          <span className="font-semibold text-blue-600">강서구 화곡 3동</span> 의 평균
+          <span className="font-semibold text-blue-600">
+            ${primaryAddress?.district} ${primaryAddress?.street}
+          </span>{' '}
+          의 평균
           <span className="font-semibold text-red-600"> 복싱</span>PT가격은&nbsp; 회당&nbsp;
           <span className="font-semibold text-red-600">50,000원</span> 입니다.
         </p>
