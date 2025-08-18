@@ -2,7 +2,7 @@ import { privateInstance } from '@/libs/axios';
 import type { CommonResponseDto } from '@/types/commonResponseDto';
 
 export type postMatchingRequestDto = {
-  requestionId: number; // ← undefined 허용하지 않기
+  requestionId: number; // undefined 허용 ❌
   suggestionId: number;
 };
 
@@ -18,7 +18,8 @@ export const postMatching = async (
 ): Promise<postMatchingResponseDto> => {
   const { data } = await privateInstance.post(
     '/matching',
-    { params }, // ← 쿼리로 전달
+    {}, // body는 비워두고
+    { params }, // ← 쿼리 스트링으로 전달
   );
   return data;
 };
