@@ -194,7 +194,7 @@ export const multipartInstance = axios.create({
   withCredentials: true,
 });
 
-attachAuthInterceptors(publicInstance); // 임시: 어떤 인스턴스가 401을 받는지 확인용
+// attachAuthInterceptors(publicInstance); // 임시: 어떤 인스턴스가 401을 받는지 확인용
 attachAuthInterceptors(privateInstance);
 attachAuthInterceptors(multipartInstance);
 
