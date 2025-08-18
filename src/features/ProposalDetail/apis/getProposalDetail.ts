@@ -9,6 +9,7 @@ export const getProposalDetail = async (
     const { data } = await privateInstance.get(`/api/suggestion/${suggestionId}`, {
       params: { suggestionId },
     });
+    console.log(data);
     return data;
   } catch (e) {
     throw e as Error;
