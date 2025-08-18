@@ -16,11 +16,9 @@ export type postMatchingResponseDto = CommonResponseDto<postMatchingResultType>;
 export const postMatching = async (
   params: postMatchingRequestDto,
 ): Promise<postMatchingResponseDto> => {
-  const { requestionId, suggestionId } = params;
   const { data } = await privateInstance.post(
     '/matching',
-    null, // 바디 없음
-    { params: { requestionId, suggestionId } }, // ← 쿼리로 전달
+    { params }, // ← 쿼리로 전달
   );
   return data;
 };
