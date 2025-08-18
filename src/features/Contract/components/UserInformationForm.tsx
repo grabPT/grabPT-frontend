@@ -1,11 +1,22 @@
+import type { userInfoType } from '@/features/Contract/types/postContractType';
+
 interface UserInformationFormProps {
   isCanEdit: boolean;
+  defaultValues?: userInfoType;
 }
 
-const UserInformationForm = ({ isCanEdit }: UserInformationFormProps) => {
+const UserInformationForm = ({ isCanEdit, defaultValues }: UserInformationFormProps) => {
   const baseInputClass = 'h-10 w-full rounded-md border px-3 outline-none transition';
   const editableClass = 'border-gray-300 bg-white focus:border-blue-500';
   const readOnlyClass = 'border-gray-200 bg-gray-100 text-gray-500 cursor-not-allowed';
+
+  // date 인풋에 들어갈 값 정규화(YYYY-MM-DD)
+  const birthValue =
+    typeof defaultValues?.birth === 'string' && defaultValues.birth.length > 0
+      ? defaultValues.birth.slice(0, 10)
+      : '';
+
+  const gender = defaultValues?.gender ?? null;
 
   return (
     <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-4 text-sm">
@@ -14,6 +25,7 @@ const UserInformationForm = ({ isCanEdit }: UserInformationFormProps) => {
         type="text"
         placeholder="이름"
         readOnly={!isCanEdit}
+        defaultValue={defaultValues?.name ?? ''}
         className={`${baseInputClass} ${isCanEdit ? editableClass : readOnlyClass}`}
       />
 
@@ -22,6 +34,7 @@ const UserInformationForm = ({ isCanEdit }: UserInformationFormProps) => {
         aria-label="날짜"
         type="date"
         readOnly={!isCanEdit}
+        defaultValue={birthValue}
         className={`${baseInputClass} ${isCanEdit ? editableClass : readOnlyClass}`}
       />
 
@@ -30,6 +43,7 @@ const UserInformationForm = ({ isCanEdit }: UserInformationFormProps) => {
         type="tel"
         placeholder="010-0000-0000"
         readOnly={!isCanEdit}
+        defaultValue={defaultValues?.phoneNumber ?? ''}
         className={`${baseInputClass} ${isCanEdit ? editableClass : readOnlyClass}`}
       />
 
@@ -42,10 +56,10 @@ const UserInformationForm = ({ isCanEdit }: UserInformationFormProps) => {
           <input
             type="radio"
             name="gender"
-            value="male"
+            value="MALE"
             className="peer sr-only"
-            defaultChecked
             disabled={!isCanEdit}
+            defaultChecked={gender === 'MALE'}
           />
           <span className="inline-block h-5 w-5 rounded-full border-2 border-gray-500 peer-checked:border-[6px] peer-checked:border-blue-600" />
           남
@@ -58,9 +72,10 @@ const UserInformationForm = ({ isCanEdit }: UserInformationFormProps) => {
           <input
             type="radio"
             name="gender"
-            value="female"
+            value="FEMALE"
             className="peer sr-only"
             disabled={!isCanEdit}
+            defaultChecked={gender === 'FEMALE'}
           />
           <span className="inline-block h-5 w-5 rounded-full border-2 border-gray-500 peer-checked:border-[6px] peer-checked:border-blue-600" />
           여
@@ -72,6 +87,7 @@ const UserInformationForm = ({ isCanEdit }: UserInformationFormProps) => {
         type="text"
         placeholder="API 연동해야 함"
         readOnly={!isCanEdit}
+        defaultValue={defaultValues?.address ?? ''}
         className={`${baseInputClass} ${isCanEdit ? editableClass : readOnlyClass}`}
       />
     </div>

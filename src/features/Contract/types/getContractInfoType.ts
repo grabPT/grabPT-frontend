@@ -8,7 +8,7 @@ export type getContractInfoResultType = {
     gender: 'MALE' | 'FEMALE';
     address: string;
     signUrl: string;
-  } | null;
+  };
   proInfo: {
     name: string;
     birth: string;
@@ -16,7 +16,7 @@ export type getContractInfoResultType = {
     gender: 'MALE' | 'FEMALE';
     address: string;
     signUrl: string;
-  } | null;
+  };
   totalSession: 0;
   price: 0;
   startDate: number[];

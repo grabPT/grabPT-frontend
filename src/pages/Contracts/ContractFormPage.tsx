@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
@@ -21,6 +21,7 @@ import {
   usePostProSignatureFile,
   usePostUserSignatureFile,
 } from '@/features/Contract/hooks/usePostSignatureFile';
+import type { userInfoType } from '@/features/Contract/types/postContractType';
 import { useRoleStore } from '@/store/useRoleStore';
 // 추가: dataURL -> File, 업로드 훅
 import { dataURLtoFile } from '@/utils/dataURLtoFile';
@@ -46,6 +47,31 @@ const ContractFormPage = () => {
 
   const { data } = useGetContractInfo(contractId);
   console.log(data);
+
+  // ✅ 받아온 데이터로 각 폼의 기본값 구성 (값이 있으면 해당 input의 defaultValue로 사용)
+  const userDefaults = useMemo<userInfoType | undefined>(() => {
+    const u = data?.userInfo;
+    if (!u) return undefined;
+    return {
+      name: u.name ?? '',
+      birth: u.birth ?? null,
+      phoneNumber: u.phoneNumber ?? '',
+      gender: u.gender ?? null,
+      address: u.address ?? '',
+    };
+  }, [data]);
+
+  const proDefaults = useMemo<userInfoType | undefined>(() => {
+    const p = data?.proInfo;
+    if (!p) return undefined;
+    return {
+      name: p.name ?? '',
+      birth: p.birth ?? null,
+      phoneNumber: p.phoneNumber ?? '',
+      gender: p.gender ?? null,
+      address: p.address ?? '',
+    };
+  }, [data]);
 
   // 업로드 훅 (user/pro 각각)
   const { mutate: uploadUserSign, isPending: uploadingUser } = usePostUserSignatureFile();
@@ -108,10 +134,10 @@ const ContractFormPage = () => {
           <div>
             <div className="grid grid-cols-2 gap-15">
               <InformationCard title={'회원 정보'} borderColor={'blue'}>
-                <UserInformationForm isCanEdit={!isExpert} />
+                <UserInformationForm isCanEdit={!isExpert} defaultValues={userDefaults} />
               </InformationCard>
               <InformationCard title={'전문 정보'} borderColor={'red'}>
-                <UserInformationForm isCanEdit={isExpert} />
+                <UserInformationForm isCanEdit={isExpert} defaultValues={proDefaults} />
               </InformationCard>
             </div>
             <div className="mt-6">
