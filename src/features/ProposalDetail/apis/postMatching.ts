@@ -17,9 +17,9 @@ export const postMatching = async (
   params: postMatchingRequestDto,
 ): Promise<postMatchingResponseDto> => {
   const { data } = await privateInstance.post(
-    '/matching',
+    `/matching?requestionId=${params.requestionId}&suggestionId=${params.suggestionId}`,
     {}, // body는 비워두고
-    { params }, // ← 쿼리 스트링으로 전달
+    // { params }, // ← 쿼리 스트링으로 전달
   );
   return data;
 };
