@@ -43,9 +43,7 @@ const RequestFormPage = () => {
   useEffect(() => {
     if (isPending) return;
     const primaryAddress = userInfo?.address?.[0];
-    const addressStr = primaryAddress
-      ? `${primaryAddress.city} ${primaryAddress.district} ${primaryAddress.street}`
-      : '';
+    const addressStr = primaryAddress ? `${primaryAddress.district} ${primaryAddress.street}` : '';
     if (addressStr) {
       setPriceInfo({ location: addressStr });
     }
