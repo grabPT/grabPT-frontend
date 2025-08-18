@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
+import { useParams } from 'react-router-dom';
 
 import AppLogo from '@/assets/images/AppLogo.png';
 import Button from '@/components/Button';
@@ -15,14 +16,81 @@ import InformationCard from '@/features/Contract/components/InformationCard';
 import ServiceInformationForm from '@/features/Contract/components/ServiceInformationForm';
 import SignatureBox from '@/features/Contract/components/SignatureBox';
 import UserInformationForm from '@/features/Contract/components/UserInformationForm';
+import { useGetContractInfo } from '@/features/Contract/hooks/useGetContractInfo';
+import {
+  usePostProSignatureFile,
+  usePostUserSignatureFile,
+} from '@/features/Contract/hooks/usePostSignatureFile';
+import { useUserRoleStore } from '@/store/useUserRoleStore';
+// 추가: dataURL -> File, 업로드 훅
+import { dataURLtoFile } from '@/utils/dataURLtoFile';
 
 // 계약서 작성페이지입니다.
 const ContractFormPage = () => {
+  const { id } = useParams();
+  const contractId = Number(id);
+
   const [isAgree, setIsAgree] = useState<boolean>(false);
+
+  // 서명(base64) — 미리보기 용
   const [memberSign, setMemberSign] = useState<string | null>(null);
   const [expertSign, setExpertSign] = useState<string | null>(null);
-  const handleAgree = () => {
-    setIsAgree((prev) => !prev);
+
+  // 업로드 결과 URL (#1 결과 보관)
+  const [memberSignUrl, setMemberSignUrl] = useState<string | null>(null);
+  const [expertSignUrl, setExpertSignUrl] = useState<string | null>(null);
+
+  const isExpert = useUserRoleStore((s) => s.isExpert);
+  const handleAgree = () => setIsAgree((prev) => !prev);
+
+  const { data } = useGetContractInfo(contractId);
+  console.log(data);
+
+  // 업로드 훅 (user/pro 각각)
+  const { mutate: uploadUserSign, isPending: uploadingUser } = usePostUserSignatureFile();
+  const { mutate: uploadProSign, isPending: uploadingPro } = usePostProSignatureFile();
+  const uploading = uploadingUser || uploadingPro;
+
+  const handleSubmit = () => {
+    if (!isAgree) {
+      // 필요하면 토스트/알림으로 교체
+      console.warn('개인정보 수집·이용 동의를 체크하세요.');
+      return;
+    }
+
+    // 역할에 따라 해당 서명만 업로드 (#1: imageUrl만 확보)
+    if (!isExpert) {
+      if (!memberSign) {
+        console.warn('회원 서명을 입력하세요.');
+        return;
+      }
+      const file = dataURLtoFile(memberSign, `member-sign-${Date.now()}.png`);
+      console.log(file instanceof File, file.type, file.size); // true, "image/png", 크기
+      uploadUserSign(
+        { contractId, file },
+        {
+          onSuccess: ({ result }) => {
+            setMemberSignUrl(result.imageUrl);
+            // TODO(#2): userData에 imageUrl 합쳐 최종 완료 API 호출
+          },
+        },
+      );
+    } else {
+      if (!expertSign) {
+        console.warn('전문가 서명을 입력하세요.');
+        return;
+      }
+      const file = dataURLtoFile(expertSign, `expert-sign-${Date.now()}.png`);
+      uploadProSign(
+        { contractId, file },
+        {
+          onSuccess: ({ result }) => {
+            setExpertSignUrl(result.imageUrl);
+            // TODO(#2): userData에 imageUrl 합쳐 최종 완료 API 호출
+          },
+        },
+      );
+    }
   };
 
   return (
@@ -39,15 +107,16 @@ const ContractFormPage = () => {
           <div>
             <div className="grid grid-cols-2 gap-15">
               <InformationCard title={'회원 정보'} borderColor={'blue'}>
-                <UserInformationForm />
+                <UserInformationForm isCanEdit={!isExpert} />
               </InformationCard>
               <InformationCard title={'전문 정보'} borderColor={'red'}>
-                <UserInformationForm />
+                <UserInformationForm isCanEdit={isExpert} />
               </InformationCard>
             </div>
             <div className="mt-6">
+              {/* 이건 불러와서 정보 넣어주기 */}
               <InformationCard title={'서비스 이용 정보'} borderColor={'blue'}>
-                <ServiceInformationForm />
+                <ServiceInformationForm data={data} />
               </InformationCard>
             </div>
           </div>
@@ -80,8 +149,18 @@ const ContractFormPage = () => {
               상기 계약 내용을 충분히 이해하고 상호 합의하여 계약을 체결합니다.
             </p>
             <div className="mt-4 grid grid-cols-2 gap-10">
-              <SignatureBox title="회원" value={memberSign} onChange={setMemberSign} />
-              <SignatureBox title="전문가" value={expertSign} onChange={setExpertSign} />
+              <SignatureBox
+                title="회원"
+                value={memberSign}
+                onChange={setMemberSign}
+                isCanEdit={!isExpert}
+              />
+              <SignatureBox
+                title="전문가"
+                value={expertSign}
+                onChange={setExpertSign}
+                isCanEdit={isExpert}
+              />
             </div>
           </div>
 
@@ -91,12 +170,25 @@ const ContractFormPage = () => {
 
           <div>
             <div className="grid w-full grid-cols-2 gap-3">
-              <Button width="w-full">취소</Button>
-              <Button width="w-full">작성 완료</Button>
+              <Button width="w-full" disabled={uploading}>
+                취소
+              </Button>
+              <Button width="w-full" onClick={handleSubmit} disabled={uploading}>
+                {uploading ? '업로드 중…' : '작성 완료'}
+              </Button>
             </div>
           </div>
+
+          {/* 확인용(#1): 업로드 결과 URL 표시 */}
+          {memberSignUrl && (
+            <p className="mt-2 text-xs text-gray-600">회원 서명 URL: {memberSignUrl}</p>
+          )}
+          {expertSignUrl && (
+            <p className="text-xs text-gray-600">전문가 서명 URL: {expertSignUrl}</p>
+          )}
         </div>
       </section>
+
       <p className="text-xl font-semibold">
         *회원과 전문가 모두 작성완료 상태가 되어야 제출 및 결제가 가능합니다.
       </p>

@@ -6,9 +6,9 @@ import {
   type postMatchingResponseDto,
 } from '@/features/ProposalDetail/apis/postMatching';
 
-export const usePostMatching = (params: postMatchingRequestDto) => {
-  return useMutation<postMatchingResponseDto, Error, void>({
-    mutationFn: () => postMatching(params),
+export const usePostMatching = () => {
+  return useMutation<postMatchingResponseDto, Error, postMatchingRequestDto>({
+    mutationFn: postMatching,
     onSuccess: (data) => {
       console.log('matching mutate성공', data);
     },

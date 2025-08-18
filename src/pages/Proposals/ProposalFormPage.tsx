@@ -3,10 +3,12 @@ import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import clsx from 'clsx';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 
 import Profile from '@/assets/images/HeaderProfile.png';
 import Button from '@/components/Button';
 import CommentBox from '@/components/CommentBox';
+import { urlFor } from '@/constants/routes';
 import ImageUploader from '@/features/ProposalForm/components/ImageUploader';
 import { useSuggest } from '@/features/ProposalForm/hooks/useSuggest';
 import { proposalFormSchema } from '@/features/ProposalForm/schemas/proposalFormSchema';
@@ -14,6 +16,7 @@ import type { DetailProposalForm } from '@/features/ProposalForm/types/Suggest';
 import { useSuggestStore } from '@/store/useSuggestStore';
 
 const ProposalFormPage = () => {
+  const navigate = useNavigate();
   /** 'accept' = 고객 요청 수락, 'custom' = 새로운 가격 제안 */
   const [mode, setMode] = useState<'accept' | 'custom'>('accept');
   const [imageFiles, setImageFiles] = useState<File[]>([]);
@@ -58,6 +61,7 @@ const ProposalFormPage = () => {
         console.error('Suggest failed:', err);
       }
     }
+    navigate(urlFor.requestDetail(suggestInfo.requestionId || undefined));
   };
   const amountErrorMsg = errors.price?.message ?? errors.sessionCount?.message;
   const hasAmountError = Boolean(errors.price || errors.sessionCount);

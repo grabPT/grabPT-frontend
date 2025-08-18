@@ -87,7 +87,7 @@ export const Settlement = () => {
               </div>
             )}
             <button
-              className="h-[2.625rem] w-[11rem] rounded-[0.625rem] bg-[#003EFB] text-[0.875rem] font-semibold text-white"
+              className="mt-8 h-[2.625rem] w-[11rem] rounded-[0.625rem] bg-[#003EFB] text-[0.875rem] font-semibold text-white"
               onClick={() => setPostModalOpen(true)}
             >
               + 정산 등록

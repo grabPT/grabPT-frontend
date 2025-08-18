@@ -15,25 +15,28 @@ const ProposalDetailPage = () => {
   const suggestionId = Number(id);
   const { data: suggestion } = useGetProposalDetail(suggestionId);
   const navigateToExpertProfile = () => navigate(urlFor.expertDetail(suggestion?.expertId));
+  console.log(suggestion);
   const 채팅상담 = () => {
     if (suggestion === undefined) return;
     postCreateChatRoom({ userId: suggestion.userId, proId: suggestion.expertId });
     navigate(ROUTES.CHAT.ROOT);
   };
-  const { mutateAsync: matchAsync } = usePostMatching({
-    requestionId: suggestion?.requestionId, // 데이터 로드 후 재렌더 시 최신 값으로 갱신됨
-    suggestionId,
-  });
+  const { mutateAsync: matchAsync } = usePostMatching();
 
   const 매칭수락 = async () => {
-    if (!suggestion) return;
-    const res = await matchAsync(); // 클릭 시에만 POST 실행
-    if (res?.isSuccess) {
+    if (!suggestion) return; // 데이터 아직이면 막기
+    // requestionId는 필수이므로 존재 보장 후 숫자로 전달
+    const res = await matchAsync({
+      requestionId: Number(suggestion.requestionId),
+      suggestionId,
+    });
+    if (res.isSuccess) {
       navigate(urlFor.contractForm(res.result.contractId));
     } else {
-      // 실패 처리(토스트 등) 필요하면 추가
+      alert(res.message);
     }
   };
+
   return (
     <section className="my-10 flex flex-col items-center">
       <div className="flex flex-col items-center gap-2">

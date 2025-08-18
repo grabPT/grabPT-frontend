@@ -18,7 +18,15 @@ interface ReviewCardProps {
   imageURL?: string;
 }
 
-const ReviewCard = ({ rating, content, center, proId, proNickName, imageURL }: ReviewCardProps) => {
+const ReviewCard = ({
+  name,
+  rating,
+  content,
+  center,
+  proId,
+  proNickName,
+  imageURL,
+}: ReviewCardProps) => {
   const { role } = useRoleStore();
   const navigate = useNavigate();
 
@@ -44,7 +52,9 @@ const ReviewCard = ({ rating, content, center, proId, proNickName, imageURL }: R
           </div>
 
           <div className="flex flex-col">
-            <span className="text-[16px] leading-[140%] font-semibold">To. {proNickName}</span>
+            <span className="text-[16px] leading-[140%] font-semibold">
+              {role === 'EXPERT' ? <>From. {name}</> : <>To. {proNickName}</>}
+            </span>
             <span className="text-[12px] leading-[140%] font-semibold text-[#7A7A7A]">
               {center}
             </span>

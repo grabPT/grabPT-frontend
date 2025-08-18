@@ -19,6 +19,10 @@ const Navbar = () => {
       label: role === 'EXPERT' ? '매칭 현황' : '요청서 작성',
       path: role === 'EXPERT' ? ROUTES.MATCHING_STATUS.ROOT : ROUTES.MATCHING_STATUS.REQUESTS.NEW,
     },
+    //   {
+    //   label: isExpert ? '매칭 현황' : '요청서 작성',
+    //   path: isExpert ? ROUTES.MATCHING_STATUS.ROOT : ROUTES.MATCHING_STATUS.REQUESTS.NEW,
+    // },
     { label: '트레이너 찾기', path: '/나중에설정' },
     { label: '내지역 센터', path: '/나중에설정' },
     { label: '카테고리', path: ROUTES.CATEGORY.ROOT },
