@@ -11,23 +11,21 @@ export const AuthCallback = () => {
   const { setRole, setUserId } = useRoleStore();
 
   useEffect(() => {
-    (async () => {
-      const roleRaw = await decodeCookie('role');
-      const userIdRaw = Number(await decodeCookie('userId'));
-      await console.log(roleRaw);
-      await console.log(userIdRaw);
-      setUserId(userIdRaw);
-      if (roleRaw === 'EXPERT') {
-        await setRole('EXPERT');
-        nav('/expert', { replace: true });
-      } else if (roleRaw === 'USER') {
-        await setRole('USER');
-        nav('/', { replace: true });
-      } else {
-        await setRole('GUEST');
-        nav('/', { replace: true });
-      }
-    })();
+    const roleRaw = decodeCookie('role');
+    const userIdRaw = Number(decodeCookie('userId'));
+    console.log(roleRaw);
+    console.log(userIdRaw);
+    setUserId(userIdRaw);
+    if (roleRaw === 'EXPERT') {
+      setRole('EXPERT');
+      nav('/expert', { replace: true });
+    } else if (roleRaw === 'USER') {
+      setRole('USER');
+      nav('/', { replace: true });
+    } else {
+      setRole('GUEST');
+      nav('/', { replace: true });
+    }
   }, [nav, setRole, setUserId]);
 
   return <LoadingMuscle />;
