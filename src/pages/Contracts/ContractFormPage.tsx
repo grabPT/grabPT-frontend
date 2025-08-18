@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
@@ -18,13 +18,35 @@ import SignatureBox from '@/features/Contract/components/SignatureBox';
 import UserInformationForm from '@/features/Contract/components/UserInformationForm';
 import { useGetContractInfo } from '@/features/Contract/hooks/useGetContractInfo';
 import {
+  usePostContractExpertInfo,
+  usePostContractUserInfo,
+} from '@/features/Contract/hooks/usePostContractInfo';
+import {
   usePostProSignatureFile,
   usePostUserSignatureFile,
 } from '@/features/Contract/hooks/usePostSignatureFile';
 import type { userInfoType } from '@/features/Contract/types/postContractType';
 import { useRoleStore } from '@/store/useRoleStore';
-// 추가: dataURL -> File, 업로드 훅
 import { dataURLtoFile } from '@/utils/dataURLtoFile';
+
+function extractBodyFromForm(form: HTMLFormElement | null): userInfoType | null {
+  if (!form) return null;
+  const fd = new FormData(form);
+  const name = String(fd.get('name') ?? '').trim();
+  const birthRaw = String(fd.get('birth') ?? '').trim();
+  const phoneNumber = String(fd.get('phoneNumber') ?? '').trim();
+  const address = String(fd.get('address') ?? '').trim();
+  const genderRaw = String(fd.get('gender') ?? '')
+    .trim()
+    .toUpperCase();
+
+  const gender: 'MALE' | 'FEMALE' | null =
+    genderRaw === 'MALE' || genderRaw === 'FEMALE' ? (genderRaw as any) : null;
+
+  const birth: string | null = birthRaw.length ? birthRaw : null;
+
+  return { name, birth, phoneNumber, gender, address };
+}
 
 // 계약서 작성페이지입니다.
 const ContractFormPage = () => {
@@ -45,10 +67,12 @@ const ContractFormPage = () => {
   const isExpert = role === 'EXPERT';
   const handleAgree = () => setIsAgree((prev) => !prev);
 
-  const { data } = useGetContractInfo(contractId);
-  console.log(data);
+  const userFormRef = useRef<HTMLFormElement>(null);
+  const proFormRef = useRef<HTMLFormElement>(null);
 
-  // ✅ 받아온 데이터로 각 폼의 기본값 구성 (값이 있으면 해당 input의 defaultValue로 사용)
+  const { data } = useGetContractInfo(contractId);
+
+  // ✅ 기본값 구성
   const userDefaults = useMemo<userInfoType | undefined>(() => {
     const u = data?.userInfo;
     if (!u) return undefined;
@@ -76,50 +100,126 @@ const ContractFormPage = () => {
   const userInitialSignUrl = data?.userInfo?.signUrl || null;
   const expertInitialSignUrl = data?.proInfo?.signUrl || null;
 
-  // 업로드 훅 (user/pro 각각)
+  // ✅ 모든 필드 + 서명이 채워졌는지 판별
+  const isFilledUser = (defs?: userInfoType | undefined, sign?: string | null) =>
+    !!defs &&
+    !!defs.name &&
+    !!defs.birth &&
+    !!defs.phoneNumber &&
+    !!defs.gender &&
+    !!defs.address &&
+    !!sign;
+
+  const userComplete = isFilledUser(userDefaults, userInitialSignUrl);
+  const proComplete = isFilledUser(proDefaults, expertInitialSignUrl);
+
+  // ✅ 편집 가능 여부
+  const canEditUser = !isExpert && !userComplete;
+  const canEditPro = isExpert && !proComplete;
+
+  // 업로드 훅
+  const { mutate: uploadUserInfo, isPending: uploadingUserInfo } = usePostContractUserInfo();
+  const { mutate: uploadProInfo, isPending: uploadingProInfo } = usePostContractExpertInfo();
   const { mutate: uploadUserSign, isPending: uploadingUser } = usePostUserSignatureFile();
   const { mutate: uploadProSign, isPending: uploadingPro } = usePostProSignatureFile();
-  const uploading = uploadingUser || uploadingPro;
+  const uploading = uploadingUser || uploadingPro || uploadingUserInfo || uploadingProInfo;
+
+  // ✅ 버튼/레이아웃 상태 결정
+  let showCancel = true;
+  let primaryDisabled = uploading;
+  let primaryLabel = uploading ? '업로드 중…' : '작성 완료';
+  let primaryFullWidth = false;
+
+  if (!isExpert) {
+    // USER 화면 규칙
+    if (userComplete && !proComplete) {
+      // 사용자 완료, 전문가 미완료 → 잠금 + 버튼 비활성 + w-full
+      showCancel = false;
+      primaryDisabled = true;
+      primaryFullWidth = true;
+    } else if (userComplete && proComplete) {
+      // 양측 완료 → 잠금 + 결제 버튼 활성 + w-full
+      showCancel = false;
+      primaryDisabled = false;
+      primaryLabel = '계약서 제출 및 결제';
+      primaryFullWidth = true;
+    }
+  } else {
+    // EXPERT 화면 규칙
+    if (proComplete) {
+      // 전문가 완료 → 잠금 + 버튼 비활성 + w-full
+      showCancel = false;
+      primaryDisabled = true;
+      primaryFullWidth = true;
+    }
+  }
 
   const handleSubmit = () => {
     if (!isAgree) {
-      // 필요하면 토스트/알림으로 교체
-      console.warn('개인정보 수집·이용 동의를 체크하세요.');
+      console.warn('개인정보 수집·이용에 동의가 필요합니다.');
       return;
     }
+    if (primaryDisabled) return;
 
-    // 역할에 따라 해당 서명만 업로드 (#1: imageUrl만 확보)
     if (!isExpert) {
-      if (!memberSign) {
-        console.warn('회원 서명을 입력하세요.');
-        return;
-      }
-      const file = dataURLtoFile(memberSign, `member-sign-${Date.now()}.png`);
-      console.log(file instanceof File, file.type, file.size); // true, "image/png", 크기
-      uploadUserSign(
-        { contractId, file },
-        {
-          onSuccess: ({ result }) => {
-            setMemberSignUrl(result.imageUrl);
-            // TODO(#2): userData에 imageUrl 합쳐 최종 완료 API 호출
+      if (canEditUser) {
+        // 1) info 먼저
+        const body = extractBodyFromForm(userFormRef.current);
+        if (!body || !body.name || !body.phoneNumber || !body.gender || !body.address) {
+          console.warn('회원 정보가 완전하지 않습니다.');
+          return;
+        }
+        uploadUserInfo(
+          { contractId, body },
+          {
+            onSuccess: () => {
+              // 2) sign 업로드
+              if (!memberSign) {
+                console.warn('회원 서명을 입력하세요.');
+                return;
+              }
+              const file = dataURLtoFile(memberSign, `member-sign-${Date.now()}.png`);
+              uploadUserSign(
+                { contractId, file },
+                {
+                  onSuccess: ({ result }) => setMemberSignUrl(result.imageUrl),
+                },
+              );
+            },
           },
-        },
-      );
+        );
+      } else {
+        // userComplete && proComplete → 결제/제출
+        // TODO: 결제/제출 트리거
+      }
     } else {
-      if (!expertSign) {
-        console.warn('전문가 서명을 입력하세요.');
-        return;
-      }
-      const file = dataURLtoFile(expertSign, `expert-sign-${Date.now()}.png`);
-      uploadProSign(
-        { contractId, file },
-        {
-          onSuccess: ({ result }) => {
-            setExpertSignUrl(result.imageUrl);
-            // TODO(#2): userData에 imageUrl 합쳐 최종 완료 API 호출
+      if (canEditPro) {
+        // 1) info 먼저
+        const body = extractBodyFromForm(proFormRef.current);
+        if (!body || !body.name || !body.phoneNumber || !body.gender || !body.address) {
+          console.warn('전문가 정보가 완전하지 않습니다.');
+          return;
+        }
+        uploadProInfo(
+          { contractId, body },
+          {
+            onSuccess: () => {
+              // 2) sign 업로드
+              if (!expertSign) {
+                console.warn('전문가 서명을 입력하세요.');
+                return;
+              }
+              const file = dataURLtoFile(expertSign, `expert-sign-${Date.now()}.png`);
+              uploadProSign(
+                { contractId, file },
+                {
+                  onSuccess: ({ result }) => setExpertSignUrl(result.imageUrl),
+                },
+              );
+            },
           },
-        },
-      );
+        );
+      }
     }
   };
 
@@ -137,14 +237,18 @@ const ContractFormPage = () => {
           <div>
             <div className="grid grid-cols-2 gap-15">
               <InformationCard title={'회원 정보'} borderColor={'blue'}>
-                <UserInformationForm isCanEdit={!isExpert} defaultValues={userDefaults} />
+                <form ref={userFormRef}>
+                  <UserInformationForm isCanEdit={canEditUser} defaultValues={userDefaults} />
+                </form>
               </InformationCard>
+
               <InformationCard title={'전문 정보'} borderColor={'red'}>
-                <UserInformationForm isCanEdit={isExpert} defaultValues={proDefaults} />
+                <form ref={proFormRef}>
+                  <UserInformationForm isCanEdit={canEditPro} defaultValues={proDefaults} />
+                </form>
               </InformationCard>
             </div>
             <div className="mt-6">
-              {/* 이건 불러와서 정보 넣어주기 */}
               <InformationCard title={'서비스 이용 정보'} borderColor={'blue'}>
                 <ServiceInformationForm data={data} />
               </InformationCard>
@@ -183,14 +287,14 @@ const ContractFormPage = () => {
                 title="회원"
                 value={memberSign}
                 onChange={setMemberSign}
-                isCanEdit={!isExpert}
+                isCanEdit={canEditUser}
                 initialImageUrl={userInitialSignUrl ?? undefined}
               />
               <SignatureBox
                 title="전문가"
                 value={expertSign}
                 onChange={setExpertSign}
-                isCanEdit={isExpert}
+                isCanEdit={canEditPro}
                 initialImageUrl={expertInitialSignUrl ?? undefined}
               />
             </div>
@@ -200,15 +304,20 @@ const ContractFormPage = () => {
             {format(new Date(), 'yyyy년 M월 d일', { locale: ko })}
           </p>
 
-          <div>
-            <div className="grid w-full grid-cols-2 gap-3">
+          <div className={`grid w-full ${showCancel ? 'grid-cols-2 gap-3' : ''}`}>
+            {showCancel && (
               <Button width="w-full" disabled={uploading}>
                 취소
               </Button>
-              <Button width="w-full" onClick={handleSubmit} disabled={uploading}>
-                {uploading ? '업로드 중…' : '작성 완료'}
-              </Button>
-            </div>
+            )}
+            <Button
+              width="w-full"
+              onClick={handleSubmit}
+              disabled={primaryDisabled}
+              className={primaryFullWidth ? 'col-span-2' : undefined}
+            >
+              {primaryLabel}
+            </Button>
           </div>
 
           {/* 확인용(#1): 업로드 결과 URL 표시 */}

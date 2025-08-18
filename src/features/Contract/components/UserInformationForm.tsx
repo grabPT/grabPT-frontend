@@ -24,6 +24,7 @@ const UserInformationForm = ({ isCanEdit, defaultValues }: UserInformationFormPr
       <input
         type="text"
         placeholder="이름"
+        name="name"
         readOnly={!isCanEdit}
         defaultValue={defaultValues?.name ?? ''}
         className={`${baseInputClass} ${isCanEdit ? editableClass : readOnlyClass}`}
@@ -32,6 +33,7 @@ const UserInformationForm = ({ isCanEdit, defaultValues }: UserInformationFormPr
       <label className="self-center">생년월일</label>
       <input
         aria-label="날짜"
+        name="birth"
         type="date"
         readOnly={!isCanEdit}
         defaultValue={birthValue}
@@ -42,6 +44,7 @@ const UserInformationForm = ({ isCanEdit, defaultValues }: UserInformationFormPr
       <input
         type="tel"
         placeholder="010-0000-0000"
+        name="phoneNumber"
         readOnly={!isCanEdit}
         defaultValue={defaultValues?.phoneNumber ?? ''}
         className={`${baseInputClass} ${isCanEdit ? editableClass : readOnlyClass}`}
@@ -86,6 +89,7 @@ const UserInformationForm = ({ isCanEdit, defaultValues }: UserInformationFormPr
       <input
         type="text"
         placeholder="API 연동해야 함"
+        name="address"
         readOnly={!isCanEdit}
         defaultValue={defaultValues?.address ?? ''}
         className={`${baseInputClass} ${isCanEdit ? editableClass : readOnlyClass}`}
