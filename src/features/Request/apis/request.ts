@@ -3,7 +3,7 @@ import type {
   RequestRequestDto,
   RequestResponseDto,
 } from '@/features/Request/types/Request';
-import { privateInstance, publicInstance } from '@/libs/axios';
+import { privateInstance } from '@/libs/axios';
 import type { CanEditResponse } from '@/types/CanEditRespinse';
 import type { CommonResponseDto } from '@/types/commonResponseDto';
 
@@ -18,7 +18,7 @@ export const postRequest = async (
 export const getDetailRequest = async (
   requestionId: number,
 ): Promise<CommonResponseDto<RequestDetailPageResponse>> => {
-  const { data } = await publicInstance.get(`/api/requestion/${requestionId}`);
+  const { data } = await privateInstance.get(`/api/requestion/${requestionId}`);
   console.log('받은 데이터', data);
   return data;
 };
