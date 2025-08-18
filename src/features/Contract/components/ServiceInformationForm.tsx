@@ -1,12 +1,13 @@
 import type { getContractInfoResultType } from '@/features/Contract/types/getContractInfoType';
-import { useUserRoleStore } from '@/store/useUserRoleStore';
+import { useRoleStore } from '@/store/useRoleStore';
 
 interface ServiceInformationFormProps {
   data: getContractInfoResultType | undefined;
 }
 
 const ServiceInformationForm = ({ data }: ServiceInformationFormProps) => {
-  const isExpert = useUserRoleStore((s) => s.isExpert);
+  const role = useRoleStore((s) => s.role);
+  const isExpert = role === 'EXPERT';
   const totalPrice = (data?.price || 0) * (data?.totalSession || 0);
   return (
     <div className="grid grid-cols-[auto_1fr_auto_1fr] gap-x-4 gap-y-4 text-sm">

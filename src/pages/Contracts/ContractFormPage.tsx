@@ -21,7 +21,7 @@ import {
   usePostProSignatureFile,
   usePostUserSignatureFile,
 } from '@/features/Contract/hooks/usePostSignatureFile';
-import { useUserRoleStore } from '@/store/useUserRoleStore';
+import { useRoleStore } from '@/store/useRoleStore';
 // 추가: dataURL -> File, 업로드 훅
 import { dataURLtoFile } from '@/utils/dataURLtoFile';
 
@@ -40,7 +40,8 @@ const ContractFormPage = () => {
   const [memberSignUrl, setMemberSignUrl] = useState<string | null>(null);
   const [expertSignUrl, setExpertSignUrl] = useState<string | null>(null);
 
-  const isExpert = useUserRoleStore((s) => s.isExpert);
+  const role = useRoleStore((s) => s.role);
+  const isExpert = role === 'EXPERT';
   const handleAgree = () => setIsAgree((prev) => !prev);
 
   const { data } = useGetContractInfo(contractId);

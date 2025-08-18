@@ -1,5 +1,5 @@
 import type { messageType } from '@/features/Chat/types/getMessagesType';
-import { useUserRoleStore } from '@/store/useUserRoleStore';
+import { useRoleStore } from '@/store/useRoleStore';
 import { onErrorImage } from '@/utils/onErrorImage';
 
 interface ChatTextProps {
@@ -8,7 +8,7 @@ interface ChatTextProps {
 }
 
 export const ChatText = ({ chat, imageUrl }: ChatTextProps) => {
-  const { userId } = useUserRoleStore();
+  const { userId } = useRoleStore();
   const isMe = chat.senderId === userId;
   const timeAgo = new Date(chat.sendAt).toLocaleTimeString('ko-KR', {
     hour: '2-digit',

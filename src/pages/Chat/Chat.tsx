@@ -10,7 +10,7 @@ import {
 import { usePostFile } from '@/features/Chat/hooks/usePostFile';
 import type { ChatRoomListItemType } from '@/features/Chat/types/getChatRoomListType';
 import Header from '@/layout/components/Header';
-import { useUserRoleStore } from '@/store/useUserRoleStore';
+import { useRoleStore } from '@/store/useRoleStore';
 
 // 경로 맞춰주세요
 
@@ -25,7 +25,7 @@ export const Chat = () => {
     { enableMessage: false, enableReadStatus: false },
   );
 
-  const { userId } = useUserRoleStore();
+  const { userId } = useRoleStore();
 
   // 입력컴포넌트 -> 부모로 전송 콜백
   const sendText = useCallback(

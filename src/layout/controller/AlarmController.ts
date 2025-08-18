@@ -3,12 +3,12 @@ import { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 
 import { useAlarmStore } from '@/store/useAlarmStore';
+import { useRoleStore } from '@/store/useRoleStore';
 import { useStompStore } from '@/store/useStompStore';
-import { useUserRoleStore } from '@/store/useUserRoleStore';
 
 export default function AlarmController() {
   const queryClient = useQueryClient();
-  const userId = useUserRoleStore((s) => s.userId);
+  const userId = useRoleStore((s) => s.userId);
   const connected = useStompStore((s) => s.connected);
   const subscribe = useStompStore((s) => s.subscribe);
   const unsubscribe = useStompStore((s) => s.unsubscribe);
