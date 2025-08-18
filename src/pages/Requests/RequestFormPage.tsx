@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import React from 'react';
 
 import { useNavigate } from 'react-router-dom';
@@ -11,6 +11,7 @@ import SelectPriceStep from '@/features/Request/components/SelectPriceStep';
 import SelectSportStep from '@/features/Request/components/SelectSportStep';
 import useStepParam from '@/features/Request/hooks/UseStepParam';
 import { usePostRequest } from '@/features/Request/hooks/usePostRequest';
+import { useGetUserInfo } from '@/hooks/useGetUserInfo';
 import { useRequestStore } from '@/store/useRequestStore';
 
 type FillDetailRef = { submit: () => Promise<boolean> };
@@ -36,7 +37,19 @@ const RequestFormPage = () => {
   //api 연결 + 유효성 검사
   const { mutateAsync: requestSend } = usePostRequest();
   const { sportsTypeInfo } = useRequestStore();
+  const { setPriceInfo } = useRequestStore();
+  const { data: userInfo, isPending } = useGetUserInfo();
 
+  useEffect(() => {
+    if (isPending) return;
+    const primaryAddress = userInfo?.address?.[0];
+    const addressStr = primaryAddress
+      ? `${primaryAddress.city} ${primaryAddress.district} ${primaryAddress.street}`
+      : '';
+    if (addressStr) {
+      setPriceInfo({ location: addressStr });
+    }
+  }, [isPending, setPriceInfo, userInfo]);
   const handleNext = useCallback(async () => {
     if (step === 1) {
       if (sportsTypeInfo?.categoryId == 0) {

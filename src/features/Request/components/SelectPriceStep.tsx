@@ -1,7 +1,6 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 
 import { SPORTS } from '@/constants/sports';
-import { useGetUserInfo } from '@/hooks/useGetUserInfo';
 import { useRequestStore } from '@/store/useRequestStore';
 
 const numberWithComma = (n: number) => n.toLocaleString('ko-KR');
@@ -10,17 +9,7 @@ const SelectPriceStep = () => {
   /** 입력 상태 */
   const { priceInfo, setPriceInfo, sportsTypeInfo } = useRequestStore();
   const { price, sessionCount } = priceInfo;
-  const { data: userInfo, isPending } = useGetUserInfo();
-  const primaryAddress = userInfo?.address?.[0];
-  const addressStr = primaryAddress
-    ? `${primaryAddress.city} ${primaryAddress.district} ${primaryAddress.street}`
-    : '';
-  useEffect(() => {
-    if (isPending) return;
-    console.log('저징될 주소', addressStr);
-    setPriceInfo({ ...priceInfo, location: addressStr });
-    console.log('주소 저장 완료', location);
-  }, [isPending, addressStr, priceInfo.location, setPriceInfo, priceInfo]);
+
   //스토어에 저장된 종목 categorId를 기반으로 해당 종목 이름 가져오기
   const sport = SPORTS.find((s) => s.id === sportsTypeInfo.categoryId);
   /** 총액 계산 */
@@ -35,7 +24,7 @@ const SelectPriceStep = () => {
         {/* 주소 (예시 주소 나중에 연동해야됨) -> 주소는 response로 받아올 건지/로그인 시 쿠키나 스토리지에 보관해둘건지 정해야할듯 */}
         <div className="mt-[19.5px] ml-[10px] h-[17px] w-[152px]">
           <p className="font-[Pretendard Variable] text-[17px] leading-[100%] font-semibold text-black">
-            {isPending ? '주소 불러오는 중…' : addressStr || '주소 정보 없음'}
+            {priceInfo.location}
           </p>
         </div>
       </div>
@@ -109,10 +98,7 @@ const SelectPriceStep = () => {
 
         {/* 안내 문구 ------------------------------------------- */}
         <p className="text-xs">
-          <span className="font-semibold text-blue-600">
-            ${primaryAddress?.district} ${primaryAddress?.street}
-          </span>{' '}
-          의 평균
+          <span className="font-semibold text-blue-600">{priceInfo.location}</span> 의 평균
           <span className="font-semibold text-red-600"> 복싱</span>PT가격은&nbsp; 회당&nbsp;
           <span className="font-semibold text-red-600">50,000원</span> 입니다.
         </p>
