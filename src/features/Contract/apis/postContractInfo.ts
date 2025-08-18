@@ -1,11 +1,12 @@
 import type {
-  postContractInfoRequestDto,
   postContractInfoResponseDto,
+  postContractProInfoRequestDto,
+  postContractUserInfoRequestDto,
 } from '@/features/Contract/types/postContractType';
 import { privateInstance } from '@/libs/axios';
 
 export const postContractUserInfo = async (
-  params: postContractInfoRequestDto,
+  params: postContractUserInfoRequestDto,
 ): Promise<postContractInfoResponseDto> => {
   try {
     const { data } = await privateInstance.post(`/contract/${params.contractId}/user`, params.body);
@@ -17,7 +18,7 @@ export const postContractUserInfo = async (
 };
 
 export const postContractExpertInfo = async (
-  params: postContractInfoRequestDto,
+  params: postContractProInfoRequestDto,
 ): Promise<postContractInfoResponseDto> => {
   try {
     const { data } = await privateInstance.post(`/contract/${params.contractId}/pro`, params.body);

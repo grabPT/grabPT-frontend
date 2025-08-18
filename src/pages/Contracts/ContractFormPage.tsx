@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
@@ -25,11 +25,11 @@ import {
   usePostProSignatureFile,
   usePostUserSignatureFile,
 } from '@/features/Contract/hooks/usePostSignatureFile';
-import type { userInfoType } from '@/features/Contract/types/postContractType';
+import type { proInfoType, userInfoType } from '@/features/Contract/types/postContractType';
 import { useRoleStore } from '@/store/useRoleStore';
 import { dataURLtoFile } from '@/utils/dataURLtoFile';
 
-function extractBodyFromForm(form: HTMLFormElement | null): userInfoType | null {
+function extractUserBodyFromForm(form: HTMLFormElement | null): userInfoType | null {
   if (!form) return null;
   const fd = new FormData(form);
   const name = String(fd.get('name') ?? '').trim();
@@ -46,6 +46,27 @@ function extractBodyFromForm(form: HTMLFormElement | null): userInfoType | null 
   const birth: string | null = birthRaw.length ? birthRaw : null;
 
   return { name, birth, phoneNumber, gender, address };
+}
+
+function extractProBodyFromForm(form: HTMLFormElement | null): proInfoType | null {
+  if (!form) return null;
+  const fd = new FormData(form);
+  const name = String(fd.get('name') ?? '').trim();
+  const birthRaw = String(fd.get('birth') ?? '').trim();
+  const phoneNumber = String(fd.get('phoneNumber') ?? '').trim();
+  const address = String(fd.get('address') ?? '').trim();
+  const genderRaw = String(fd.get('gender') ?? '')
+    .trim()
+    .toUpperCase();
+  const startDate = String(fd.get('startDate') ?? '').trim();
+  const contractDate = String(fd.get('contractDate') ?? '').trim();
+
+  const gender: 'MALE' | 'FEMALE' | null =
+    genderRaw === 'MALE' || genderRaw === 'FEMALE' ? (genderRaw as any) : null;
+
+  const birth: string | null = birthRaw.length ? birthRaw : null;
+
+  return { name, birth, phoneNumber, gender, address, startDate, contractDate };
 }
 
 // 계약서 작성페이지입니다.
@@ -71,6 +92,16 @@ const ContractFormPage = () => {
   const proFormRef = useRef<HTMLFormElement>(null);
 
   const { data } = useGetContractInfo(contractId);
+
+  // 시작일/유효기간 상태 (전문가만 편집)
+  const [startDate, setStartDate] = useState<string>('');
+  const [contractDate, setContractDate] = useState<string>('');
+
+  // 서버 데이터 들어오면 초기화
+  useEffect(() => {
+    if (data?.startDate) setStartDate(data.startDate);
+    if (data?.contractDate) setContractDate(data.contractDate);
+  }, [data?.startDate, data?.contractDate]);
 
   // ✅ 기본값 구성
   const userDefaults = useMemo<userInfoType | undefined>(() => {
@@ -110,8 +141,35 @@ const ContractFormPage = () => {
     !!defs.address &&
     !!sign;
 
-  const userComplete = isFilledUser(userDefaults, userInitialSignUrl);
-  const proComplete = isFilledUser(proDefaults, expertInitialSignUrl);
+  // 전문가 완료: 기본 정보 + 날짜 2개 + 서명
+  const isFilledPro = (
+    defs?: userInfoType | undefined,
+    sign?: string | null,
+    dates?: { startDate?: string; contractDate?: string },
+  ) =>
+    !!defs &&
+    !!defs.name &&
+    !!defs.birth &&
+    !!defs.phoneNumber &&
+    !!defs.gender &&
+    !!defs.address &&
+    !!dates?.startDate &&
+    !!dates?.contractDate &&
+    !!sign;
+
+  // 서명은 서버초기/로컬 업로드 둘 다 고려
+  const userSignAny = userInitialSignUrl ?? memberSignUrl;
+  const expertSignAny = expertInitialSignUrl ?? expertSignUrl;
+
+  // 날짜도 서버초기/로컬 입력 둘 다 고려
+  const startAny = startDate || data?.startDate || '';
+  const contractAny = contractDate || data?.contractDate || '';
+
+  const userComplete = isFilledUser(userDefaults, userSignAny);
+  const proComplete = isFilledPro(proDefaults, expertSignAny, {
+    startDate: startAny,
+    contractDate: contractAny,
+  });
 
   // ✅ 편집 가능 여부
   const canEditUser = !isExpert && !userComplete;
@@ -164,7 +222,7 @@ const ContractFormPage = () => {
     if (!isExpert) {
       if (canEditUser) {
         // 1) info 먼저
-        const body = extractBodyFromForm(userFormRef.current);
+        const body = extractUserBodyFromForm(userFormRef.current);
         if (!body || !body.name || !body.phoneNumber || !body.gender || !body.address) {
           console.warn('회원 정보가 완전하지 않습니다.');
           return;
@@ -194,9 +252,17 @@ const ContractFormPage = () => {
       }
     } else {
       if (canEditPro) {
-        // 1) info 먼저
-        const body = extractBodyFromForm(proFormRef.current);
-        if (!body || !body.name || !body.phoneNumber || !body.gender || !body.address) {
+        // 1) info 먼저 (전문가: 날짜 포함)
+        const body = extractProBodyFromForm(proFormRef.current);
+        if (
+          !body ||
+          !body.name ||
+          !body.phoneNumber ||
+          !body.gender ||
+          !body.address ||
+          !body.startDate ||
+          !body.contractDate
+        ) {
           console.warn('전문가 정보가 완전하지 않습니다.');
           return;
         }
@@ -243,14 +309,25 @@ const ContractFormPage = () => {
               </InformationCard>
 
               <InformationCard title={'전문 정보'} borderColor={'red'}>
+                {/* ⬇️ 전문가 폼 내부에 hidden input으로 날짜를 주입해 FormData에 포함 */}
                 <form ref={proFormRef}>
                   <UserInformationForm isCanEdit={canEditPro} defaultValues={proDefaults} />
+                  <input type="hidden" name="startDate" value={startAny} />
+                  <input type="hidden" name="contractDate" value={contractAny} />
                 </form>
               </InformationCard>
             </div>
+
             <div className="mt-6">
               <InformationCard title={'서비스 이용 정보'} borderColor={'blue'}>
-                <ServiceInformationForm data={data} />
+                <ServiceInformationForm
+                  data={data}
+                  isExpert={isExpert}
+                  startDate={startDate}
+                  contractDate={contractDate}
+                  onChangeStartDate={setStartDate}
+                  onChangeContractDate={setContractDate}
+                />
               </InformationCard>
             </div>
           </div>

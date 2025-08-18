@@ -19,8 +19,9 @@ export type getContractInfoResultType = {
   };
   totalSession: 0;
   price: 0;
-  startDate: number[];
+  startDate: string;
   ptAddress: string;
+  contractDate: string;
   status: 'MATCHED' | 'MATCHING' | 'WAITING';
 };
 

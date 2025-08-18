@@ -34,7 +34,7 @@ export async function postProSignatureFile({
   form.append('file', file, file.name);
 
   const { data } = await privateInstance.post(`/contract/${contractId}/uploadProSign`, form, {
-    // headers: { 'Content-Type': 'multipart/form-data' },
+    headers: { 'Content-Type': 'multipart/form-data' },
     withCredentials: true,
   });
   return data as PostSignatureFileResponseDto;

@@ -8,9 +8,19 @@ export type userInfoType = {
   address: string;
 };
 
-export type postContractInfoRequestDto = {
+export type proInfoType = userInfoType & {
+  startDate: string;
+  contractDate: string;
+};
+
+export type postContractUserInfoRequestDto = {
   contractId: number;
   body: userInfoType;
+};
+
+export type postContractProInfoRequestDto = {
+  contractId: number;
+  body: proInfoType;
 };
 
 export type postContractInfoResponseDto = CommonResponseDto<number>;

@@ -6,12 +6,13 @@ import {
   postContractUserInfo,
 } from '@/features/Contract/apis/postContractInfo';
 import type {
-  postContractInfoRequestDto,
   postContractInfoResponseDto,
+  postContractProInfoRequestDto,
+  postContractUserInfoRequestDto,
 } from '@/features/Contract/types/postContractType';
 
 export const usePostContractUserInfo = () =>
-  useMutation<postContractInfoResponseDto, Error, postContractInfoRequestDto>({
+  useMutation<postContractInfoResponseDto, Error, postContractUserInfoRequestDto>({
     mutationFn: (params) => postContractUserInfo(params),
     onSuccess: (data) => {
       console.log('계약서 작성 userInfo 전송 성공', data);
@@ -22,7 +23,7 @@ export const usePostContractUserInfo = () =>
   });
 
 export const usePostContractExpertInfo = () =>
-  useMutation<postContractInfoResponseDto, Error, postContractInfoRequestDto>({
+  useMutation<postContractInfoResponseDto, Error, postContractProInfoRequestDto>({
     mutationFn: (params) => postContractExpertInfo(params),
     onSuccess: (data) => {
       console.log('계약서 작성 proInfo 전송 성공', data);
