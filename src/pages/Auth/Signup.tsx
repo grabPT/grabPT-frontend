@@ -72,6 +72,8 @@ const Signup = () => {
             },
             onError: (err) => {
               console.error('User signup failed:', err);
+              alert('회원가입 실패');
+              setStep(5);
             },
           },
         );
@@ -90,6 +92,8 @@ const Signup = () => {
             },
             onError: (err) => {
               console.error('Pro signup failed:', err);
+              alert('회원가입 실패');
+              setStep(5);
             },
           },
         );
