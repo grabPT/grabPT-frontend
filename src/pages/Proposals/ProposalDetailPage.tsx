@@ -27,7 +27,7 @@ const ProposalDetailPage = () => {
     if (!suggestion) return; // 데이터 아직이면 막기
     // requestionId는 필수이므로 존재 보장 후 숫자로 전달
     const res = await matchAsync({
-      requestionId: Number(suggestion.requestionId),
+      requestionId: Number(suggestion.requestionId) || 1,
       suggestionId,
     });
     if (res.isSuccess) {
