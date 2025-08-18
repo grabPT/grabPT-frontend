@@ -47,7 +47,7 @@ const SignatureBox = ({
           />
         </>
       ) : initialImageUrl ? (
-        <img className="h-[160px] w-[260px]" src={initialImageUrl} aria-label="서명" />
+        <img className="h-[160px] w-[260px] bg-white" src={initialImageUrl} aria-label="서명" />
       ) : (
         <div className="flex h-[160px] w-[260px] items-center justify-center bg-white text-center text-xs text-gray-400">
           아직 서명하지 않았습니다.
