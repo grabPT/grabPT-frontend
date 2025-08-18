@@ -17,7 +17,9 @@ const SelectPriceStep = () => {
     : '';
   useEffect(() => {
     if (isPending) return;
+    console.log('저징될 주소', addressStr);
     setPriceInfo({ ...priceInfo, location: addressStr });
+    console.log('주소 저장 완료', location);
   }, [isPending, addressStr, priceInfo.location, setPriceInfo, priceInfo]);
   //스토어에 저장된 종목 categorId를 기반으로 해당 종목 이름 가져오기
   const sport = SPORTS.find((s) => s.id === sportsTypeInfo.categoryId);
