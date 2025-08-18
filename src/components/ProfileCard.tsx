@@ -14,7 +14,7 @@ const ProfileCard = ({ profileData }: ProfileCardProps) => {
 
   return (
     // 좌우패딩불일치, 일단34로 작업함
-    <div className="xs:w-[340px] flex h-[115px] items-center justify-between rounded-[30px] border-[1.5px] border-[#b8b8b8] px-[34px] sm:w-[600px] md:w-[926px]">
+    <div className="xs:w-[340px] flex h-[115px] items-center justify-between rounded-[30px] border-[1.5px] border-[#b8b8b8] px-[34px] sm:w-[600px]">
       <div className="flex gap-[30px]">
         <img
           src={profileData?.profileImageUrl || Profile}

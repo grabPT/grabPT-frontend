@@ -11,6 +11,8 @@ const UserReviews = () => {
   if (error) return <ErrorComponent />;
   const total = myReviewsList?.totalPages ?? 1;
 
+  console.log(myReviewsList);
+
   return (
     <div className="flex flex-col items-center justify-center">
       {isPending && <>스켈레톤 ui</>}

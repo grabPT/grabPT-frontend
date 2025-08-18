@@ -1,39 +1,68 @@
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
+import { useNavigate, useParams } from 'react-router-dom';
+
+import type { certificationResponse } from '@/apis/getProCertifications';
 import Profile from '@/assets/images/HeaderProfile.png';
-import MockImage from '@/assets/images/동영상 등 대체 도형.png';
 import Button from '@/components/Button';
-import ImageSlide from '@/components/ImageSlide';
+import { CirtificationCard } from '@/components/CirtificationCard';
+import ProfileImageSlide, { type SlideImage } from '@/components/ProfileImageSlide';
+import ProfilePrice from '@/components/ProfilePrice';
 import { TitleLine } from '@/components/TitleLine';
 import ROUTES from '@/constants/routes';
-import ExpertDetailBgImg from '@/features/ExpertDetail/assets/ExpertDetailBgImg.svg';
-import { Credential } from '@/features/ExpertDetail/components/Credential';
-import { useGetCredentialList } from '@/features/ExpertDetail/hooks/useGetCredentialList';
+import { useGetProProfileWithUserId } from '@/hooks/useGetProProfile';
+import type { PtPrice } from '@/types/ProPrifleType';
 
 export const ExpertDetailInfo = () => {
+  const [photos, setPhotos] = useState<SlideImage[]>([]);
+  const [certifications, setCertifications] = useState<certificationResponse[]>([]);
+  const [pricePerOne, setPricePerOne] = useState<number | null>(null);
+  const [prices, setPrices] = useState<PtPrice[]>([]);
+
+  const { id } = useParams();
+  const userId = Number(id);
+
   const nav = useNavigate();
   const handleChatButton = () => {
     nav(ROUTES.CHAT.ROOT);
   };
-  const { data: credentialList } = useGetCredentialList();
-  console.log(credentialList);
-  const images = Array.from({ length: 7 }, () => MockImage);
+  // const { data: credentialList } = useGetCredentialList();
+  // console.log(credentialList);
+  const { data } = useGetProProfileWithUserId(userId);
+
+  const profileData = data?.result;
+
+  useEffect(() => {
+    if (profileData?.photos) {
+      setPhotos(profileData.photos);
+    }
+    if (profileData?.certifications) {
+      setCertifications(profileData.certifications);
+    }
+    if (profileData?.pricePerSession) {
+      setPricePerOne(profileData.pricePerSession);
+    }
+    if (profileData?.ptPrices) {
+      setPrices(profileData.ptPrices);
+    }
+  }, [profileData]);
+
   return (
-    <div className="flex flex-col items-center justify-center">
-      <div className="relative mt-10 w-full">
-        <img src={ExpertDetailBgImg} alt="전문가 프로필 뱌경화면" className="w-full" />
+    <div className="flex w-[800px] flex-col items-center justify-center">
+      <div className="mt-10 flex w-full flex-col items-center justify-center gap-4">
+        {/* <img src={ExpertDetailBgImg} alt="전문가 프로필 뱌경화면" className="w-full" /> */}
         <img
-          src={Profile}
+          src={profileData?.profileImageUrl || Profile}
           alt="전문가 프로필 사진"
-          className="absolute left-1/2 h-[11.25rem] w-[11.25rem] translate-x-[-50%] translate-y-[-50%]"
+          className="h-[11.25rem] w-[11.25rem] rounded-full"
         />
-        <div className="mt-[6.875rem] flex flex-col items-center justify-center">
-          <span className="font-roboto text-[2rem] font-semibold">박수민</span>
+        <div className="flex flex-col items-center justify-center">
+          <span className="font-roboto text-[2rem] font-semibold">{profileData?.name}</span>
           <span className="font-inter text-[0.875rem] font-semibold text-[#003EFB]">
-            응암동헬스장 브라이언박 트레이닝 센터
+            {profileData?.center}
           </span>
         </div>
-        <div className="mt-10 flex items-end justify-end">
+        <div className="mt-4 flex items-end justify-end">
           <Button
             width="w-[17.5rem]"
             height="h-[2.625rem]"
@@ -45,39 +74,83 @@ export const ExpertDetailInfo = () => {
         </div>
       </div>
       <div className="mt-[4.06rem] flex w-full flex-col items-center justify-center gap-18">
-        <div className="flex w-full flex-col items-center justify-center">
+        <div className="flex w-full flex-col">
           <span className="text-2xl font-extrabold">전문가 소개</span>
-          <div className="mt-[2.62rem] h-0.5 w-full bg-[#BBBB]" />
-          <div className="mt-[6.7rem] h-[27.0625rem] w-full rounded-[0.625rem] border border-[#CCC] bg-[#F5F5F5] p-4">
-            자기소개 자기소개 ~~
+          <div className="mt-6 h-0.5 w-full bg-[#BBBB]" />
+          <div className="mt-6 h-[27.0625rem] w-full rounded-[0.625rem] p-4">
+            {profileData?.introduction ? (
+              profileData?.introduction
+            ) : (
+              <div className="flex items-center justify-center">등록된 소개글이 없습니다.</div>
+            )}
           </div>
         </div>
-        <div className="flex w-full flex-col items-center justify-center">
-          <TitleLine title="소개 사진" />
-          <ImageSlide title="소개 사진" images={images} />
+        <div className="flex w-[800px] flex-col">
+          <TitleLine title="사진" />
+          <div className="my-6 h-0.5 w-full bg-[#BBBB]" />
+          {photos ? (
+            <ProfileImageSlide
+              images={photos} // 편집 모드든 보기 모드든 photos state만 쓴다
+              onChange={setPhotos}
+            />
+          ) : (
+            <div>이미지가 없습니다.</div>
+          )}
         </div>
-        <div className="flex w-full flex-col items-center justify-center">
+        <div className="flex w-full flex-col">
           <TitleLine title="자격 사항" />
-          <div className="flex w-full flex-col items-center justify-center gap-5">
-            {credentialList?.certifications.map((credential, index) => (
+          <div className="my-6 h-0.5 w-full bg-[#BBBB]" />
+          <div className="mt-10 flex w-full flex-col items-center justify-center gap-5">
+            {/* {credentialList?.certifications.map((credential, index) => (
               <Credential
                 key={`${credential.certificationType}-${index}`}
                 type={credential.certificationType}
                 content={credential.description}
               />
+            ))} */}
+            {certifications.length > 0 ? (
+              certifications.map((certification, index) => (
+                <div key={index} className="mb-4">
+                  <CirtificationCard
+                    CirtificationCode={certification.certificationType}
+                    CirtificationDescription={certification.description}
+                    imageUrl={certification.imageUrl}
+                  />
+                </div>
+              ))
+            ) : (
+              <div>자격 사항이 없습니다.</div>
+            )}
+          </div>
+        </div>
+        <div className="flex w-full flex-col">
+          <TitleLine title="PT 가격" />
+          <div className="my-6 h-0.5 w-full bg-[#BBBB]" />
+          {/* <div className="h-[27.0625rem] w-full rounded-[0.625rem] border border-[#CCC] bg-[#F5F5F5] p-4">
+            PT 가격
+          </div> */}
+          <div className="flex flex-col gap-3">
+            <ProfilePrice count={1} price={pricePerOne} />
+            {prices.map((price, idx) => (
+              <ProfilePrice key={idx} count={price.sessionCount} price={price.price} />
             ))}
           </div>
         </div>
-        <div className="flex w-full flex-col items-center justify-center">
-          <TitleLine title="PT 프로그램" />
-          <div className="h-[27.0625rem] w-full rounded-[0.625rem] border border-[#CCC] bg-[#F5F5F5] p-4">
-            PT 프로그램 설명
-          </div>
-        </div>
-        <div className="flex w-full flex-col items-center justify-center">
+        <div className="flex w-full flex-col">
           <TitleLine title="위치" />
-          <div className="h-[27.0625rem] w-full rounded-[0.625rem] border border-[#CCC] bg-[#F5F5F5] p-4">
+          <div className="my-6 h-0.5 w-full bg-[#BBBB]" />
+          {/* <div className="h-[27.0625rem] w-full rounded-[0.625rem] border border-[#CCC] bg-[#F5F5F5] p-4">
             위치 정보
+          </div> */}
+          <div className="flex flex-col gap-4">
+            <div className="flex h-[40px] items-center gap-4">
+              <div className="text-[20px] font-semibold">센터명</div>
+              <div className="text-[#013EFB]">{profileData?.center}</div>
+            </div>
+            <div className="flex flex-col gap-2">
+              <div className="text-[20px] font-semibold">위치 설명</div>
+              <div className="h-[300px]">{profileData?.centerDescription}</div>
+            </div>
           </div>
         </div>
       </div>

@@ -27,10 +27,17 @@ export function useEditProDescription() {
   });
 }
 
+// src/features/Mypage/hooks/useEditProDescription.ts
 export const useEditPhotos = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ files, urls }: { files: File[]; urls: string[] }) => editProPhotos(files, urls),
+    mutationFn: ({
+      existingPhotoUrls,
+      newPhotos,
+    }: {
+      existingPhotoUrls: string[];
+      newPhotos: File[];
+    }) => editProPhotos(existingPhotoUrls, newPhotos),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: USE_PRO_PROFILE_KEY });
       queryClient.invalidateQueries({ queryKey: USE_MY_PROFILE_KEY });

@@ -1,4 +1,4 @@
-import CancelIcon from '@/assets/images/cancelIcon.svg';
+import CancelIcon from '@/assets/images/cancleIcon.svg';
 import EditIcon from '@/assets/images/pencil.svg';
 import SaveIcon from '@/assets/images/save.svg';
 

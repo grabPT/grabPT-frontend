@@ -39,6 +39,7 @@ const ExpertProfile = () => {
   const [centerName, setCenterName] = useState<string>('');
   const [centerDescription, setCenterDescription] = useState<string>('');
   const [resetSeed, _setResetSeed] = useState(0);
+  const [isPhotosCompressing, setIsPhotosCompressing] = useState(false);
 
   const { data, isLoading, isError } = useProProfileQuery();
   const profileData = data?.result;
@@ -138,26 +139,21 @@ const ExpertProfile = () => {
   };
 
   const { mutate: mutatePhoto } = useEditPhotos();
-
   const handlePhotosSave = () => {
-    const files: File[] = [];
-    const urls: string[] = [];
+    const newPhotos: File[] = [];
+    const existingPhotoUrls: string[] = [];
 
     photos.forEach((p) => {
       if (p.file instanceof File) {
-        files.push(p.file);
+        newPhotos.push(p.file); // 새로 추가한 파일만
       } else if (p.imageUrl) {
-        urls.push(p.imageUrl);
+        existingPhotoUrls.push(p.imageUrl); // 남겨둘 기존 URL
       }
     });
 
-    if (files.length === 0 && urls.length === 0) {
-      console.warn('보낼 이미지가 없습니다.');
-      return;
-    }
-
+    // ✅ 모두 삭제하는 경우도 서버에 반영되어야 하므로 early-return 없앰
     mutatePhoto(
-      { files, urls },
+      { existingPhotoUrls, newPhotos },
       {
         onSuccess: () => {
           setOriginPhotos([...photos.map((p) => ({ ...p }))]); // 저장한 상태를 원본으로
@@ -216,20 +212,10 @@ const ExpertProfile = () => {
     );
   };
 
-  // const MockImg = [
-  //   'https://item.kakaocdn.net/do/493188dee481260d5c89790036be0e66113e2bd2b7407c8202a97d2241a96625',
-  //   'https://item.kakaocdn.net/do/0e4b127426b0440a5f3f136031e28414616b58f7bf017e58d417ccb3283deeb3',
-  //   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSo-wcn3jgsEQGfFav2MyV1leQieIT0MycSNw&s',
-  //   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvEcgHBn_dzSkT5-KLGcBZeMRE0V4pPbd29A&s',
-  //   'https://i.pinimg.com/736x/1f/3d/0d/1f3d0dee275374b9f6f9270fa23089b6.jpg',
-  //   'https://i.pinimg.com/236x/99/63/e9/9963e930b60acbe6bb92528a151114a5.jpg',
-  //   'https://previews.123rf.com/images/sevendeman/sevendeman2205/sevendeman220500049/187437940-happy-face-asian-man-expressing-of-no-problem-and-no-worries.jpg',
-  // ];
-
   if (isLoading) return <div>로딩 중...</div>;
   if (isError || !profileData) return <div>에러 발생</div>;
   return (
-    <div className="mx-auto mt-16 flex max-w-[926px] flex-col items-center gap-12">
+    <div className="mx-auto mt-16 flex max-w-[600px] flex-col items-center gap-12">
       {/* 프로필 컴포넌트 */}
       <div className="flex justify-center px-[77px]">
         <ProfileCard profileData={profileData} />
@@ -279,7 +265,7 @@ const ExpertProfile = () => {
           ) : (
             <div className="flex items-center gap-2">
               <MyProfileEditCancelButton onClick={handlePhotosCancel} />
-              <MyProfileEditSaveButton onClick={handlePhotosSave} />
+              <MyProfileEditSaveButton onClick={handlePhotosSave} disabled={isPhotosCompressing} />
             </div>
           )}
         </div>
@@ -292,6 +278,7 @@ const ExpertProfile = () => {
           images={photos} // 편집 모드든 보기 모드든 photos state만 쓴다
           isEditable={isPhotosEdit}
           onChange={setPhotos}
+          onCompressingChange={setIsPhotosCompressing}
         />
       ) : (
         <div>이미지가 없습니다.</div>

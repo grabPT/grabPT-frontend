@@ -27,10 +27,22 @@ export const editProDescription = async (payload: ProDescriptionPayload) => {
   return data;
 };
 
-export const editProPhotos = async (files: File[], urls: string[]) => {
+// src/features/Mypage/hooks/useEditProDescription.ts (또는 apis 파일)
+export const editProPhotos = async (existingPhotoUrls: string[], newPhotos: File[]) => {
   const formData = new FormData();
-  urls.forEach((url) => formData.append('photoUrls', url)); // 기존 이미지
-  files.forEach((file) => formData.append('photos', file)); // 새 이미지
+
+  // 서버 스펙: request = {"existingPhotoUrls":[...]}
+  // 우선 JSON Blob 방식
+  const requestJson = { existingPhotoUrls };
+  formData.append('request', new Blob([JSON.stringify(requestJson)], { type: 'application/json' }));
+
+  // 만약 위 방식이 400/415 뜨면 ↓로 교체
+  // formData.append('request', JSON.stringify(requestJson));
+
+  // 서버 스펙: 새 파일은 newPhotos (복수)
+  newPhotos.forEach((file) => formData.append('newPhotos', file, file.name));
+
+  // ❌ Content-Type 수동 지정 금지 (boundary는 브라우저/axios가 설정)
   const { data } = await multipartInstance.patch('/mypage/pro/photos', formData);
   return data;
 };

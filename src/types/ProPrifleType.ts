@@ -1,3 +1,4 @@
+import type { certificationResponse } from '@/apis/getProCertifications';
 import type { SlideImage } from '@/components/ProfileImageSlide';
 
 import type { CommonResponseDto } from './commonResponseDto';
@@ -32,6 +33,9 @@ export type ProProfileType = {
   totalSessions: number;
   ptPrices?: PtPrice[];
   address: Address[];
+  introduction?: string | null;
+  name?: string | null;
+  certifications?: certificationResponse[] | null;
 };
 
 export type getProProfileResponseDto = CommonResponseDto<ProProfileType>;

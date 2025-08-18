@@ -16,14 +16,16 @@ interface ProfileImageSlideProps {
   title?: string;
   images: SlideImage[];
   isEditable?: boolean;
-  onChange?: (next: SlideImage[]) => void; // 선택: 부모에 변경 알림
+  onChange?: (next: SlideImage[]) => void;
+  onCompressingChange?: (isCompressing: boolean) => void;
 }
 
 interface ProfileImageSlideCardProps {
   imgUrl: string;
-  height: number; // 보여줄 고정 높이(px)
-  isEditable?: boolean; // 이미지 편집 가능 여부
+  height: number;
+  isEditable?: boolean;
   onDelete?: () => void;
+  onPreview?: () => void;
 }
 
 const ProfileImageSlideCard = ({
@@ -31,6 +33,7 @@ const ProfileImageSlideCard = ({
   height,
   isEditable,
   onDelete,
+  onPreview,
 }: ProfileImageSlideCardProps) => {
   const [width, setWidth] = useState<number | null>(null);
 
@@ -63,21 +66,42 @@ const ProfileImageSlideCard = ({
           objectFit: 'cover',
           borderRadius: '8px',
         }}
+        onClick={onPreview}
+        className="cursor-zoom-in"
       />
     </div>
   );
 };
 
-const ProfileImageSlide = ({ title, images, isEditable, onChange }: ProfileImageSlideProps) => {
+const ProfileImageSlide = ({
+  title,
+  images,
+  isEditable,
+  onChange,
+  onCompressingChange,
+}: ProfileImageSlideProps) => {
   // 편집용 로컬 상태로 복사 (prop 변경 시 동기화)
   const [list, setList] = useState<SlideImage[]>(images ?? []);
   const [isCompressing, setIsCompressing] = useState(false);
+
+  useEffect(() => {
+    onCompressingChange?.(isCompressing);
+  }, [isCompressing, onCompressingChange]);
 
   useEffect(() => {
     if (!isEditable) {
       setList(images ?? []);
     }
   }, [images, isEditable]);
+
+  const openInNewTab = (url: string) => {
+    try {
+      const w = window.open(url, '_blank', 'noopener,noreferrer');
+      if (w) w.opener = null;
+    } catch (e) {
+      console.error('새 창 열기 실패:', e);
+    }
+  };
 
   // 파일 업로더
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -167,6 +191,7 @@ const ProfileImageSlide = ({ title, images, isEditable, onChange }: ProfileImage
               height={200}
               isEditable={!!isEditable}
               onDelete={() => handleDelete(idx)}
+              onPreview={() => openInNewTab(imageUrl)}
             />
           ))}
       </Slider>
