@@ -7,9 +7,7 @@ export const useCheckNickname = () => {
   return useMutation<CommonResponseDto<boolean>, Error, string>({
     mutationFn: (nickname: string) => getCheckNickname(nickname),
     onSuccess: (data) => {
-      if (data.result) {
-        console.log('닉네임 중복 요청 성공:', data);
-      } else console.error('닉네임 중복 요청 실패:', data);
+      console.log('닉네임 중복 요청 성공:', data);
     },
     onError: (error) => {
       alert('닉네임 중복 요청 실패');
