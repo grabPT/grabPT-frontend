@@ -76,18 +76,25 @@ function attachAuthInterceptors(instance: AxiosInstance) {
         originalRequest._retry = true;
 
         try {
+          console.log('[INTCPT] Entered refresh try block');
           // 진행 중 리프레시에 합류, 없으면 새로 시작
           if (!isRefreshing) {
+            console.log('[INTCPT] No refresh in progress, starting new refresh');
             isRefreshing = true;
+            console.log('[INTCPT] isRefreshing flag set to true');
             refreshSession()
               .then(() => {
+                console.log('[INTCPT] refreshSession request initiated');
+                console.log('[INTCPT] refreshSession succeeded, processing queue');
                 processQueue(null);
               })
               .catch((refreshErr) => {
+                console.log('[INTCPT] refreshSession failed:', refreshErr);
                 processQueue(refreshErr);
                 throw refreshErr;
               })
               .finally(() => {
+                console.log('[INTCPT] refreshSession finished, resetting isRefreshing flag');
                 isRefreshing = false;
               });
           }
