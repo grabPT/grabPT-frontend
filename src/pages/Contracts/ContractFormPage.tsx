@@ -396,14 +396,6 @@ const ContractFormPage = () => {
               {primaryLabel}
             </Button>
           </div>
-
-          {/* 확인용(#1): 업로드 결과 URL 표시 */}
-          {memberSignUrl && (
-            <p className="mt-2 text-xs text-gray-600">회원 서명 URL: {memberSignUrl}</p>
-          )}
-          {expertSignUrl && (
-            <p className="text-xs text-gray-600">전문가 서명 URL: {expertSignUrl}</p>
-          )}
         </div>
       </section>
 

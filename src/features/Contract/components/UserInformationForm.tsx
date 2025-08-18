@@ -61,8 +61,8 @@ const UserInformationForm = ({ isCanEdit, defaultValues }: UserInformationFormPr
             name="gender"
             value="MALE"
             className="peer sr-only"
-            disabled={!isCanEdit}
-            defaultChecked={gender === 'MALE'}
+            readOnly={!isCanEdit}
+            checked={gender === 'MALE'}
           />
           <span className="inline-block h-5 w-5 rounded-full border-2 border-gray-500 peer-checked:border-[6px] peer-checked:border-blue-600" />
           남
@@ -77,8 +77,8 @@ const UserInformationForm = ({ isCanEdit, defaultValues }: UserInformationFormPr
             name="gender"
             value="FEMALE"
             className="peer sr-only"
-            disabled={!isCanEdit}
-            defaultChecked={gender === 'FEMALE'}
+            readOnly={!isCanEdit}
+            checked={gender === 'FEMALE'}
           />
           <span className="inline-block h-5 w-5 rounded-full border-2 border-gray-500 peer-checked:border-[6px] peer-checked:border-blue-600" />
           여
