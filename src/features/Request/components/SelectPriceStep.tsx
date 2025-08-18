@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 
 import { SPORTS } from '@/constants/sports';
+import { useGetUserInfo } from '@/hooks/useGetUserInfo';
 import { useRequestStore } from '@/store/useRequestStore';
 
 const numberWithComma = (n: number) => n.toLocaleString('ko-KR');
@@ -9,6 +10,12 @@ const SelectPriceStep = () => {
   /** 입력 상태 */
   const { priceInfo, setPriceInfo, sportsTypeInfo } = useRequestStore();
   const { price, sessionCount } = priceInfo;
+  const { data: userInfo, isPending } = useGetUserInfo();
+  const primaryAddress = userInfo?.address?.[0];
+  const addressStr = primaryAddress
+    ? `${primaryAddress.city} ${primaryAddress.district} ${primaryAddress.street}`
+    : '';
+
   //스토어에 저장된 종목 categorId를 기반으로 해당 종목 이름 가져오기
   const sport = SPORTS.find((s) => s.id === sportsTypeInfo.categoryId);
   /** 총액 계산 */
@@ -23,7 +30,7 @@ const SelectPriceStep = () => {
         {/* 주소 (예시 주소 나중에 연동해야됨) -> 주소는 response로 받아올 건지/로그인 시 쿠키나 스토리지에 보관해둘건지 정해야할듯 */}
         <div className="mt-[19.5px] ml-[10px] h-[17px] w-[152px]">
           <p className="font-[Pretendard Variable] text-[17px] leading-[100%] font-semibold text-black">
-            서울시 강서구 화곡3동
+            {isPending ? '주소 불러오는 중…' : addressStr || '주소 정보 없음'}
           </p>
         </div>
       </div>
@@ -54,7 +61,7 @@ const SelectPriceStep = () => {
                 setPriceInfo({
                   ...priceInfo,
                   sessionCount: value,
-                  location: '서울시 강서구 화곡3동', //나중에 주소 받아서 연결 필요 지금은 하드 코딩
+                  location: addressStr,
                 });
               }}
               className="h-12 w-full rounded-lg border border-gray-300 pr-12 pl-15 text-center text-lg outline-none focus:border-blue-500"
