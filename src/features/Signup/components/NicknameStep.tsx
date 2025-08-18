@@ -40,7 +40,7 @@ const NickNameStep = ({ onNext }: NicknameStepProps) => {
   const handleCheckNickname = () => {
     checkNickname(nicknameInfo.nickname, {
       onSuccess: (res) => {
-        if (res.isSuccess) {
+        if (res.result) {
           setNicknameCheckResult('available');
         } else {
           setNicknameCheckResult('duplicate');
