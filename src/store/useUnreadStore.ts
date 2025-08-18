@@ -1,5 +1,6 @@
 // src/store/useUnreadStore.ts
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 type UnreadState = {
   unreadCount: number;
@@ -7,8 +8,15 @@ type UnreadState = {
   resetUnreadCount: () => void;
 };
 
-export const useUnreadStore = create<UnreadState>((set) => ({
-  unreadCount: 0,
-  setUnReadCount: (n) => set({ unreadCount: n }),
-  resetUnreadCount: () => set({ unreadCount: 0 }),
-}));
+export const useUnreadStore = create<UnreadState>()(
+  persist(
+    (set) => ({
+      unreadCount: 0,
+      setUnReadCount: (n) => set({ unreadCount: n }),
+      resetUnreadCount: () => set({ unreadCount: 0 }),
+    }),
+    {
+      name: 'unread-storage',
+    },
+  ),
+);
