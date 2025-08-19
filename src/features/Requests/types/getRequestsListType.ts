@@ -1,3 +1,4 @@
+import type { Address } from '@/types/ProPrifleType';
 import type { MatchStatusType } from '@/types/RealtimeMatchingType';
 import type { TimeSlot } from '@/types/ReqeustsType';
 import type { SortByType, SortType } from '@/types/SortType';
@@ -21,6 +22,8 @@ export type RequestsListItemType = {
   availableDays: string[];
   categoryName: string;
   content: string;
+  nickname: string;
+  address: Address[];
 };
 
 export type getRequestsListResultType = {
@@ -45,3 +48,36 @@ export type PageableType = {
   unpaged: boolean;
 };
 export type getRequestsListResponseDto = CommonResponseDto<getRequestsListResultType>;
+
+//메인 페이지에 일반/전문가 RequestSlider에 값들을 띄우기 위해 만든 타입
+export type RequestsListResultType = {
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  content: RequestsListItemProps[];
+  number: number;
+  sort: SortType;
+  numberOfElements: number;
+  pageable: PageableType;
+  first: boolean;
+  last: boolean;
+  empty: boolean;
+};
+export type RequestsListItemProps = {
+  username?: string;
+  userStreet?: string;
+  price?: number;
+  status?: MatchStatusType;
+  userProfileImageUrl?: string;
+  nickname?: string;
+  address?: Address[];
+  requestId: number;
+  imageURL?: string;
+  userId?: number;
+  location?: string;
+  availableTimes: TimeSlot[];
+  availableDays: string[];
+  categoryName: string;
+  sessionCount?: number;
+  content: string;
+};
