@@ -48,13 +48,18 @@ export const ExpertDetailInfo = () => {
       setPrices(profileData.ptPrices);
     }
   }, [profileData]);
-  const 채팅상담 = () => {
+  const 채팅상담 = async () => {
     if (userId == undefined || profileData?.proId === undefined) {
       console.log('안됨');
       return;
     }
-    postCreateChatRoom({ userId: userId, proId: profileData.proId });
-    navigate(ROUTES.CHAT.ROOT);
+    try {
+      await postCreateChatRoom({ userId, proId: profileData.proId });
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      navigate(ROUTES.CHAT.ROOT);
+    } catch (err) {
+      console.error('채팅방 생성 실패:', err);
+    }
   };
 
   return (
