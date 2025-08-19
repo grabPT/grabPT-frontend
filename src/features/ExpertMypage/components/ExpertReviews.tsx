@@ -14,6 +14,7 @@ const ExpertReviews = () => {
         {reviews?.content.map((rv, idx) => (
           <div key={idx}>
             <ReviewCard
+              imageURL={rv.imageURL}
               name={rv.nickName}
               location={rv.residence}
               rating={rv.rating}
@@ -22,11 +23,9 @@ const ExpertReviews = () => {
           </div>
         ))}
       </div>
-      {
-        <div className="mt-8">
-          <Pagination total={total} page={page} onChange={setPage} />
-        </div>
-      }
+      <div className="mt-8">
+        <Pagination total={total} page={page} onChange={setPage} />
+      </div>
     </div>
   );
 };

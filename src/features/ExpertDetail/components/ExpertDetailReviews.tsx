@@ -11,11 +11,12 @@ const ExpertDetailReviews = () => {
   const { data: reviews } = useGetExpertReviews({ page, size: 6 });
   const total = reviews?.totalPages ?? 1;
   return (
-    <div className="flex justify-center">
+    <div className="flex flex-col items-center justify-center">
       <div className="mt-[50px] flex w-[800px] flex-col gap-[30px]">
         {reviews?.content.map((rv, idx) => (
           <div key={idx}>
             <ReviewCard
+              imageURL={rv.imageURL}
               name={rv.nickName}
               location={rv.residence}
               rating={rv.rating}
