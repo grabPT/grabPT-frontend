@@ -7,6 +7,7 @@ import Chat from '@/assets/images/Chat.png';
 import HeaderProfile from '@/assets/images/HeaderProfile.png';
 import Button from '@/components/Button';
 import ROUTES from '@/constants/routes';
+import { useProProfileQuery } from '@/hooks/useGetProProfile';
 import { useGetUserInfo } from '@/hooks/useGetUserInfo';
 import AlarmDropdown from '@/layout/components/AlarmDropdown';
 import ProfileDropdown from '@/layout/components/ProfileDropdown';
@@ -23,6 +24,13 @@ function AuthMenu() {
   const unreadCount = useUnreadStore((s) => s.unreadCount);
   const alarmCount = useAlarmStore((s) => s.alarmCount);
   const { data: myInfo } = useGetUserInfo();
+  const { data: proInfo } = useProProfileQuery();
+  const profileImage =
+    role === 'USER'
+      ? myInfo?.profileImageUrl
+      : role === 'EXPERT'
+        ? proInfo?.result.profileImageUrl
+        : HeaderProfile;
   return (
     <div className="flex items-center">
       {/* 임시 로그인 버튼 */}
@@ -72,7 +80,7 @@ function AuthMenu() {
             onMouseLeave={() => setIsOpenProfileDropdown(false)}
           >
             <img
-              src={myInfo?.profileImageUrl ?? HeaderProfile}
+              src={profileImage}
               alt="프로필"
               className="h-[45px] w-[45px] cursor-pointer rounded-full"
               onMouseEnter={() => setIsOpenProfileDropdown(true)}
