@@ -75,7 +75,7 @@ const ContractFormPage = () => {
   const contractId = Number(id);
 
   const [isAgree, setIsAgree] = useState<boolean>(false);
-  const [disabledAgree, setIsDisabledAgree] = useState<boolean>(false);
+  const [disabledAgree, setIsDisabledAgree] = useState<boolean>(false); // ⬅️ 변경 대상: 렌더 중 setState 금지, effect로만 동기화
 
   // 서명(base64) — 미리보기 용
   const [memberSign, setMemberSign] = useState<string | null>(null);
@@ -183,7 +183,8 @@ const ContractFormPage = () => {
   const { mutate: uploadProSign, isPending: uploadingPro } = usePostProSignatureFile();
   const uploading = uploadingUser || uploadingPro || uploadingUserInfo || uploadingProInfo;
 
-  // ✅ 버튼/레이아웃 상태 결정
+  // ─────────────────────────────────────────────────────────────
+  // 버튼/레이아웃 상태 결정 (기존 로직 유지)
   let showCancel = true;
   let primaryDisabled = uploading;
   let primaryLabel = uploading ? '업로드 중…' : '작성 완료';
@@ -196,16 +197,14 @@ const ContractFormPage = () => {
       showCancel = false;
       primaryDisabled = true;
       primaryFullWidth = true;
-      setIsAgree(true);
-      setIsDisabledAgree(true);
+      // ⛔ setState 금지 (무한렌더 방지)
     } else if (userComplete && proComplete) {
       // 양측 완료 → 잠금 + 결제 버튼 활성 + w-full
       showCancel = false;
       primaryDisabled = false;
       primaryLabel = '계약서 제출 및 결제';
       primaryFullWidth = true;
-      setIsAgree(true);
-      setIsDisabledAgree(true);
+      // ⛔ setState 금지 (무한렌더 방지)
     }
   } else {
     // EXPERT 화면 규칙
@@ -214,10 +213,25 @@ const ContractFormPage = () => {
       showCancel = false;
       primaryDisabled = true;
       primaryFullWidth = true;
-      setIsAgree(true);
-      setIsDisabledAgree(true);
+      // ⛔ setState 금지 (무한렌더 방지)
     }
   }
+
+  // ─────────────────────────────────────────────────────────────
+  // ✅ disabledAgree 파생값 계산 + effect로 동기화
+  // - 사용자(user) 측: userComplete이면 동의 강제(완료/대기 모두)
+  // - 전문가(expert) 측: proComplete이면 동의 강제
+  const forceAgree = (!isExpert && userComplete) || (isExpert && proComplete);
+
+  useEffect(() => {
+    // disabledAgree는 effect에서만 갱신하여 렌더 중 setState를 피함
+    setIsDisabledAgree(forceAgree);
+
+    // 동의 체크도 같은 타이밍에 true로 고정(필요 시)
+    if (forceAgree) setIsAgree(true);
+    // forceAgree가 false가 될 때 isAgree를 강제로 false로 되돌리진 않음(기존 동작 보존)
+  }, [forceAgree]);
+  // ─────────────────────────────────────────────────────────────
 
   const handleSubmit = () => {
     if (!isAgree) {
