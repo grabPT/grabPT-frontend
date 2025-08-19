@@ -17,7 +17,9 @@ interface RequestsStatusCardProps {
 const RequestsStatusCard = ({ request }: RequestsStatusCardProps) => {
   const navigate = useNavigate();
   const isMatched = request.status === 'MATCHED';
-  const navigateToRequestDetail = (requestId: number) => navigate(urlFor.requestDetail(requestId));
+  const navigateToRequestDetail = (requestionId: number) =>
+    navigate(urlFor.requestDetail(requestionId));
+  console.log('요청서아이디', request.requstionId);
 
   return (
     <div
