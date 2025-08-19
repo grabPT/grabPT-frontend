@@ -22,7 +22,8 @@ function RequestSlider({ title, requests }: RequestSliderProps) {
   const settings = {
     className: 'center',
     infinite: false,
-    centerPadding: '60px',
+    centerMode: false,
+    centerPadding: '0px',
     slidesToShow: 4,
     swipeToSlide: true,
     arrows: true,
@@ -31,9 +32,9 @@ function RequestSlider({ title, requests }: RequestSliderProps) {
     nextArrow: <NextArrow />,
     prevArrow: currentSlide === 0 ? undefined : <PrevArrow />,
     responsive: [
-      { breakpoint: 1536, settings: { slidesToShow: 3 } },
-      { breakpoint: 1280, settings: { slidesToShow: 2 } },
       { breakpoint: 1024, settings: { slidesToShow: 2, dots: false } },
+      { breakpoint: 1280, settings: { slidesToShow: 2 } },
+      { breakpoint: 1536, settings: { slidesToShow: 3 } },
     ],
   };
 
