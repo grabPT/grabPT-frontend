@@ -22,6 +22,7 @@ import {
   usePostContractUserInfo,
 } from '@/features/Contract/hooks/usePostContractInfo';
 import { usePostContractPdf } from '@/features/Contract/hooks/usePostContractPdf';
+import { usePostCustomOrder } from '@/features/Contract/hooks/usePostCustomOrder';
 import {
   usePostProSignatureFile,
   usePostUserSignatureFile,
@@ -183,6 +184,7 @@ const ContractFormPage = () => {
   const { mutate: uploadUserSign, isPending: uploadingUser } = usePostUserSignatureFile();
   const { mutate: uploadProSign, isPending: uploadingPro } = usePostProSignatureFile();
   const { mutate: createPdf } = usePostContractPdf();
+  const { mutate: postCustomOrder } = usePostCustomOrder();
   const uploading = uploadingUser || uploadingPro || uploadingUserInfo || uploadingProInfo;
 
   // ─────────────────────────────────────────────────────────────
@@ -314,6 +316,7 @@ const ContractFormPage = () => {
 
   const handleCreatePdf = () => {
     createPdf(contractId);
+    postCustomOrder({ price: 10000, item_name: 'test', matching_id: contractId });
   };
 
   return (
