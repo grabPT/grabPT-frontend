@@ -1,7 +1,12 @@
-import type { postCustomOrderRequestDto } from '@/features/Contract/types/postCustomOrderType';
+import type {
+  postCustomOrderRequestDto,
+  postCustomOrderResponseDto,
+} from '@/features/Contract/types/postCustomOrderType';
 import { privateInstance } from '@/libs/axios';
 
-export const postCustomOrder = async (params: postCustomOrderRequestDto): Promise<any> => {
+export const postCustomOrder = async (
+  params: postCustomOrderRequestDto,
+): Promise<postCustomOrderResponseDto> => {
   try {
     const { data } = await privateInstance.post(`/customOrder`, params);
     return data;

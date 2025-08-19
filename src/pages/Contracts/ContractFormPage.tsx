@@ -31,6 +31,14 @@ import type { proInfoType, userInfoType } from '@/features/Contract/types/postCo
 import { useRoleStore } from '@/store/useRoleStore';
 import { dataURLtoFile } from '@/utils/dataURLtoFile';
 
+export {};
+
+declare global {
+  interface Window {
+    IMP: any; // 필요하다면 정확한 타입으로 교체 가능
+  }
+}
+
 function extractUserBodyFromForm(form: HTMLFormElement | null): userInfoType | null {
   if (!form) return null;
   const fd = new FormData(form);
@@ -94,7 +102,7 @@ const ContractFormPage = () => {
   const userFormRef = useRef<HTMLFormElement>(null);
   const proFormRef = useRef<HTMLFormElement>(null);
 
-  const { data } = useGetContractInfo(contractId);
+  const { data: contract } = useGetContractInfo(contractId);
 
   // 시작일/유효기간 상태 (전문가만 편집)
   const [startDate, setStartDate] = useState<string>('');
@@ -102,13 +110,13 @@ const ContractFormPage = () => {
 
   // 서버 데이터 들어오면 초기화
   useEffect(() => {
-    if (data?.startDate) setStartDate(data.startDate);
-    if (data?.contractDate) setContractDate(data.contractDate);
-  }, [data?.startDate, data?.contractDate]);
+    if (contract?.startDate) setStartDate(contract.startDate);
+    if (contract?.contractDate) setContractDate(contract.contractDate);
+  }, [contract?.startDate, contract?.contractDate]);
 
   // ✅ 기본값 구성
   const userDefaults = useMemo<userInfoType | undefined>(() => {
-    const u = data?.userInfo;
+    const u = contract?.userInfo;
     if (!u) return undefined;
     return {
       name: u.name ?? '',
@@ -117,10 +125,10 @@ const ContractFormPage = () => {
       gender: u.gender ?? null,
       address: u.address ?? '',
     };
-  }, [data]);
+  }, [contract]);
 
   const proDefaults = useMemo<userInfoType | undefined>(() => {
-    const p = data?.proInfo;
+    const p = contract?.proInfo;
     if (!p) return undefined;
     return {
       name: p.name ?? '',
@@ -129,10 +137,10 @@ const ContractFormPage = () => {
       gender: p.gender ?? null,
       address: p.address ?? '',
     };
-  }, [data]);
+  }, [contract]);
 
-  const userInitialSignUrl = data?.userInfo?.signUrl || null;
-  const expertInitialSignUrl = data?.proInfo?.signUrl || null;
+  const userInitialSignUrl = contract?.userInfo?.signUrl || null;
+  const expertInitialSignUrl = contract?.proInfo?.signUrl || null;
 
   // ✅ 모든 필드 + 서명이 채워졌는지 판별
   const isFilledUser = (defs?: userInfoType | undefined, sign?: string | null) =>
@@ -165,8 +173,8 @@ const ContractFormPage = () => {
   const expertSignAny = expertInitialSignUrl ?? expertSignUrl;
 
   // 날짜도 서버초기/로컬 입력 둘 다 고려
-  const startAny = startDate || data?.startDate || '';
-  const contractAny = contractDate || data?.contractDate || '';
+  const startAny = startDate || contract?.startDate || '';
+  const contractAny = contractDate || contract?.contractDate || '';
 
   const userComplete = isFilledUser(userDefaults, userSignAny);
   const proComplete = isFilledPro(proDefaults, expertSignAny, {
@@ -184,7 +192,7 @@ const ContractFormPage = () => {
   const { mutate: uploadUserSign, isPending: uploadingUser } = usePostUserSignatureFile();
   const { mutate: uploadProSign, isPending: uploadingPro } = usePostProSignatureFile();
   const { mutate: createPdf } = usePostContractPdf();
-  const { mutate: postCustomOrder } = usePostCustomOrder();
+  const { mutate: postOrder } = usePostCustomOrder();
   const uploading = uploadingUser || uploadingPro || uploadingUserInfo || uploadingProInfo;
 
   // ─────────────────────────────────────────────────────────────
@@ -235,6 +243,26 @@ const ContractFormPage = () => {
     if (forceAgree) setIsAgree(true);
     // forceAgree가 false가 될 때 isAgree를 강제로 false로 되돌리진 않음(기존 동작 보존)
   }, [forceAgree]);
+
+  useEffect(() => {
+    // 포트원 라이브러리 추가
+    let script = document.querySelector<HTMLScriptElement>(
+      `script[src="https://cdn.iamport.kr/v1/iamport.js"]`,
+    );
+
+    if (!script) {
+      script = document.createElement('script');
+      script.src = 'https://cdn.iamport.kr/v1/iamport.js';
+      script.async = true;
+      document.body.appendChild(script);
+    }
+    return () => {
+      // 스크립트 요소가 존재하는지 확인 후 제거
+      if (script && script.parentNode === document.body) {
+        document.body.removeChild(script);
+      }
+    };
+  }, []);
   // ─────────────────────────────────────────────────────────────
 
   const handleSubmit = () => {
@@ -314,10 +342,57 @@ const ContractFormPage = () => {
     }
   };
 
-  const handleCreatePdf = async () => {
+  const handleSuccess = async () => {
+    if (!contract) return;
+
+    // 1) 계약서 PDF 생성 (동기/비동기 여부에 따라 필요시 await)
     createPdf(contractId);
-    await window.open('https://api.grabpt.com/payment.html', '_blank');
-    setTimeout(() => postCustomOrder({ price: 100, item_name: 'test', matching_id: 10 }), 1000);
+
+    // 2) 결제 사전 생성 (주문 생성) - 서버에서 주문 UID 등 발급
+    postOrder(
+      {
+        price: contract.price * contract.totalSession,
+        item_name: `${contract.userInfo.name}의 ${contract.proInfo.name}의 제안에 대한 결제건입니다.`,
+        matching_id: contract.matchingId,
+      },
+      {
+        onSuccess: (response) => {
+          const { IMP } = window;
+          IMP.init('가맹점 식별코드');
+          const order = response.result;
+          const body = {
+            pg: 'html5_inicis.INIpayTest',
+            pay_method: 'card',
+            merchant_uid: order.order_uid,
+            name: order.item_name,
+            amount: order.payment_price,
+            buyer_email: order.buyer_email,
+            buyer_name: order.buyer_name,
+            buyer_tel: order.buyer_tel,
+            buyer_addr: order.buyer_address,
+            buyer_postcode: order.buyer_postcode,
+            // 필요시 모바일 리다이렉트: m_redirect_url: 'https://your.site/payments/complete'
+            // 추가 옵션도 여기서 확장 가능
+          } as const;
+          // 4) 결제 요청
+          window.IMP.request_pay(body, async (rsp: any) => {
+            if (rsp.success) {
+              // rsp.imp_uid, rsp.merchant_uid 등으로 서버 검증
+              // const verified = await verifyPayment(rsp.merchant_uid, rsp.imp_uid);
+              const verified = true; // 임시
+              if (verified) {
+                console.log('결제 성공');
+                // 후처리 (알림, 라우팅 등)
+              } else {
+                console.log('결제 검증 실패');
+              }
+            } else {
+              console.log('결제 실패', rsp.error_msg);
+            }
+          });
+        },
+      },
+    );
   };
 
   return (
@@ -352,7 +427,7 @@ const ContractFormPage = () => {
             <div className="mt-6">
               <InformationCard title={'서비스 이용 정보'} borderColor={'blue'}>
                 <ServiceInformationForm
-                  data={data}
+                  data={contract}
                   isExpert={isExpert}
                   startDate={startDate}
                   contractDate={contractDate}
@@ -422,7 +497,7 @@ const ContractFormPage = () => {
             )}
             <Button
               width="w-full"
-              onClick={userComplete && proComplete && !isExpert ? handleCreatePdf : handleSubmit}
+              onClick={userComplete && proComplete && !isExpert ? handleSuccess : handleSubmit}
               disabled={primaryDisabled}
               className={primaryFullWidth ? 'col-span-2' : undefined}
             >

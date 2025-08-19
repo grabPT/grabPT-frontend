@@ -23,6 +23,7 @@ export type getContractInfoResultType = {
   ptAddress: string;
   contractDate: string;
   status: 'MATCHED' | 'MATCHING' | 'WAITING';
+  matchingId: number;
 };
 
 export type getContractInfoResponseDto = CommonResponseDto<getContractInfoResultType>;
