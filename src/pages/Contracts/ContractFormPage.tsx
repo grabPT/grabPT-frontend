@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import AppLogo from '@/assets/images/AppLogo.png';
 import Button from '@/components/Button';
@@ -23,6 +23,7 @@ import {
 } from '@/features/Contract/hooks/usePostContractInfo';
 import { usePostContractPdf } from '@/features/Contract/hooks/usePostContractPdf';
 import { usePostCustomOrder } from '@/features/Contract/hooks/usePostCustomOrder';
+import { usePostPaymentCallback } from '@/features/Contract/hooks/usePostPaymentCallback';
 import {
   usePostProSignatureFile,
   usePostUserSignatureFile,
@@ -81,6 +82,7 @@ function extractProBodyFromForm(form: HTMLFormElement | null): proInfoType | nul
 
 // 계약서 작성페이지입니다.
 const ContractFormPage = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const contractId = Number(id);
 
@@ -193,6 +195,7 @@ const ContractFormPage = () => {
   const { mutate: uploadProSign, isPending: uploadingPro } = usePostProSignatureFile();
   const { mutate: createPdf } = usePostContractPdf();
   const { mutate: postOrder } = usePostCustomOrder();
+  const { mutate: postPayment } = usePostPaymentCallback();
   const uploading = uploadingUser || uploadingPro || uploadingUserInfo || uploadingProInfo;
 
   // ─────────────────────────────────────────────────────────────
@@ -381,7 +384,12 @@ const ContractFormPage = () => {
               // const verified = await verifyPayment(rsp.merchant_uid, rsp.imp_uid);
               const verified = true; // 임시
               if (verified) {
-                console.log('결제 성공');
+                postPayment({
+                  payment_uid: rsp.imp_uid,
+                  order_uid: rsp.merchant_uid,
+                });
+                alert('결제완료!');
+                navigate('/user/settlement');
                 // 후처리 (알림, 라우팅 등)
               } else {
                 console.log('결제 검증 실패');
