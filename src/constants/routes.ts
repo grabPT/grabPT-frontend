@@ -47,6 +47,7 @@ const ROUTES = {
     },
   },
   EXPERT_SETTLEMENT: '/expert/settlement',
+  USER_SETTLEMENT: '/user/settlement',
   MATCHING_STATUS: {
     ROOT: '/matching',
 

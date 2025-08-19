@@ -23,7 +23,6 @@ import ContractDetailPage from '@/pages/Contracts/ContractDetailPage';
 import ContractFormPage from '@/pages/Contracts/ContractFormPage';
 import { ExpertDetail } from '@/pages/ExpertDetail/ExpertDetail';
 import ExpertMainPage from '@/pages/Home/ExpertMainPage';
-import { Settlement } from '@/pages/Home/Settlement';
 import UserMainPage from '@/pages/Home/UserMainPage';
 import MatchingStatusPage from '@/pages/MatchingStatus/MatchingStatusPage';
 import ExpertMypage from '@/pages/MyPage/ExpertMypage';
@@ -35,6 +34,8 @@ import ProposalsForRequest from '@/pages/Requests/ProposalsForRequest';
 import RequestDetailPage from '@/pages/Requests/RequestDetailPage';
 import RequestFormPage from '@/pages/Requests/RequestFormPage';
 import RequestsListPage from '@/pages/Requests/RequestsListPage';
+import { ExpertSettlementPage } from '@/pages/Settlement/ExpertSettlementPage';
+import { UserSettlementPage } from '@/pages/Settlement/UserSettlementPage';
 import type { AppRoute } from '@/types/Role';
 
 /**
@@ -176,7 +177,8 @@ export const routesManifest: AppRoute[] = [
       },
 
       // 정산
-      { path: ROUTES.EXPERT_SETTLEMENT, element: <Settlement />, roles: ['EXPERT'] },
+      { path: ROUTES.EXPERT_SETTLEMENT, element: <ExpertSettlementPage />, roles: ['EXPERT'] },
+      { path: ROUTES.USER_SETTLEMENT, element: <UserSettlementPage />, roles: ['USER'] },
     ],
   },
 
