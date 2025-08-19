@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 import type { SuggestRequestDto } from '@/features/ProposalForm/types/Suggest';
 
@@ -8,32 +9,39 @@ interface SuggestState {
   getSuggestInfo: () => SuggestRequestDto;
 }
 
-export const useSuggestStore = create<SuggestState>((set, get) => ({
-  suggestInfo: {
-    requestionId: null,
-    price: 0,
-    sessionCount: 0,
-    message: '',
-    location: '',
-    sentAt: '',
-    isAgreed: false,
-  },
+export const useSuggestStore = create<SuggestState>()(
+  persist(
+    (set, get) => ({
+      suggestInfo: {
+        requestionId: null,
+        price: 0,
+        sessionCount: 0,
+        message: '',
+        location: '',
+        sentAt: '',
+        isAgreed: false,
+      },
 
-  setSuggestInfo: (info) =>
-    set((state) => ({
-      suggestInfo: { ...state.suggestInfo, ...info },
-    })),
+      setSuggestInfo: (info) =>
+        set((state) => ({
+          suggestInfo: { ...state.suggestInfo, ...info },
+        })),
 
-  getSuggestInfo: () => {
-    const { suggestInfo } = get();
-    return {
-      requestionId: suggestInfo.requestionId,
-      price: suggestInfo.price,
-      sessionCount: suggestInfo.sessionCount,
-      message: suggestInfo.message,
-      location: suggestInfo.location,
-      sentAt: suggestInfo.sentAt,
-      isAgreed: suggestInfo.isAgreed,
-    };
-  },
-}));
+      getSuggestInfo: () => {
+        const { suggestInfo } = get();
+        return {
+          requestionId: suggestInfo.requestionId,
+          price: suggestInfo.price,
+          sessionCount: suggestInfo.sessionCount,
+          message: suggestInfo.message,
+          location: suggestInfo.location,
+          sentAt: suggestInfo.sentAt,
+          isAgreed: suggestInfo.isAgreed,
+        };
+      },
+    }),
+    {
+      name: 'suggest-role',
+    },
+  ),
+);
