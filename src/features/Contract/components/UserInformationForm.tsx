@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 import type { userInfoType } from '@/features/Contract/types/postContractType';
 
 interface UserInformationFormProps {
@@ -16,7 +18,10 @@ const UserInformationForm = ({ isCanEdit, defaultValues }: UserInformationFormPr
       ? defaultValues.birth.slice(0, 10)
       : '';
 
-  const gender = defaultValues?.gender ?? null;
+  const [gender, setGender] = useState<'MALE' | 'FEMALE' | null>(defaultValues?.gender ?? null);
+  useEffect(() => {
+    setGender(defaultValues?.gender ?? null);
+  }, [defaultValues?.gender]);
 
   return (
     <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-4 text-sm">
@@ -63,6 +68,7 @@ const UserInformationForm = ({ isCanEdit, defaultValues }: UserInformationFormPr
             className="peer sr-only"
             readOnly={!isCanEdit}
             checked={gender === 'MALE'}
+            onChange={() => setGender('MALE')}
           />
           <span className="inline-block h-5 w-5 rounded-full border-2 border-gray-500 peer-checked:border-[6px] peer-checked:border-blue-600" />
           남
@@ -79,6 +85,7 @@ const UserInformationForm = ({ isCanEdit, defaultValues }: UserInformationFormPr
             className="peer sr-only"
             readOnly={!isCanEdit}
             checked={gender === 'FEMALE'}
+            onChange={() => setGender('FEMALE')}
           />
           <span className="inline-block h-5 w-5 rounded-full border-2 border-gray-500 peer-checked:border-[6px] peer-checked:border-blue-600" />
           여
