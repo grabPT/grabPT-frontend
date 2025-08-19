@@ -3,11 +3,11 @@ import type { CommonResponseDto } from '@/types/commonResponseDto';
 export type alarmType = {
   id: number;
   userId: number;
-  type: 'REQUESTION' | 'SUGGESTION' | 'CONTRACT' | 'MESSAGE';
+  type: 'REQUESTION' | 'SUGGESTION' | 'CONTRACT' | 'MESSAGE' | 'PAYMENT' | 'SUCCESS';
   title: string;
   content: string;
   redirectUrl: string;
-  createdAt: string;
+  sendAt: string;
   read: boolean;
 };
 
