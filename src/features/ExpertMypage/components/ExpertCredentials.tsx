@@ -138,7 +138,6 @@ const ExpertCredentials = () => {
         )}
       </div>
       <hr className="mt-[10px] w-[600px] border-t-2 border-[#B8B8B8]" />
-      <hr className="mt-[10px] w-[600px] border-t-2 border-[#B8B8B8]" />
       <div className="mt-[20px] flex flex-col items-center justify-center">
         {certificationList.map((certification, index) => (
           <div key={index} className="mb-4">

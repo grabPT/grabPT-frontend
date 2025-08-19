@@ -33,12 +33,6 @@ function AuthMenu() {
         : HeaderProfile;
   return (
     <div className="flex items-center">
-      {/* 임시 로그인 버튼 */}
-      <div className="mx-3 flex h-full w-[96px] items-center justify-center">
-        <Link to={ROUTES.AUTH.LOGIN} className="font-extrabold text-black">
-          로그인
-        </Link>
-      </div>
       {/*  로그인 여부에 따른 메뉴 */}
       {isLoggedIn ? (
         <div className="flex h-full items-center gap-5">
