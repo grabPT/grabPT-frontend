@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 
+import ProfileHeader from '@/assets/images/HeaderProfile.png';
 import UserRequestHeader from '@/features/Requests/components/UserRequestHeader';
 import type { RealtimeMatchingType } from '@/types/RealtimeMatchingType';
 
@@ -13,7 +14,11 @@ const MatchingStatusCard = ({ match }: MatchingStatusCardProps) => {
 
   return (
     <div className="flex h-[48px] w-[380px] items-center">
-      <UserRequestHeader nickName={match.nickname} location={match.region} />
+      <UserRequestHeader
+        nickName={match.nickname}
+        profileImg={match.profileImageUrl ? match.profileImageUrl : ProfileHeader}
+        location={match.region}
+      />
       {/* 오른쪽: 횟수 | 가격 ● */}
       <div className="flex items-center">
         {/* 횟수 + 구분선 + 가격 */}
