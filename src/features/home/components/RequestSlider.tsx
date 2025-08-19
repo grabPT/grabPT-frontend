@@ -20,7 +20,6 @@ function RequestSlider({ title, requests }: RequestSliderProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const settings = {
-    className: 'center',
     infinite: false,
     centerMode: false,
     centerPadding: '0px',
@@ -32,9 +31,9 @@ function RequestSlider({ title, requests }: RequestSliderProps) {
     nextArrow: <NextArrow />,
     prevArrow: currentSlide === 0 ? undefined : <PrevArrow />,
     responsive: [
-      { breakpoint: 1024, settings: { slidesToShow: 2, dots: false } },
-      { breakpoint: 1280, settings: { slidesToShow: 2 } },
-      { breakpoint: 1536, settings: { slidesToShow: 3 } },
+      { breakpoint: 720, settings: { slidesToShow: 2, dots: false } },
+      { breakpoint: 1080, settings: { slidesToShow: 2 } },
+      { breakpoint: 1440, settings: { slidesToShow: 3 } },
     ],
   };
 
