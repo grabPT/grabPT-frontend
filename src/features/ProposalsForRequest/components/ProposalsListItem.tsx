@@ -23,7 +23,7 @@ const ProposalsListItem = ({ proposal }: ProposalsListItemProps) => {
           src={proposal.profileImageUrl}
           onError={(e) => onErrorImage(e)}
           alt="제안 트레이너 프로필"
-          className="h-24"
+          className="h-24 w-24 rounded-full"
         />
 
         <div className="flex flex-col justify-between">
