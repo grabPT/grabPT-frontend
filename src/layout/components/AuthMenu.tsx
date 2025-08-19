@@ -74,7 +74,7 @@ function AuthMenu() {
             <img
               src={myInfo?.profileImageUrl ?? HeaderProfile}
               alt="프로필"
-              className="h-[45px] w-[45px] cursor-pointer"
+              className="h-[45px] w-[45px] cursor-pointer rounded-full"
               onMouseEnter={() => setIsOpenProfileDropdown(true)}
               onClick={() => {
                 if (role === 'EXPERT') {
