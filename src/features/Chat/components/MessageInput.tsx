@@ -30,17 +30,31 @@ export const MessageInput = memo(function MessageInput({
 
   const handleFileChange = useCallback(
     async (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (e.target.files && e.target.files[0]) {
-        const file = e.target.files[0];
-        const options = { maxSizeMB: 1, maxWidthOrHeight: 1024 };
-        try {
-          const compressedFile = await imageCompression(file, options);
-          setSelectedFile(compressedFile);
-          onFileSelect?.(file);
-          e.currentTarget.value = '';
-        } catch (error) {
-          console.error(error);
+      const f = e.target.files?.[0];
+      if (!f) return;
+
+      // 이미지 여부(+ GIF / SVG는 제외)
+      const mime = f.type.toLowerCase();
+      const isImage = mime.startsWith('image/') && !mime.includes('gif') && !mime.includes('svg');
+
+      try {
+        if (isImage) {
+          const options = { maxSizeMB: 1, maxWidthOrHeight: 1024, useWebWorker: true };
+          const compressed = await imageCompression(f, options);
+          setSelectedFile(compressed);
+          onFileSelect?.(compressed); // ← 이미지면 압축본을 전달
+        } else {
+          setSelectedFile(f);
+          onFileSelect?.(f); // ← 비이미지면 원본 그대로
         }
+      } catch (err) {
+        console.error(err);
+        // 실패 시 원본이라도 유지하고 싶다면 아래 주석 해제
+        // setSelectedFile(f);
+        // onFileSelect?.(f);
+      } finally {
+        // 같은 파일 재선택 가능하게 초기화
+        e.currentTarget.value = '';
       }
     },
     [onFileSelect],
