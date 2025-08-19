@@ -7,7 +7,7 @@ export type alarmType = {
   title: string;
   content: string;
   redirectUrl: string;
-  sendAt: string;
+  sentAt: string;
   read: boolean;
 };
 

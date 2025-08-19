@@ -1,18 +1,34 @@
 import { formatDistanceToNow, isValid, parseISO } from 'date-fns';
 import { ko } from 'date-fns/locale';
 
-export function formatTimeAgo(input: string | Date) {
-  const date = input instanceof Date ? input : parseISO(input);
-  if (!isValid(date)) return '';
+export function formatTimeAgo(input: string | Date | null | undefined) {
+  if (input == null) return ''; // null/undefined 방어
+
+  const date =
+    input instanceof Date
+      ? input
+      : typeof input === 'string' && input.trim()
+        ? safeParseISO(input)
+        : null;
+
+  if (!date || !isValid(date)) return '';
 
   const diffSec = (Date.now() - date.getTime()) / 1000;
 
-  // 30초 미만은 "방금 전"
   if (diffSec < 30) return '방금 전';
 
   return formatDistanceToNow(date, {
-    addSuffix: true, // "~ 전" 접미사
-    includeSeconds: diffSec < 60, // 1분 미만일 땐 초 단위도 표시
+    addSuffix: true,
+    includeSeconds: diffSec < 60,
     locale: ko,
   });
+}
+
+function safeParseISO(v: string): Date | null {
+  try {
+    const d = parseISO(v);
+    return isValid(d) ? d : null;
+  } catch {
+    return null;
+  }
 }

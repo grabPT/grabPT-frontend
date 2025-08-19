@@ -34,7 +34,7 @@ const AlramDropdownItem = ({ alarm }: AlarmDropdownItemProps) => {
 
   const imagePath = IMAGE_BY_TYPE[alarm.type] ?? textImage;
 
-  const timeAgo = useTimeAgo(alarm.sendAt); // 예: "3분 전", "어제", "5일 전"
+  const timeAgo = useTimeAgo(alarm.sentAt); // 예: "3분 전", "어제", "5일 전"
 
   return (
     <div
