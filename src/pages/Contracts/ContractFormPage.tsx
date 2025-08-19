@@ -21,6 +21,7 @@ import {
   usePostContractExpertInfo,
   usePostContractUserInfo,
 } from '@/features/Contract/hooks/usePostContractInfo';
+import { usePostContractPdf } from '@/features/Contract/hooks/usePostContractPdf';
 import {
   usePostProSignatureFile,
   usePostUserSignatureFile,
@@ -181,6 +182,7 @@ const ContractFormPage = () => {
   const { mutate: uploadProInfo, isPending: uploadingProInfo } = usePostContractExpertInfo();
   const { mutate: uploadUserSign, isPending: uploadingUser } = usePostUserSignatureFile();
   const { mutate: uploadProSign, isPending: uploadingPro } = usePostProSignatureFile();
+  const { mutate: createPdf } = usePostContractPdf();
   const uploading = uploadingUser || uploadingPro || uploadingUserInfo || uploadingProInfo;
 
   // ─────────────────────────────────────────────────────────────
@@ -310,6 +312,10 @@ const ContractFormPage = () => {
     }
   };
 
+  const handleCreatePdf = () => {
+    createPdf(contractId);
+  };
+
   return (
     <section className="mb-8 flex flex-col items-center">
       <section className="my-8 flex w-[1077px] shrink-0 flex-col items-center gap-8 bg-[#EFEFEF] px-2 py-8 text-sm font-light whitespace-pre-line">
@@ -412,7 +418,7 @@ const ContractFormPage = () => {
             )}
             <Button
               width="w-full"
-              onClick={handleSubmit}
+              onClick={userComplete && proComplete && !isExpert ? handleCreatePdf : handleSubmit}
               disabled={primaryDisabled}
               className={primaryFullWidth ? 'col-span-2' : undefined}
             >
