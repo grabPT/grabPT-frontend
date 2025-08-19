@@ -13,7 +13,8 @@ const ExpertMainPage = () => {
   const profileData = data?.result;
   const matched = SPORTS.find((s) => s.slug === profileData?.categoryName);
   const categoryType: SportsSlugType = matched?.slug ?? 'health';
-
+  console.log('matched', matched);
+  console.log('categoryType', categoryType);
   // 임시로 요청서 데이터를 가져오는 훅 사용(전문가 전용이 있으면 교체할 것)
   const { data: requests } = useGetMatchingRequestsList({ sortBy: 'latest', page: 1, size: 40 });
 
