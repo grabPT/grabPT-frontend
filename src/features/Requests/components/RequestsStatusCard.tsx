@@ -26,7 +26,11 @@ const RequestsStatusCard = ({ request }: RequestsStatusCardProps) => {
       onClick={() => navigateToRequestDetail(request.requestId)}
       className="flex h-[75px] w-[700px] cursor-pointer flex-row items-center justify-between rounded-2xl border border-gray-200 bg-white px-4 py-3 shadow-xl transition-shadow duration-200 hover:shadow-lg"
     >
-      <UserRequestHeader nickName={request.username} location={request.userStreet} />
+      <UserRequestHeader
+        nickName={request.username}
+        profileImg={request.userProfileImageUrl}
+        location={request.userStreet}
+      />
       <div className="flex items-center space-x-2">
         <span className="text-sm text-gray-700">{request.sessionCount}회</span>
         <span className="text-gray-400">|</span>
