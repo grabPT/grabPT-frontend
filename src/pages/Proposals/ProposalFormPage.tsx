@@ -76,9 +76,13 @@ const ProposalFormPage = () => {
     <section className="flex w-full flex-col items-center gap-12 py-12 text-2xl font-extrabold">
       {/* 헤더 */}
       <div className="flex items-center gap-3">
-        <img src={requestInfo?.profileImageUrl || Profile} alt="요청자 프로필" className="h-12" />
+        <img
+          src={requestInfo?.profileImageUrl || Profile}
+          alt="요청자 프로필"
+          className="h-12 w-12 rounded-full"
+        />
         <span className="text-[2.5rem] font-bold">
-          {requestInfo?.location} {requestInfo?.nickname}{' '}
+          {requestInfo?.location.substring(1)} {requestInfo?.nickname}{' '}
         </span>
         <span className="text-2xl font-semibold">고객에게 제안서 작성</span>
       </div>
