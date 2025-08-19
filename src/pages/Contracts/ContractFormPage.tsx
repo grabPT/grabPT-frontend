@@ -316,7 +316,7 @@ const ContractFormPage = () => {
 
   const handleCreatePdf = () => {
     createPdf(contractId);
-    postCustomOrder({ price: 10000, item_name: 'test', matching_id: contractId });
+    postCustomOrder({ price: 10000, item_name: 'test', matching_id: 6 });
   };
 
   return (
