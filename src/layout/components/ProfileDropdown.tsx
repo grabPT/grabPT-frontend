@@ -28,32 +28,32 @@ const DropdownItem = memo(function DropdownItem({ label, onClick }: Item) {
 function ProfileDropdown() {
   const navigate = useNavigate();
   const { role } = useRoleStore();
+  const isExpert = role === 'EXPERT';
   const { mutate: logout } = useLogout();
   const refreshToken = decodeCookie('refreshToken');
   const navigateToMyInfo = useCallback(() => {
-    if (role === 'EXPERT') navigate(ROUTES.MYPAGE.EXPERT);
+    if (isExpert) navigate(ROUTES.MYPAGE.EXPERT);
     else navigate(ROUTES.MYPAGE.USER);
-  }, [role, navigate]);
+  }, [isExpert, navigate]);
 
   const navigateToSettlement = useCallback(() => {
-    navigate(ROUTES.EXPERT_SETTLEMENT);
-  }, [navigate]);
+    if (isExpert) navigate(ROUTES.EXPERT_SETTLEMENT);
+    else navigate(ROUTES.USER_SETTLEMENT);
+  }, [navigate, isExpert]);
 
   /* isExpert 변동 시에만 재계산 */
-  const items = useMemo<Item[]>(() => {
-    const base: Item[] = [
-      { label: '내정보', onClick: navigateToMyInfo },
-      { label: '로그아웃', onClick: () => logout({ refreshToken }) },
-    ];
+  const handleLogout = useCallback(() => {
+    logout({ refreshToken });
+  }, [logout, refreshToken]);
 
-    return role === 'EXPERT'
-      ? [
-          { label: '내정보', onClick: navigateToMyInfo },
-          { label: '정산 등록', onClick: navigateToSettlement },
-          base[1],
-        ]
-      : base;
-  }, [navigateToMyInfo, role, navigateToSettlement, logout, refreshToken]);
+  const items = useMemo<Item[]>(
+    () => [
+      { label: '내정보', onClick: navigateToMyInfo },
+      { label: isExpert ? '정산 현황' : '결제 내역', onClick: navigateToSettlement },
+      { label: '로그아웃', onClick: handleLogout },
+    ],
+    [navigateToMyInfo, isExpert, navigateToSettlement, handleLogout],
+  );
 
   return (
     <Box width="" height="" className="flex flex-col rounded-xl bg-white">
