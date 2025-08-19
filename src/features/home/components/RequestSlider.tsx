@@ -4,6 +4,7 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 
+import HeaderProfile from '@/assets/images/HeaderProfile.png';
 import type { RequestsListResultType } from '@/features/Requests/types/getRequestsListType';
 import { NextArrow, PrevArrow } from '@/features/home/components/CustomArrow';
 import RequestCardInMain from '@/features/home/components/RequestCard';
@@ -58,10 +59,15 @@ function RequestSlider({ title, requests }: RequestSliderProps) {
                   role === 'USER'
                     ? `${userInfo?.address[0].city} ${userInfo?.address[0].district} ${userInfo?.address[0].street}`
                     : role === 'EXPERT'
-                      ? `${r?.address?.[0]?.city ?? ''} ${userInfo?.address?.[0]?.district ?? ''} ${userInfo?.address?.[0]?.street ?? ''}`
-                      : ''
+                      ? (r?.location ?? '') : ''
                 }
-                profileImg={userInfo?.profileImageUrl}
+                profileImg={
+                  role === 'USER'
+                    ? userInfo?.profileImageUrl
+                    : role === 'EXPERT'
+                      ? r?.userProfileImageUrl
+                      : HeaderProfile
+                }
                 tags={{
                   availableTimes: r.availableTimes,
                   daysPerWeek: r.availableDays.length,
