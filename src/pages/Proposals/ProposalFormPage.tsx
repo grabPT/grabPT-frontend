@@ -81,7 +81,7 @@ const ProposalFormPage = () => {
           className="h-12 w-12 rounded-full"
         />
         <span className="text-[2.5rem] font-bold">
-          {requestInfo?.location?.slice(1)} {requestInfo?.nickname}{' '}
+          {(requestInfo?.location ?? '').split(' ').slice(1).join(' ')} {requestInfo?.nickname}{' '}
         </span>
         <span className="text-2xl font-semibold">고객에게 제안서 작성</span>
       </div>
