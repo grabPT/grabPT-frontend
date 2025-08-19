@@ -316,8 +316,8 @@ const ContractFormPage = () => {
 
   const handleCreatePdf = async () => {
     createPdf(contractId);
-    postCustomOrder({ price: 10000, item_name: 'test', matching_id: 6 });
-    window.open('https://api.grabpt.com/payment.html', '_blank');
+    await window.open('https://api.grabpt.com/payment.html', '_blank');
+    setTimeout(() => postCustomOrder({ price: 100, item_name: 'test', matching_id: 10 }), 1000);
   };
 
   return (
