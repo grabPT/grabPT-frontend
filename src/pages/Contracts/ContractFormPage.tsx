@@ -314,9 +314,10 @@ const ContractFormPage = () => {
     }
   };
 
-  const handleCreatePdf = () => {
+  const handleCreatePdf = async () => {
     createPdf(contractId);
     postCustomOrder({ price: 10000, item_name: 'test', matching_id: 6 });
+    window.open('https://api.grapt.com/payment.html', '_blank');
   };
 
   return (
