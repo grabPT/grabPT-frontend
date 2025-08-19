@@ -358,7 +358,7 @@ const ContractFormPage = () => {
       {
         onSuccess: (response) => {
           const { IMP } = window;
-          IMP.init('가맹점 식별코드');
+          IMP.init('imp05656377');
           const order = response.result;
           const body = {
             pg: 'html5_inicis.INIpayTest',
