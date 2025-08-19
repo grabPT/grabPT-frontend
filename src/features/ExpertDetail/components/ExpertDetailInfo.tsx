@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import type { certificationResponse } from '@/apis/getProCertifications';
+import { postCreateChatRoom } from '@/apis/postCreateChatRoom';
 import Profile from '@/assets/images/HeaderProfile.png';
 import Button from '@/components/Button';
 import { CirtificationCard } from '@/components/CirtificationCard';
@@ -11,6 +12,7 @@ import ProfilePrice from '@/components/ProfilePrice';
 import { TitleLine } from '@/components/TitleLine';
 import ROUTES from '@/constants/routes';
 import { useGetProProfileWithUserId } from '@/hooks/useGetProProfile';
+import { useGetUserInfo } from '@/hooks/useGetUserInfo';
 import type { PtPrice } from '@/types/ProPrifleType';
 
 export const ExpertDetailInfo = () => {
@@ -18,17 +20,17 @@ export const ExpertDetailInfo = () => {
   const [certifications, setCertifications] = useState<certificationResponse[]>([]);
   const [pricePerOne, setPricePerOne] = useState<number | null>(null);
   const [prices, setPrices] = useState<PtPrice[]>([]);
+  const navigate = useNavigate();
 
   const { id } = useParams();
-  const userId = Number(id);
+  const proId = Number(id);
+  const { data: userInfo } = useGetUserInfo();
+  const userId = userInfo?.userId;
 
-  const nav = useNavigate();
-  const handleChatButton = () => {
-    nav(ROUTES.CHAT.ROOT);
-  };
   // const { data: credentialList } = useGetCredentialList();
   // console.log(credentialList);
-  const { data } = useGetProProfileWithUserId(userId);
+
+  const { data } = useGetProProfileWithUserId(proId);
 
   const profileData = data?.result;
 
@@ -46,6 +48,14 @@ export const ExpertDetailInfo = () => {
       setPrices(profileData.ptPrices);
     }
   }, [profileData]);
+  const 채팅상담 = () => {
+    if (userId == undefined || profileData?.proId === undefined) {
+      console.log('안됨');
+      return;
+    }
+    postCreateChatRoom({ userId: userId, proId: profileData.proId });
+    navigate(ROUTES.CHAT.ROOT);
+  };
 
   return (
     <div className="flex w-[800px] flex-col items-center justify-center">
@@ -67,7 +77,7 @@ export const ExpertDetailInfo = () => {
             width="w-[17.5rem]"
             height="h-[2.625rem]"
             text="text-white text-[15px] font-semibold"
-            onClick={handleChatButton}
+            onClick={채팅상담}
           >
             채팅 상담
           </Button>
