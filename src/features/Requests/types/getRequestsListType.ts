@@ -15,7 +15,7 @@ export type RequestsListItemType = {
   price: number;
   status: MatchStatusType;
   userProfileImageUrl: string;
-  requstionId: number;
+  requestionId: number;
 };
 
 export type getRequestsListResultType = {
