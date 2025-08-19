@@ -75,6 +75,7 @@ const ContractFormPage = () => {
   const contractId = Number(id);
 
   const [isAgree, setIsAgree] = useState<boolean>(false);
+  const [disabledAgree, setIsDisabledAgree] = useState<boolean>(false);
 
   // 서명(base64) — 미리보기 용
   const [memberSign, setMemberSign] = useState<string | null>(null);
@@ -195,12 +196,16 @@ const ContractFormPage = () => {
       showCancel = false;
       primaryDisabled = true;
       primaryFullWidth = true;
+      setIsAgree(true);
+      setIsDisabledAgree(true);
     } else if (userComplete && proComplete) {
       // 양측 완료 → 잠금 + 결제 버튼 활성 + w-full
       showCancel = false;
       primaryDisabled = false;
       primaryLabel = '계약서 제출 및 결제';
       primaryFullWidth = true;
+      setIsAgree(true);
+      setIsDisabledAgree(true);
     }
   } else {
     // EXPERT 화면 규칙
@@ -209,6 +214,8 @@ const ContractFormPage = () => {
       showCancel = false;
       primaryDisabled = true;
       primaryFullWidth = true;
+      setIsAgree(true);
+      setIsDisabledAgree(true);
     }
   }
 
@@ -347,6 +354,8 @@ const ContractFormPage = () => {
             checked={isAgree}
             onChange={handleAgree}
             aria-label="고객 요청 수락"
+            defaultChecked={disabledAgree}
+            disabled={disabledAgree}
           />
           <p className="text-base font-normal">(필수) 개인정보 수집,이용에 동의합니다</p>
         </div>
