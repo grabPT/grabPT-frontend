@@ -4,16 +4,15 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 
+import type { getRequestsListResultType } from '@/features/Requests/types/getRequestsListType';
 import { NextArrow, PrevArrow } from '@/features/home/components/CustomArrow';
 import RequestCardInMain from '@/features/home/components/RequestCard';
 import { useGetUserInfo } from '@/hooks/useGetUserInfo';
 import type { getMyRequestsListResultType } from '@/types/getMyRequestListResponse';
 
-// import { useGetMatchingRequestsList } from '@/features/Requests/hooks/useGetMyRequestsList';
-
 interface RequestSliderProps {
   title: string;
-  requests: getMyRequestsListResultType['content'];
+  requests: getMyRequestsListResultType['content'] | getRequestsListResultType['content'];
 }
 
 function RequestSlider({ title, requests }: RequestSliderProps) {
@@ -37,7 +36,6 @@ function RequestSlider({ title, requests }: RequestSliderProps) {
     ],
   };
   //임시방편용 사용자 이름
-  //useGetMatchingRequestsList이걸로 바꾸기
   const { data: userInfo } = useGetUserInfo();
   const name = userInfo?.nickname;
   const location = `${userInfo?.address[0].city} ${userInfo?.address[0].district} ${userInfo?.address[0].street}`;

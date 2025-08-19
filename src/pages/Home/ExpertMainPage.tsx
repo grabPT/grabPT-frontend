@@ -1,7 +1,7 @@
 import Banner from '@/components/Banner';
 import ProfileCard from '@/components/ProfileCard';
+import { useGetMatchingRequestsList } from '@/features/Requests/hooks/useGetMyRequestsList';
 import RequestSlider from '@/features/home/components/RequestSlider';
-import { useGetMyRequestsList } from '@/hooks/useGetMyRequestsList';
 import { useProProfileQuery } from '@/hooks/useGetProProfile';
 
 const ExpertMainPage = () => {
@@ -10,7 +10,7 @@ const ExpertMainPage = () => {
   const profileData = data?.result;
   // 임시로 요청서 데이터를 가져오는 훅 사용(전문가 전용이 있으면 교체할 것)
   //
-  const { data: requests } = useGetMyRequestsList({ page: 1, size: 40 }, true);
+  const { data: requests } = useGetMatchingRequestsList({ sortBy: 'latest', page: 1, size: 40 });
 
   if (isLoading) return <div>로딩 중...</div>;
   if (isError || !profileData) return <div>에러 발생</div>;

@@ -1,4 +1,5 @@
 import type { MatchStatusType } from '@/types/RealtimeMatchingType';
+import type { TimeSlot } from '@/types/ReqeustsType';
 import type { SortByType, SortType } from '@/types/SortType';
 import type { CommonResponseDto } from '@/types/commonResponseDto';
 
@@ -15,7 +16,11 @@ export type RequestsListItemType = {
   price: number;
   status: MatchStatusType;
   userProfileImageUrl: string;
-  requestionId: number;
+  requestId: number;
+  availableTimes: TimeSlot[];
+  availableDays: string[];
+  categoryName: string;
+  content: string;
 };
 
 export type getRequestsListResultType = {

@@ -31,7 +31,8 @@ const ReviewCard = ({
   const navigate = useNavigate();
 
   const boxClick = () => {
-    navigate(`/expert/${proId}`);
+    if (role === 'EXPERT') return;
+    else navigate(`/expert/${proId}`);
   };
 
   return (
