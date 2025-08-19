@@ -27,5 +27,9 @@ export const SPORTS: SportItem[] = [
   { id: 7, slug: 'badminton', label: '배드민턴', img: Badminton },
   { id: 8, slug: 'running', label: '런닝', img: Running },
   { id: 9, slug: 'dance', label: '댄스', img: Dance },
-  { id: 10, slug: 'tennis', label: '탁구', img: Tabletennis },
+  { id: 10, slug: 'pingpong', label: '탁구', img: Tabletennis },
 ];
+
+export function getLabelFromSlug(slug: string): SportsLabelType | undefined {
+  return SPORTS.find((s) => s.slug === slug)?.label;
+}

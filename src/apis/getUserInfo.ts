@@ -18,6 +18,7 @@ export interface UserInfo {
   email: string;
   profileImageUrl: string;
   role: 'PRO' | 'USER'; // 필요 시 enum 확장
+  categoryName: string;
 }
 
 export interface ApiResponse<T> {

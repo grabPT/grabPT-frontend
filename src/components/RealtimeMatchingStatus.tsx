@@ -7,6 +7,7 @@ import ErrorComponent from '@/components/ErrorComponent';
 import LoadingMuscle from '@/components/LoadingMuscle';
 import MatchingStatusCard from '@/components/MatchingStatusCard';
 import ROUTES from '@/constants/routes';
+import { getLabelFromSlug } from '@/constants/sports';
 import { useGetRealtimeMatching } from '@/hooks/useGetRealtimeMatching';
 import { useRoleStore } from '@/store/useRoleStore';
 import type {} from '@/types/RealtimeMatchingType';
@@ -23,7 +24,6 @@ const RealtimeMatchingStatus = ({ categoryType }: RealtimeMatchingStatusProps) =
   const navigate = useNavigate();
   const { isLoggedIn, role } = useRoleStore();
   const [cardCount, setCardCount] = useState(8);
-
   const handleRequestWriteClick = () => {
     if (!isLoggedIn) {
       alert('로그인이 필요합니다.');
@@ -32,7 +32,7 @@ const RealtimeMatchingStatus = ({ categoryType }: RealtimeMatchingStatusProps) =
       alert('전문가 계정은 요청서를 작성할 수 없습니다.');
     } else navigate(ROUTES.MATCHING_STATUS.REQUESTS.NEW);
   };
-
+  const categoryLabel = getLabelFromSlug(categoryType);
   // 화면 폭에 따라 카드 개수 조정
   useEffect(() => {
     const update = () => {
@@ -53,7 +53,7 @@ const RealtimeMatchingStatus = ({ categoryType }: RealtimeMatchingStatusProps) =
   return (
     <section className="flex max-w-[1480px] flex-col gap-9 px-4 sm:w-[720px] lg:w-[720px] xl:w-[1080px] 2xl:w-[1480px]">
       <h2 className="font-[Pretendard Variable] leading-[40px] font-extrabold text-black not-italic sm:text-[24px] xl:text-[30px]">
-        실시간 매칭 현황
+        {categoryLabel} 실시간 매칭 현황
       </h2>
 
       <div className="mt-9 grid grid-cols-1 gap-x-[20px] gap-y-[16px] md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
@@ -63,18 +63,20 @@ const RealtimeMatchingStatus = ({ categoryType }: RealtimeMatchingStatusProps) =
       </div>
 
       {/* 오른쪽 아래 정렬 */}
-      <div className="flex justify-end">
-        <Button
-          label="요청서 작성"
-          width="w-[189px]"
-          height="h-[42px]"
-          text="text-[15px] font-semibold text-white"
-          onClick={handleRequestWriteClick}
-          className="cursor-pointer"
-        >
-          요청서 작성
-        </Button>
-      </div>
+      {!(role === 'EXPERT') && (
+        <div className="flex justify-end">
+          <Button
+            label="요청서 작성"
+            width="w-[189px]"
+            height="h-[42px]"
+            text="text-[15px] font-semibold text-white"
+            onClick={handleRequestWriteClick}
+            className="cursor-pointer"
+          >
+            요청서 작성
+          </Button>
+        </div>
+      )}
     </section>
   );
 };

@@ -1,15 +1,20 @@
 import Banner from '@/components/Banner';
 import ProfileCard from '@/components/ProfileCard';
+import RealtimeMatchingStatus from '@/components/RealtimeMatchingStatus';
+import { SPORTS } from '@/constants/sports';
 import { useGetMatchingRequestsList } from '@/features/Requests/hooks/useGetMyRequestsList';
 import RequestSlider from '@/features/home/components/RequestSlider';
 import { useProProfileQuery } from '@/hooks/useGetProProfile';
+import type { SportsSlugType } from '@/types/SportsType';
 
 const ExpertMainPage = () => {
   const { data, isLoading, isError } = useProProfileQuery();
 
   const profileData = data?.result;
+  const matched = SPORTS.find((s) => s.slug === profileData?.categoryName);
+  const categoryType: SportsSlugType = matched?.slug ?? 'health';
+
   // 임시로 요청서 데이터를 가져오는 훅 사용(전문가 전용이 있으면 교체할 것)
-  //
   const { data: requests } = useGetMatchingRequestsList({ sortBy: 'latest', page: 1, size: 40 });
 
   if (isLoading) return <div>로딩 중...</div>;
@@ -27,7 +32,9 @@ const ExpertMainPage = () => {
       <div className="mt-[145px]">
         <RequestSlider title={'받은 요청서'} requests={requests?.content ?? []} />
       </div>
-
+      <div className="my-[200px]">
+        <RealtimeMatchingStatus categoryType={categoryType} />
+      </div>
       <div className="mt-[182px]">
         <Banner />
       </div>
