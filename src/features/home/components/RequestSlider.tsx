@@ -53,10 +53,16 @@ function RequestSlider({ title, requests }: RequestSliderProps) {
               <RequestCardInMain
                 id={r.requestId}
                 name={r.nickname}
-                location={`${r?.address?.[0]?.city ?? ''} ${r?.address?.[0]?.district ?? ''} ${r?.address?.[0]?.street ?? ''}`}
+                location={
+                  role === 'USER'
+                    ? (r?.location ?? '')
+                    : role === 'EXPERT'
+                      ? `${r?.address?.[0]?.city ?? ''} ${r?.address?.[0]?.district ?? ''} ${r?.address?.[0]?.street ?? ''}`
+                      : ''
+                }
                 profileImg={
                   role === 'USER'
-                    ? r?.profileImageUrl
+                    ? r?.imageURL
                     : role === 'EXPERT'
                       ? r?.userProfileImageUrl
                       : HeaderProfile

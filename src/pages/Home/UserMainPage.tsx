@@ -21,6 +21,7 @@ const UserMainPage = () => {
     return SPORTS[randomIndex].slug;
   }
   const { data: userData } = useGetUserInfo();
+
   const matched = SPORTS.find((s) => s.slug === userData?.categoryName);
   const categoryType: SportsSlugType =
     role === 'GUEST'
