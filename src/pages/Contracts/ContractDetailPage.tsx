@@ -12,7 +12,7 @@ const ContractDetailPage = () => {
   if (isError) return <ErrorComponent />;
   return (
     <>
-      <iframe src={pdfUrl} title="PDF Viewer" className="h-[800px] w-full" />
+      <iframe src={pdfUrl} title="PDF Viewer" className="my-20 h-[800px] w-full" />
     </>
   );
 };
