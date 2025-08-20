@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick-theme.css';
@@ -22,49 +22,52 @@ function RequestSlider({ title, requests, location, name }: RequestSliderProps) 
   const { role } = useRoleStore();
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const settings = {
-    dots: true,
-    infinite: false,
-    speed: 500,
-    slidesToShow: 4, // 기본 데스크톱 기준 4개
-    slidesToScroll: 1,
-    initialSlide: 0,
-    beforeChange: (_: number, next: number) => setCurrentSlide(next),
-    nextArrow: <NextArrow />,
-    prevArrow: currentSlide === 0 ? undefined : <PrevArrow />,
-    responsive: [
-      {
-        breakpoint: 1536, // 1536px 이하일 때
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 1,
+  const settings = useMemo(
+    () => ({
+      dots: true,
+      infinite: false,
+      speed: 500,
+      slidesToShow: 4, // 기본 데스크톱 기준 4개
+      slidesToScroll: 1,
+      initialSlide: 0,
+      beforeChange: (_: number, next: number) => setCurrentSlide(next),
+      nextArrow: <NextArrow />,
+      prevArrow: currentSlide === 0 ? undefined : <PrevArrow />,
+      responsive: [
+        {
+          breakpoint: 720, // 720px 이하 (모바일)
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            dots: false,
+          },
         },
-      },
-      {
-        breakpoint: 1280, // 1280px 이하일 때
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1,
+        {
+          breakpoint: 1024, // 1024px 이하
+          settings: {
+            slidesToShow: 2,
+            slidesToScroll: 1,
+            dots: false,
+          },
         },
-      },
-      {
-        breakpoint: 1024, // 1024px 이하일 때
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1,
-          dots: false,
+        {
+          breakpoint: 1280, // 1280px 이하
+          settings: {
+            slidesToShow: 2,
+            slidesToScroll: 1,
+          },
         },
-      },
-      {
-        breakpoint: 720, // 720px 이하일 때 (모바일)
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          dots: false,
+        {
+          breakpoint: 1536, // 1536px 이하
+          settings: {
+            slidesToShow: 3,
+            slidesToScroll: 1,
+          },
         },
-      },
-    ],
-  };
+      ],
+    }),
+    [currentSlide],
+  );
 
   return (
     <section
