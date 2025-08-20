@@ -40,11 +40,14 @@ function RequestSlider({ title, requests, location, name }: RequestSliderProps) 
     ],
   };
 
+  console.log(currentSlide);
+
   useEffect(() => {
     const timer = setTimeout(() => {
       const prevBtn = document.querySelector('.slick-prev') as HTMLButtonElement;
       if (prevBtn) {
-        prevBtn.click(); // 실제 버튼 클릭
+        prevBtn.click();
+        console.log("클릭됨"); // 실제 버튼 클릭
       }
     }, 100);
 
