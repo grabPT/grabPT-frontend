@@ -19,7 +19,7 @@ const MatchingStatusCard = ({ match }: MatchingStatusCardProps) => {
         profileImg={match.profileImageUrl ? match.profileImageUrl : ProfileHeader}
         location={match.region}
       />
-      <div>
+      <div className="flex">
         {/* 오른쪽: 횟수 | 가격 ● */}
         <div className="flex items-center">
           {/* 횟수 + 구분선 + 가격 */}
