@@ -47,7 +47,7 @@ function RequestSlider({ title, requests, location, name }: RequestSliderProps) 
       const prevBtn = document.querySelector('.slick-prev') as HTMLButtonElement;
       if (prevBtn) {
         prevBtn.click();
-        console.log("클릭됨"); // 실제 버튼 클릭
+        console.log('클릭됨'); // 실제 버튼 클릭
       }
     }, 100);
 
