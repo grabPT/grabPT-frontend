@@ -11,7 +11,7 @@ interface MyProposalsListItemProps {
 }
 
 const MyProposalsListItem = ({ proposal }: MyProposalsListItemProps) => {
-  // const profileImage = proposal.imggeUrl || Profile
+  const profileImage = proposal.profileImageUrl || Profile;
   const navigate = useNavigate();
   const isMatched = proposal.status === 'MATCHED';
 
@@ -23,7 +23,7 @@ const MyProposalsListItem = ({ proposal }: MyProposalsListItemProps) => {
     >
       <div className="flex w-full items-center justify-between pr-4 pl-3">
         <div className="flex gap-2.5">
-          <img src={Profile} alt="제안서를 받은 요청자의 프로필이미지" className="h-12" />
+          <img src={profileImage} alt="제안서를 받은 요청자의 프로필이미지" className="h-12" />
 
           <div className="text-sm font-medium">
             <p className="text-base font-semibold">{proposal.requestionNickname} 님께 제안</p>

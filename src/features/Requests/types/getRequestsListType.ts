@@ -80,4 +80,5 @@ export type RequestsListItemProps = {
   categoryName: string;
   sessionCount?: number;
   content: string;
+  profileImageUrl?: string;
 };

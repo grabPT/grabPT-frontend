@@ -8,7 +8,6 @@ import HeaderProfile from '@/assets/images/HeaderProfile.png';
 import type { RequestsListResultType } from '@/features/Requests/types/getRequestsListType';
 import { NextArrow, PrevArrow } from '@/features/home/components/CustomArrow';
 import RequestCardInMain from '@/features/home/components/RequestCard';
-import { useGetUserInfo } from '@/hooks/useGetUserInfo';
 import { useRoleStore } from '@/store/useRoleStore';
 
 interface RequestSliderProps {
@@ -18,6 +17,7 @@ interface RequestSliderProps {
 
 function RequestSlider({ title, requests }: RequestSliderProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const { role } = useRoleStore();
   const containerRef = useRef<HTMLDivElement>(null);
   const settings = {
     infinite: false,
@@ -37,8 +37,6 @@ function RequestSlider({ title, requests }: RequestSliderProps) {
     ],
   };
 
-  const { data: userInfo } = useGetUserInfo();
-  const { role } = useRoleStore();
   return (
     <section
       ref={containerRef}
@@ -54,17 +52,11 @@ function RequestSlider({ title, requests }: RequestSliderProps) {
             <div key={i} className="h-[230px] px-4">
               <RequestCardInMain
                 id={r.requestId}
-                name={role === 'USER' ? userInfo?.nickname : role === 'EXPERT' ? r.nickname : ''}
-                location={
-                  role === 'USER'
-                    ? `${userInfo?.address[0].city} ${userInfo?.address[0].district} ${userInfo?.address[0].street}`
-                    : role === 'EXPERT'
-                      ? (r?.location ?? '')
-                      : ''
-                }
+                name={r.nickname}
+                location={`${r?.address?.[0]?.city ?? ''} ${r?.address?.[0]?.district ?? ''} ${r?.address?.[0]?.street ?? ''}`}
                 profileImg={
                   role === 'USER'
-                    ? userInfo?.profileImageUrl
+                    ? r?.profileImageUrl
                     : role === 'EXPERT'
                       ? r?.userProfileImageUrl
                       : HeaderProfile

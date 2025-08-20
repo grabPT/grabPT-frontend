@@ -12,6 +12,7 @@ export type proposalsListItemtype = {
   sessionCount: number;
   status: MatchStatusType;
   requestionId: number;
+  profileImageUrl: string;
 };
 
 export type getProposalsListResulttype = {
