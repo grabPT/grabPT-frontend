@@ -60,8 +60,8 @@ function RequestSlider({ title, requests, location, name }: RequestSliderProps) 
 
       <div className="relative mx-auto mb-[4px] max-w-[1480px] sm:w-[720px] lg:w-[720px] xl:w-[1080px] 2xl:w-[1480px]">
         <Slider {...settings}>
-          {requests.slice(0, 12).map((r, i) => (
-            <div key={i} className="h-[230px] px-4">
+          {requests.slice(0, 12).map((r, _i) => (
+            <div key={settings.slidesToShow} className="h-[230px] px-4">
               <RequestCardInMain
                 id={r.requestId}
                 name={role === 'USER' ? name : role === 'EXPERT' ? r.nickname : ''}
