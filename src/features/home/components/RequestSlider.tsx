@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick-theme.css';
@@ -18,44 +18,27 @@ interface RequestSliderProps {
 }
 
 function RequestSlider({ title, requests, location, name }: RequestSliderProps) {
+  const [currentSlide, setCurrentSlide] = useState(0);
   const { role } = useRoleStore();
   const containerRef = useRef<HTMLDivElement>(null);
-
-  const getSlidesByWidth = (width: number) => {
-    if (width <= 1280) return 2;
-    if (width <= 1536) return 3;
-    return 4;
-  };
-
-  const getInitialSlides = () => {
-    if (typeof window !== 'undefined') {
-      return getSlidesByWidth(window.innerWidth);
-    }
-    return 4;
-  };
-
-  const [slidesToShow, setSlidesToShow] = useState(getInitialSlides);
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  useEffect(() => {
-    const updateSlides = () => setSlidesToShow(getSlidesByWidth(window.innerWidth));
-
-    window.addEventListener('resize', updateSlides);
-    return () => window.removeEventListener('resize', updateSlides);
-  }, []);
-
   const settings = {
-    infinite: false,
-    centerMode: false,
-    centerPadding: '0px',
-    slidesToShow,
-    swipeToSlide: true,
-    arrows: true,
-    dots: true,
-    beforeChange: (_: number, next: number) => setCurrentSlide(next),
-    nextArrow: <NextArrow />,
-    prevArrow: currentSlide === 0 ? undefined : <PrevArrow />,
-  };
+  infinite: false,
+  centerMode: false,
+  centerPadding: "0px",
+  slidesToShow: 2,
+  swipeToSlide: true,
+  arrows: true,
+  dots: true,
+  beforeChange: (_: number, next: number) => setCurrentSlide(next),
+  nextArrow: <NextArrow />,
+  prevArrow: currentSlide === 0 ? undefined : <PrevArrow />,
+  responsive: [
+    { breakpoint: 720, settings: { slidesToShow: 2, dots: false } }, // 모바일
+    { breakpoint: 1080, settings: { slidesToShow: 2 } },             // 태블릿
+    { breakpoint: 1440, settings: { slidesToShow: 3 } },             // 노트북
+    { breakpoint: 9999, settings: { slidesToShow: 4 } },             // 데스크톱 이상
+  ],
+};
 
   return (
     <section
@@ -68,8 +51,8 @@ function RequestSlider({ title, requests, location, name }: RequestSliderProps) 
 
       <div className="relative mx-auto mb-[4px] max-w-[1480px] sm:w-[720px] lg:w-[720px] xl:w-[1080px] 2xl:w-[1480px]">
         <Slider {...settings}>
-          {requests.slice(0, 12).map((r, _i) => (
-            <div key={settings.slidesToShow} className="h-[230px] px-4">
+          {requests.slice(0, 12).map((r, i) => (
+            <div key={i} className="h-[230px] px-4">
               <RequestCardInMain
                 id={r.requestId}
                 name={role === 'USER' ? name : role === 'EXPERT' ? r.nickname : ''}
