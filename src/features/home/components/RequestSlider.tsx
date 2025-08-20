@@ -20,14 +20,13 @@ interface RequestSliderProps {
 function RequestSlider({ title, requests, location, name }: RequestSliderProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const { role } = useRoleStore();
-
   const containerRef = useRef<HTMLDivElement>(null);
 
   const settings = {
     dots: true,
     infinite: false,
     speed: 500,
-    slidesToShow: 4,
+    slidesToShow: 4, // 기본 데스크톱 기준 4개
     slidesToScroll: 1,
     initialSlide: 0,
     beforeChange: (_: number, next: number) => setCurrentSlide(next),
@@ -35,17 +34,34 @@ function RequestSlider({ title, requests, location, name }: RequestSliderProps) 
     prevArrow: currentSlide === 0 ? undefined : <PrevArrow />,
     responsive: [
       {
-        breakpoint: 720,
-        settings: { slidesToShow: 1, slidesToScroll: 1, initialSlide: 1, dots: false },
+        breakpoint: 1536, // 1536px 이하일 때
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+        },
       },
       {
-        breakpoint: 1024,
-        settings: { slidesToShow: 2, slidesToScroll: 1, initialSlide: 2, dots: false },
+        breakpoint: 1280, // 1280px 이하일 때
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
       },
-      { breakpoint: 1280, settings: { slidesToShow: 2, slidesToScroll: 1, initialSlide: 2 } },
       {
-        breakpoint: 1536,
-        settings: { slidesToShow: 3, slidesToScroll: 1, infinite: true, dots: true },
+        breakpoint: 1024, // 1024px 이하일 때
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          dots: false,
+        },
+      },
+      {
+        breakpoint: 720, // 720px 이하일 때 (모바일)
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          dots: false,
+        },
       },
     ],
   };
@@ -60,8 +76,7 @@ function RequestSlider({ title, requests, location, name }: RequestSliderProps) 
       </h2>
 
       <div className="relative mx-auto mb-[4px] max-w-[1480px] sm:w-[720px] lg:w-[720px] xl:w-[1080px] 2xl:w-[1480px]">
-        {/* ✅ key 트릭으로 강제 리렌더 → 초기화 버그 방지 */}
-        <Slider key={settings.slidesToShow} {...settings}>
+        <Slider {...settings}>
           {requests.slice(0, 12).map((r, i) => (
             <div key={i} className="h-[230px] px-4">
               <RequestCardInMain
