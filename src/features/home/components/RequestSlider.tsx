@@ -99,7 +99,7 @@ function RequestSlider({ title, requests, location, name }: RequestSliderProps) 
                   categoryName: r.categoryName,
                 }}
                 text={r.content}
-                isMatched={true}
+                isMatched={r.matchStatus === 'MATCHED'}
               />
             </div>
           ))}
@@ -145,7 +145,7 @@ export function Responsive() {
     ],
   };
   return (
-    <div className="slider-container h-[500px] w-[1480px]">
+    <div className="slider-container w-[1480px] h-[500px]">
       <Slider {...ssettings}>
         <div className="w-[300px]">
           <h3>1</h3>
