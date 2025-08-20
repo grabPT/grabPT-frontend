@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import clsx from 'clsx';
+import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 
 import Button from '@/components/Button';
@@ -42,7 +43,10 @@ const RequestCardInMain = ({
   return (
     <div
       onClick={() => navigate(urlFor.requestDetail(id))}
-      className="flex h-[340px] max-w-[340px] cursor-pointer flex-col gap-[12px] rounded-xl px-[10px] py-[15px] shadow-[4px_4px_10px_rgba(0,0,0,0.25)] transition-transform duration-200 hover:scale-[1.02] lg:w-[320px] xl:w-[320px] 2xl:w-[340px]"
+      className={clsx(
+        'flex h-[340px] max-w-[340px] cursor-pointer flex-col gap-[12px] rounded-xl px-[10px] py-[15px] shadow-[4px_4px_10px_rgba(0,0,0,0.25)] lg:w-[320px] xl:w-[320px] 2xl:w-[340px]',
+        !modalOpen && 'transition-transform duration-200 hover:scale-[1.02]',
+      )}
     >
       <div className="flex items-center justify-end">
         <div
@@ -85,32 +89,28 @@ const RequestCardInMain = ({
           리뷰 작성하기
         </Button>
       )}
-      {modalOpen && (
-        <div
-          className="fixed inset-0 z-20 flex h-screen min-h-screen w-screen items-center justify-center bg-black/40"
-          onClick={(e) => {
-            e.stopPropagation();
-            setModalOpen(false);
-          }}
-        >
+      {modalOpen &&
+        createPortal(
           <div
-            className="mx-auto my-auto flex w-[min(92vw,520px)] flex-col justify-center rounded-xl bg-white p-6 shadow-xl"
-            onClick={(e) => e.stopPropagation()}
+            className="fixed inset-0 z-[9999] flex h-screen min-h-screen w-screen items-center justify-center bg-black/40"
+            onClick={(e) => {
+              e.stopPropagation();
+              setModalOpen(false);
+            }}
           >
-            <div className="mb-3 flex items-center justify-between">
-              <h3 className="text-lg font-semibold">리뷰 작성</h3>
-              <Button
-                onClick={() => {
-                  setModalOpen(false);
-                }}
-              >
-                닫기
-              </Button>
+            <div
+              className="mx-auto my-auto flex w-[min(92vw,520px)] flex-col justify-center rounded-xl bg-white p-6 shadow-xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="mb-3 flex items-center justify-between">
+                <h3 className="text-lg font-semibold">리뷰 작성</h3>
+                <Button onClick={() => setModalOpen(false)}>닫기</Button>
+              </div>
+              <ReviewFormModal proName={name ?? '전문가'} proProfileId={id} rating={0} />
             </div>
-            <ReviewFormModal proName={name ?? '전문가'} proProfileId={id} rating={0} />
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body,
+        )}
     </div>
   );
 };
