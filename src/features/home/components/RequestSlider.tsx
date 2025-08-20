@@ -145,7 +145,7 @@ function RequestSlider({ title, requests, location, name }: RequestSliderProps) 
       <div className="slider-container relative mx-auto mb-[4px] max-w-[1480px] sm:w-[720px] lg:w-[720px] xl:w-[1080px] 2xl:w-[1480px]">
         <Slider ref={sliderRef} {...settings}>
           {requests.slice(0, 12).map((r, i) => (
-            <div key={`${r.requestId}-${i}`} className="h-[230px] px-4">
+            <div key={`${r.requestId}-${i}`} className="h-[400px] px-4">
               <RequestCardInMain
                 id={r.requestId}
                 name={role === 'USER' ? name : role === 'EXPERT' ? r.nickname : ''}
