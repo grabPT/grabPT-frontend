@@ -29,7 +29,10 @@ function RequestSlider({ title, requests, location, name }: RequestSliderProps) 
     slidesToShow: 4,
     slidesToScroll: 1,
     initialSlide: 0,
-    beforeChange: (_: number, next: number) => setCurrentSlide(next),
+    beforeChange: (_: number, next: number) => {
+      // 👇 음수 보정
+      setCurrentSlide(next < 0 ? 0 : next);
+    },
     nextArrow: <NextArrow />,
     prevArrow: currentSlide === 0 ? undefined : <PrevArrow />,
     responsive: [
@@ -40,16 +43,14 @@ function RequestSlider({ title, requests, location, name }: RequestSliderProps) 
     ],
   };
 
-  console.log(currentSlide);
-
   useEffect(() => {
     const timer = setTimeout(() => {
       const prevBtn = document.querySelector('.slick-prev') as HTMLButtonElement;
       if (prevBtn) {
         prevBtn.click();
-        console.log('클릭됨'); // 실제 버튼 클릭
+        console.log('Prev 버튼 자동 클릭됨 ✅');
       }
-    }, 100);
+    }, 200); // 살짝 딜레이 줘야 DOM 붙음
 
     return () => clearTimeout(timer);
   }, []);
