@@ -302,6 +302,7 @@ const ContractFormPage = () => {
             },
           },
         );
+        location.reload();
       } else {
         // userComplete && proComplete → 결제/제출
         // TODO: 결제/제출 트리거
@@ -341,6 +342,7 @@ const ContractFormPage = () => {
             },
           },
         );
+        location.reload();
       }
     }
   };
