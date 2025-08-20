@@ -13,7 +13,7 @@ const MatchingStatusCard = ({ match }: MatchingStatusCardProps) => {
   const isMatched = match.matchStatus === 'MATCHED';
 
   return (
-    <div className="flex h-[48px] w-[380px] items-center justify-between">
+    <div className="flex h-[48px] w-full items-center justify-between">
       <UserRequestHeader
         nickName={match.nickname}
         profileImg={match.profileImageUrl ? match.profileImageUrl : ProfileHeader}
