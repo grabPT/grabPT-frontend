@@ -35,9 +35,9 @@ function RequestSlider({ title, requests, location, name }: RequestSliderProps) 
     prevArrow: currentSlide === 0 ? undefined : <PrevArrow />,
     responsive: [
       { breakpoint: 720, settings: { slidesToShow: 2, dots: false } }, // 모바일
-      { breakpoint: 1080, settings: { slidesToShow: 2 } },             // 태블릿
-      { breakpoint: 1440, settings: { slidesToShow: 3 } },             // 노트북
-      { breakpoint: 9999, settings: { slidesToShow: 4 } },             // 데스크톱 이상
+      { breakpoint: 1080, settings: { slidesToShow: 2 } }, // 태블릿
+      { breakpoint: 1440, settings: { slidesToShow: 3 } }, // 노트북
+      { breakpoint: 9999, settings: { slidesToShow: 4 } }, // 데스크톱 이상
     ],
   };
 
