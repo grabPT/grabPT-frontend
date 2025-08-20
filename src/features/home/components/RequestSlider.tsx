@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick-theme.css';
@@ -21,23 +21,34 @@ function RequestSlider({ title, requests, location, name }: RequestSliderProps) 
   const [currentSlide, setCurrentSlide] = useState(0);
   const { role } = useRoleStore();
   const containerRef = useRef<HTMLDivElement>(null);
+  const [slidesToShow, setSlidesToShow] = useState(4);
+
+  useEffect(() => {
+    const updateSlides = () => {
+      if (window.innerWidth <= 1024) setSlidesToShow(2);
+      else if (window.innerWidth <= 1280) setSlidesToShow(2);
+      else if (window.innerWidth <= 1536) setSlidesToShow(3);
+      else setSlidesToShow(4);
+    };
+
+    updateSlides();
+    window.addEventListener('resize', updateSlides);
+    return () => window.removeEventListener('resize', updateSlides);
+  }, []);
+
   const settings = {
     infinite: false,
     centerMode: false,
     centerPadding: '0px',
-    slidesToShow: 4,
+    slidesToShow,
     swipeToSlide: true,
     arrows: true,
     dots: true,
     beforeChange: (_: number, next: number) => setCurrentSlide(next),
     nextArrow: <NextArrow />,
     prevArrow: currentSlide === 0 ? undefined : <PrevArrow />,
-    responsive: [
-      { breakpoint: 1024, settings: { slidesToShow: 2, dots: false } },
-      { breakpoint: 1280, settings: { slidesToShow: 2 } },
-      { breakpoint: 1536, settings: { slidesToShow: 3 } },
-    ],
   };
+
   return (
     <section
       ref={containerRef}
