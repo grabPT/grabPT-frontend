@@ -1,3 +1,5 @@
+import clsx from 'clsx';
+
 import type { messageType } from '@/features/Chat/types/getMessagesType';
 import { useRoleStore } from '@/store/useRoleStore';
 import { onErrorImage } from '@/utils/onErrorImage';
@@ -10,18 +12,18 @@ interface ChatTextProps {
 export const ChatText = ({ chat, imageUrl }: ChatTextProps) => {
   const { userId } = useRoleStore();
   const isMe = chat.senderId === userId;
+  const isImage = chat.messageType === 'IMAGE';
+  const isFile = chat.messageType === 'FILE';
   const timeAgo = new Date(chat.sendAt).toLocaleTimeString('ko-KR', {
     hour: '2-digit',
     minute: '2-digit',
   });
 
-  // 파일명 안전 추출 유틸 (경로 뒤에서부터 '.' 포함 세그먼트 탐색)
   const getFileName = (url: string) => {
     try {
       const decoded = decodeURIComponent(url);
       const segs = decoded.split('/');
       const withDot = [...segs].reverse().find((s) => s.includes('.')) ?? segs[segs.length - 1];
-      // 쿼리스트링 제거
       return withDot.split('?')[0];
     } catch {
       return '파일';
@@ -29,8 +31,8 @@ export const ChatText = ({ chat, imageUrl }: ChatTextProps) => {
   };
 
   const renderContent = () => {
-    if (chat.messageType === 'IMAGE') {
-      const full = chat.content; // 원본 URL
+    if (isImage) {
+      const full = chat.content;
       return (
         <a
           href={full}
@@ -50,7 +52,8 @@ export const ChatText = ({ chat, imageUrl }: ChatTextProps) => {
         </a>
       );
     }
-    if (chat.messageType === 'FILE') {
+
+    if (isFile) {
       const fileName = getFileName(chat.content);
       const ext = fileName.includes('.') ? fileName.split('.').pop()?.toUpperCase() : undefined;
 
@@ -60,47 +63,45 @@ export const ChatText = ({ chat, imageUrl }: ChatTextProps) => {
           target="_blank"
           rel="noopener noreferrer"
           className="flex max-w-[18rem] items-center gap-3 no-underline"
-          // download 속성은 크로스도메인에서 브라우저가 무시할 수 있음. 필요 시 유지 가능.
-          // download={fileName}
         >
           <div
-            className={`flex h-10 w-10 flex-none items-center justify-center rounded-md ${
-              isMe ? 'bg-white/20 text-white' : 'bg-black/10 text-black'
-            }`}
+            className={clsx(
+              'flex h-10 w-10 flex-none items-center justify-center rounded-md',
+              isMe ? 'bg-white/20 text-white' : 'bg-black/10 text-black',
+            )}
             aria-hidden
           >
             <span className="text-xl">📎</span>
           </div>
           <div className="min-w-0">
-            <div className={`truncate font-semibold ${isMe ? 'text-white' : 'text-black'}`}>
+            <div className={clsx('truncate font-semibold', isMe ? 'text-white' : 'text-black')}>
               {fileName}
             </div>
-            <div className={`text-xs ${isMe ? 'text-white/80' : 'text-gray-600'}`}>
+            <div className={clsx('text-xs', isMe ? 'text-white/80' : 'text-gray-600')}>
               {ext ? `${ext} 파일 열기` : '파일 열기'}
             </div>
           </div>
         </a>
       );
     }
-    // 기본(TEXT)
+
     return <span>{chat.content}</span>;
   };
 
   return (
     <div
-      className={`mx-3 my-2 flex w-full items-center gap-4 px-5 font-semibold ${
-        isMe ? 'justify-end' : 'justify-start'
-      }`}
+      className={clsx(
+        'mx-3 my-2 flex w-full items-center gap-4 px-5 font-semibold',
+        isMe ? 'justify-end' : 'justify-start',
+      )}
     >
       {!isMe && (
-        <div className="self-end">
-          <img
-            src={imageUrl}
-            onError={onErrorImage}
-            alt="프로필 이미지"
-            className="h-12 w-12 items-end rounded-full"
-          />
-        </div>
+        <img
+          src={imageUrl}
+          onError={onErrorImage}
+          alt="프로필 이미지"
+          className="h-12 w-12 self-end rounded-full"
+        />
       )}
 
       <div className="flex w-fit max-w-[70%] items-end gap-1">
@@ -114,11 +115,14 @@ export const ChatText = ({ chat, imageUrl }: ChatTextProps) => {
         )}
 
         <div
-          className={`flex flex-col p-4 shadow-md ${
+          className={clsx(
+            'flex flex-col shadow-md',
+            // 이미지일 때는 padding 0, bg-white
+            isImage ? 'bg-white p-0' : 'p-4',
             isMe
               ? 'rounded-t-xl rounded-br-none rounded-bl-xl bg-[#1F56FF] text-white'
-              : 'rounded-t-xl rounded-br-xl rounded-bl-none bg-[#EDEDED] text-black'
-          }`}
+              : 'rounded-t-xl rounded-br-xl rounded-bl-none bg-[#EDEDED] text-black',
+          )}
         >
           {renderContent()}
         </div>
