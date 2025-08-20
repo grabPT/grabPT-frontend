@@ -3,13 +3,13 @@ import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 
 import Pagination from '@/components/Pagination';
-import { PaymentsCard } from '@/features/Settlement/components/PaymentsCard';
-import { useGetSettlementList } from '@/features/Settlement/hooks/useGetSettlement';
+import { UserPaymentsCard } from '@/features/Settlement/components/UserPaymentsCard';
+import { useGetUserSettlements } from '@/features/Settlement/hooks/useGetUserSettlements';
 
 export const UserSettlementPage = () => {
   const [page, setPage] = useState(1);
-  const { data: settlementList } = useGetSettlementList(page);
-  const total = settlementList?.memberPayments.totalPages ?? 1;
+  const { data: settlementList } = useGetUserSettlements({ page });
+  const total = settlementList?.payments.totalPages ?? 1;
   return (
     <section className="my-[66px]">
       <div className="flex w-full flex-col items-center">
@@ -34,17 +34,8 @@ export const UserSettlementPage = () => {
             </div>
             <hr className="my-4 h-[0.09375rem] w-[55rem] border border-[#B3B3B3]" />
             <div className="mt-[1.56rem] flex flex-col items-center justify-center gap-[1.56rem]">
-              {settlementList?.memberPayments.content.map((payment, idx) => {
-                return (
-                  <PaymentsCard
-                    key={idx}
-                    earnedAmount={payment.earnedAmount}
-                    memberName={payment.memberName}
-                    paymentAmount={payment.paymentAmount}
-                    paymentDate={payment.paymentDate}
-                    ptCount={payment.ptCount}
-                  />
-                );
+              {settlementList?.payments.content.map((payment, idx) => {
+                return <UserPaymentsCard key={idx} data={payment} />;
               })}
             </div>
             {/* 페이지네이션 */}
