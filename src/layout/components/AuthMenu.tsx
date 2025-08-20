@@ -7,7 +7,6 @@ import Chat from '@/assets/images/Chat.png';
 import HeaderProfile from '@/assets/images/HeaderProfile.png';
 import Button from '@/components/Button';
 import ROUTES from '@/constants/routes';
-import { useProProfileQuery } from '@/hooks/useGetProProfile';
 import { useGetUserInfo } from '@/hooks/useGetUserInfo';
 import AlarmDropdown from '@/layout/components/AlarmDropdown';
 import ProfileDropdown from '@/layout/components/ProfileDropdown';
@@ -26,13 +25,7 @@ function AuthMenu() {
   const alarmCount = useAlarmStore((s) => s.alarmCount);
 
   const { data: myInfo } = useGetUserInfo();
-  const { data: proInfo } = useProProfileQuery();
-  const profileImage =
-    role === 'USER'
-      ? myInfo?.profileImageUrl
-      : role === 'EXPERT'
-        ? proInfo?.profileImageUrl
-        : HeaderProfile;
+  const profileImage = myInfo?.profileImageUrl ?? HeaderProfile;
 
   //url 변경될때마다 드롭다운 닫기
   useEffect(() => {
