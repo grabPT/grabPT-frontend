@@ -21,24 +21,25 @@ function RequestSlider({ title, requests, location, name }: RequestSliderProps) 
   const [currentSlide, setCurrentSlide] = useState(0);
   const { role } = useRoleStore();
   const containerRef = useRef<HTMLDivElement>(null);
+
   const settings = {
-  infinite: false,
-  centerMode: false,
-  centerPadding: "0px",
-  slidesToShow: 2,
-  swipeToSlide: true,
-  arrows: true,
-  dots: true,
-  beforeChange: (_: number, next: number) => setCurrentSlide(next),
-  nextArrow: <NextArrow />,
-  prevArrow: currentSlide === 0 ? undefined : <PrevArrow />,
-  responsive: [
-    { breakpoint: 720, settings: { slidesToShow: 2, dots: false } }, // 모바일
-    { breakpoint: 1080, settings: { slidesToShow: 2 } },             // 태블릿
-    { breakpoint: 1440, settings: { slidesToShow: 3 } },             // 노트북
-    { breakpoint: 9999, settings: { slidesToShow: 4 } },             // 데스크톱 이상
-  ],
-};
+    infinite: false,
+    centerMode: false,
+    centerPadding: '0px',
+    slidesToShow: 2,
+    swipeToSlide: true,
+    arrows: true,
+    dots: true,
+    beforeChange: (_: number, next: number) => setCurrentSlide(next),
+    nextArrow: <NextArrow />,
+    prevArrow: currentSlide === 0 ? undefined : <PrevArrow />,
+    responsive: [
+      { breakpoint: 720, settings: { slidesToShow: 2, dots: false } }, // 모바일
+      { breakpoint: 1080, settings: { slidesToShow: 2 } },             // 태블릿
+      { breakpoint: 1440, settings: { slidesToShow: 3 } },             // 노트북
+      { breakpoint: 9999, settings: { slidesToShow: 4 } },             // 데스크톱 이상
+    ],
+  };
 
   return (
     <section
@@ -50,7 +51,8 @@ function RequestSlider({ title, requests, location, name }: RequestSliderProps) 
       </h2>
 
       <div className="relative mx-auto mb-[4px] max-w-[1480px] sm:w-[720px] lg:w-[720px] xl:w-[1080px] 2xl:w-[1480px]">
-        <Slider {...settings}>
+        {/* ✅ key 트릭으로 강제 리렌더 → 초기화 버그 방지 */}
+        <Slider key={settings.slidesToShow} {...settings}>
           {requests.slice(0, 12).map((r, i) => (
             <div key={i} className="h-[230px] px-4">
               <RequestCardInMain
