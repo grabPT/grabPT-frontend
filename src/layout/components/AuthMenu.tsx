@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import Alert from '@/assets/images/Alert.png';
 import Chat from '@/assets/images/Chat.png';
@@ -16,6 +16,7 @@ import { useRoleStore } from '@/store/useRoleStore';
 import { useUnreadStore } from '@/store/useUnreadStore';
 
 function AuthMenu() {
+  const location = useLocation();
   const navigate = useNavigate();
 
   const { isLoggedIn, role } = useRoleStore();
@@ -31,6 +32,13 @@ function AuthMenu() {
       : role === 'EXPERT'
         ? proInfo?.result.profileImageUrl
         : HeaderProfile;
+
+  //url 변경될때마다 드롭다운 닫기
+  useEffect(() => {
+    setIsOpenAlarmDropdown(false);
+    setIsOpenProfileDropdown(false);
+  }, [location]);
+
   return (
     <div className="flex items-center">
       {/*  로그인 여부에 따른 메뉴 */}
