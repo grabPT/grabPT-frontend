@@ -18,20 +18,28 @@ interface RequestSliderProps {
 }
 
 function RequestSlider({ title, requests, location, name }: RequestSliderProps) {
-  const [currentSlide, setCurrentSlide] = useState(0);
   const { role } = useRoleStore();
   const containerRef = useRef<HTMLDivElement>(null);
-  const [slidesToShow, setSlidesToShow] = useState(4);
+
+  const getSlidesByWidth = (width: number) => {
+    if (width <= 1280) return 2;
+    if (width <= 1536) return 3;
+    return 4;
+  };
+
+  const getInitialSlides = () => {
+    if (typeof window !== 'undefined') {
+      return getSlidesByWidth(window.innerWidth);
+    }
+    return 4;
+  };
+
+  const [slidesToShow, setSlidesToShow] = useState(getInitialSlides);
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
-    const updateSlides = () => {
-      if (window.innerWidth <= 1024) setSlidesToShow(2);
-      else if (window.innerWidth <= 1280) setSlidesToShow(2);
-      else if (window.innerWidth <= 1536) setSlidesToShow(3);
-      else setSlidesToShow(4);
-    };
+    const updateSlides = () => setSlidesToShow(getSlidesByWidth(window.innerWidth));
 
-    updateSlides();
     window.addEventListener('resize', updateSlides);
     return () => window.removeEventListener('resize', updateSlides);
   }, []);
