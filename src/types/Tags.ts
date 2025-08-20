@@ -1,7 +1,7 @@
 import type { TimeSlot } from '@/types/ReqeustsType';
 
 export type Tags = {
-  cagtegoryName: string;
+  categoryName: string;
   availableTimes: TimeSlot[];
   daysPerWeek: number;
 };

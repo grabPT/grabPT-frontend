@@ -8,9 +8,8 @@ import { useProProfileQuery } from '@/hooks/useGetProProfile';
 import type { SportsSlugType } from '@/types/SportsType';
 
 const ExpertMainPage = () => {
-  const { data, isLoading, isError } = useProProfileQuery();
+  const { data: profileData, isLoading, isError } = useProProfileQuery();
 
-  const profileData = data?.result;
   const matched = SPORTS.find((s) => s.slug === profileData?.categoryName);
   const categoryType: SportsSlugType = matched?.slug ?? 'health';
   console.log('matched', matched);

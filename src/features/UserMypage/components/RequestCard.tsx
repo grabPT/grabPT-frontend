@@ -30,7 +30,7 @@ const RequestCard = ({
   const daysPerWeek = `주 ${tags.daysPerWeek}회`;
 
   const tagsResult = [
-    ...tags.cagtegoryName.split(' '),
+    ...tags.categoryName.split(' '),
     ...tags.availableTimes.map((time) => TIME_SLOT_LABELS[time]),
     daysPerWeek,
   ];

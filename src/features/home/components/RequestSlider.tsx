@@ -70,7 +70,7 @@ function RequestSlider({ title, requests }: RequestSliderProps) {
                 tags={{
                   availableTimes: r.availableTimes,
                   daysPerWeek: r.availableDays.length,
-                  cagtegoryName: r.categoryName,
+                  categoryName: r.categoryName,
                 }}
                 text={r.content}
               />

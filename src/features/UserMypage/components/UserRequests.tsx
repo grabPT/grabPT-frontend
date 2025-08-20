@@ -37,7 +37,7 @@ const UserRequests = () => {
             tags={{
               availableTimes: rq.availableTimes,
               daysPerWeek: rq.availableDays.length,
-              cagtegoryName: rq.categoryName,
+              categoryName: rq.categoryName,
             }}
             content={rq.content}
           />

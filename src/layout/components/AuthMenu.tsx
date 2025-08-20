@@ -24,13 +24,14 @@ function AuthMenu() {
   const [isOpenAlarmDropdown, setIsOpenAlarmDropdown] = useState<boolean>(false);
   const unreadCount = useUnreadStore((s) => s.unreadCount);
   const alarmCount = useAlarmStore((s) => s.alarmCount);
+
   const { data: myInfo } = useGetUserInfo();
   const { data: proInfo } = useProProfileQuery();
   const profileImage =
     role === 'USER'
       ? myInfo?.profileImageUrl
       : role === 'EXPERT'
-        ? proInfo?.result.profileImageUrl
+        ? proInfo?.profileImageUrl
         : HeaderProfile;
 
   //url 변경될때마다 드롭다운 닫기

@@ -30,9 +30,7 @@ export const ExpertDetailInfo = () => {
   // const { data: credentialList } = useGetCredentialList();
   // console.log(credentialList);
 
-  const { data } = useGetProProfileWithUserId(proId);
-
-  const profileData = data?.result;
+  const { data: profileData } = useGetProProfileWithUserId(proId);
 
   useEffect(() => {
     if (profileData?.photos) {

@@ -41,8 +41,7 @@ const ExpertProfile = () => {
   const [resetSeed, _setResetSeed] = useState(0);
   const [isPhotosCompressing, setIsPhotosCompressing] = useState(false);
 
-  const { data, isLoading, isError } = useProProfileQuery();
-  const profileData = data?.result;
+  const { data: profileData, isLoading, isError } = useProProfileQuery();
 
   useEffect(() => {
     setComment(profileData?.description || '');
