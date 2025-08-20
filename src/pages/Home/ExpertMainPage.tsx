@@ -15,7 +15,7 @@ const ExpertMainPage = () => {
   console.log('matched', matched);
   console.log('categoryType', categoryType);
   const { data: requests } = useGetMatchingRequestsList({ sortBy: 'latest', page: 1, size: 40 });
-
+  const location = `${profileData?.address?.[0]?.city ?? ''} ${profileData?.address?.[0]?.district ?? ''} ${profileData?.address?.[0]?.street ?? ''}`;
   if (isLoading) return <div>로딩 중...</div>;
   if (isError || !profileData) return <div>에러 발생</div>;
   requests?.content.forEach((item) => console.log(item.address));
@@ -29,7 +29,11 @@ const ExpertMainPage = () => {
         <ProfileCard profileData={profileData} />
       </div>
       <div className="mt-[145px]">
-        <RequestSlider title={'받은 요청서'} requests={requests?.content ?? []} />
+        <RequestSlider
+          title={'받은 요청서'}
+          requests={requests?.content ?? []}
+          location={location}
+        />
       </div>
       <div className="my-[200px]">
         <RealtimeMatchingStatus categoryType={categoryType} />
