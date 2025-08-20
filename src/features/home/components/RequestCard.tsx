@@ -101,9 +101,16 @@ const RequestCardInMain = ({
         ))}
       </div>
       <div className="h-[100px] w-full rounded-md border border-blue-600/10 bg-[#f0f7ff]">
-        <p className="p-1.5 text-[12px] text-[#525252]">{text}</p>
+        <p
+          className={clsx(
+            'p-1.5 text-[12px] text-[#525252]',
+            isMatched ? 'line-clamp-1' : 'line-clamp-5',
+          )}
+        >
+          {text}
+        </p>
       </div>
-      {isMatched && <Button width="280px">리뷰 작성하기</Button>}
+      {isMatched && <Button>리뷰 작성하기</Button>}
     </div>
   );
 };
