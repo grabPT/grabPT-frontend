@@ -11,9 +11,9 @@ const ContractDetailPage = () => {
   if (isPending) return <LoadingMuscle />;
   if (isError) return <ErrorComponent />;
   return (
-    <main>
-      <iframe src={pdfUrl} width="100%" height="100%" title="PDF Viewer" />
-    </main>
+    <>
+      <iframe src={pdfUrl} title="PDF Viewer" className="h-102 w-full" />
+    </>
   );
 };
 
