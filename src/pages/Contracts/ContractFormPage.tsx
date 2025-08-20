@@ -348,9 +348,6 @@ const ContractFormPage = () => {
   const handleSuccess = async () => {
     if (!contract) return;
 
-    // 1) 계약서 PDF 생성 (동기/비동기 여부에 따라 필요시 await)
-    createPdf(contractId);
-
     // 2) 결제 사전 생성 (주문 생성) - 서버에서 주문 UID 등 발급
     postOrder(
       {
@@ -384,6 +381,8 @@ const ContractFormPage = () => {
               // const verified = await verifyPayment(rsp.merchant_uid, rsp.imp_uid);
               const verified = true; // 임시
               if (verified) {
+                // 1) 계약서 PDF 생성 (동기/비동기 여부에 따라 필요시 await)
+                createPdf(contractId);
                 postPayment({
                   payment_uid: rsp.imp_uid,
                   order_uid: rsp.merchant_uid,
