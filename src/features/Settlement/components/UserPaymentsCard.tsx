@@ -18,7 +18,7 @@ export const UserPaymentsCard = ({ data }: UserPaymentsCardProps) => {
   };
   return (
     <div
-      className="flex h-[3.75rem] w-[55rem] items-center rounded-[0.625rem] text-[0.8rem] font-semibold shadow-[4px_4px_10px_rgba(0,0,0,0.25)]"
+      className="flex h-[3.75rem] w-[55rem] cursor-pointer items-center rounded-[0.625rem] text-[0.8rem] font-semibold shadow-[4px_4px_10px_rgba(0,0,0,0.25)]"
       onClick={navigateToContractDetail}
     >
       <div className="flex flex-1 items-center gap-3">

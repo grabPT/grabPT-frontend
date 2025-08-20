@@ -13,14 +13,14 @@ const Banner = () => {
 
   const [index, setIndex] = useState(0);
 
-  // 5초마다 자동 슬라이드
+  // index 변할 때마다 5초 후 자동으로 다음으로 넘어감
   useEffect(() => {
-    const interval = setInterval(() => {
+    const timer = setTimeout(() => {
       setIndex((prev) => (prev + 1) % total);
     }, 5000);
 
-    return () => clearInterval(interval);
-  }, [total]);
+    return () => clearTimeout(timer);
+  }, [index, total]);
 
   // translate-x 클래스
   const translateClass = clsx({
@@ -34,7 +34,7 @@ const Banner = () => {
   };
 
   return (
-    <div className="relative mx-auto w-auto overflow-hidden rounded-[10px]">
+    <div className="relative mx-auto w-auto max-w-[720px] overflow-hidden rounded-[10px]">
       {/* 슬라이드 래퍼 */}
       <div className={clsx('flex transition-transform duration-500 ease-in-out', translateClass)}>
         {images.map((src, idx) => (
