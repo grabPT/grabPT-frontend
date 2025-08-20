@@ -55,11 +55,7 @@ function RequestSlider({ title, requests, location, name }: RequestSliderProps) 
                 id={r.requestId}
                 name={role === 'USER' ? name : role === 'EXPERT' ? r.nickname : ''}
                 location={
-                  role === 'USER'
-                    ? (location ?? '')
-                    : role === 'EXPERT'
-                      ? `${r?.address?.[0]?.city ?? ''} ${r?.address?.[0]?.district ?? ''} ${r?.address?.[0]?.street ?? ''}`
-                      : ''
+                  role === 'USER' ? (location ?? '') : role === 'EXPERT' ? (r.location ?? '') : ''
                 }
                 profileImg={
                   role === 'USER'
