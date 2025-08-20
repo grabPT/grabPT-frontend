@@ -84,7 +84,7 @@ const RequestCardInMain = ({
     >
       <div
         className={clsx(
-          'ml-auto flex w-16 items-center justify-center rounded-2xl py-2',
+          'mx-1.5 ml-auto flex w-16 items-center justify-center rounded-2xl py-1',
           isMatched
             ? 'bg-gradient-to-bl from-[#66BB6A] to-[#43A047] shadow-2xs'
             : 'bg-gradient-to-bl from-[#FF9800] to-[#F57C00] shadow-2xs',
@@ -92,7 +92,7 @@ const RequestCardInMain = ({
       >
         <div
           className={clsx(
-            'ml-[7px] h-[13px] w-[13px] rounded-full',
+            'h-[13px] w-[13px] rounded-full',
             isMatched
               ? 'bg-gradient-to-b from-[#00FF00] to-[#006400]'
               : 'bg-gradient-to-b from-[#FFB74D] to-[#E65100]',
