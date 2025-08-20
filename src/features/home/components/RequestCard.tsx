@@ -84,7 +84,7 @@ const RequestCardInMain = ({
     >
       <div
         className={clsx(
-          'ml-auto flex w-16 items-center justify-end rounded-2xl',
+          'ml-auto flex h-7 w-16 items-center justify-end rounded-2xl',
           isMatched
             ? 'bg-gradient-to-bl from-[#66BB6A] to-[#43A047]'
             : 'bg-gradient-to-bl from-[#FF9800] to-[#F57C00]',
@@ -92,14 +92,14 @@ const RequestCardInMain = ({
       >
         <div
           className={clsx(
-            'ml-[7px] h-[13px] w-[13px] rounded-full',
+            'ml-[6px] h-[13px] w-[13px] rounded-full',
             isMatched
               ? 'bg-gradient-to-t from-[#00FF00] to-[#006400]'
               : 'bg-gradient-to-t from-[#FFB74D] to-[#E65100]',
           )}
         />
         {/* 상태 텍스트 */}
-        <p className="font-pretendard ml-[6px] text-[12px] leading-[16.8px] font-medium text-white">
+        <p className="font-pretendard mx-[6px] text-[12px] leading-[16.8px] font-medium text-white">
           {isMatched ? '매칭 성공' : '대기중'}
         </p>
       </div>
