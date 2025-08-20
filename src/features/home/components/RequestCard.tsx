@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import clsx from 'clsx';
 import { createPortal } from 'react-dom';
@@ -34,6 +34,21 @@ const RequestCardInMain = ({
 }: RequestCardInMainProps) => {
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
+
+  useEffect(() => {
+    const { body } = document;
+    if (!body) return;
+    const previous = body.style.overflow;
+    if (modalOpen) {
+      body.style.overflow = 'hidden';
+    } else {
+      body.style.overflow = previous || '';
+    }
+    return () => {
+      body.style.overflow = previous || '';
+    };
+  }, [modalOpen]);
+
   const daysPerWeek = `주 ${tags.daysPerWeek}회`;
   const tagsResult = [
     ...tags.categoryName.split(' '),
@@ -102,11 +117,13 @@ const RequestCardInMain = ({
               className="mx-auto my-auto flex w-[min(92vw,520px)] flex-col justify-center rounded-xl bg-white p-6 shadow-xl"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="mb-3 flex items-center justify-between">
-                <h3 className="text-lg font-semibold">리뷰 작성</h3>
-                <Button onClick={() => setModalOpen(false)}>닫기</Button>
-              </div>
-              <ReviewFormModal proName={name ?? '전문가'} proProfileId={id} rating={0} />
+              <h3 className="mr-auto mb-3 text-lg font-semibold">리뷰 작성</h3>
+              <ReviewFormModal
+                proName={name ?? '전문가'}
+                proProfileId={id}
+                rating={0}
+                setModalOpen={setModalOpen}
+              />
             </div>
           </div>,
           document.body,

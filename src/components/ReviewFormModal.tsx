@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import type { Dispatch, SetStateAction } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import Rating from '@mui/material/Rating';
@@ -13,13 +14,19 @@ interface IReveiwFormModal {
   proProfileId: number;
   rating: number;
   proName: string;
+  setModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 type ReviewSchema = {
   content: string;
 };
 
-export const ReviewFormModal = ({ proName, proProfileId, rating }: IReveiwFormModal) => {
+export const ReviewFormModal = ({
+  setModalOpen,
+  proName,
+  proProfileId,
+  rating,
+}: IReveiwFormModal) => {
   const reviewSchema = z.object({
     content: z.string().max(300, { message: '리뷰는 300자 이하여야 합니다.' }),
   });
@@ -48,7 +55,7 @@ export const ReviewFormModal = ({ proName, proProfileId, rating }: IReveiwFormMo
   return (
     <div className="flex flex-col items-center justify-center gap-3">
       <h1 className="text-xl font-semibold">{pNickname}와의 운동은 어땠나요?</h1>
-      <h2 className="text-base">별점</h2>
+
       <div className="flex items-center gap-2">
         <Rating
           value={rate ?? 0}
@@ -68,15 +75,16 @@ export const ReviewFormModal = ({ proName, proProfileId, rating }: IReveiwFormMo
         <span className="text-lg font-semibold">{hover !== -1 ? hover : rate}</span>
       </div>
 
-      <h2 className="text-black">리뷰</h2>
       <CommentBox
         value={watch('content')}
         onChange={(e) => setValue('content', e.target.value, { shouldDirty: true })}
       />
-
-      <Button onClick={handleClick} disabled={isPending}>
-        {isPending ? '작성 중...' : '작성 완료'}
-      </Button>
+      <div className="flex items-center justify-center gap-3">
+        <Button onClick={handleClick} disabled={isPending}>
+          {isPending ? '작성 중...' : '작성 완료'}
+        </Button>
+        <Button onClick={() => setModalOpen(false)}>닫기</Button>
+      </div>
     </div>
   );
 };
