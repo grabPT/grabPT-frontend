@@ -104,7 +104,7 @@ const RequestCardInMain = ({
         <p
           className={clsx(
             'p-1.5 text-[12px] text-[#525252]',
-            isMatched ? 'line-clamp-1' : 'line-clamp-5',
+            isMatched ? 'line-clamp-1' : 'line-clamp-3',
           )}
         >
           {text}
