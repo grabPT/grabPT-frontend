@@ -24,23 +24,29 @@ function RequestSlider({ title, requests, location, name }: RequestSliderProps) 
   const containerRef = useRef<HTMLDivElement>(null);
 
   const settings = {
+    dots: true,
     infinite: false,
-    centerMode: false,
-    centerPadding: '0px',
+    speed: 500,
     slidesToShow: 4,
     slidesToScroll: 1,
-    swipeToSlide: true,
-    arrows: true,
-    dots: true,
     initialSlide: 0,
     beforeChange: (_: number, next: number) => setCurrentSlide(next),
     nextArrow: <NextArrow />,
     prevArrow: currentSlide === 0 ? undefined : <PrevArrow />,
     responsive: [
-      { breakpoint: 720, settings: { slidesToShow: 2, dots: false } }, // 모바일
-      { breakpoint: 1080, settings: { slidesToShow: 2 } }, // 태블릿
-      { breakpoint: 1440, settings: { slidesToShow: 3 } }, // 노트북
-      { breakpoint: 9999, settings: { slidesToShow: 4 } }, // 데스크톱 이상
+      {
+        breakpoint: 720,
+        settings: { slidesToShow: 1, slidesToScroll: 1, initialSlide: 1, dots: false },
+      },
+      {
+        breakpoint: 1024,
+        settings: { slidesToShow: 2, slidesToScroll: 1, initialSlide: 2, dots: false },
+      },
+      { breakpoint: 1280, settings: { slidesToShow: 2, slidesToScroll: 1, initialSlide: 2 } },
+      {
+        breakpoint: 1536,
+        settings: { slidesToShow: 3, slidesToScroll: 1, infinite: true, dots: true },
+      },
     ],
   };
 
