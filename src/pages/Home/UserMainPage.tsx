@@ -20,7 +20,7 @@ const UserMainPage = () => {
     return SPORTS[randomIndex].slug;
   }
   const { data: userData } = useGetUserInfo();
-
+  const location = `${userData?.address?.[0]?.city ?? ''} ${userData?.address?.[0]?.district ?? ''} ${userData?.address?.[0]?.street ?? ''}`;
   const matched = SPORTS.find((s) => s.slug === userData?.categoryName);
   const categoryType: SportsSlugType =
     role === 'GUEST'
@@ -34,7 +34,12 @@ const UserMainPage = () => {
 
       {isLoggedIn && (
         <div className="mt-[109px]">
-          <RequestSlider title={'나의 요청서'} requests={requests?.content ?? []} />
+          <RequestSlider
+            title={'나의 요청서'}
+            requests={requests?.content ?? []}
+            location={location}
+            name={userData?.nickname}
+          />
         </div>
       )}
       {}

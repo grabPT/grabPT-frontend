@@ -13,9 +13,11 @@ import { useRoleStore } from '@/store/useRoleStore';
 interface RequestSliderProps {
   title: string;
   requests: RequestsListResultType['content'];
+  name?: string;
+  location?: string;
 }
 
-function RequestSlider({ title, requests }: RequestSliderProps) {
+function RequestSlider({ title, requests, location, name }: RequestSliderProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const { role } = useRoleStore();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -52,10 +54,10 @@ function RequestSlider({ title, requests }: RequestSliderProps) {
             <div key={i} className="h-[230px] px-4">
               <RequestCardInMain
                 id={r.requestId}
-                name={r.nickname}
+                name={role === 'USER' ? name : role === 'EXPERT' ? r.nickname : ''}
                 location={
                   role === 'USER'
-                    ? (r?.location ?? '')
+                    ? (location ?? '')
                     : role === 'EXPERT'
                       ? `${r?.address?.[0]?.city ?? ''} ${r?.address?.[0]?.district ?? ''} ${r?.address?.[0]?.street ?? ''}`
                       : ''
