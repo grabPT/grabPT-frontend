@@ -87,14 +87,14 @@ const RequestCardInMain = ({
       )}
       {modalOpen && (
         <div
-          className="fixed inset-0 z-[999] flex items-center justify-center bg-black/40"
+          className="fixed inset-0 z-20 flex h-screen min-h-screen w-screen items-center justify-center bg-black/40"
           onClick={(e) => {
             e.stopPropagation();
             setModalOpen(false);
           }}
         >
           <div
-            className="w-[min(92vw,520px)] rounded-xl bg-white p-6 shadow-xl"
+            className="mx-auto my-auto flex w-[min(92vw,520px)] flex-col justify-center rounded-xl bg-white p-6 shadow-xl"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mb-3 flex items-center justify-between">

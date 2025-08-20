@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import Alert from '@/assets/images/Alert.png';
 import Chat from '@/assets/images/Chat.png';
@@ -26,7 +26,7 @@ function AuthMenu() {
 
   const { data: myInfo } = useGetUserInfo();
   const profileImage = myInfo?.profileImageUrl ?? HeaderProfile;
-
+  const nav = useNavigate();
   //url 변경될때마다 드롭다운 닫기
   useEffect(() => {
     setIsOpenAlarmDropdown(false);
@@ -97,12 +97,11 @@ function AuthMenu() {
         </div>
       ) : (
         <>
-          <div className="flex h-full w-[96px] items-center justify-center">
-            <Button>
-              <Link to={ROUTES.AUTH.LOGIN} className="font-extrabold text-white">
-                로그인
-              </Link>
-            </Button>
+          <div
+            className="flex h-full w-[96px] items-center justify-center"
+            onClick={() => nav(ROUTES.AUTH.LOGIN)}
+          >
+            <Button>로그인</Button>
           </div>
         </>
       )}
