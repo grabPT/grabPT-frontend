@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { getProProfile, getProProfileWithUserId } from '@/apis/getProProfile';
 import { useRoleStore } from '@/store/useRoleStore';
-import type { ProProfileType } from '@/types/ProPrifleType';
+import type { ProProfileType } from '@/types/ProProfleType';
 
 //전문가가 자기 프로필 조회
 export const useProProfileQuery = () => {

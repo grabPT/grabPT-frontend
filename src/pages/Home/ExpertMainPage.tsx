@@ -18,7 +18,7 @@ const ExpertMainPage = () => {
 
   if (isLoading) return <div>로딩 중...</div>;
   if (isError || !profileData) return <div>에러 발생</div>;
-
+  requests?.content.forEach((item) => console.log(item.address));
   return (
     <section className="mt-[70px] mb-[140px] flex flex-col items-center">
       <h1 className="text-[40px] font-bold">

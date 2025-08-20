@@ -1,4 +1,4 @@
-import type { Address } from '@/types/ProPrifleType';
+import type { Address } from '@/types/ProProfleType';
 import type { MatchStatusType } from '@/types/RealtimeMatchingType';
 import type { TimeSlot } from '@/types/ReqeustsType';
 import type { SortByType, SortType } from '@/types/SortType';

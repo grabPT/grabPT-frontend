@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Profile from '@/assets/images/HeaderProfile.png';
 import StarRating from '@/components/StarRating';
 import ROUTES from '@/constants/routes';
-import type { ProProfileType } from '@/types/ProPrifleType';
+import type { ProProfileType } from '@/types/ProProfleType';
 
 interface ProfileCardProps {
   profileData?: ProProfileType;

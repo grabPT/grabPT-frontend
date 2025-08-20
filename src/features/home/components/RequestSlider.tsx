@@ -38,7 +38,6 @@ function RequestSlider({ title, requests, location, name }: RequestSliderProps) 
       { breakpoint: 1440, settings: { slidesToShow: 3 } },
     ],
   };
-
   return (
     <section
       ref={containerRef}

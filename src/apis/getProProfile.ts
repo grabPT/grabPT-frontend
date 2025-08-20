@@ -1,5 +1,5 @@
 import { privateInstance, publicInstance } from '@/libs/axios';
-import type { getProProfileResponseDto } from '@/types/ProPrifleType';
+import type { getProProfileResponseDto } from '@/types/ProProfleType';
 
 export const getProProfile = async () => {
   try {

@@ -13,7 +13,7 @@ import { TitleLine } from '@/components/TitleLine';
 import ROUTES from '@/constants/routes';
 import { useGetProProfileWithUserId } from '@/hooks/useGetProProfile';
 import { useGetUserInfo } from '@/hooks/useGetUserInfo';
-import type { PtPrice } from '@/types/ProPrifleType';
+import type { PtPrice } from '@/types/ProProfleType';
 
 export const ExpertDetailInfo = () => {
   const [photos, setPhotos] = useState<SlideImage[]>([]);
