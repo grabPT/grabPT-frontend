@@ -1,55 +1,16 @@
-// import { X } from 'lucide-react';
+import { useState } from 'react';
+
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
 
 import Button from '@/components/Button';
+import { ReviewFormModal } from '@/components/ReviewFormModal';
 import { urlFor } from '@/constants/routes';
 import UserRequestHeader from '@/features/Requests/components/UserRequestHeader';
 import { TIME_SLOT_LABELS } from '@/types/ReqeustsType';
 import type { Tags } from '@/types/Tags';
 
 import Hashtag from './Hashtag';
-
-// import type { RequestCardProps } from '@/features/home/types/request';
-
-// const RequestCard: React.FC<RequestCardProps> = ({ nickname, region, center_name, tags, memo }) => {
-//   return (
-//     <div className="relative flex h-[258px] w-[400px] flex-shrink-0 flex-col justify-between rounded-[10px] bg-white p-4 shadow-md">
-//       {/* 닫기 버튼 */}
-//       <button className="absolute top-2 right-2 text-gray-400 hover:text-black" name="닫기버튼">
-//         <X size={18} />
-//       </button>
-
-//       {/* 상단 정보 */}
-//       <div className="flex gap-3">
-//         <img
-//           src={ProfileIcon}
-//           alt="프로필"
-//           className="h-[47px] w-[47px] rounded-full bg-neutral-200"
-//         />
-//         <div className="flex flex-col">
-//           <p className="text-base font-bold">{nickname}</p>
-//           <p className="text-xs text-gray-500">{region}</p>
-//           <p className="text-xs font-semibold text-blue-700">{center_name}</p>
-//         </div>
-//       </div>
-
-//       {/* 태그 */}
-//       <ul className="mt-2 list-disc pl-4 text-xs text-gray-800">
-//         {tags.map((tag, idx) => (
-//           <li key={idx}>{tag}</li>
-//         ))}
-//       </ul>
-
-//       {/* 메모 */}
-//       <div className="mt-2 overflow-hidden rounded bg-gray-100 p-2 text-xs leading-snug text-gray-700">
-//         {memo}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default RequestCard;
 
 interface RequestCardInMainProps {
   name?: string;
@@ -71,6 +32,7 @@ const RequestCardInMain = ({
   isMatched,
 }: RequestCardInMainProps) => {
   const navigate = useNavigate();
+  const [modalOpen, setModalOpen] = useState(false);
   const daysPerWeek = `주 ${tags.daysPerWeek}회`;
   const tagsResult = [
     ...tags.categoryName.split(' '),
@@ -110,7 +72,37 @@ const RequestCardInMain = ({
           {text}
         </p>
       </div>
-      {isMatched && <Button width="280px">리뷰 작성하기</Button>}
+      {isMatched && (
+        <Button onClick={() => setModalOpen(true)} width="280px">
+          리뷰 작성하기
+        </Button>
+      )}
+      {modalOpen && (
+        <div
+          className="fixed inset-0 z-[999] flex items-center justify-center bg-black/40"
+          onClick={(e) => {
+            e.stopPropagation();
+            setModalOpen(false);
+          }}
+        >
+          <div
+            className="w-[min(92vw,520px)] rounded-xl bg-white p-6 shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="mb-3 flex items-center justify-between">
+              <h3 className="text-lg font-semibold">리뷰 작성</h3>
+              <Button
+                onClick={() => {
+                  setModalOpen(false);
+                }}
+              >
+                닫기
+              </Button>
+            </div>
+            <ReviewFormModal proName={name ?? '전문가'} proProfileId={id} rating={0} />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
