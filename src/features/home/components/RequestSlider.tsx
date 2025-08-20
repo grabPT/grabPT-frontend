@@ -20,6 +20,7 @@ interface RequestSliderProps {
 function RequestSlider({ title, requests, location, name }: RequestSliderProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const { role } = useRoleStore();
+
   const containerRef = useRef<HTMLDivElement>(null);
 
   const settings = {
@@ -72,6 +73,7 @@ function RequestSlider({ title, requests, location, name }: RequestSliderProps) 
                   categoryName: r.categoryName,
                 }}
                 text={r.content}
+                isMatched={r.matchStatus === 'MATCHED'}
               />
             </div>
           ))}

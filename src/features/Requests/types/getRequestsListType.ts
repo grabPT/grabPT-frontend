@@ -24,6 +24,7 @@ export type RequestsListItemType = {
   content: string;
   nickname: string;
   address: Address[];
+  matchStatus: MatchStatusType;
 };
 
 export type getRequestsListResultType = {
@@ -81,4 +82,5 @@ export type RequestsListItemProps = {
   sessionCount?: number;
   content: string;
   profileImageUrl?: string;
+  matchStatus?: MatchStatusType;
 };

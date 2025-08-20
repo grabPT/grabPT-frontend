@@ -1,4 +1,5 @@
 import type { PageableType } from '@/features/Requests/types/getRequestsListType';
+import type { MatchStatusType } from '@/types/RealtimeMatchingType';
 import type { TimeSlot } from '@/types/ReqeustsType';
 import type { SortType } from '@/types/SortType';
 import type { CommonResponseDto } from '@/types/commonResponseDto';
@@ -26,6 +27,7 @@ export type MyRequestListItemType = {
   categoryName: string;
   sessionCount: number;
   content: string;
+  matchStatus: MatchStatusType;
 };
 
 export type getMyRequestsListResponseDto = CommonResponseDto<getMyRequestsListResultType>;
