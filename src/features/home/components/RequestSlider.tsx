@@ -99,7 +99,7 @@ function RequestSlider({ title, requests, location, name }: RequestSliderProps) 
                   categoryName: r.categoryName,
                 }}
                 text={r.content}
-                isMatched={r.matchStatus === 'MATCHED'}
+                isMatched={true}
               />
             </div>
           ))}
