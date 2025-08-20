@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick-theme.css';
@@ -20,54 +20,60 @@ interface RequestSliderProps {
 function RequestSlider({ title, requests, location, name }: RequestSliderProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const { role } = useRoleStore();
-  const containerRef = useRef<HTMLDivElement>(null);
 
-  const settings = useMemo(
-    () => ({
-      dots: true,
-      infinite: false,
-      speed: 500,
-      slidesToShow: 4, // 기본 데스크톱 기준 4개
-      slidesToScroll: 1,
-      initialSlide: 0,
-      beforeChange: (_: number, next: number) => setCurrentSlide(next),
-      nextArrow: <NextArrow />,
-      prevArrow: currentSlide === 0 ? undefined : <PrevArrow />,
-      responsive: [
-        {
-          breakpoint: 720, // 720px 이하 (모바일)
-          settings: {
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            dots: false,
-          },
+  const containerRef = useRef<HTMLDivElement>(null);
+  const sliderRef = useRef<Slider>(null);
+
+  const settings = {
+    dots: true,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 4, // 기본은 데스크톱 4개
+    slidesToScroll: 1,
+    initialSlide: 0,
+    beforeChange: (_: number, next: number) => setCurrentSlide(next),
+    nextArrow: <NextArrow />,
+    prevArrow: currentSlide === 0 ? undefined : <PrevArrow />,
+    responsive: [
+      {
+        breakpoint: 1536, // 1536px 이하
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
         },
-        {
-          breakpoint: 1024, // 1024px 이하
-          settings: {
-            slidesToShow: 2,
-            slidesToScroll: 1,
-            dots: false,
-          },
+      },
+      {
+        breakpoint: 1280, // 1280px 이하
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
         },
-        {
-          breakpoint: 1280, // 1280px 이하
-          settings: {
-            slidesToShow: 2,
-            slidesToScroll: 1,
-          },
+      },
+      {
+        breakpoint: 1024, // 1024px 이하
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          dots: false,
         },
-        {
-          breakpoint: 1536, // 1536px 이하
-          settings: {
-            slidesToShow: 3,
-            slidesToScroll: 1,
-          },
+      },
+      {
+        breakpoint: 720, // 720px 이하 (모바일)
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          dots: false,
         },
-      ],
-    }),
-    [currentSlide],
-  );
+      },
+    ],
+  };
+
+  // ✅ 마운트 직후 첫 번째 슬라이드로 강제 이동 → 트랙 재계산
+  useEffect(() => {
+    if (sliderRef.current) {
+      sliderRef.current.slickGoTo(0);
+    }
+  }, [settings.slidesToShow]);
 
   return (
     <section
@@ -78,8 +84,9 @@ function RequestSlider({ title, requests, location, name }: RequestSliderProps) 
         {title}
       </h2>
 
-      <div className="slider-container relative mx-auto mb-[4px] max-w-[1480px] sm:w-[720px] lg:w-[720px] xl:w-[1080px] 2xl:w-[1480px]">
-        <Slider {...settings}>
+      <div className="relative mx-auto mb-[4px] max-w-[1480px] sm:w-[720px] lg:w-[720px] xl:w-[1080px] 2xl:w-[1480px]">
+        {/* ✅ key + ref 적용 */}
+        <Slider key={settings.slidesToShow} ref={sliderRef} {...settings}>
           {requests.slice(0, 12).map((r, i) => (
             <div key={i} className="h-[230px] px-4">
               <RequestCardInMain
