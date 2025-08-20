@@ -42,7 +42,7 @@ const RequestCardInMain = ({
   return (
     <div
       onClick={() => navigate(urlFor.requestDetail(id))}
-      className="flex h-[220px] max-w-[340px] cursor-pointer flex-col gap-[12px] rounded-xl px-[10px] py-[15px] shadow-[4px_4px_10px_rgba(0,0,0,0.25)] transition-transform duration-200 hover:scale-[1.02] lg:w-[320px] xl:w-[320px] 2xl:w-[340px]"
+      className="flex h-[340px] max-w-[340px] cursor-pointer flex-col gap-[12px] rounded-xl px-[10px] py-[15px] shadow-[4px_4px_10px_rgba(0,0,0,0.25)] transition-transform duration-200 hover:scale-[1.02] lg:w-[320px] xl:w-[320px] 2xl:w-[340px]"
     >
       <div className="flex items-center justify-end">
         <div
@@ -73,7 +73,15 @@ const RequestCardInMain = ({
         </p>
       </div>
       {isMatched && (
-        <Button onClick={() => setModalOpen(true)} width="280px">
+        <Button
+          className="z-10"
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            setModalOpen(true);
+          }}
+          width="280px"
+        >
           리뷰 작성하기
         </Button>
       )}
