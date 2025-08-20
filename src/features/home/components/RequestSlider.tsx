@@ -31,7 +31,7 @@ function RequestSlider({ title, requests, location, name }: RequestSliderProps) 
     initialSlide: 0,
     beforeChange: (_: number, next: number) => setCurrentSlide(next),
     nextArrow: <NextArrow />,
-    prevArrow: currentSlide === 0 ? undefined : <PrevArrow />, // 처음엔 안 보이게
+    prevArrow: currentSlide === 0 ? undefined : <PrevArrow />,
     responsive: [
       { breakpoint: 1536, settings: { slidesToShow: 3, slidesToScroll: 1 } },
       { breakpoint: 1280, settings: { slidesToShow: 2, slidesToScroll: 1 } },
@@ -41,11 +41,14 @@ function RequestSlider({ title, requests, location, name }: RequestSliderProps) 
   };
 
   useEffect(() => {
-    // 새로고침 직후 prev 버튼이 잘못 보이는 경우 → 강제로 0번 슬라이드로 이동
-    if (sliderRef.current) {
-      sliderRef.current.slickGoTo(0);
-      setCurrentSlide(0);
-    }
+    const timer = setTimeout(() => {
+      const prevBtn = document.querySelector('.slick-prev') as HTMLButtonElement;
+      if (prevBtn) {
+        prevBtn.click(); // 실제 버튼 클릭
+      }
+    }, 100);
+
+    return () => clearTimeout(timer);
   }, []);
 
   return (
