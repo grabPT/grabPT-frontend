@@ -145,7 +145,7 @@ export function Responsive() {
     ],
   };
   return (
-    <div className="slider-container">
+    <div className="slider-container w-[1480px] h-[500px]">
       <Slider {...ssettings}>
         <div className="w-[300px]">
           <h3>1</h3>
