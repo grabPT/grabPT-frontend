@@ -10,7 +10,7 @@ const ExpertReviews = () => {
   const total = reviews?.totalPages ?? 1;
   return (
     <div className="flex flex-col items-center justify-center">
-      <div className="mt-[50px] flex w-[800px] flex-col gap-[30px]">
+      <div className="mt-[50px] flex w-[600px] flex-col gap-[30px]">
         {reviews?.content.map((rv, idx) => (
           <div key={idx}>
             <ReviewCard

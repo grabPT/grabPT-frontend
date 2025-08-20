@@ -36,7 +36,7 @@ const ReviewCard = ({
   };
 
   return (
-    <Box onClick={boxClick} className="cursor-pointer">
+    <Box onClick={boxClick} className="cursor-pointer" width="w-[600px]">
       <div className="relative flex w-full flex-col p-[10px] pt-[15px]">
         {/* 삭제버튼 */}
         <img
