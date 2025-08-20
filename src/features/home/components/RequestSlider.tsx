@@ -28,7 +28,7 @@ function RequestSlider({ title, requests, location, name }: RequestSliderProps) 
     centerMode: false,
     centerPadding: '0px',
     slidesToShow: 4,
-    slidesToScroll : 1,
+    slidesToScroll: 1,
     swipeToSlide: true,
     arrows: true,
     dots: true,
