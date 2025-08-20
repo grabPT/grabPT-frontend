@@ -84,7 +84,7 @@ const RequestCardInMain = ({
     >
       <div
         className={clsx(
-          'mx-2 flex w-[50px] items-center justify-end rounded-2xl',
+          'mx-4 flex w-16 items-center justify-end rounded-2xl',
           isMatched
             ? 'bg-gradient-to-bl from-[#66BB6A] to-[#43A047]'
             : 'bg-gradient-to-bl from-[#FF9800] to-[#F57C00]',
