@@ -20,16 +20,13 @@ export const UserSettlementPage = () => {
           <div className="mt-5 flex w-full flex-col items-center justify-center">
             <div className="flex w-[55rem] items-center text-[0.875rem] font-semibold">
               <div className="flex-[1] text-center">
-                <span>회원정보</span>
+                <span>트레이너 정보</span>
               </div>
               <div className="flex-[1] text-center">
                 <span>PT 횟수</span>
               </div>
               <div className="flex-[1] text-center">
                 <span>결제 금액</span>
-              </div>
-              <div className="flex-[1] text-center">
-                <span>적립 금액</span>
               </div>
               <div className="flex-[1] text-center">
                 <span>결제일</span>
