@@ -110,7 +110,7 @@ const RequestCardInMain = ({
           {text}
         </p>
       </div>
-      {isMatched && <Button>리뷰 작성하기</Button>}
+      {isMatched && <Button width="280px">리뷰 작성하기</Button>}
     </div>
   );
 };
