@@ -4,7 +4,7 @@ import 'slick-carousel/slick/slick.css';
 import Banner from '@/components/Banner';
 import RealtimeMatchingStatus from '@/components/RealtimeMatchingStatus';
 import { SPORTS } from '@/constants/sports';
-import RequestSlider from '@/features/home/components/RequestSlider';
+import RequestSlider, { Responsive } from '@/features/home/components/RequestSlider';
 import UserSearchSection from '@/features/home/components/UserSearchSection';
 import { useGetMyRequestsList } from '@/hooks/useGetMyRequestsList';
 import { useGetUserInfo } from '@/hooks/useGetUserInfo';
@@ -50,6 +50,7 @@ const UserMainPage = () => {
       <div className="mx-auto mb-[200px] max-w-[1480px] sm:w-[720px] lg:w-[720px] xl:w-[1080px] 2xl:w-[1480px]">
         <Banner />
       </div>
+      <Responsive />
     </div>
   );
 };
