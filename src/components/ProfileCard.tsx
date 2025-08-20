@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Profile from '@/assets/images/HeaderProfile.png';
 import StarRating from '@/components/StarRating';
 import ROUTES from '@/constants/routes';
+import { getLabelFromSlug } from '@/constants/sports';
 import type { ProProfileType } from '@/types/ProProfleType';
 
 interface ProfileCardProps {
@@ -11,7 +12,7 @@ interface ProfileCardProps {
 
 const ProfileCard = ({ profileData }: ProfileCardProps) => {
   const navigate = useNavigate();
-
+  const categoryName = getLabelFromSlug(profileData?.categoryName ?? 'health');
   return (
     // 좌우패딩불일치, 일단34로 작업함
     <div className="xs:w-[340px] flex h-[115px] items-center justify-between rounded-[30px] border-[1.5px] border-[#b8b8b8] px-[34px] sm:w-[600px]">
@@ -26,9 +27,9 @@ const ProfileCard = ({ profileData }: ProfileCardProps) => {
         />
 
         <div className="flex flex-col justify-between">
-          <p className="text-2xl leading-[140%] font-semibold">{profileData?.categoryName}</p>
+          <p className="text-2xl leading-[140%] font-semibold">{profileData?.userName}</p>
           <p className="text-sm leading-none font-semibold tracking-[0.5em] text-[#697077]">
-            {profileData?.userName}
+            {categoryName}
           </p>
           <p className="text-[10px] font-semibold text-[#013EFB]">{profileData?.center}</p>
           {/* 별이 벗어나는 버그가 있었는데 flex적용하니까 고쳐짐. 이유는 모름;; */}
