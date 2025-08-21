@@ -13,7 +13,9 @@ const AlarmDropdown = () => {
             return <AlramDropdownItem alarm={alarm} key={alarm.id} />;
           })
         ) : (
-          <div className="text-[#666666} flex h-full w-full text-center">알림이 없습니다.</div>
+          <div className="text-[#666666} flex h-full w-full items-center justify-center text-center">
+            알림이 없습니다.
+          </div>
         )}
       </div>
     </Box>

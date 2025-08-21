@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -18,27 +18,47 @@ function AuthMenu() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { isLoggedIn, role } = useRoleStore();
-  const [isOpenProfileDropdown, setIsOpenProfileDropdown] = useState<boolean>(false);
-  const [isOpenAlarmDropdown, setIsOpenAlarmDropdown] = useState<boolean>(false);
+  const { isLoggedIn } = useRoleStore();
+  const [isOpenProfileDropdown, setIsOpenProfileDropdown] = useState(false);
+  const [isOpenAlarmDropdown, setIsOpenAlarmDropdown] = useState(false);
   const unreadCount = useUnreadStore((s) => s.unreadCount);
   const alarmCount = useAlarmStore((s) => s.alarmCount);
 
   const { data: myInfo } = useGetUserInfo();
   const profileImage = myInfo?.profileImageUrl ?? HeaderProfile;
   const nav = useNavigate();
-  //url 변경될때마다 드롭다운 닫기
+
+  // ✅ ref 정의
+  const profileRef = useRef<HTMLDivElement>(null);
+  const alarmRef = useRef<HTMLDivElement>(null);
+
+  // URL 변경 시 드롭다운 닫기
   useEffect(() => {
     setIsOpenAlarmDropdown(false);
     setIsOpenProfileDropdown(false);
   }, [location]);
 
+  // ✅ 영역 밖 클릭 시 닫기
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (profileRef.current && !profileRef.current.contains(e.target as Node)) {
+        setIsOpenProfileDropdown(false);
+      }
+      if (alarmRef.current && !alarmRef.current.contains(e.target as Node)) {
+        setIsOpenAlarmDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   return (
     <div className="flex items-center">
-      {/*  로그인 여부에 따른 메뉴 */}
       {isLoggedIn ? (
         <div className="flex h-full items-center gap-5">
-          <div className="relative flex h-[21px] gap-[21px]">
+          {/* 채팅 + 알림 */}
+          <div className="relative flex h-[21px] gap-[21px]" ref={alarmRef}>
             <div className="relative">
               {unreadCount > 0 && (
                 <div className="absolute bottom-3 left-3 z-[3000] rounded-full bg-red-500 px-1.5 text-center text-[12px] text-white">
@@ -71,22 +91,14 @@ function AuthMenu() {
               </div>
             )}
           </div>
-          <div
-            className="relative flex h-full items-center"
-            onMouseLeave={() => setIsOpenProfileDropdown(false)}
-          >
+
+          {/* 프로필 */}
+          <div className="relative flex h-full items-center" ref={profileRef}>
             <img
               src={profileImage}
               alt="프로필"
               className="h-[45px] w-[45px] cursor-pointer rounded-full"
-              onMouseEnter={() => setIsOpenProfileDropdown(true)}
-              onClick={() => {
-                if (role === 'EXPERT') {
-                  navigate(ROUTES.MYPAGE.EXPERT);
-                } else {
-                  navigate(ROUTES.MYPAGE.USER);
-                }
-              }}
+              onClick={() => setIsOpenProfileDropdown((prev) => !prev)}
             />
             {isOpenProfileDropdown && (
               <div className="absolute top-full right-0">
@@ -96,14 +108,12 @@ function AuthMenu() {
           </div>
         </div>
       ) : (
-        <>
-          <div
-            className="flex h-full w-[96px] items-center justify-center"
-            onClick={() => nav(ROUTES.AUTH.LOGIN)}
-          >
-            <Button>로그인</Button>
-          </div>
-        </>
+        <div
+          className="flex h-full w-[96px] items-center justify-center"
+          onClick={() => nav(ROUTES.AUTH.LOGIN)}
+        >
+          <Button>로그인</Button>
+        </div>
       )}
     </div>
   );
