@@ -421,7 +421,7 @@ const Dashboard = ({ userInfo }: DashboardProps) => {
               <button
                 type="button"
                 onClick={() => setIsModalOpen(true)}
-                className="mt-4 text-[0.9375rem] underline-offset-4"
+                className="mt-4 cursor-pointer text-[0.9375rem] underline decoration-gray-400 underline-offset-4 hover:decoration-black"
               >
                 탈퇴하기
               </button>

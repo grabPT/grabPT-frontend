@@ -1,4 +1,5 @@
-import { useEffect, useRef } from 'react';
+// Layout.tsx
+import { useEffect, useRef, useState } from 'react';
 
 import clsx from 'clsx';
 import { Outlet, useLocation } from 'react-router-dom';
@@ -12,21 +13,35 @@ function Layout() {
   const location = useLocation();
   const isFullWidthPage = location.pathname === '/';
 
-  // 스크롤 조작 ref, store에 넘겨주기
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [scrolled, setScrolled] = useState(false);
+
+  // ref를 store에 등록
   useEffect(() => {
-    useScrollStore.getState().setContainerRef(scrollRef); // 안전하게 등록
+    useScrollStore.getState().setContainerRef(scrollRef);
   }, []);
 
   // 경로 변경 시 스크롤
   useScrollToTop(location);
 
+  // 스크롤 감지
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    const handleScroll = () => {
+      setScrolled(el.scrollTop > 0);
+    };
+
+    el.addEventListener('scroll', handleScroll);
+    return () => el.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <div className="flex h-screen flex-col">
-      <Header />
+      {/* 스크롤 여부를 Header로 전달 */}
+      <Header scrolled={scrolled} />
 
-      {/* 스크롤시 section내부요소가 잘리는 버그 발생. => GPU/페인팅 조작으로 일단 해결 */}
-      {/* 뭐가 문젠지 아직도 잘 모르겠는데 일단 해결함;;; */}
       <section
         className="flex min-h-0 flex-1 basis-0 [transform:translateZ(0)] flex-col justify-between overflow-y-scroll [will-change:transform] [contain:layout_paint]"
         ref={scrollRef}
