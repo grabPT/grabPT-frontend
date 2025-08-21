@@ -10,6 +10,7 @@ export function useDeleteRequest() {
       queryClient.invalidateQueries({ queryKey: ['MyRequestsList'] });
     },
     onError: (err) => {
+      alert(err);
       console.error('요청서 삭제 실패', err);
     },
   });

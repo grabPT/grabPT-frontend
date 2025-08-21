@@ -45,7 +45,17 @@ const RequestCard = ({
   ];
   const { mutate } = useDeleteRequest();
   const handleDeleteRequest = () => {
-    mutate(requestionId);
+    mutate(requestionId, {
+      onSuccess: () => {
+        setModalOpen(false);
+        window.location.reload();
+      },
+      onError: (error) => {
+        console.error('삭제 실패:', error);
+        setModalOpen(false);
+        alert(error);
+      },
+    });
   };
   return (
     <Box width="w-[600px]">
