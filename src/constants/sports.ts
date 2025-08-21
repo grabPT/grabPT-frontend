@@ -1,6 +1,6 @@
 import Badminton from '@/features/Signup/assets/Badminton.png';
 import Boxing from '@/features/Signup/assets/Boxing.png';
-import Dance from '@/features/Signup/assets/Cycle.png';
+import Dance from '@/features/Signup/assets/Dance.png';
 import Golf from '@/features/Signup/assets/Golf.png';
 import Pilates from '@/features/Signup/assets/Pliates.png';
 import Running from '@/features/Signup/assets/Running.png';
