@@ -111,7 +111,9 @@ const SelectPriceStep = () => {
           <span className="font-semibold text-blue-600">{priceInfo.location}</span> 의 평균
           <span className="font-semibold text-red-600"> {sport?.label}</span>PT가격은&nbsp;
           회당&nbsp;
-          <span className="font-semibold text-red-600">{Number(avgPrice?.result.avgUnitPrice).toLocaleString()}원</span>{' '}
+          <span className="font-semibold text-red-600">
+            {Number(avgPrice?.result.avgUnitPrice).toLocaleString()}원
+          </span>{' '}
           입니다.
         </p>
 

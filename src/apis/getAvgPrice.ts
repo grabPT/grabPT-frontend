@@ -1,5 +1,6 @@
-import { privateInstance } from "@/libs/axios";
-import type { ApiResponse } from "./getUserInfo";
+import { privateInstance } from '@/libs/axios';
+
+import type { ApiResponse } from './getUserInfo';
 
 interface GetAvgPriceResponse {
   avgUnitPrice: string;
@@ -15,23 +16,20 @@ export const getAvgPrice = async (
   categoryName: string,
   city: string,
   district: string,
-  street: string
+  street: string,
 ): Promise<GetAvgPriceResponseDto> => {
   try {
-    const { data } = await privateInstance.get<GetAvgPriceResponseDto>(
-      "/price/avg-per-session",
-      {
-        params: {
-          categoryName,
-          city,
-          district,
-          street,
-        },
-      }
-    );
+    const { data } = await privateInstance.get<GetAvgPriceResponseDto>('/price/avg-per-session', {
+      params: {
+        categoryName,
+        city,
+        district,
+        street,
+      },
+    });
     return data;
   } catch (error) {
-    console.error("⚠️ getAvgPrice API 에러:", error);
+    console.error('⚠️ getAvgPrice API 에러:', error);
     throw error;
   }
 };
