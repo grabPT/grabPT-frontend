@@ -20,7 +20,9 @@ const ProposalDetailPage = () => {
   const 채팅상담 = () => {
     if (!suggestion) return;
     postCreateChatRoom({ userId: suggestion.userId, proId: suggestion.expertId });
-    navigate(ROUTES.CHAT.ROOT);
+    navigate(ROUTES.CHAT.ROOT, {
+      state: { proId: suggestion.expertId },
+    });
   };
 
   const { mutateAsync: matchAsync } = usePostMatching();
