@@ -53,7 +53,7 @@ const RequestCard = ({
       onError: (error) => {
         console.error('삭제 실패:', error);
         setModalOpen(false);
-        alert(error);
+        alert(error.message);
       },
     });
   };
