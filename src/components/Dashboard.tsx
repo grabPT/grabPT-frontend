@@ -5,9 +5,9 @@ import { useForm } from 'react-hook-form';
 
 import type { UserInfo } from '@/apis/getUserInfo';
 import Button from '@/components/Button';
+import DeleteUserModal from '@/components/DeleteUserModal';
 import { usePatchMyPage } from '@/features/Mypage/hooks/usePatchMypage';
 import { useCheckNickname } from '@/features/Signup/hooks/useCheckNickname';
-import DeleteUserModal from '@/components/DeleteUserModal';
 
 interface DashboardProps {
   userInfo?: UserInfo;
@@ -418,8 +418,8 @@ const Dashboard = ({ userInfo }: DashboardProps) => {
               </Button>
               <button
                 type="button"
-                onClick={()=>setIsModalOpen(true)}
-                className=" mt-4  text-[0.9375rem] underline-offset-4"
+                onClick={() => setIsModalOpen(true)}
+                className="mt-4 text-[0.9375rem] underline-offset-4"
               >
                 탈퇴하기
               </button>
@@ -449,9 +449,7 @@ const Dashboard = ({ userInfo }: DashboardProps) => {
             </>
           )}
         </div>
-        {isModalOpen && 
-        <DeleteUserModal setIsModalOpen= {setIsModalOpen}/>
-}
+        {isModalOpen && <DeleteUserModal setIsModalOpen={setIsModalOpen} />}
       </div>
 
       {/* 카카오 주소 검색 모달 */}

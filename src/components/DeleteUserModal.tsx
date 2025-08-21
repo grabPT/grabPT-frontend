@@ -4,9 +4,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import z from 'zod';
 
+import Button from '@/components/Button';
 import CommentBox from '@/components/CommentBox';
 import { useDeleteAccount } from '@/hooks/useDeleteAccount';
-import Button from '@/components/Button';
 import type { DeleteAccount } from '@/types/deleteAccount';
 
 interface IDeleteUserModal {
@@ -27,9 +27,12 @@ export default function DeleteUserModal({ setIsModalOpen }: IDeleteUserModal) {
   });
   const { mutate, isPending } = useDeleteAccount();
   const handleDelete = handleSubmit((data) => {
-    mutate(data,{onSuccess: () => {
-       window.location.reload();
-        setIsModalOpen(false);}});
+    mutate(data, {
+      onSuccess: () => {
+        window.location.reload();
+        setIsModalOpen(false);
+      },
+    });
   });
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
@@ -82,13 +85,10 @@ export default function DeleteUserModal({ setIsModalOpen }: IDeleteUserModal) {
         </div>
 
         <div className="flex gap-3 p-6 pt-0">
-          <Button
-            onClick={() => setIsModalOpen(false)}
-          >
-            취소
-            </Button>
-          <Button onClick={handleDelete} disabled={isPending}>확인</Button>
-     
+          <Button onClick={() => setIsModalOpen(false)}>취소</Button>
+          <Button onClick={handleDelete} disabled={isPending}>
+            확인
+          </Button>
         </div>
       </div>
     </div>
