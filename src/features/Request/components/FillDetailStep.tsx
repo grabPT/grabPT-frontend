@@ -48,7 +48,6 @@ const FillDetailStep: ForwardRefRenderFunction<{ submit: () => Promise<boolean> 
       etcPurposeContent: detailInfo.etcPurposeContent ?? '',
     },
   });
-  console.log(errors);
 
   useImperativeHandle(ref, () => ({
     submit: () =>

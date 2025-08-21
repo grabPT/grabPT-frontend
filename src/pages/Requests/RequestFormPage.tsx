@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import React from 'react';
 
 import { useNavigate } from 'react-router-dom';
@@ -27,6 +27,7 @@ type StepComponentType =
   | React.ForwardRefExoticComponent<React.RefAttributes<FillDetailRef>>;
 
 const RequestFormPage = () => {
+  const [isError, setIsError] = useState<boolean>(false);
   const navigate = useNavigate();
   /* step 관리 훅 */
   const { step, next, isLast } = useStepParam(3);
@@ -50,6 +51,7 @@ const RequestFormPage = () => {
       setPriceInfo({ location: addressStr });
     }
   }, [isPending, setPriceInfo, userInfo]);
+
   const handleNext = useCallback(async () => {
     if (step === 1) {
       if (sportsTypeInfo?.categoryId == 0) {
@@ -60,7 +62,11 @@ const RequestFormPage = () => {
     if (isLast) {
       //외부(RequestPage.tsx)에서 내부(FillDetailStep.tsx) 컴포넌트의 onSubmit 함수를 호출하여 폼검사를 진행
       const submit = await fillDetailRef.current?.submit?.();
-      if (!submit) return;
+      if (!submit) {
+        setIsError(true);
+        setTimeout(() => setIsError(false), 1000); // 1.2초 뒤 원상 복구
+        return;
+      }
 
       // 스토어에서 작성 데이터 취득
       const requestInfo = useRequestStore.getState().getRequestInfo();
@@ -69,10 +75,7 @@ const RequestFormPage = () => {
         ...requestInfo,
       };
       try {
-        // 호출 직전
-        console.log(payload);
         const data = await requestSend(payload);
-        console.log(payload);
         //응답으로 받은 requestionId를 바로 사용
         const id = data.result.requestionId;
         // 성공 시 이동
@@ -90,7 +93,11 @@ const RequestFormPage = () => {
     <div className="box-border flex flex-col items-center py-[100px] text-center">
       {step === 3 ? <FillDetailStep ref={fillDetailRef} /> : <StepComponent />}
       <div className="mt-12">
-        <Button onClick={handleNext} width="w-[26rem]">
+        <Button
+          onClick={handleNext}
+          width="w-[26rem]"
+          className={isError ? 'bg-red-500' : 'bg-button hover:bg-buttonHover'}
+        >
           {isLast ? '작성 완료' : '다음'}
         </Button>
       </div>
