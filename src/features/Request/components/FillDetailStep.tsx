@@ -31,6 +31,7 @@ const FillDetailStep: ForwardRefRenderFunction<{ submit: () => Promise<boolean> 
   const { id } = useParams<{ id: string }>();
   const { data: isWriter } = useGetCanEditRequest(Number(id));
   const canEdit = isWriter?.canEdit;
+  console.log('canEdit', canEdit);
   //유효성 검사
   const {
     watch,
@@ -145,7 +146,9 @@ const FillDetailStep: ForwardRefRenderFunction<{ submit: () => Promise<boolean> 
               <CheckedButton
                 key={p}
                 isChecked={selectedPurposes.includes(p)}
-                onClick={() => togglePurpose(p)}
+                onClick={() => {
+                  if (isWriter) togglePurpose(p);
+                }}
               >
                 {p}
               </CheckedButton>
@@ -176,7 +179,13 @@ const FillDetailStep: ForwardRefRenderFunction<{ submit: () => Promise<boolean> 
         </div>
         <div className="mt-6 flex flex-wrap gap-2">
           {AGES.map((a) => (
-            <CheckedButton key={a} isChecked={age === a} onClick={() => setAge(a)}>
+            <CheckedButton
+              key={a}
+              isChecked={age === a}
+              onClick={() => {
+                if (isWriter) setAge(a);
+              }}
+            >
               {a}
             </CheckedButton>
           ))}
@@ -200,7 +209,9 @@ const FillDetailStep: ForwardRefRenderFunction<{ submit: () => Promise<boolean> 
             <CheckedButton
               key={g}
               isChecked={studentGender === g}
-              onClick={() => setStudentGender(g)}
+              onClick={() => {
+                if (isWriter) setStudentGender(g);
+              }}
             >
               {g}
             </CheckedButton>
@@ -221,7 +232,13 @@ const FillDetailStep: ForwardRefRenderFunction<{ submit: () => Promise<boolean> 
         </div>
         <div className="mt-6 flex gap-2">
           {GENDERS.map((g) => (
-            <CheckedButton key={g} isChecked={trainer === g} onClick={() => setTrainerGender(g)}>
+            <CheckedButton
+              key={g}
+              isChecked={trainer === g}
+              onClick={() => {
+                if (isWriter) setTrainerGender(g);
+              }}
+            >
               {g}
             </CheckedButton>
           ))}
@@ -268,7 +285,9 @@ const FillDetailStep: ForwardRefRenderFunction<{ submit: () => Promise<boolean> 
               key={d}
               width="w-[56px]"
               isChecked={days.includes(d)}
-              onClick={() => toggleDay(d)}
+              onClick={() => {
+                if (isWriter) toggleDay(d);
+              }}
             >
               {d}
             </CheckedButton>
@@ -291,7 +310,13 @@ const FillDetailStep: ForwardRefRenderFunction<{ submit: () => Promise<boolean> 
         </div>
         <div className="mt-6 flex flex-wrap gap-2">
           {TIMES.map((t) => (
-            <CheckedButton key={t} isChecked={times.includes(t)} onClick={() => toggleTime(t)}>
+            <CheckedButton
+              key={t}
+              isChecked={times.includes(t)}
+              onClick={() => {
+                if (isWriter) toggleTime(t);
+              }}
+            >
               {t}
             </CheckedButton>
           ))}
