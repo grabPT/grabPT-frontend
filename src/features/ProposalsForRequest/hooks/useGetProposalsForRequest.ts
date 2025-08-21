@@ -19,12 +19,13 @@ export const useGetProposalsForRequest = (params: getProposalsForRequestRequestD
   const enabled = requestionId !== undefined;
 
   return useQuery<getProposalsForRequestResponseDto, Error, getProposalsForRequestResultType>({
-    queryKey: QUERY_KEYS.proposalsList(params),
+    // ✅ queryKey를 안정적인 배열 형태로 변경
+    queryKey: [QUERY_KEYS.proposalsList, JSON.stringify(params)],
     queryFn: () => getProposalsForRequest(params),
     enabled,
     select: (res) => res.result,
     staleTime: 100_000, // 1분 40초 동안 fresh
-    gcTime: 300_000, // 5 분 뒤 캐시 정리
-    retry: 2, //2번까지 재시도
+    gcTime: 300_000, // 5분 뒤 캐시 정리
+    retry: 2, // 2번까지 재시도
   });
 };
