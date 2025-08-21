@@ -22,13 +22,9 @@ export function useDeleteAccount() {
       localStorage.removeItem('role-storage');
       localStorage.removeItem('alarm-storage');
       localStorage.removeItem('unread-storage');
-      // HttpOnly 쿠키를 쓰면 서버가 Set-Cookie로 삭제하도록
-      // /auth/logout 같은 엔드포인트를 호출하는 것도 안전
     },
     onError: (err) => {
-      // 에러 핸들링 UX
       console.error('탈퇴 실패', err);
-      // 필요 시 토스트 노출
     },
   });
 }
