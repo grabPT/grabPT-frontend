@@ -7,6 +7,7 @@ import type { UserInfo } from '@/apis/getUserInfo';
 import Button from '@/components/Button';
 import { usePatchMyPage } from '@/features/Mypage/hooks/usePatchMypage';
 import { useCheckNickname } from '@/features/Signup/hooks/useCheckNickname';
+import DeleteUserModal from '@/components/DeleteUserModal';
 
 interface DashboardProps {
   userInfo?: UserInfo;
@@ -38,7 +39,7 @@ const Dashboard = ({ userInfo }: DashboardProps) => {
   const [postModalOpen, setPostModalOpen] = useState(false);
   const [inputAddress, setInputAddress] = useState<InputAddressType>();
   const [profileImageFile, setProfileImageFile] = useState<File>();
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -417,8 +418,8 @@ const Dashboard = ({ userInfo }: DashboardProps) => {
               </Button>
               <button
                 type="button"
-                // onClick={}
-                className="text-xs underline-offset-1"
+                onClick={()=>setIsModalOpen(true)}
+                className=" mt-4  text-[0.9375rem] underline-offset-4"
               >
                 탈퇴하기
               </button>
@@ -448,6 +449,9 @@ const Dashboard = ({ userInfo }: DashboardProps) => {
             </>
           )}
         </div>
+        {isModalOpen && 
+        <DeleteUserModal setIsModalOpen= {setIsModalOpen}/>
+}
       </div>
 
       {/* 카카오 주소 검색 모달 */}
