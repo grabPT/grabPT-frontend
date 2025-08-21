@@ -181,7 +181,7 @@ export const routesManifest: AppRoute[] = [
       {
         path: ROUTES.MATCHING_STATUS.REQUESTS.PROPOSALS,
         element: withFallback(<ProposalsForRequest />),
-        roles: ['USER', 'EXPERT'],
+        roles: ['USER'],
       },
 
       // 제안서 (lazy)

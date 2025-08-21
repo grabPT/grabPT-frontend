@@ -174,7 +174,7 @@ const RequestDetailPage = () => {
   }
   return (
     <section className="flex flex-col items-center py-6">
-      {isWriter && <Tabs items={TabItems} width="w-[400px]" />}
+      {isWriter?.canEdit ? <Tabs items={TabItems} width="w-[400px]" /> : <div></div>}
 
       {/* 헤더 */}
       <div className="mt-16 flex h-[50px] w-full items-center justify-center gap-3">
@@ -192,7 +192,7 @@ const RequestDetailPage = () => {
         <span className="text-2xl leading-none font-bold"> 님의 요청서입니다.</span>
       </div>
 
-      <section className="mt-20 flex w-full flex-col gap-20 text-4xl font-bold">
+      <section className="mt-20 flex w-[800px] flex-col gap-20 text-4xl font-bold">
         <section>
           <span className="mr-3">{category}</span>
           <span className="text-lg font-semibold">{data?.location}</span>
