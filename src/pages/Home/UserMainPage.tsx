@@ -36,7 +36,7 @@ const UserMainPage = () => {
         <div className="mt-[109px]">
           <RequestSlider
             title={'나의 요청서'}
-            requests={requests?.content ?? []}
+            requests={requests}
             location={location}
             name={userData?.nickname}
           />

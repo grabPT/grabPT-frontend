@@ -4,15 +4,14 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 
-import HeaderProfile from '@/assets/images/HeaderProfile.png';
-import type { RequestsListResultType } from '@/features/Requests/types/getRequestsListType';
 import { NextArrow, PrevArrow } from '@/features/home/components/CustomArrow';
 import RequestCardInMain from '@/features/home/components/RequestCard';
 import { useRoleStore } from '@/store/useRoleStore';
+import type { getMyRequestsListAtMainPageResultType } from '@/types/getMyRequestListAtMainPageType';
 
 interface RequestSliderProps {
   title: string;
-  requests: RequestsListResultType['content'];
+  requests: getMyRequestsListAtMainPageResultType | undefined;
   name?: string;
   location?: string;
 }
@@ -142,7 +141,7 @@ function RequestSlider({ title, requests, location, name }: RequestSliderProps) 
         {title}
       </h2>
 
-      {requests.length === 0 ? (
+      {requests?.content.length === 0 ? (
         // ✅ 요청서 없을 때
         <div className="flex h-[230px] items-center justify-center rounded-xl border border-gray-200 bg-gray-50">
           <p className="text-lg font-medium text-gray-500">아직 작성하신 요청서가 없어요 📝</p>
@@ -151,19 +150,13 @@ function RequestSlider({ title, requests, location, name }: RequestSliderProps) 
         // ✅ 요청서 있을 때
         <div className="slider-container relative mx-auto mb-[4px] max-w-[1480px] sm:w-[720px] lg:w-[720px] xl:w-[1080px] 2xl:w-[1480px]">
           <Slider ref={sliderRef} {...settings}>
-            {requests.slice(0, 12).map((r, i) => (
-              <div key={`${r.requestId}-${i}`} className="h-[400px] px-4">
+            {requests?.content.slice(0, 12).map((r) => (
+              <div key={r.requestionId} className="h-[400px] px-4">
                 <RequestCardInMain
-                  id={r.requestId}
+                  id={r.requestionId}
                   name={role === 'USER' ? name : role === 'EXPERT' ? r.nickname : ''}
                   location={location ?? ''}
-                  profileImg={
-                    role === 'USER'
-                      ? r?.imageURL
-                      : role === 'EXPERT'
-                        ? r?.userProfileImageUrl
-                        : HeaderProfile
-                  }
+                  profileImg={r.profileImageUrl}
                   tags={{
                     availableTimes: r.availableTimes,
                     daysPerWeek: r.availableDays.length,

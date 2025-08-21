@@ -4,12 +4,12 @@ import { getMyRequestsListAtMainPage } from '@/apis/getMyRequestListAtMainPage';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import type { getMyInfoListRequestDto } from '@/features/Mypage/types/getMyRequestsListRequestDto';
 import type {
-  getMyRequestsListResponseDto,
-  getMyRequestsListResultType,
-} from '@/types/getMyRequestListResponse';
+  getMyRequestsListAtMainPageResponseDto,
+  getMyRequestsListAtMainPageResultType,
+} from '@/types/getMyRequestListAtMainPageType';
 
 export const useGetMyRequestsListAtMainPage = (params: getMyInfoListRequestDto, enabled: boolean) =>
-  useQuery<getMyRequestsListResponseDto, Error, getMyRequestsListResultType>({
+  useQuery<getMyRequestsListAtMainPageResponseDto, Error, getMyRequestsListAtMainPageResultType>({
     queryKey: QUERY_KEYS.myRequestsList(params),
     queryFn: () => getMyRequestsListAtMainPage(params),
     enabled,
