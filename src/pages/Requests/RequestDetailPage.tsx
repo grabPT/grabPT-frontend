@@ -7,6 +7,7 @@ import z from 'zod';
 
 import Button from '@/components/Button';
 import CheckedButton from '@/components/CheckedButton';
+import CommentBox from '@/components/CommentBox';
 import Tabs, { type TabItem } from '@/components/Tabs';
 import ROUTES, { urlFor } from '@/constants/routes';
 import { SPORTS } from '@/constants/sports';
@@ -42,6 +43,7 @@ const RequestDetailPage = () => {
 
   // api연결 시 isWriter 함수로 변경 (요청서의 작성자 id === 현재 유저 id)
   const { data: isWriter } = useGetCanEditRequest(requestionId);
+  const canEdit = isWriter?.canEdit;
 
   const TabItems: TabItem[] = [
     { label: '정보', to: urlFor.requestDetail(requestionId) },
@@ -234,6 +236,7 @@ const RequestDetailPage = () => {
                   isChecked={selectedPurposes.includes(p)}
                   onClick={() => togglePurpose(p)}
                   key={p}
+                  disabled={!canEdit}
                 >
                   {p}
                 </CheckedButton>
@@ -268,7 +271,7 @@ const RequestDetailPage = () => {
               <CheckedButton
                 key={a}
                 isChecked={age === a}
-                // disabled 추가 필요
+                disabled={!canEdit}
                 onClick={() => setAge(a)}
               >
                 {a}
@@ -293,6 +296,7 @@ const RequestDetailPage = () => {
               <CheckedButton
                 isChecked={studentGender === g}
                 onClick={() => setStudentGender(g)}
+                disabled={!canEdit}
                 key={g}
               >
                 {g}
@@ -318,7 +322,12 @@ const RequestDetailPage = () => {
           </div>
           <div className="mt-6 flex gap-2">
             {GENDERS.map((g) => (
-              <CheckedButton isChecked={trainer === g} onClick={() => setTrainerGender(g)} key={g}>
+              <CheckedButton
+                isChecked={trainer === g}
+                onClick={() => setTrainerGender(g)}
+                key={g}
+                disabled={!canEdit}
+              >
                 {g}
               </CheckedButton>
             ))}
@@ -345,6 +354,7 @@ const RequestDetailPage = () => {
             aria-label="PT 시작 희망일"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
+            readOnly={!canEdit}
             className="mt-6 rounded-[10px] border border-[#CCCCCC] p-3 text-xl focus:border-gray-400 focus:outline-none"
           />
         </section>
@@ -369,6 +379,7 @@ const RequestDetailPage = () => {
                 onClick={() => toggleDay(d)}
                 key={d}
                 width="w-[56px]"
+                disabled={!canEdit}
               >
                 {d}
               </CheckedButton>
@@ -391,7 +402,12 @@ const RequestDetailPage = () => {
           </div>
           <div className="mt-6 flex flex-wrap gap-2">
             {TIMES.map((t) => (
-              <CheckedButton isChecked={times.includes(t)} onClick={() => toggleTime(t)} key={t}>
+              <CheckedButton
+                isChecked={times.includes(t)}
+                onClick={() => toggleTime(t)}
+                key={t}
+                disabled={!canEdit}
+              >
                 {t}
               </CheckedButton>
             ))}
@@ -403,11 +419,10 @@ const RequestDetailPage = () => {
           <h1>
             세부 <span className="text-button">요청사항</span>
           </h1>
-          <textarea
-            className="mt-6 h-[433px] w-full resize-none rounded-[10px] border border-[#CCCCCC] bg-[#F5F5F5] p-4 text-[15px] placeholder:text-[#CCCCCC] focus:border-gray-400 focus:outline-none"
-            placeholder={'입력받아서 넘겨요 ~'}
+          <CommentBox
             value={watch('content')}
             onChange={(e) => setValue('content', e.target.value, { shouldDirty: true })}
+            readOnly={!canEdit}
           />
         </section>
       </section>

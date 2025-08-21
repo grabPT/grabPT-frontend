@@ -90,13 +90,13 @@ const RequestCardInMain = ({
       <div
         className={clsx(
           'w-full rounded-md border border-blue-600/10 bg-[#f0f7ff]',
-          isMatched ? 'h-[140px]' : 'h-[200px]',
+          isMatched && !isExpert ? 'h-[140px]' : 'h-[200px]',
         )}
       >
         <p
           className={clsx(
             'p-1.5 text-[12px] text-[#525252]',
-            isMatched ? 'line-clamp-4' : 'line-clamp-6',
+            isMatched && !isExpert ? 'line-clamp-4' : 'line-clamp-6',
           )}
         >
           {text}
