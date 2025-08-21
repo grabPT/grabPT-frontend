@@ -16,6 +16,7 @@ const CheckedButton = ({
   text = 'text-[15px] font-semibold ',
   className = '',
   children,
+
   ...rest
 }: PropsWithChildren<CheckedButtonProps>) => {
   const base = 'flex items-center justify-center rounded-[10px] transition-colors px-4 py-2';

@@ -81,15 +81,22 @@ const FillDetailStep: ForwardRefRenderFunction<{ submit: () => Promise<boolean> 
 
   /* 연령대(단일) */
   const age = watch('ageGroup');
-  const setAge = (a: AgeGroup) => setValue('ageGroup', a);
-
+  const setAge = (a: AgeGroup) => {
+    if (!canEdit) return;
+    setValue('ageGroup', a);
+  };
   /* 수강생 성별(단일) */
   const studentGender = watch('userGender');
-  const setStudentGender = (g: Gender) => setValue('userGender', g);
+  const setStudentGender = (g: Gender) => {
+    if (!canEdit) return setValue('userGender', g);
+  };
 
   /* 트레이너 선호 성별(단일) */
   const trainer = watch('trainerGender');
-  const setTrainerGender = (g: Gender) => setValue('trainerGender', g);
+  const setTrainerGender = (g: Gender) => {
+    if (!canEdit) return;
+    setValue('trainerGender', g);
+  };
 
   /* 가능 요일(다중) */
   const days = watch('availableDays');
@@ -139,7 +146,6 @@ const FillDetailStep: ForwardRefRenderFunction<{ submit: () => Promise<boolean> 
                 key={p}
                 isChecked={selectedPurposes.includes(p)}
                 onClick={() => togglePurpose(p)}
-                disabled={!canEdit}
               >
                 {p}
               </CheckedButton>
@@ -242,7 +248,6 @@ const FillDetailStep: ForwardRefRenderFunction<{ submit: () => Promise<boolean> 
           aria-label="PT 시작 희망일"
           value={startDate}
           onChange={(e) => setStartDate(e.target.value)}
-          disabled={!canEdit}
           className="mt-6 rounded-[10px] border border-[#CCCCCC] p-3 text-xl focus:border-gray-400 focus:outline-none"
         />
       </section>
