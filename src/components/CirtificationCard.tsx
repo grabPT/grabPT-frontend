@@ -213,6 +213,7 @@ export const CirtificationEditCard = ({ onAdd }: CirtificationEditCardProps) => 
         {fileName || '사진 첨부(필수)'}
       </div>
       <input
+        aria-label="파일"
         type="file"
         accept="image/*"
         ref={fileInputRef}

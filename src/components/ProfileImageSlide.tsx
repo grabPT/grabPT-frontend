@@ -234,6 +234,7 @@ const ProfileImageSlide = ({
               </button>
               {/* 숨겨진 파일 입력 */}
               <input
+                aria-label="이미지"
                 ref={fileInputRef}
                 type="file"
                 accept="image/*"

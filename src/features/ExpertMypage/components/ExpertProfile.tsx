@@ -358,6 +358,7 @@ const ExpertProfile = () => {
             <div className="flex items-center gap-4">
               <label className="text-[20px] font-semibold">센터명</label>
               <input
+                aria-label="센터명"
                 type="text"
                 className="h-[40px] w-[260px] rounded-[10px] border border-[#BABABA] px-2"
                 value={centerName}

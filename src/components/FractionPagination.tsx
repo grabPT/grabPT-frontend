@@ -21,6 +21,7 @@ const FractionPagination = ({ currentPage, totalPage, onNext }: FractionPaginati
 
       {/* 오른쪽 화살표 */}
       <button
+        type="button"
         onClick={onNext}
         aria-label="다음 배너"
         className="absolute top-1/2 right-2 -translate-y-1/2 cursor-pointer"
