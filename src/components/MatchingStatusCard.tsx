@@ -1,6 +1,5 @@
 import clsx from 'clsx';
 
-import ProfileHeader from '@/assets/images/HeaderProfile.png';
 import UserRequestHeader from '@/features/Requests/components/UserRequestHeader';
 import type { RealtimeMatchingType } from '@/types/RealtimeMatchingType';
 
@@ -16,7 +15,7 @@ const MatchingStatusCard = ({ match }: MatchingStatusCardProps) => {
     <div className="flex h-[48px] w-full items-center justify-between">
       <UserRequestHeader
         nickName={match.nickname}
-        profileImg={match.profileImageUrl ? match.profileImageUrl : ProfileHeader}
+        profileImg={match.profileImageUrl || undefined}
         location={match.region}
       />
       <div className="flex">

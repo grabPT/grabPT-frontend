@@ -56,7 +56,7 @@ const RealtimeMatchingStatus = ({ categoryType }: RealtimeMatchingStatusProps) =
         <span className="text-button">{categoryLabel}</span> 실시간 매칭 현황
       </h2>
 
-      <div className="mt-9 grid grid-cols-1 gap-x-[20px] gap-y-[16px] md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+      <div className="mt-6 grid grid-cols-1 gap-x-8 gap-y-8 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {matchingList
           ?.slice(0, cardCount)
           .map((match, idx) => <MatchingStatusCard key={idx} match={match} />)}

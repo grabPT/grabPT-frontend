@@ -1,3 +1,5 @@
+import { onErrorImage } from '@/utils/onErrorImage';
+
 /*
 유저의 요청 현황 카드의 보여지는
 이미지, 닉네임, 위치 정보 부분 컴포넌트 입니다.
@@ -15,6 +17,7 @@ const UserRequestHeader = ({ nickName, profileImg, location }: UserRequestHeader
         {profileImg ? (
           <img
             src={profileImg}
+            onError={onErrorImage}
             alt="profile"
             className="h-[50px] w-[50px] rounded-full object-cover"
           />

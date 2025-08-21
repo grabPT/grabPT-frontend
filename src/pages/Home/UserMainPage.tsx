@@ -33,7 +33,7 @@ const UserMainPage = () => {
       <UserSearchSection />
 
       {isLoggedIn && (
-        <div className="mt-[109px]">
+        <div className="mt-10">
           <RequestSlider
             title={'나의 요청서'}
             requests={requests?.content ?? []}
@@ -42,7 +42,7 @@ const UserMainPage = () => {
           />
         </div>
       )}
-      <div className="my-[200px]">
+      <div className="my-40">
         <RealtimeMatchingStatus categoryType={categoryType} />
       </div>
 
