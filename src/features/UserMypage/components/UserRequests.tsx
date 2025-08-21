@@ -28,7 +28,7 @@ const UserRequests = () => {
     <div className="flex flex-col items-center">
       {isPending && <>스켈레톤 ui</>}
 
-      <div className="mt-[50px] flex w-[800px] flex-col gap-[30px]">
+      <div className="mt-[50px] flex w-[600px] flex-col gap-[30px]">
         {myRequestsList?.content && myRequestsList.content.length > 0 ? (
           myRequestsList.content.map((rq, idx) => (
             <RequestCard

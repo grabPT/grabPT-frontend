@@ -36,7 +36,7 @@ const RequestCard = ({
   ];
 
   return (
-    <Box>
+    <Box width="w-[600px]">
       <div
         className="relative flex h-full w-full cursor-pointer flex-col p-[10px] pt-[15px]"
         onClick={() => navigate(urlFor.requestDetail(requestionId))}

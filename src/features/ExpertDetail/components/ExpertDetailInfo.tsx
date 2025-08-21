@@ -64,7 +64,7 @@ export const ExpertDetailInfo = () => {
   };
 
   return (
-    <div className="flex w-[800px] flex-col items-center justify-center">
+    <div className="flex w-[600px] flex-col items-center justify-center">
       <div className="mt-10 flex w-full flex-col items-center justify-center gap-4">
         {/* <img src={ExpertDetailBgImg} alt="전문가 프로필 뱌경화면" className="w-full" /> */}
         <img
@@ -101,7 +101,7 @@ export const ExpertDetailInfo = () => {
             )}
           </div>
         </div>
-        <div className="flex w-[800px] flex-col">
+        <div className="flex w-full flex-col">
           <TitleLine title="사진" />
           <div className="my-6 h-0.5 w-full bg-[#BBBB]" />
           {photos ? (
