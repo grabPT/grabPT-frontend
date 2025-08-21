@@ -10,6 +10,10 @@ export default defineConfig({
     global: 'window', // ← 핵심
   },
   resolve: {
-    alias: [{ find: '@', replacement: path.resolve(__dirname, 'src') }],
+    alias: [
+      // lottie-react 내부에서 참조하는 lottie-web을 SVG 전용 빌드로 대체
+      { find: 'lottie-web', replacement: 'lottie-web/build/player/lottie_svg.min.js' },
+      { find: '@', replacement: path.resolve(__dirname, 'src') },
+    ],
   },
 });
