@@ -59,7 +59,7 @@ const AgreementStep = ({ onNext }: AgreementStepProps) => {
     onNext();
   };
   return (
-    <div className="relative flex flex-col items-center justify-center">
+    <div className="relative flex scale-60 flex-col items-center justify-center xl:scale-70 2xl:scale-80">
       {/* 로고 */}
       <div className="mt-6 flex justify-center">
         <img src={SignupLogo} alt="로고" className="h-[2.3125rem] w-[6.25rem]" />

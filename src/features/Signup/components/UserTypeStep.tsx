@@ -25,7 +25,7 @@ const UserTypeStep = ({ onNext }: UserTypeStepProps) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex scale-60 flex-col items-center justify-center xl:scale-70 2xl:scale-80">
       <div className="flex items-center justify-center text-5xl font-extrabold whitespace-pre">
         <span>어떤 유형의 </span>
         <span className="text-[#003EFB]">사용자</span>
