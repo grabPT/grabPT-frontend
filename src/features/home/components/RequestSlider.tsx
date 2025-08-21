@@ -178,6 +178,35 @@ function RequestSlider({ title, requests, location, name }: RequestSliderProps) 
           </Slider>
         </div>
       )}
+      <div className="slider-container relative mx-auto mb-[4px] max-w-[1480px] sm:w-[720px] lg:w-[720px] xl:w-[1080px] 2xl:w-[1480px]">
+        <Slider ref={sliderRef} {...settings}>
+          {requests.slice(0, 12).map((r, i) => (
+            <div key={`${r.requestId}-${i}`} className="h-[400px] px-4">
+              <RequestCardInMain
+                id={r.requestId}
+                name={role === 'USER' ? name : role === 'EXPERT' ? r.nickname : ''}
+                location={location ?? ''}
+                profileImg={
+                  role === 'USER'
+                    ? r?.imageURL
+                    : role === 'EXPERT'
+                      ? r?.userProfileImageUrl
+                      : HeaderProfile
+                }
+                tags={{
+                  availableTimes: r.availableTimes,
+                  daysPerWeek: r.availableDays.length,
+                  categoryName: r.categoryName,
+                }}
+                text={r.content}
+                isMatched={r.status === 'MATCHED'}
+                proProfileId={r.proProfileId}
+                proNickname={r.proNickname || ''}
+              />
+            </div>
+          ))}
+        </Slider>
+      </div>
     </section>
   );
 }

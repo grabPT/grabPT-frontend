@@ -8,6 +8,7 @@ import Button from '@/components/Button';
 import { ReviewFormModal } from '@/components/ReviewFormModal';
 import { urlFor } from '@/constants/routes';
 import UserRequestHeader from '@/features/Requests/components/UserRequestHeader';
+import { useRoleStore } from '@/store/useRoleStore';
 import { TIME_SLOT_LABELS } from '@/types/ReqeustsType';
 import type { Tags } from '@/types/Tags';
 
@@ -22,6 +23,7 @@ interface RequestCardInMainProps {
   profileImg?: string;
   isMatched: boolean;
   proProfileId?: number;
+  proNickname?: string;
 }
 
 const RequestCardInMain = ({
@@ -33,10 +35,12 @@ const RequestCardInMain = ({
   profileImg,
   proProfileId,
   isMatched,
+  proNickname,
 }: RequestCardInMainProps) => {
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
-
+  const { role } = useRoleStore();
+  const isExpert = role === 'EXPERT';
   useEffect(() => {
     const { body } = document;
     if (!body) return;
@@ -98,7 +102,7 @@ const RequestCardInMain = ({
           {text}
         </p>
       </div>
-      {isMatched && (
+      {isMatched && !isExpert && (
         <Button
           className="z-10"
           type="button"
@@ -126,7 +130,7 @@ const RequestCardInMain = ({
             >
               <h3 className="mr-auto mb-3 text-lg font-semibold">리뷰 작성</h3>
               <ReviewFormModal
-                proName={name ?? '전문가'}
+                proName={proNickname ?? '전문가'}
                 proProfileId={proProfileId || 0}
                 rating={0}
                 setModalOpen={setModalOpen}
