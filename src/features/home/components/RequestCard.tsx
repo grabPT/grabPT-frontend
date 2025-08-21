@@ -86,7 +86,7 @@ const RequestCardInMain = ({
       <div
         className={clsx(
           'w-full rounded-md border border-blue-600/10 bg-[#f0f7ff]',
-          isMatched ? 'h-[140px]' : 'h-[160px]',
+          isMatched ? 'h-[140px]' : 'h-[200px]',
         )}
       >
         <p

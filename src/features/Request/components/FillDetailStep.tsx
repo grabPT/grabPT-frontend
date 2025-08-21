@@ -2,9 +2,11 @@ import { type ForwardRefRenderFunction, forwardRef, useImperativeHandle } from '
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
 
 import CheckedButton from '@/components/CheckedButton';
 import CommentBox from '@/components/CommentBox';
+import { useGetCanEditRequest } from '@/features/Request/hooks/useGetCanEditRequest';
 import { detailInfoSchema } from '@/features/Request/schemas/requestSchema';
 import type { RequestDetailStepDto } from '@/features/Request/types/Request';
 import { useRequestStore } from '@/store/useRequestStore';
@@ -26,7 +28,9 @@ const FillDetailStep: ForwardRefRenderFunction<{ submit: () => Promise<boolean> 
   ref,
 ) => {
   const { detailInfo, setDetailInfo } = useRequestStore();
-
+  const { id } = useParams<{ id: string }>();
+  const { data: isWriter } = useGetCanEditRequest(Number(id));
+  const canEdit = isWriter?.canEdit;
   //유효성 검사
   const {
     watch,
@@ -90,20 +94,26 @@ const FillDetailStep: ForwardRefRenderFunction<{ submit: () => Promise<boolean> 
   /* 가능 요일(다중) */
   const days = watch('availableDays');
   const toggleDay = (d: Day) => {
+    if (!canEdit) return;
     const next = days.includes(d) ? days.filter((v) => v !== d) : [...days, d];
     setValue('availableDays', next);
   };
   /* 가능 시간대(다중) */
   const times = watch('availableTimes');
   const toggleTime = (t: TimeSlot) => {
+    if (!canEdit) return;
     const next = times.includes(t) ? times.filter((v) => v !== t) : [...times, t];
     setValue('availableTimes', next);
   };
   /* PT 시작 희망일 */
   const startDate = watch('startPreference');
-  const setStartDate = (v: string) => setValue('startPreference', v);
+  const setStartDate = (v: string) => {
+    if (!canEdit) return;
+    setValue('startPreference', v);
+  };
 
   const togglePurpose = (p: Purpose) => {
+    if (!canEdit) return;
     const current = watch('purpose');
     const next = current.includes(p) ? current.filter((v) => v !== p) : [...current, p];
     setValue('purpose', next);
@@ -129,6 +139,7 @@ const FillDetailStep: ForwardRefRenderFunction<{ submit: () => Promise<boolean> 
                 key={p}
                 isChecked={selectedPurposes.includes(p)}
                 onClick={() => togglePurpose(p)}
+                disabled={!canEdit}
               >
                 {p}
               </CheckedButton>
@@ -140,6 +151,7 @@ const FillDetailStep: ForwardRefRenderFunction<{ submit: () => Promise<boolean> 
               onChange={(e) => setValue('etcPurposeContent', e.target.value, { shouldDirty: true })}
               className="mt-4 h-[180px] w-full resize-none rounded-[10px] border border-[#CCCCCC] bg-[#F5F5F5] p-4 text-[15px] placeholder:text-[#CCCCCC] focus:border-gray-400 focus:outline-none"
               placeholder="세부 내용을 입력해주세요"
+              readOnly={!canEdit}
             />
           )}
         </div>
@@ -230,6 +242,7 @@ const FillDetailStep: ForwardRefRenderFunction<{ submit: () => Promise<boolean> 
           aria-label="PT 시작 희망일"
           value={startDate}
           onChange={(e) => setStartDate(e.target.value)}
+          disabled={!canEdit}
           className="mt-6 rounded-[10px] border border-[#CCCCCC] p-3 text-xl focus:border-gray-400 focus:outline-none"
         />
       </section>
@@ -288,6 +301,7 @@ const FillDetailStep: ForwardRefRenderFunction<{ submit: () => Promise<boolean> 
         <CommentBox
           value={watch('content')}
           onChange={(e) => setValue('content', e.target.value, { shouldDirty: true })}
+          readOnly={!canEdit}
         />
       </section>
     </div>

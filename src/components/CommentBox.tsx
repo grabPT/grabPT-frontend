@@ -5,6 +5,7 @@ interface CommentBoxProps {
   max?: number;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  readOnly?: boolean;
 }
 
 const CommentBox = ({
@@ -12,6 +13,7 @@ const CommentBox = ({
   max = 700,
   value,
   onChange,
+  readOnly = true,
 }: CommentBoxProps) => {
   return (
     <div className="relative w-full">
@@ -28,6 +30,7 @@ const CommentBox = ({
         maxLength={max}
         value={value}
         onChange={onChange}
+        readOnly={readOnly}
       />
     </div>
   );

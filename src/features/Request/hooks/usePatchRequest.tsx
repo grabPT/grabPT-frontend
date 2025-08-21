@@ -13,6 +13,7 @@ export const usePatchRequest = () => {
     mutationFn: ({ requestionId, body }) => patchRequest(requestionId, body),
     onSuccess: (data) => {
       console.log('요청서 수정 성공:', data);
+      alert('요청서가 성공적으로 수정되었습니다!');
     },
     onError: (error) => {
       console.error('요청서 수정 실패:', error);
