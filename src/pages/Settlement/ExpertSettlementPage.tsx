@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { createPortal } from 'react-dom';
 import { Outlet } from 'react-router-dom';
 
 import Button from '@/components/Button';
@@ -113,80 +114,88 @@ const ExpertSettlementPage = () => {
             {/* 이거 관련도 매핑 로직 추가되어야 하는데 api를 못 찾음 */}
           </div>
         </div>
-        {postModalOpen && (
-          //전체 회면 어둡게 하는 기능 수정 필요
-          <div className="fixed inset-0 z-50 flex h-svh w-screen items-center justify-center bg-black/20">
-            <div className="relative flex h-[35.25rem] w-[26.9375rem] items-start justify-center rounded-[0.625rem] bg-white shadow-lg">
-              <div className="flex w-[23.75rem] flex-col items-center justify-center gap-5">
-                <h2 className="mt-7 text-2xl font-semibold">정산 등록</h2>
+        {postModalOpen &&
+          createPortal(
+            <div
+              className="fixed inset-0 z-50 flex h-svh w-screen items-center justify-center bg-black/40"
+              onClick={() => setPostModalOpen(false)} // 배경 클릭 시 모달 닫기
+            >
+              <div
+                className="relative flex h-[35.25rem] w-[26.9375rem] items-start justify-center rounded-[0.625rem] bg-white shadow-lg"
+                onClick={(e) => e.stopPropagation()} // 모달 내부 클릭 시 이벤트 전파 방지
+              >
+                <div className="flex w-[23.75rem] flex-col items-center justify-center gap-5">
+                  <h2 className="mt-7 text-2xl font-semibold">정산 등록</h2>
 
-                <div className="mt-2 flex h-[6.0625rem] w-[23.75rem] items-center justify-between rounded-[0.625rem] bg-[#E6ECFF] px-6">
-                  <div className="flex flex-col items-start justify-center gap-1">
-                    <span className="text-[0.875rem] font-semibold">정산 예정 금액</span>
-                    <span className="text-2xl font-semibold text-[#003EFB]">
-                      {settlementList?.totalEarnings}원
-                    </span>
+                  <div className="mt-2 flex h-[6.0625rem] w-[23.75rem] items-center justify-between rounded-[0.625rem] bg-[#E6ECFF] px-6">
+                    <div className="flex flex-col items-start justify-center gap-1">
+                      <span className="text-[0.875rem] font-semibold">정산 예정 금액</span>
+                      <span className="text-2xl font-semibold text-[#003EFB]">
+                        {settlementList?.totalEarnings}원
+                      </span>
+                    </div>
+                    <img alt="적립 금액 이미지" src={accumulatedAmount} />
                   </div>
-                  <img alt="적립 금액 이미지" src={accumulatedAmount} />
-                </div>
-                <div className="flex w-full flex-col gap-1">
-                  <span className="font-semibold">은행명</span>
-                  <select
-                    aria-label="은행명"
-                    className="rounded-[0.625rem] border border-[#BDBDBD] py-[0.8rem] pl-4 text-[#616161]"
-                    value={bank}
-                    onChange={(e) => setBank(e.target.value)}
-                  >
-                    <option value="" disabled>
-                      은행명을 선택하세요
-                    </option>
-                    <option value="kb">국민은행</option>
-                    <option value="shinhan">신한은행</option>
-                    <option value="woori">우리은행</option>
-                    <option value="nh">농협은행</option>
-                    <option value="ibk">기업은행</option>
-                    <option value="hana">하나은행</option>
-                  </select>
-                </div>
-                <div className="flex w-full flex-col gap-1">
-                  <span className="font-semibold">계좌번호</span>
 
-                  <input
-                    type="text"
-                    placeholder="계좌번호"
-                    className="rounded-[0.625rem] border border-[#BDBDBD] py-[0.8rem] pl-4 text-[#616161]"
-                  />
-                </div>
-                <div className="flex w-full flex-col gap-1">
-                  <span className="font-semibold">예금주</span>
+                  <div className="flex w-full flex-col gap-1">
+                    <span className="font-semibold">은행명</span>
+                    <select
+                      aria-label="은행명"
+                      className="rounded-[0.625rem] border border-[#BDBDBD] py-[0.8rem] pl-4 text-[#616161]"
+                      value={bank}
+                      onChange={(e) => setBank(e.target.value)}
+                    >
+                      <option value="" disabled>
+                        은행명을 선택하세요
+                      </option>
+                      <option value="kb">국민은행</option>
+                      <option value="shinhan">신한은행</option>
+                      <option value="woori">우리은행</option>
+                      <option value="nh">농협은행</option>
+                      <option value="ibk">기업은행</option>
+                      <option value="hana">하나은행</option>
+                    </select>
+                  </div>
 
-                  <input
-                    type="text"
-                    placeholder="예금주"
-                    className="rounded-[0.625rem] border border-[#BDBDBD] py-[0.8rem] pl-4 text-[#616161]"
-                  />
-                </div>
-                <div className="itemx-center flex justify-center gap-2">
-                  <Button
-                    type="button"
-                    width="w-[11.375rem]"
-                    onClick={() => setPostModalOpen(false)}
-                  >
-                    취소
-                  </Button>
-                  <Button
-                    type="button"
-                    width="w-[11.375rem]"
-                    onClick={() => setPostModalOpen(false)}
-                  >
-                    확인
-                  </Button>
+                  <div className="flex w-full flex-col gap-1">
+                    <span className="font-semibold">계좌번호</span>
+                    <input
+                      type="text"
+                      placeholder="계좌번호"
+                      className="rounded-[0.625rem] border border-[#BDBDBD] py-[0.8rem] pl-4 text-[#616161]"
+                    />
+                  </div>
+
+                  <div className="flex w-full flex-col gap-1">
+                    <span className="font-semibold">예금주</span>
+                    <input
+                      type="text"
+                      placeholder="예금주"
+                      className="rounded-[0.625rem] border border-[#BDBDBD] py-[0.8rem] pl-4 text-[#616161]"
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-center gap-2">
+                    <Button
+                      type="button"
+                      width="w-[11.375rem]"
+                      onClick={() => setPostModalOpen(false)}
+                    >
+                      취소
+                    </Button>
+                    <Button
+                      type="button"
+                      width="w-[11.375rem]"
+                      onClick={() => setPostModalOpen(false)}
+                    >
+                      확인
+                    </Button>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-        )}
-
+            </div>,
+            document.body, // createPortal의 두 번째 인자로 타겟 DOM 명시
+          )}
         <Outlet />
       </div>
     </section>

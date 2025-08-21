@@ -95,7 +95,7 @@ const UserInformationForm = ({ isCanEdit, defaultValues }: UserInformationFormPr
       <label className="self-center">주소</label>
       <input
         type="text"
-        placeholder="API 연동해야 함"
+        placeholder="주소"
         name="address"
         readOnly={!isCanEdit}
         defaultValue={defaultValues?.address ?? ''}
