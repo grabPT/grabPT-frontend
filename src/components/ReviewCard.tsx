@@ -16,6 +16,7 @@ interface ReviewCardProps {
   proId?: number;
   proNickName?: string;
   imageURL?: string;
+  isExpertDetail?: boolean;
 }
 
 const ReviewCard = ({
@@ -26,6 +27,7 @@ const ReviewCard = ({
   proId,
   proNickName,
   imageURL,
+  isExpertDetail,
 }: ReviewCardProps) => {
   const { role } = useRoleStore();
   const navigate = useNavigate();
@@ -58,7 +60,7 @@ const ReviewCard = ({
 
           <div className="flex flex-col">
             <span className="text-[16px] leading-[140%] font-semibold">
-              {role === 'EXPERT' ? <>From. {name}</> : <>To. {proNickName}</>}
+              {role === 'EXPERT' || isExpertDetail ? <>From. {name}</> : <>To. {proNickName}</>}
             </span>
             <span className="text-[12px] leading-[140%] font-semibold text-[#7A7A7A]">
               {center}

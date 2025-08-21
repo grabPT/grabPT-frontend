@@ -85,7 +85,7 @@ export const ReviewFormModal = ({
         <Button
           onClick={() => {
             handleClick();
-            setModalopen(false);
+            setModalOpen(false);
           }}
           disabled={isPending}
         >
