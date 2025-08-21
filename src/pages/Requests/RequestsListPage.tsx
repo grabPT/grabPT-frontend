@@ -81,15 +81,6 @@ const RequestsListPage = () => {
         <div className="flex h-[300px] w-full flex-col items-center justify-center gap-4 rounded-xl border border-gray-200 bg-gray-50">
           <p className="text-lg font-semibold text-gray-600">아직 등록된 요청이 없어요 😢</p>
           <p className="text-sm text-gray-500">새로운 전문가에게 도움을 요청해 보세요!</p>
-          <Button
-            onClick={() => {
-              // 예시: 요청 작성 페이지로 이동
-              window.location.href = '/request/create';
-            }}
-            className="mt-2"
-          >
-            요청 작성하기
-          </Button>
         </div>
       )}
 
