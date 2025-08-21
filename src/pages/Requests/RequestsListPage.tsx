@@ -65,14 +65,13 @@ const RequestsListPage = () => {
       </div>
 
       {/* 카드 목록 */}
-      {isPending && (
+      {isPending ? (
         <div className="flex flex-col gap-[30px]">
-          {/* 카드 스켈레톤도 있으면 여기 추가 */}
-          스켈레톤 UI...
+          {Array.from({ length: 6 }).map((_, i) => (
+            <RequestsStatusCard.Skeleton key={i} />
+          ))}
         </div>
-      )}
-
-      {!isPending && (
+      ) : (
         <div className="flex flex-col gap-[30px]">
           {requestsList?.content.map((request, idx) => (
             <RequestsStatusCard key={idx} request={request} />

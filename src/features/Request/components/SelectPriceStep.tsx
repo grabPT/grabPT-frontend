@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 
 import { SPORTS } from '@/constants/sports';
+import { useGetAvgPrice } from '@/hooks/useGetPriceResponse';
 import { useRequestStore } from '@/store/useRequestStore';
 
 const numberWithComma = (n: number) => n.toLocaleString('ko-KR');
@@ -10,8 +11,17 @@ const SelectPriceStep = () => {
   const { priceInfo, setPriceInfo, sportsTypeInfo } = useRequestStore();
   const { price, sessionCount } = priceInfo;
 
+  const [city, district, street] = priceInfo.location.split(' ');
   //스토어에 저장된 종목 categorId를 기반으로 해당 종목 이름 가져오기
   const sport = SPORTS.find((s) => s.id === sportsTypeInfo.categoryId);
+
+  const { data: avgPrice } = useGetAvgPrice(
+    sport?.label ?? '', // undefined면 빈 문자열
+    city,
+    district,
+    street,
+  );
+
   /** 총액 계산 */
   const total = useMemo(() => price * sessionCount, [price, sessionCount]);
   return (
@@ -99,8 +109,10 @@ const SelectPriceStep = () => {
         {/* 안내 문구 ------------------------------------------- */}
         <p className="text-xs">
           <span className="font-semibold text-blue-600">{priceInfo.location}</span> 의 평균
-          <span className="font-semibold text-red-600"> 복싱</span>PT가격은&nbsp; 회당&nbsp;
-          <span className="font-semibold text-red-600">50,000원</span> 입니다.
+          <span className="font-semibold text-red-600"> {sport?.label}</span>PT가격은&nbsp;
+          회당&nbsp;
+          <span className="font-semibold text-red-600">{Number(avgPrice?.result.avgUnitPrice).toLocaleString()}원</span>{' '}
+          입니다.
         </p>
 
         {/* 총액 ----------------------------------------------- */}

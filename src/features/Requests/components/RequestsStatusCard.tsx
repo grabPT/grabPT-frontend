@@ -1,8 +1,10 @@
+import { Skeleton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 import { urlFor } from '@/constants/routes';
 import UserRequestHeader from '@/features/Requests/components/UserRequestHeader';
 import type { RequestsListItemType } from '@/features/Requests/types/getRequestsListType';
+import { cn } from '@/libs/cn';
 
 /*
 전문가 요청현황 조회 시
@@ -43,5 +45,40 @@ const RequestsStatusCard = ({ request }: RequestsStatusCardProps) => {
     </div>
   );
 };
+
+interface RequestsStatusCardSkeletonProps {
+  className?: string;
+}
+
+const RequestsStatusCardSkeleton: React.FC<RequestsStatusCardSkeletonProps> = ({ className }) => {
+  return (
+    <div
+      className={cn(
+        'flex h-[75px] w-[700px] flex-row items-center justify-between rounded-2xl border border-gray-200 bg-white px-4 py-3 shadow',
+        className,
+      )}
+    >
+      {/* 왼쪽: 프로필 + 텍스트 */}
+      <div className="flex items-center gap-3">
+        <Skeleton className="h-10 w-10 rounded-full" /> {/* 프로필 이미지 */}
+        <div className="flex flex-col space-y-2">
+          <Skeleton className="h-4 w-24 rounded" /> {/* 닉네임 */}
+          <Skeleton className="h-3 w-32 rounded" /> {/* 위치 */}
+        </div>
+      </div>
+
+      {/* 오른쪽: 세션/가격/상태 */}
+      <div className="flex items-center gap-3">
+        <Skeleton className="h-4 w-10 rounded" /> {/* 회차 */}
+        <Skeleton className="h-4 w-16 rounded" /> {/* 가격 */}
+        <Skeleton className="h-3 w-12 rounded" /> {/* 상태 */}
+      </div>
+    </div>
+  );
+};
+
+RequestsStatusCardSkeleton.displayName = 'RequestsStatusCard.Skeleton';
+
+RequestsStatusCard.Skeleton = RequestsStatusCardSkeleton;
 
 export default RequestsStatusCard;
