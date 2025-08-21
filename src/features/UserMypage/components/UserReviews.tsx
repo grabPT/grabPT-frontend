@@ -16,7 +16,7 @@ const UserReviews = () => {
   return (
     <div className="flex flex-col items-center justify-center">
       {isPending && <>스켈레톤 ui</>}
-      <div className="mt-[50px] flex w-[800px] flex-col gap-[30px]">
+      <div className="mt-[50px] flex w-[800px] flex-col items-center gap-[30px]">
         {myReviewsList?.content.map((rv, idx) => (
           <div key={idx}>
             <ReviewCard

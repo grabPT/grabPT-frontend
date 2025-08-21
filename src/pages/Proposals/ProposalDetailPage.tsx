@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { postCreateChatRoom } from '@/apis/postCreateChatRoom';
@@ -13,7 +15,7 @@ const ProposalDetailPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const suggestionId = Number(id);
-  const { data: suggestion } = useGetProposalDetail(suggestionId);
+  const { data: suggestion, error, isError } = useGetProposalDetail(suggestionId);
   const navigateToExpertProfile = () => navigate(urlFor.expertDetail(suggestion?.expertId));
   console.log(suggestion);
   const 채팅상담 = () => {
@@ -37,6 +39,23 @@ const ProposalDetailPage = () => {
     }
   };
 
+  useEffect(() => {
+    if (isError && error) {
+      // 400 에러인지 확인 (다양한 에러 타입 대응)
+      const isNotFoundError =
+        (error as any)?.response?.status === 400 ||
+        (error as any)?.status === 400 ||
+        error.message?.includes('400') ||
+        error.message?.includes('not found') ||
+        error.message?.includes('존재하지 않는');
+
+      if (isNotFoundError) {
+        alert('존재하지 않는 제안서 입니다.');
+        navigate(ROUTES.HOME.ROOT);
+      }
+    }
+  }, [isError, error, navigate]);
+
   return (
     <section className="my-10 flex flex-col items-center">
       <div className="flex flex-col items-center gap-2">
@@ -44,7 +63,7 @@ const ProposalDetailPage = () => {
           src={suggestion?.profileImageUrl}
           onError={onErrorImage}
           alt="트레이너 프로필"
-          className="h-45 rounded-full object-cover"
+          className="h-[300px] w-[300px] rounded-full object-cover"
         />
         <span className="mt-5 text-4xl font-bold text-[#21272A]">{suggestion?.nickname}</span>
         <span className="text-button text-sm font-semibold">{suggestion?.center} </span>
