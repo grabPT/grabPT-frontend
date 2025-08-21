@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 
-//import arrowIcon from '@/features/home/assets/icons/NextArrow.svg';
 import img1 from '@/features/home/assets/images/Usermain1.webp';
 import img2 from '@/features/home/assets/images/Usermain2.webp';
 import img3 from '@/features/home/assets/images/Usermain3.webp';
