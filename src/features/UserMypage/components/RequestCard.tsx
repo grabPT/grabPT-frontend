@@ -112,10 +112,10 @@ const RequestCard = ({
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex h-80 flex-col items-center justify-center gap-10">
-                <div className="flex-1">
+                <div className="flex flex-1 items-center justify-center">
                   <h1 className="text-2xl font-semibold">요청서를 삭제하시겠습니까?</h1>
                 </div>
-                <div className="w-full grid-cols-2 items-center justify-center gap-12">
+                <div className="grid w-full grid-cols-2 items-center justify-center gap-12">
                   <Button
                     onClick={() => {
                       setModalOpen(false);
