@@ -24,6 +24,7 @@ const ExpertDetailReviews = () => {
               location={rv.residence}
               rating={rv.rating}
               content={rv.content}
+              isExpertDetail={true}
             />
           </div>
         ))}
