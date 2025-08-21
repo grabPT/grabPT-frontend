@@ -111,17 +111,22 @@ const RequestCard = ({
               className="mx-auto my-auto flex w-[min(92vw,520px)] flex-col justify-center rounded-xl bg-white p-6 shadow-xl"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="flex flex-col items-center justify-center gap-10">
-                <h1 className="text-2xl font-semibold">요청서를 삭제하시겠습니까?</h1>
-                <div className="flex items-center justify-center gap-20">
+              <div className="flex h-80 flex-col items-center justify-center gap-10">
+                <div className="flex-1">
+                  <h1 className="text-2xl font-semibold">요청서를 삭제하시겠습니까?</h1>
+                </div>
+                <div className="w-full grid-cols-2 items-center justify-center gap-12">
                   <Button
                     onClick={() => {
                       setModalOpen(false);
                     }}
+                    width="w-full"
                   >
                     취소
                   </Button>
-                  <Button onClick={handleDeleteRequest}>삭제</Button>
+                  <Button onClick={handleDeleteRequest} width="w-full">
+                    삭제
+                  </Button>
                 </div>
               </div>
             </div>
