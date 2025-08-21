@@ -119,9 +119,19 @@ const Chat = createLazyComponent(() => import('@/pages/Chat/Chat'));
  */
 export const routesManifest: AppRoute[] = [
   /* 온보딩 (게스트 전용) */
-  { path: ROUTES.AUTH.LOGIN, element: <Login />, roles: ['GUEST'] },
-  { path: ROUTES.AUTH.SIGNUP, element: <Signup />, roles: ['GUEST'] },
-  { path: ROUTES.AUTH.CALLBACK, element: <AuthCallback /> },
+  {
+    path: ROUTES.AUTH.LOGIN,
+    element: <Login />,
+    roles: ['GUEST'],
+    errorElement: <ErrorComponent />,
+  },
+  {
+    path: ROUTES.AUTH.SIGNUP,
+    element: <Signup />,
+    roles: ['GUEST'],
+    errorElement: <ErrorComponent />,
+  },
+  { path: ROUTES.AUTH.CALLBACK, element: <AuthCallback />, errorElement: <ErrorComponent /> },
 
   /* 레이아웃 래퍼 */
   {
@@ -131,8 +141,18 @@ export const routesManifest: AppRoute[] = [
     roles: ['EXPERT', 'GUEST', 'USER'],
     children: [
       // 홈 (초기 번들)
-      { index: true, element: <UserMainPage />, roles: ['USER', 'GUEST'] },
-      { path: ROUTES.HOME.EXPERT, element: <ExpertMainPage />, roles: ['EXPERT'] },
+      {
+        index: true,
+        element: <UserMainPage />,
+        roles: ['USER', 'GUEST'],
+        errorElement: <ErrorComponent />,
+      },
+      {
+        path: ROUTES.HOME.EXPERT,
+        element: <ExpertMainPage />,
+        roles: ['EXPERT'],
+        errorElement: <ErrorComponent />,
+      },
 
       // 카테고리 (lazy)
       {
