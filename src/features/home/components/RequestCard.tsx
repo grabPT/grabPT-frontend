@@ -131,7 +131,7 @@ const RequestCardInMain = ({
               <h3 className="mr-auto mb-3 text-lg font-semibold">리뷰 작성</h3>
               <ReviewFormModal
                 proName={proNickname ?? '전문가'}
-                proProfileId={proProfileId || 0}
+                proProfileId={proProfileId || 999}
                 rating={0}
                 setModalOpen={setModalOpen}
               />

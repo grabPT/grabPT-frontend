@@ -31,6 +31,8 @@ export const ReviewFormModal = ({
     content: z.string().max(300, { message: '리뷰는 300자 이하여야 합니다.' }),
   });
 
+  console.log('현재 프로프로필아이디', proProfileId);
+
   const { handleSubmit, watch, setValue } = useForm<ReviewSchema>({
     mode: 'onChange',
     resolver: zodResolver(reviewSchema),
