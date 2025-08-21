@@ -16,9 +16,7 @@ export const END_POINT = {
     REGEX: /\/api\/auth\/(reissue|logout)/,
   },
 
-  HOME: {
-    requests: '/api/requestion/my',
-  },
+  HOME: {},
 
   MYPAGE: {
     REQUESTS: {
