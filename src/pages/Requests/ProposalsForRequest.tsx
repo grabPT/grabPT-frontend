@@ -46,7 +46,21 @@ const ProposalsForRequest = () => {
     <section className="flex flex-col items-center py-6">
       {isWriter && <Tabs items={TabItems} width="w-[400px]" />}
       {proposalsForRequestList.length === 0 ? (
-        <h1 className="text-center">제안서가 없습니다.</h1>
+        <div className="flex min-h-[400px] flex-col items-center justify-center py-16">
+          <div className="space-y-4 text-center">
+            <div className="mb-4 text-6xl">📝</div>
+            <h2 className="text-2xl font-bold text-gray-800">아직 제안서가 없어요</h2>
+            <p className="max-w-md leading-relaxed text-gray-500">
+              전문가들이 회원님의 요청서를 검토하고 있습니다.
+              <br />곧 멋진 제안서들이 도착할 예정이니 조금만 기다려주세요!
+            </p>
+            <div className="mt-8 rounded-lg border border-blue-100 bg-blue-50 p-4">
+              <p className="text-sm text-blue-700">
+                💡 <strong>TIP:</strong> 보통 24시간 이내에 첫 제안서가 도착해요
+              </p>
+            </div>
+          </div>
+        </div>
       ) : (
         <>
           <div className="flex flex-col gap-12 py-12">

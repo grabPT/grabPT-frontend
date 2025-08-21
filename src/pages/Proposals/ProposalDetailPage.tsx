@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { postCreateChatRoom } from '@/apis/postCreateChatRoom';
@@ -39,22 +37,31 @@ const ProposalDetailPage = () => {
     }
   };
 
-  useEffect(() => {
-    if (isError && error) {
-      // 400 에러인지 확인 (다양한 에러 타입 대응)
-      const isNotFoundError =
-        (error as any)?.response?.status === 400 ||
-        (error as any)?.status === 400 ||
-        error.message?.includes('400') ||
-        error.message?.includes('not found') ||
-        error.message?.includes('존재하지 않는');
+  if (isError && error) {
+    const isNotFoundError =
+      (error as any)?.response?.status === 400 ||
+      (error as any)?.status === 400 ||
+      error.message?.includes('400') ||
+      error.message?.includes('not found') ||
+      error.message?.includes('존재하지 않는');
 
-      if (isNotFoundError) {
+    if (isNotFoundError) {
+      // 즉시 알림 표시 후 리다이렉트
+      setTimeout(() => {
         alert('존재하지 않는 제안서 입니다.');
         navigate(ROUTES.HOME.ROOT);
-      }
+      }, 0);
+
+      // 리다이렉트 대기 중 표시할 UI
+      return (
+        <section className="my-10 flex flex-col items-center">
+          <div className="text-center">
+            <p className="text-lg text-gray-600">페이지를 확인하고 있습니다...</p>
+          </div>
+        </section>
+      );
     }
-  }, [isError, error, navigate]);
+  }
 
   return (
     <section className="my-10 flex flex-col items-center">
