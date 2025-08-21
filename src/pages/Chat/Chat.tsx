@@ -14,7 +14,7 @@ import { useRoleStore } from '@/store/useRoleStore';
 
 // 경로 맞춰주세요
 
-export const Chat = () => {
+const Chat = () => {
   const [selectedChat, setSelectedChat] = useState<ChatRoomListItemType | null>(null);
   const [pendingFile, setPendingFile] = useState<File | null>(null);
 
@@ -109,3 +109,5 @@ export const Chat = () => {
     </div>
   );
 };
+
+export default Chat;

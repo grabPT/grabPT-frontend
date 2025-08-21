@@ -6,7 +6,7 @@ import Pagination from '@/components/Pagination';
 import { UserPaymentsCard } from '@/features/Settlement/components/UserPaymentsCard';
 import { useGetUserSettlements } from '@/features/Settlement/hooks/useGetUserSettlements';
 
-export const UserSettlementPage = () => {
+const UserSettlementPage = () => {
   const [page, setPage] = useState(1);
   const { data: settlementList } = useGetUserSettlements({ page });
   const total = settlementList?.payments.totalPages ?? 1;
@@ -52,3 +52,5 @@ export const UserSettlementPage = () => {
     </section>
   );
 };
+
+export default UserSettlementPage;

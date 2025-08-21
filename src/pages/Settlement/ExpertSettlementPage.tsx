@@ -11,7 +11,7 @@ import { PaymentsCard } from '@/features/Settlement/components/PaymentsCard';
 import { SettlementInfoCard } from '@/features/Settlement/components/SettlementInfoCard';
 import { useGetSettlementList } from '@/features/Settlement/hooks/useGetSettlement';
 
-export const ExpertSettlementPage = () => {
+const ExpertSettlementPage = () => {
   const [page, setPage] = useState(1);
   //우선은 ui만, 추후에 api만들면 추가해여할 듯F
   const [bank, setBank] = useState('');
@@ -192,3 +192,5 @@ export const ExpertSettlementPage = () => {
     </section>
   );
 };
+
+export default ExpertSettlementPage;
