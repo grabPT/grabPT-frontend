@@ -46,18 +46,19 @@ const ReviewCard = ({
     <Box onClick={boxClick} className="cursor-pointer" width="w-[600px]">
       <div className="relative flex w-full flex-col p-[10px] pt-[15px]">
         {/* 삭제버튼 */}
-
-        <img
-          src={XIcon}
-          alt="close"
-          className={clsx(
-            'absolute top-2 right-2 z-20 h-4 w-4',
-            (role === 'EXPERT' || isExpertDetail) && 'hidden',
-          )}
-          onClick={() => {
-            setModalOpen(true);
-          }}
-        />
+        {!(role === 'EXPERT' || isExpertDetail) && (
+          <button
+            type="button"
+            onClick={() => setModalOpen(true)}
+            className={clsx(
+              'absolute top-2 right-2 z-20 flex h-4 w-4 items-center justify-center',
+              'rounded transition-colors hover:bg-gray-100',
+            )}
+            aria-label="모달 닫기"
+          >
+            <img src={XIcon} alt="close" className="h-full w-full" />
+          </button>
+        )}
 
         {/* 상단 정보 */}
         <div className="flex gap-[11px]">
