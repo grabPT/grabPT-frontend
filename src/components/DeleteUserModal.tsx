@@ -35,7 +35,7 @@ export default function DeleteUserModal({ setIsModalOpen }: IDeleteUserModal) {
     });
   });
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
+    <div className="flex items-center justify-center p-4">
       <div className="w-full max-w-md rounded-xl bg-white shadow-lg">
         <div className="border-b border-gray-200 py-6 text-center">
           <h2 className="text-lg font-semibold text-gray-800">회원 탈퇴</h2>

@@ -459,8 +459,12 @@ const Dashboard = ({ userInfo }: DashboardProps) => {
                 setIsModalOpen(false);
               }}
             >
-              {' '}
-              <DeleteUserModal setIsModalOpen={setIsModalOpen} />
+              <div
+                className="mx-auto my-auto flex w-[min(92vw,520px)] flex-col justify-center rounded-xl bg-white p-6 shadow-xl"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <DeleteUserModal setIsModalOpen={setIsModalOpen} />
+              </div>
             </div>,
             document.body,
           )}
