@@ -49,6 +49,9 @@ const withFallback = (node: React.ReactElement) => (
   <Suspense fallback={<LoadingMuscle />}>{node}</Suspense>
 );
 
+// 404페이지
+const NotFound = createLazyComponent(() => import('@/pages/NotFound'));
+
 // ✅ lazy 로드 컴포넌트들 (에러 처리 추가)
 const CategoryPage = createLazyComponent(() => import('@/pages/Category/CategoryPage'));
 
@@ -342,6 +345,20 @@ export const routesManifest: AppRoute[] = [
     path: ROUTES.CHAT.ROOT,
     element: withFallback(<Chat />),
     roles: ['USER', 'EXPERT'],
+    errorElement: <ErrorComponent />,
+  },
+
+  // 404
+  {
+    path: '/404',
+    element: withFallback(<NotFound />),
+    roles: ['EXPERT', 'USER', 'GUEST'],
+    errorElement: <ErrorComponent />,
+  },
+  {
+    path: '*',
+    element: <Navigate to="/404" replace />,
+    roles: ['EXPERT', 'USER', 'GUEST'],
     errorElement: <ErrorComponent />,
   },
 ];

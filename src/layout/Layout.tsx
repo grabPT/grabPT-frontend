@@ -33,7 +33,6 @@ function Layout() {
       >
         <main
           className={clsx(
-            'min-h-full flex-1', // 남은 높이 채움
             !isFullWidthPage &&
               'px-[220px] max-[1440px]:px-[180px] max-[1280px]:px-[100px] max-[1024px]:px-[40px] max-[768px]:px-[20px]',
           )}
