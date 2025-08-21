@@ -404,16 +404,25 @@ const Dashboard = ({ userInfo }: DashboardProps) => {
         {/* 하단 버튼 */}
         <div className="mt-[100px] flex w-full items-center justify-center gap-4">
           {!isEdit ? (
-            <Button
-              label="수정하기"
-              width="w-[180px]"
-              height="h-[42px]"
-              text="text-[15px] font-semibold text-white"
-              type="button"
-              onClick={handleEnterEdit}
-            >
-              수정하기
-            </Button>
+            <div className="flex flex-col items-center justify-center">
+              <Button
+                label="수정하기"
+                width="w-[180px]"
+                height="h-[42px]"
+                text="text-[15px] font-semibold text-white"
+                type="button"
+                onClick={handleEnterEdit}
+              >
+                수정하기
+              </Button>
+              <button
+                type="button"
+                // onClick={}
+                className="text-xs underline-offset-1"
+              >
+                탈퇴하기
+              </button>
+            </div>
           ) : (
             <>
               <Button
