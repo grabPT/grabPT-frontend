@@ -459,20 +459,17 @@ const Dashboard = ({ userInfo }: DashboardProps) => {
             document.body,
           )}
       </div>
-
       {/* 카카오 주소 검색 모달 */}
       {postModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/20"
+          onClick={() => setPostModalOpen(false)} // 배경 클릭 시 닫기
+        >
           <div
             id="daum-postcode"
             className="relative flex h-[600px] w-[600px] items-center justify-center rounded-[0.625rem] bg-white shadow-lg"
+            onClick={(e) => e.stopPropagation()} // 내부 클릭 시 이벤트 전파 방지
           />
-          <button
-            onClick={() => setPostModalOpen(false)}
-            className="absolute top-[16rem] right-[19.5rem] h-6 w-6 cursor-pointer rounded-full text-gray-500 hover:bg-gray-400 hover:text-white"
-          >
-            ✕
-          </button>
         </div>
       )}
     </form>
