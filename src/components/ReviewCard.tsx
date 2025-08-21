@@ -49,7 +49,10 @@ const ReviewCard = ({
         {!(role === 'EXPERT' || isExpertDetail) && (
           <button
             type="button"
-            onClick={() => setModalOpen(true)}
+            onClick={(e) => {
+              e.stopPropagation(); // 이벤트 전파 방지
+              setModalOpen(true);
+            }}
             className={clsx(
               'absolute top-2 right-2 z-20 flex h-4 w-4 items-center justify-center',
               'rounded transition-colors hover:bg-gray-100',
