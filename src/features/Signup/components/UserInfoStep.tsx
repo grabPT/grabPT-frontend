@@ -145,9 +145,14 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
   //전화번호 인증
   const { mutate: sendSms } = useSmsSend();
   //수정 해야함
-  const handlePhoneNumVerification = () => {
+  const handlePhoneNumVerification = async () => {
     if (!phoneNum) {
       alert('전화번호를 입력해주세요.');
+      return;
+    }
+    const isPhoneValid = await trigger('phoneNum');
+    if (!isPhoneValid) {
+      alert('올바른 전화번호 형식을 입력해주세요. (010-XXXX-XXXX)');
       return;
     }
     // 여기서 서버에 인증번호 요청 API 호출

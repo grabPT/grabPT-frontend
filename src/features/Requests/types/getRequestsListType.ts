@@ -84,4 +84,5 @@ export type RequestsListItemProps = {
   profileImageUrl?: string;
   proProfileId?: number;
   proNickname?: string;
+  canWriteReview?: boolean;
 };

@@ -4,7 +4,7 @@ import type { CommonResponseDto } from '@/types/commonResponseDto';
 export const deleteRequest = async (requestionId: number): Promise<CommonResponseDto<string>> => {
   try {
     const { data } = await privateInstance.delete<CommonResponseDto<string>>('/api/requestion/', {
-      params: requestionId,
+      params: { requestionId },
     });
     return data;
   } catch (e) {

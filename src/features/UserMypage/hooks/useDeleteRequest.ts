@@ -7,7 +7,7 @@ export function useDeleteRequest() {
   return useMutation({
     mutationFn: (requestionId: number) => deleteRequest(requestionId),
     onSuccess: async () => {
-      queryClient.invalidateQueries({ queryKey: ['MyReqeustsList'] });
+      queryClient.invalidateQueries({ queryKey: ['MyRequestsList'] });
     },
     onError: (err) => {
       console.error('요청서 삭제 실패', err);

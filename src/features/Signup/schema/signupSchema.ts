@@ -4,10 +4,17 @@ export const userInfoSchema = z.object({
   email: z.email({ message: '유효하지 않은 이메일 형식입니다.' }),
   phoneNum: z
     .string()
-    .transform((val) => val.replace(/-/g, ''))
-    .refine((val) => /^01[016789]\d{3,4}\d{4}$/.test(val), {
-      message: '유효하지 않은 전화번호 형식입니다.',
-    }),
+    .min(1, { message: '전화번호를 입력해주세요.' })
+    .transform((val) => val.replace(/[-\s]/g, '')) // 하이픈과 공백 제거
+    .refine(
+      (val) => {
+        // 010으로 시작하는 11자리 번호만 허용
+        return val.length === 11 && /^010\d{8}$/.test(val);
+      },
+      {
+        message: '유효하지 않은 전화번호 형식입니다. (010-XXXX-XXXX)',
+      },
+    ),
   address: z.string().min(1, { message: '주소를 입력해주세요.' }),
   specAddress: z.string().min(1, { message: '주소를 입력해주세요.' }),
   verifyNum: z.string().min(1, { message: '인증번호를 입력하세요.' }),

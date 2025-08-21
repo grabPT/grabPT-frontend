@@ -173,6 +173,7 @@ function RequestSlider({ title, requests, location, name }: RequestSliderProps) 
                   isMatched={r.status === 'MATCHED'}
                   proProfileId={r.proProfileId}
                   proNickname={r.proNickname || ''}
+                  canWriteReview={r.canWriteReview}
                 />
               </div>
             ))}
