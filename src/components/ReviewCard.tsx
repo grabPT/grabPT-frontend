@@ -50,16 +50,17 @@ const ReviewCard = ({
           <button
             type="button"
             onClick={(e) => {
-              e.stopPropagation(); // 이벤트 전파 방지
+              console.log('X 버튼 클릭!'); // 디버그
+              e.stopPropagation();
               setModalOpen(true);
             }}
             className={clsx(
-              'absolute top-2 right-2 z-20 flex h-4 w-4 items-center justify-center',
-              'rounded transition-colors hover:bg-gray-100',
+              'absolute top-1 right-1 z-50 flex h-8 w-8 items-center justify-center p-1',
+              'rounded-full bg-white/80 shadow-sm transition-colors hover:bg-gray-100',
             )}
-            aria-label="모달 닫기"
+            aria-label="삭제"
           >
-            <img src={XIcon} alt="close" className="h-full w-full" />
+            <img src={XIcon} alt="close" className="pointer-events-none h-4 w-4" />
           </button>
         )}
 
