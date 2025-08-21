@@ -452,7 +452,7 @@ const Dashboard = ({ userInfo }: DashboardProps) => {
         </div>
         {isModalOpen &&
           createPortal(
-            <div className="bg-opacity-50 fixed inset-0 z-[9999] flex items-center justify-center bg-black">
+            <div className="bg-opacity-50 fixed inset-0 z-[9999] flex items-center justify-center bg-black/40">
               <DeleteUserModal setIsModalOpen={setIsModalOpen} />
             </div>,
             document.body,
