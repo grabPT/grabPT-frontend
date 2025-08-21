@@ -127,7 +127,7 @@ function RequestSlider({ title, requests, location, name }: RequestSliderProps) 
 
   if (!isSliderReady) {
     return (
-      <section className="flex max-w-[1480px] flex-col gap-9 sm:w-[720px] lg:w-[720px] xl:w-[1080px] 2xl:w-[1480px]">
+      <section className="flex max-w-[1480px] flex-col gap-9 sm:w-[720px] md:w-[920px] lg:w-[720px] xl:w-[1080px] 2xl:w-[1280px] @max-3xl:w-[1480px]">
         <h2 className="font-pretendard ml-[10px] text-[30px] leading-[100%] font-extrabold tracking-[0%] sm:text-[24px] lg:text-[30px]">
           {title}
         </h2>
@@ -137,7 +137,7 @@ function RequestSlider({ title, requests, location, name }: RequestSliderProps) 
   }
 
   return (
-    <section className="flex max-w-[1480px] flex-col gap-9 sm:w-[720px] lg:w-[720px] xl:w-[1080px] 2xl:w-[1480px]">
+    <section className="3xl:w-[1480px] flex flex-col gap-9 sm:w-[720px] md:w-[920px] lg:w-[720px] xl:w-[1080px] 2xl:w-[1280px]">
       <h2 className="font-pretendard ml-[10px] text-[30px] leading-[100%] font-extrabold tracking-[0%] sm:text-[24px] lg:text-[30px]">
         {title}
       </h2>
@@ -149,7 +149,7 @@ function RequestSlider({ title, requests, location, name }: RequestSliderProps) 
         </div>
       ) : (
         // ✅ 요청서 있을 때
-        <div className="slider-container relative mx-auto mb-[4px] max-w-[1480px] sm:w-[720px] lg:w-[720px] xl:w-[1080px] 2xl:w-[1480px]">
+        <div className="slider-container 3xl:w-[1480px] relative mx-auto mb-[4px] sm:w-[720px] md:w-[920px] lg:w-[720px] xl:w-[1080px] 2xl:w-[1280px]">
           <Slider ref={sliderRef} {...settings}>
             {requests.slice(0, 12).map((r, i) => (
               <div key={`${r.requestId}-${i}`} className="h-[400px] px-4">
