@@ -23,6 +23,8 @@ import {
 import { useProProfileQuery } from '@/hooks/useGetProProfile';
 import type { PtPrice } from '@/types/ProProfleType';
 
+import ExpertProfileSkeleton from './ui/ExpertProfileSkeleton';
+
 //스타일 통일 될 경우 TileLine 컴포넌트로 통일
 
 const ExpertProfile = () => {
@@ -211,7 +213,7 @@ const ExpertProfile = () => {
     );
   };
 
-  if (isLoading) return <div>로딩 중...</div>;
+  if (isLoading) return <ExpertProfileSkeleton />;
   if (isError || !profileData) return <div>에러 발생</div>;
   return (
     <div className="mx-auto mt-16 flex max-w-[600px] flex-col items-center gap-12">

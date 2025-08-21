@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom';
 import { useForm } from 'react-hook-form';
 
 import type { UserInfo } from '@/apis/getUserInfo';
+import Profile from '@/assets/images/HeaderProfile.png';
 import Button from '@/components/Button';
 import DeleteUserModal from '@/components/DeleteUserModal';
 import { usePatchMyPage } from '@/features/Mypage/hooks/usePatchMypage';
@@ -257,7 +258,7 @@ const Dashboard = ({ userInfo }: DashboardProps) => {
               src={
                 profileImageFile
                   ? URL.createObjectURL(profileImageFile)
-                  : userInfo?.profileImageUrl || '/default-profile.png'
+                  : userInfo?.profileImageUrl || Profile
               }
               alt="프로필"
               className="h-[180px] w-[180px] rounded-full object-cover"
