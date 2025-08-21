@@ -139,17 +139,28 @@ const ExpertCredentials = () => {
       </div>
       <hr className="mt-[10px] w-[600px] border-t-2 border-[#B8B8B8]" />
       <div className="mt-[20px] flex flex-col items-center justify-center">
-        {certificationList.map((certification, index) => (
-          <div key={index} className="mb-4">
-            <CirtificationCard
-              CirtificationCode={certification.certificationType}
-              CirtificationDescription={certification.description}
-              imageUrl={certification.imageUrl}
-              isEditMode={isEditMode}
-              onDelete={() => handleDeleteCertification(index)}
-            />
+        {certificationList.length > 0 ? (
+          certificationList.map((certification, index) => (
+            <div key={index} className="mb-4">
+              <CirtificationCard
+                CirtificationCode={certification.certificationType}
+                CirtificationDescription={certification.description}
+                imageUrl={certification.imageUrl}
+                isEditMode={isEditMode}
+                onDelete={() => handleDeleteCertification(index)}
+              />
+            </div>
+          ))
+        ) : (
+          <div className="flex h-[200px] w-[600px] items-center justify-center rounded-xl border border-gray-200 bg-gray-50">
+            <p className="text-center text-lg font-medium text-gray-500">
+              아직 자격 사항 증명 자료가 등록되지 않았어요! <br />
+              {isEditMode
+                ? '추가 버튼을 눌러 자격 사항을 등록해보세요 ✍️'
+                : '편집 모드에서 자격 사항을 등록할 수 있어요.'}
+            </p>
           </div>
-        ))}
+        )}
         {isEditMode && (
           <CirtificationEditCard
             onAdd={async (newCert, newFile) => {

@@ -33,26 +33,13 @@ const UserMainPage = () => {
       <UserSearchSection />
 
       {isLoggedIn && (
-        <div className="mt-[109px] flex w-full flex-col items-center">
-          {requests?.content && requests.content.length > 0 ? (
-            <RequestSlider
-              title={'나의 요청서'}
-              requests={requests.content}
-              location={location}
-              name={userData?.nickname}
-            />
-          ) : (
-            <div className="flex max-w-[1480px] flex-col">
-              <h2 className="font-pretendard ml-[10px] text-[30px] leading-[100%] font-extrabold tracking-[0%] sm:text-[24px] lg:text-[30px]">
-                나의 요청서
-              </h2>
-              <div className="flex h-[200px] w-full items-center justify-center rounded-2xl border border-gray-200 bg-gray-50">
-                <p className="text-lg font-medium text-gray-500">
-                  아직 작성하신 요청서가 없어요 📝
-                </p>
-              </div>
-            </div>
-          )}
+        <div className="mt-[109px]">
+          <RequestSlider
+            title={'나의 요청서'}
+            requests={requests?.content ?? []}
+            location={location}
+            name={userData?.nickname}
+          />
         </div>
       )}
       <div className="my-[200px]">
