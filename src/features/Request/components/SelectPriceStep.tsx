@@ -77,7 +77,7 @@ const SelectPriceStep = () => {
 
         {/* 1당 가격  */}
         <div className="w-80 space-y-2">
-          <label className="block text-sm font-semibold">1당 가격</label>
+          <label className="block text-sm font-semibold">1회당 가격</label>
           <div className="relative">
             <input
               type="number"

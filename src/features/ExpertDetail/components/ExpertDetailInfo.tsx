@@ -4,7 +4,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import type { certificationResponse } from '@/apis/getProCertifications';
 import { postCreateChatRoom } from '@/apis/postCreateChatRoom';
-import Profile from '@/assets/images/HeaderProfile.png';
 import Button from '@/components/Button';
 import { CirtificationCard } from '@/components/CirtificationCard';
 import ProfileImageSlide, { type SlideImage } from '@/components/ProfileImageSlide';
@@ -14,6 +13,7 @@ import ROUTES from '@/constants/routes';
 import { useGetProProfileWithUserId } from '@/hooks/useGetProProfile';
 import { useGetUserInfo } from '@/hooks/useGetUserInfo';
 import type { PtPrice } from '@/types/ProProfleType';
+import { onErrorImage } from '@/utils/onErrorImage';
 
 export const ExpertDetailInfo = () => {
   const [photos, setPhotos] = useState<SlideImage[]>([]);
@@ -68,7 +68,8 @@ export const ExpertDetailInfo = () => {
       <div className="mt-10 flex w-full flex-col items-center justify-center gap-4">
         {/* <img src={ExpertDetailBgImg} alt="전문가 프로필 뱌경화면" className="w-full" /> */}
         <img
-          src={profileData?.profileImageUrl || Profile}
+          src={profileData?.profileImageUrl}
+          onError={onErrorImage}
           alt="전문가 프로필 사진"
           className="h-[11.25rem] w-[11.25rem] rounded-full"
         />
