@@ -29,7 +29,7 @@ export const ChatSideBar = ({
     if (!selectedProId) return;
     if (selectedChatId) return; // 이미 선택되어 있으면 패스
 
-    const target = rooms.find((room) => room.userId === selectedProId);
+    const target = rooms.find((room) => room.otherUserId === selectedProId);
     if (target) onSelect(target);
   }, [rooms, selectedProId, selectedChatId, onSelect]);
 

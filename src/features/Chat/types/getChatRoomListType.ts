@@ -12,6 +12,7 @@ export type ChatRoomListItemType = {
   lastMessage: string;
   lastMessageTime: string;
   otherUserProfile: string;
+  otherUserId: number;
 };
 
 export type getChatRoomListResponseDto = CommonResponseDto<ChatRoomListItemType[]>;
