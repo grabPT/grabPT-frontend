@@ -1,5 +1,5 @@
 import FooterIcons from '@/assets/images/Footer-Icons.png';
-import FooterImage from '@/assets/images/FooterImage.jpg';
+import FooterImage from '@/assets/images/FooterImage.webp';
 import LogoIcon from '@/assets/images/LogoIcon.svg';
 
 const Footer = () => {

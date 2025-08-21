@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 
 import clsx from 'clsx';
 
-import BannerImage1 from '@/assets/images/Banner1.png';
-import BannerImage2 from '@/assets/images/Banner2.png';
-import BannerImage3 from '@/assets/images/Banner3.png';
+import BannerImage1 from '@/assets/images/Banner1.webp';
+import BannerImage2 from '@/assets/images/Banner2.webp';
+import BannerImage3 from '@/assets/images/Banner3.webp';
 import FractionPagination from '@/components/FractionPagination';
 
 const Banner = () => {

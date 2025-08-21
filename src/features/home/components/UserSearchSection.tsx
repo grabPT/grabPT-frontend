@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 
 //import arrowIcon from '@/features/home/assets/icons/NextArrow.svg';
-import img1 from '@/features/home/assets/images/Usermain1.png';
-import img2 from '@/features/home/assets/images/Usermain2.png';
-import img3 from '@/features/home/assets/images/Usermain3.png';
-import img4 from '@/features/home/assets/images/Usermain4.png';
-import img5 from '@/features/home/assets/images/Usermain5.png';
+import img1 from '@/features/home/assets/images/Usermain1.webp';
+import img2 from '@/features/home/assets/images/Usermain2.webp';
+import img3 from '@/features/home/assets/images/Usermain3.webp';
+import img4 from '@/features/home/assets/images/Usermain4.webp';
+import img5 from '@/features/home/assets/images/Usermain5.webp';
 
 const images = [img1, img2, img3, img4, img5];
 
