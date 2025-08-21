@@ -21,6 +21,7 @@ interface RequestCardInMainProps {
   id: number;
   profileImg?: string;
   isMatched: boolean;
+  proProfileId?: number;
 }
 
 const RequestCardInMain = ({
@@ -30,6 +31,7 @@ const RequestCardInMain = ({
   text,
   id,
   profileImg,
+  proProfileId,
   isMatched,
 }: RequestCardInMainProps) => {
   const navigate = useNavigate();
@@ -120,7 +122,7 @@ const RequestCardInMain = ({
               <h3 className="mr-auto mb-3 text-lg font-semibold">리뷰 작성</h3>
               <ReviewFormModal
                 proName={name ?? '전문가'}
-                proProfileId={id}
+                proProfileId={proProfileId || 0}
                 rating={0}
                 setModalOpen={setModalOpen}
               />

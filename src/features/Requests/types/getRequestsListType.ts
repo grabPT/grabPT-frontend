@@ -83,4 +83,5 @@ export type RequestsListItemProps = {
   content: string;
   profileImageUrl?: string;
   matchStatus?: MatchStatusType;
+  proProfileId?: number;
 };

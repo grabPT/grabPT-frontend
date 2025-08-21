@@ -164,6 +164,7 @@ function RequestSlider({ title, requests, location, name }: RequestSliderProps) 
                 }}
                 text={r.content}
                 isMatched={true}
+                proProfileId={r.proProfileId}
               />
             </div>
           ))}
