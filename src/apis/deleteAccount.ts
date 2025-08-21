@@ -4,7 +4,7 @@ import type { DeleteAccount } from '@/types/deleteAccount';
 
 export const deleteAccount = async (body: DeleteAccount): Promise<CommonResponseDto<string>> => {
   try {
-    const { data } = await privateInstance.delete<CommonResponseDto<string>>('/reviews', {
+    const { data } = await privateInstance.delete<CommonResponseDto<string>>('/mypage', {
       data: body,
     });
     return data;
