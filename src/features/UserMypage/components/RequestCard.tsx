@@ -115,7 +115,7 @@ const RequestCard = ({
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex flex-col items-center justify-center gap-10">
-                <h1 className='text-2xl font-semibold'>요청서를 삭제하시겠습니까?</h1>
+                <h1 className="text-2xl font-semibold">요청서를 삭제하시겠습니까?</h1>
                 <div className="flex items-center justify-center gap-5">
                   <Button
                     onClick={() => {

@@ -8,7 +8,7 @@ import { useProProfileQuery } from '@/hooks/useGetProProfile';
 import type { SportsSlugType } from '@/types/SportsType';
 
 const ExpertMainPage = () => {
-  const { data: profileData, isLoading, isError } = useProProfileQuery();
+  const { data: profileData, isError } = useProProfileQuery();
 
   const matched = SPORTS.find((s) => s.slug === profileData?.categoryName);
   const categoryType: SportsSlugType = matched?.slug ?? 'health';
@@ -16,7 +16,6 @@ const ExpertMainPage = () => {
   console.log('categoryType', categoryType);
   const { data: requests } = useGetMatchingRequestsList({ sortBy: 'latest', page: 1, size: 40 });
   const location = `${profileData?.address?.[0]?.city ?? ''} ${profileData?.address?.[0]?.district ?? ''} ${profileData?.address?.[0]?.street ?? ''}`;
-  if (isLoading) return <div>로딩 중...</div>;
   if (isError || !profileData) return <div>에러 발생</div>;
   requests?.content.forEach((item) => console.log(item.address));
   return (
