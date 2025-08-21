@@ -17,6 +17,7 @@ import { usePatchRequest } from '@/features/Request/hooks/usePatchRequest';
 import { patchRequestSchema } from '@/features/Request/schemas/requestSchema';
 import type { RequestRequestDto } from '@/features/Request/types/Request';
 import { useRoleStore } from '@/store/useRoleStore';
+import useScrollStore from '@/store/useScrollStore';
 import { useSuggestStore } from '@/store/useSuggestStore';
 import {
   AGES,
@@ -34,6 +35,7 @@ import { onErrorImage } from '@/utils/onErrorImage';
 
 //에러 보여주기 추가할것
 const RequestDetailPage = () => {
+  const containerRef = useScrollStore((s) => s.containerRef);
   const navigate = useNavigate();
   const { id } = useParams();
   const requestionId = Number(id);
@@ -108,6 +110,7 @@ const RequestDetailPage = () => {
     });
     navigate(ROUTES.MATCHING_STATUS.PROPOSALS.NEW);
   };
+
   const { mutate: editRequest } = usePatchRequest();
   const handleButton = () => {
     if (role === 'EXPERT') {
@@ -124,7 +127,8 @@ const RequestDetailPage = () => {
             },
           });
         }
-      })();
+      });
+      containerRef?.current?.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
   /* 목적(다중) */

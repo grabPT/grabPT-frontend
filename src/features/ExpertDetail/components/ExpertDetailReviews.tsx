@@ -25,6 +25,7 @@ const ExpertDetailReviews = () => {
               rating={rv.rating}
               content={rv.content}
               isExpertDetail={true}
+              proId={rv.proId}
             />
           </div>
         ))}
