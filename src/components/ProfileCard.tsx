@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 
-import Profile from '@/assets/images/HeaderProfile.png';
 import StarRating from '@/components/StarRating';
 import ROUTES from '@/constants/routes';
 import { getLabelFromSlug } from '@/constants/sports';
 import type { ProProfileType } from '@/types/ProProfleType';
+import { onErrorImage } from '@/utils/onErrorImage';
 
 interface ProfileCardProps {
   profileData?: ProProfileType;
@@ -18,12 +18,10 @@ const ProfileCard = ({ profileData }: ProfileCardProps) => {
     <div className="xs:w-[340px] flex h-[115px] items-center justify-between rounded-[30px] border-[1.5px] border-[#b8b8b8] px-[34px] sm:w-[600px]">
       <div className="flex gap-[30px]">
         <img
-          src={profileData?.profileImageUrl || Profile}
+          src={profileData?.profileImageUrl}
           alt="ProfileCardImage"
           className="h-20 w-20 rounded-full object-cover"
-          onError={(e) => {
-            e.currentTarget.src = Profile;
-          }}
+          onError={onErrorImage}
         />
 
         <div className="flex flex-col justify-between">
