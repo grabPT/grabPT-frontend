@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Profile from '@/assets/images/HeaderProfile.png';
 import XIcon from '@/assets/images/x.png';
 import Box from '@/components/Box';
+import { Skeleton } from '@/components/Skeleton';
 import { urlFor } from '@/constants/routes';
 import Hashtag from '@/features/home/components/Hashtag';
 import { TIME_SLOT_LABELS } from '@/types/ReqeustsType';
@@ -78,4 +79,37 @@ const RequestCard = ({
     </Box>
   );
 };
+
+const RequestCardSkeleton = () => {
+  return (
+    <Box.Skeleton width="w-[600px]" height="h-[214px]">
+      <div className="relative flex h-full w-full flex-col p-[10px] pt-[15px]">
+        {/* 닫기 버튼 */}
+        <Skeleton className="absolute top-2 right-2 h-4 w-4 rounded-full" />
+
+        {/* 상단 프로필 */}
+        <div className="flex items-start gap-[11px]">
+          <Skeleton className="h-[50px] w-[50px] rounded-full" />
+          <div className="flex flex-col gap-1">
+            <Skeleton className="h-4 w-24 rounded" />
+            <Skeleton className="h-3 w-32 rounded" />
+          </div>
+        </div>
+
+        {/* 태그 + 리뷰 */}
+        <div className="mt-[22px] flex flex-1 flex-col justify-between gap-4">
+          <div className="flex gap-1.5">
+            {Array.from({ length: 3 }).map((_, idx) => (
+              <Skeleton key={idx} className="h-5 w-14 rounded-full" />
+            ))}
+          </div>
+          <Skeleton className="flex-1 rounded-md border border-[#B8B8B8]" />
+        </div>
+      </div>
+    </Box.Skeleton>
+  );
+};
+
+RequestCardSkeleton.displayName = 'RequestCard.Skeleton';
+RequestCard.Skeleton = RequestCardSkeleton;
 export default RequestCard;

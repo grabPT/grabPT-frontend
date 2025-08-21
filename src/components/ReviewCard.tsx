@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Profile from '@/assets/images/HeaderProfile.png';
 import XIcon from '@/assets/images/x.png';
 import Box from '@/components/Box';
+import { Skeleton } from '@/components/Skeleton';
 import StarRating from '@/components/StarRating';
 import { useRoleStore } from '@/store/useRoleStore';
 
@@ -77,5 +78,31 @@ const ReviewCard = ({
     </Box>
   );
 };
+
+/* ----------------- ReviewCard Skeleton ----------------- */
+const ReviewCardSkeleton = () => {
+  return (
+    <Box.Skeleton width="w-[600px]" height="h-[214px]">
+      <div className="relative flex w-full flex-col p-[10px] pt-[15px]">
+        {/* 상단 */}
+        <div className="flex gap-[11px]">
+          <Skeleton className="h-[47px] w-[47px] rounded-full" />
+          <div className="flex flex-col gap-2">
+            <Skeleton className="h-4 w-[100px] rounded-md" />
+            <Skeleton className="h-3 w-[80px] rounded-md" />
+            <Skeleton className="h-3 w-[60px] rounded-md" />
+          </div>
+        </div>
+
+        {/* 리뷰 내용 */}
+        <div className="mt-[22px] flex-1">
+          <Skeleton className="h-[60px] w-full rounded-md" />
+        </div>
+      </div>
+    </Box.Skeleton>
+  );
+};
+
+ReviewCard.Skeleton = ReviewCardSkeleton;
 
 export default ReviewCard;
