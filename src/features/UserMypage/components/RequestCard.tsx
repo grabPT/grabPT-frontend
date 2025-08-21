@@ -1,6 +1,5 @@
 import { useState } from 'react';
 
-import { Button } from '@mui/material';
 import clsx from 'clsx';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import Profile from '@/assets/images/HeaderProfile.png';
 import XIcon from '@/assets/images/x.png';
 import Box from '@/components/Box';
+import Button from '@/components/Button';
 import { Skeleton } from '@/components/Skeleton';
 import { urlFor } from '@/constants/routes';
 import { useDeleteRequest } from '@/features/UserMypage/hooks/useDeleteRequest';
@@ -57,10 +57,7 @@ const RequestCard = ({
         {isWriter && (
           <button
             type="button"
-            className={clsx(
-              'absolute top-1 right-1 z-50 flex h-8 w-8 items-center justify-center p-1',
-              'rounded-full bg-white/80 shadow-sm transition-colors hover:bg-gray-100',
-            )}
+            className={clsx('absolute top-1 right-1 z-50 flex items-center justify-center')}
             aria-label="삭제"
             onClick={(e) => {
               e.stopPropagation();
@@ -116,7 +113,7 @@ const RequestCard = ({
             >
               <div className="flex flex-col items-center justify-center gap-10">
                 <h1 className="text-2xl font-semibold">요청서를 삭제하시겠습니까?</h1>
-                <div className="flex items-center justify-center gap-5">
+                <div className="flex items-center justify-center gap-20">
                   <Button
                     onClick={() => {
                       setModalOpen(false);
