@@ -1,5 +1,9 @@
 import type { ButtonHTMLAttributes, PropsWithChildren } from 'react';
 
+import { cn } from '@/libs/cn';
+
+import { Skeleton } from './Skeleton';
+
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   label?: string;
   width?: string;
@@ -29,5 +33,22 @@ const Button = ({
     </button>
   );
 };
+
+interface ButtonSkeletonProps {
+  width?: string;
+  height?: string;
+  className?: string;
+}
+
+const ButtonSkeleton: React.FC<ButtonSkeletonProps> = ({
+  width = 'w-[98px]',
+  height = 'h-[42px]',
+  className = '',
+}) => {
+  return <Skeleton className={cn('rounded-[10px]', width, height, className)} />;
+};
+ButtonSkeleton.displayName = 'Button.Skeleton';
+
+Button.Skeleton = ButtonSkeleton;
 
 export default Button;
