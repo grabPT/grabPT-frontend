@@ -30,6 +30,7 @@ export type MyRequestListItemType = {
   matchStatus: MatchStatusType;
   proProfileId: number;
   proNickname: string;
+  canWriteReview: boolean;
 };
 
 export type getMyRequestsListResponseDto = CommonResponseDto<getMyRequestsListResultType>;

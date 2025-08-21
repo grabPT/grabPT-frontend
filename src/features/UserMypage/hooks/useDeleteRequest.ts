@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { deleteReview } from '@/features/UserMypage/apis/deleteReview';
+import { deleteRequest } from '@/features/UserMypage/apis/deleteRequest';
 
-export function useDeleteReview() {
+export function useDeleteRequest() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (requestionId: number) => deleteReview(requestionId),
+    mutationFn: (requestionId: number) => deleteRequest(requestionId),
     onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: ['MyReqeustsList'] });
     },

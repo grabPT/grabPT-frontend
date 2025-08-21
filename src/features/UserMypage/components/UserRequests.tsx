@@ -52,6 +52,7 @@ const UserRequests = () => {
                   categoryName: rq.categoryName,
                 }}
                 content={rq.content}
+                isWriter={true}
               />
             ))
           ) : (

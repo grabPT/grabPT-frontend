@@ -24,6 +24,7 @@ interface RequestCardInMainProps {
   isMatched: boolean;
   proProfileId?: number;
   proNickname?: string;
+  canWriteReview?: boolean;
 }
 
 const RequestCardInMain = ({
@@ -36,6 +37,7 @@ const RequestCardInMain = ({
   proProfileId,
   isMatched,
   proNickname,
+  canWriteReview,
 }: RequestCardInMainProps) => {
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
@@ -102,7 +104,7 @@ const RequestCardInMain = ({
           {text}
         </p>
       </div>
-      {isMatched && !isExpert && (
+      {canWriteReview && !isExpert && (
         <Button
           className="z-10"
           type="button"

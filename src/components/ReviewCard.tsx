@@ -1,13 +1,7 @@
-import { useState } from 'react';
-
-import clsx from 'clsx';
-import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 
 import Profile from '@/assets/images/HeaderProfile.png';
-import XIcon from '@/assets/images/x.png';
 import Box from '@/components/Box';
-import Button from '@/components/Button';
 import { Skeleton } from '@/components/Skeleton';
 import StarRating from '@/components/StarRating';
 import { useRoleStore } from '@/store/useRoleStore';
@@ -36,34 +30,15 @@ const ReviewCard = ({
 }: ReviewCardProps) => {
   const { role } = useRoleStore();
   const navigate = useNavigate();
-  const [modalOpen, setModalOpen] = useState(false);
+
   const boxClick = () => {
     if (role === 'EXPERT') return;
     else navigate(`/expert/${proId}`);
   };
-  const handleDeleteRequest = () => {};
+
   return (
     <Box onClick={boxClick} className="cursor-pointer" width="w-[600px]">
       <div className="relative flex w-full flex-col p-[10px] pt-[15px]">
-        {/* 삭제버튼 */}
-        {!(role === 'EXPERT' || isExpertDetail) && (
-          <button
-            type="button"
-            onClick={(e) => {
-              console.log('X 버튼 클릭!'); // 디버그
-              e.stopPropagation();
-              setModalOpen(true);
-            }}
-            className={clsx(
-              'absolute top-1 right-1 z-50 flex h-8 w-8 items-center justify-center p-1',
-              'rounded-full bg-white/80 shadow-sm transition-colors hover:bg-gray-100',
-            )}
-            aria-label="삭제"
-          >
-            <img src={XIcon} alt="close" className="pointer-events-none h-4 w-4" />
-          </button>
-        )}
-
         {/* 상단 정보 */}
         <div className="flex gap-[11px]">
           {/* 아바타 */}
@@ -91,36 +66,6 @@ const ReviewCard = ({
           {content}
         </div>
       </div>
-      {modalOpen &&
-        createPortal(
-          <div
-            className="fixed inset-0 z-[9999] flex h-screen min-h-screen w-screen items-center justify-center bg-black/40"
-            onClick={(e) => {
-              e.stopPropagation();
-              setModalOpen(false);
-            }}
-          >
-            <div
-              className="mx-auto my-auto flex w-[min(92vw,520px)] flex-col justify-center rounded-xl bg-white p-6 shadow-xl"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="flex flex-col items-center justify-center">
-                <h1>요청서를 삭제하시겠습니까?</h1>
-                <div className="flex items-center justify-center gap-3">
-                  <Button
-                    onClick={() => {
-                      setModalOpen(false);
-                    }}
-                  >
-                    취소
-                  </Button>
-                  <Button onClick={handleDeleteRequest}>삭제</Button>
-                </div>
-              </div>
-            </div>
-          </div>,
-          document.body,
-        )}
     </Box>
   );
 };
