@@ -42,7 +42,7 @@ function RequestSlider({ title, requests, location, name }: RequestSliderProps) 
     prevArrow: currentSlide === 0 ? undefined : <PrevArrow />,
     responsive: [
       {
-        breakpoint: 1536,
+        breakpoint: 1820,
         settings: {
           slidesToShow: 3,
           slidesToScroll: 1,
@@ -50,7 +50,7 @@ function RequestSlider({ title, requests, location, name }: RequestSliderProps) 
         },
       },
       {
-        breakpoint: 1280,
+        breakpoint: 1440,
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1,

@@ -37,8 +37,8 @@ const RealtimeMatchingStatus = ({ categoryType }: RealtimeMatchingStatusProps) =
   useEffect(() => {
     const update = () => {
       const w = window.innerWidth;
-      if (w >= 1536) setCardCount(8);
-      else if (w >= 1280) setCardCount(6);
+      if (w >= 1820) setCardCount(8);
+      else if (w >= 1440) setCardCount(6);
       else setCardCount(4);
     };
     update();
