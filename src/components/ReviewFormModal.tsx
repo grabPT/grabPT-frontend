@@ -82,7 +82,13 @@ export const ReviewFormModal = ({
       />
       <div className="flex items-center justify-center gap-3">
         <Button onClick={() => setModalOpen(false)}>닫기</Button>
-        <Button onClick={handleClick} disabled={isPending}>
+        <Button
+          onClick={() => {
+            handleClick();
+            setModalopen(false);
+          }}
+          disabled={isPending}
+        >
           {isPending ? '작성 중...' : '작성 완료'}
         </Button>
       </div>
