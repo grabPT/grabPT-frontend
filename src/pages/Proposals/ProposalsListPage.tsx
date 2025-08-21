@@ -27,7 +27,7 @@ const ProposalsListPage = () => {
             ))
           ) : (
             /* ❌ 데이터 없을 때 */
-            <div className="flex h-[200px] items-center justify-center rounded-xl border border-gray-200 bg-gray-50">
+            <div className="flex h-[200px] w-full items-center justify-center rounded-xl border border-gray-200 bg-gray-50">
               <p className="text-lg font-medium text-gray-500">
                 아직 아무런 제안도 하지 않으셨어요! 😢 <br />
                 마음에 드는 요청서에 제안을 남겨보세요.
