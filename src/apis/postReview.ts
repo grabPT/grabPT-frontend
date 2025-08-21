@@ -6,9 +6,9 @@ export type ReviewForm = {
   proProfileId: number;
   rating: number;
 };
-export const postReview = async (params: ReviewForm): Promise<CommonResponseDto<string>> => {
+export const postReview = async (body: ReviewForm): Promise<CommonResponseDto<string>> => {
   try {
-    const { data } = await privateInstance.post(`/reviews`, params);
+    const { data } = await privateInstance.post(`/reviews`, body);
     return data;
   } catch (e) {
     console.log(e);

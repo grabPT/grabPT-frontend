@@ -8,7 +8,7 @@ import { z } from 'zod';
 
 import Button from '@/components/Button';
 import CommentBox from '@/components/CommentBox';
-import { useSuggest } from '@/hooks/usePostReview';
+import { usePostReview } from '@/hooks/usePostReview';
 
 interface IReveiwFormModal {
   proProfileId: number;
@@ -38,8 +38,7 @@ export const ReviewFormModal = ({
       content: '',
     },
   });
-
-  const { mutate, isPending } = useSuggest();
+  const { mutate, isPending } = usePostReview();
   const [rate, setRate] = useState<number | null>(rating ?? 0);
   const [hover, setHover] = useState(-1);
   const pNickname = proName || '전문가';
@@ -80,10 +79,10 @@ export const ReviewFormModal = ({
         onChange={(e) => setValue('content', e.target.value, { shouldDirty: true })}
       />
       <div className="flex items-center justify-center gap-3">
+        <Button onClick={() => setModalOpen(false)}>닫기</Button>
         <Button onClick={handleClick} disabled={isPending}>
           {isPending ? '작성 중...' : '작성 완료'}
         </Button>
-        <Button onClick={() => setModalOpen(false)}>닫기</Button>
       </div>
     </div>
   );

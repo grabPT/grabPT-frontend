@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 import { type ReviewForm, postReview } from '@/apis/postReview';
 import type { CommonResponseDto } from '@/types/commonResponseDto';
 
-export const useSuggest = () => {
+export const usePostReview = () => {
   return useMutation<CommonResponseDto<string>, Error, ReviewForm>({
     mutationFn: (data: ReviewForm) => postReview(data),
     onSuccess: (data) => {
