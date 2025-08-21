@@ -1,14 +1,17 @@
 import { useState } from 'react';
 
+import { useParams } from 'react-router-dom';
+
 import Pagination from '@/components/Pagination';
 import ReviewCard from '@/components/ReviewCard';
-import { useGetExpertReviews } from '@/features/ExpertMypage/hooks/useGetExpertReviews';
+import { useGetReviewsByUserId } from '@/features/ExpertDetail/hooks/useGetReveiwsByUserId';
 
 //이 부분은 기존에 있던 ExpertReviews와 동일한데 어느 부분이 달라야하는지 잘 모르겠어서 나중에 수정 예정
 //수정할 부분-> ReviewCard에서 x버튼 권한에 따라 부여 필요
 const ExpertDetailReviews = () => {
   const [page, setPage] = useState(1);
-  const { data: reviews } = useGetExpertReviews({ page, size: 6 });
+  const { id } = useParams<{ id: string }>();
+  const { data: reviews } = useGetReviewsByUserId({ userId: Number(id) || 0, page, size: 6 });
   const total = reviews?.totalPages ?? 1;
   return (
     <div className="flex flex-col items-center justify-center">

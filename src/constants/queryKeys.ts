@@ -1,5 +1,6 @@
 import type { getChatRoomListRequestDto } from '@/features/Chat/types/getChatRoomListType';
 import type { getMessagesRequestDto } from '@/features/Chat/types/getMessagesType';
+import type { getExpertReviewsRequestByUserId } from '@/features/ExpertDetail/types/getReviewsByUserId';
 import type { getExpertReviewsRequest } from '@/features/ExpertMypage/types/getExpertReviews';
 import type { getMyInfoListRequestDto } from '@/features/Mypage/types/getMyRequestsListRequestDto';
 import type { getProposalsListRequestDto } from '@/features/Proposals/types/getProposalsListType';
@@ -11,6 +12,11 @@ export const QUERY_KEYS = {
   requestsList: (params: getRequestsListRequestDto) => [
     'reqeustsList',
     params.sortBy,
+    params.page,
+    params.size,
+  ],
+  expertReviewsByUserId: (params: getExpertReviewsRequestByUserId) => [
+    'ExpertReviewsByUserId',
     params.page,
     params.size,
   ],
