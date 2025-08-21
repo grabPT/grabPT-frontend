@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { useNavigate, useParams } from 'react-router-dom';
+import { ZodError, z } from 'zod';
 
 import AppLogo from '@/assets/images/AppLogo.png';
 import Button from '@/components/Button';
@@ -39,6 +40,46 @@ declare global {
     IMP: any; // 필요하다면 정확한 타입으로 교체 가능
   }
 }
+
+// Zod 스키마 정의
+const userInfoSchema = z.object({
+  name: z.string().min(1, '이름을 입력해주세요'),
+  birth: z.string().min(1, '생년월일을 입력해주세요'),
+  phoneNumber: z.string().min(1, '전화번호를 입력해주세요'),
+  address: z.string().min(1, '주소를 입력해주세요'),
+  // ✅ enum: readonly 튜플 + 에러 메시지
+  gender: z.enum(['MALE', 'FEMALE'] as const, { error: '성별을 선택해주세요' }),
+  // 또는: gender: z.enum(['MALE', 'FEMALE'] as const, '성별을 선택해주세요'),
+});
+
+const toFieldErrorMap = (e: ZodError): Record<string, string> => {
+  // 타입 명시: string[] | undefined
+  const fieldErrors = e.flatten().fieldErrors as Record<string, string[] | undefined>;
+  const out: Record<string, string> = {};
+
+  for (const [k, arr] of Object.entries(fieldErrors)) {
+    if (Array.isArray(arr) && arr.length > 0 && arr[0]) {
+      out[k] = arr[0]; // 첫 메시지만 사용
+    }
+  }
+  return out;
+};
+
+const proInfoSchema = userInfoSchema
+  .extend({
+    startDate: z.string().min(1, '시작일을 입력해주세요'),
+    contractDate: z.string().min(1, '계약 종료일을 입력해주세요'),
+  })
+  .refine(
+    (data) => {
+      if (!data.startDate || !data.contractDate) return true; // 개별 필드 검증에서 처리
+      return new Date(data.contractDate) > new Date(data.startDate);
+    },
+    {
+      message: '계약 종료일은 시작일보다 뒤여야 합니다',
+      path: ['contractDate'],
+    },
+  );
 
 function extractUserBodyFromForm(form: HTMLFormElement | null): userInfoType | null {
   if (!form) return null;
@@ -87,7 +128,11 @@ const ContractFormPage = () => {
   const contractId = Number(id);
 
   const [isAgree, setIsAgree] = useState<boolean>(false);
-  const [disabledAgree, setIsDisabledAgree] = useState<boolean>(false); // ⬅️ 변경 대상: 렌더 중 setState 금지, effect로만 동기화
+  const [disabledAgree, setIsDisabledAgree] = useState<boolean>(false);
+
+  // 검증 에러 상태 추가
+  const [userErrors, setUserErrors] = useState<Record<string, string>>({});
+  const [proErrors, setProErrors] = useState<Record<string, string>>({});
 
   // 서명(base64) — 미리보기 용
   const [memberSign, setMemberSign] = useState<string | null>(null);
@@ -212,14 +257,12 @@ const ContractFormPage = () => {
       showCancel = false;
       primaryDisabled = true;
       primaryFullWidth = true;
-      // ⛔ setState 금지 (무한렌더 방지)
     } else if (userComplete && proComplete) {
       // 양측 완료 → 잠금 + 결제 버튼 활성 + w-full
       showCancel = false;
       primaryDisabled = false;
       primaryLabel = '계약서 제출 및 결제';
       primaryFullWidth = true;
-      // ⛔ setState 금지 (무한렌더 방지)
     }
   } else {
     // EXPERT 화면 규칙
@@ -228,7 +271,6 @@ const ContractFormPage = () => {
       showCancel = false;
       primaryDisabled = true;
       primaryFullWidth = true;
-      // ⛔ setState 금지 (무한렌더 방지)
     }
   }
 
@@ -266,30 +308,80 @@ const ContractFormPage = () => {
       }
     };
   }, []);
+
+  // ✅ 사용자 정보 검증 함수
+  const validateUserInfo = (body: userInfoType): boolean => {
+    try {
+      userInfoSchema.parse({
+        name: body.name || '',
+        birth: body.birth || '',
+        phoneNumber: body.phoneNumber || '',
+        address: body.address || '',
+        gender: body.gender || undefined,
+      });
+      setUserErrors({});
+      return true;
+    } catch (e) {
+      if (e instanceof ZodError) {
+        setUserErrors(toFieldErrorMap(e));
+      }
+      return false;
+    }
+  };
+
+  // ✅ 전문가 정보 검증 함수
+  const validateProInfo = (body: proInfoType): boolean => {
+    try {
+      proInfoSchema.parse({
+        name: body.name || '',
+        birth: body.birth || '',
+        phoneNumber: body.phoneNumber || '',
+        address: body.address || '',
+        gender: body.gender || undefined,
+        startDate: body.startDate || '',
+        contractDate: body.contractDate || '',
+      });
+      setProErrors({});
+      return true;
+    } catch (e) {
+      if (e instanceof ZodError) {
+        setProErrors(toFieldErrorMap(e));
+      }
+      return false;
+    }
+  };
+
   // ─────────────────────────────────────────────────────────────
 
   const handleSubmit = () => {
     if (!isAgree) {
-      console.warn('개인정보 수집·이용에 동의가 필요합니다.');
+      alert('개인정보 수집·이용에 동의가 필요합니다.');
       return;
     }
     if (primaryDisabled) return;
 
     if (!isExpert) {
       if (canEditUser) {
-        // 1) info 먼저
+        // 1) info 먼저 - Zod 검증 적용
         const body = extractUserBodyFromForm(userFormRef.current);
-        if (!body || !body.name || !body.phoneNumber || !body.gender || !body.address) {
-          console.warn('회원 정보가 완전하지 않습니다.');
+        if (!body) {
+          alert('회원 정보를 입력해주세요.');
           return;
         }
+
+        // Zod 스키마로 검증
+        if (!validateUserInfo(body)) {
+          alert('입력 정보를 확인해주세요.');
+          return;
+        }
+
         uploadUserInfo(
           { contractId, body },
           {
             onSuccess: () => {
               // 2) sign 업로드
               if (!memberSign) {
-                console.warn('회원 서명을 입력하세요.');
+                alert('회원 서명을 입력하세요.');
                 return;
               }
               const file = dataURLtoFile(memberSign, `member-sign-${Date.now()}.png`);
@@ -303,6 +395,9 @@ const ContractFormPage = () => {
                 },
               );
             },
+            onError: () => {
+              alert('회원 정보 업로드에 실패했습니다.');
+            },
           },
         );
       } else {
@@ -311,27 +406,26 @@ const ContractFormPage = () => {
       }
     } else {
       if (canEditPro) {
-        // 1) info 먼저 (전문가: 날짜 포함)
+        // 1) info 먼저 (전문가: 날짜 포함) - Zod 검증 적용
         const body = extractProBodyFromForm(proFormRef.current);
-        if (
-          !body ||
-          !body.name ||
-          !body.phoneNumber ||
-          !body.gender ||
-          !body.address ||
-          !body.startDate ||
-          !body.contractDate
-        ) {
-          console.warn('전문가 정보가 완전하지 않습니다.');
+        if (!body) {
+          alert('전문가 정보를 입력해주세요.');
           return;
         }
+
+        // Zod 스키마로 검증
+        if (!validateProInfo(body)) {
+          alert('입력 정보를 확인해주세요.');
+          return;
+        }
+
         uploadProInfo(
           { contractId, body },
           {
             onSuccess: () => {
               // 2) sign 업로드
               if (!expertSign) {
-                console.warn('전문가 서명을 입력하세요.');
+                alert('전문가 서명을 입력하세요.');
                 return;
               }
               const file = dataURLtoFile(expertSign, `expert-sign-${Date.now()}.png`);
@@ -344,6 +438,9 @@ const ContractFormPage = () => {
                   },
                 },
               );
+            },
+            onError: () => {
+              alert('전문가 정보 업로드에 실패했습니다.');
             },
           },
         );
@@ -424,6 +521,12 @@ const ContractFormPage = () => {
               <InformationCard title={'회원 정보'} borderColor={'blue'}>
                 <form ref={userFormRef}>
                   <UserInformationForm isCanEdit={canEditUser} defaultValues={userDefaults} />
+                  {/* 검증 에러 표시 */}
+                  {Object.entries(userErrors).map(([field, error]) => (
+                    <div key={field} className="mt-2 text-xs text-red-500">
+                      {error}
+                    </div>
+                  ))}
                 </form>
               </InformationCard>
 
@@ -433,6 +536,12 @@ const ContractFormPage = () => {
                   <UserInformationForm isCanEdit={canEditPro} defaultValues={proDefaults} />
                   <input type="hidden" name="startDate" value={startAny} />
                   <input type="hidden" name="contractDate" value={contractAny} />
+                  {/* 검증 에러 표시 */}
+                  {Object.entries(proErrors).map(([field, error]) => (
+                    <div key={field} className="mt-2 text-xs text-red-500">
+                      {error}
+                    </div>
+                  ))}
                 </form>
               </InformationCard>
             </div>
