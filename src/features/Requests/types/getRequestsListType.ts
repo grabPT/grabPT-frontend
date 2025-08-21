@@ -82,6 +82,5 @@ export type RequestsListItemProps = {
   sessionCount?: number;
   content: string;
   profileImageUrl?: string;
-  matchStatus?: MatchStatusType;
   proProfileId?: number;
 };

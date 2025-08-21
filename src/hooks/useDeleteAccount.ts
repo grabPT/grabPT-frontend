@@ -17,7 +17,8 @@ export function useDeleteAccount() {
       qc.clear();
 
       // 2) 인증 스토리지/쿠키 제거
-      localStorage.removeItem('accessToken');
+      localStorage.removeItem('sort-storage');
+      localStorage.removeItem('suggest-storage');
       localStorage.removeItem('role-storage');
       localStorage.removeItem('alarm-storage');
       localStorage.removeItem('unread-storage');
