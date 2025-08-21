@@ -205,6 +205,7 @@ const RequestDetailPage = () => {
               {...register('sessionCount', { valueAsNumber: true })}
               aria-label="희망 PT 횟수"
               className="mr-1.5 h-12 w-[85px] rounded-xl border-2 border-[#BABABA] pl-3.5 text-center text-2xl text-[#9F9F9F]"
+              readOnly={!canEdit}
             />
 
             <span className="mr-5">회</span>
@@ -213,6 +214,7 @@ const RequestDetailPage = () => {
               {...register('price', { valueAsNumber: true })}
               aria-label="희망 PT 가격"
               className="mr-1.5 h-12 w-[260px] rounded-xl border-2 border-[#BABABA] px-8 text-end text-2xl text-[#9F9F9F]"
+              readOnly={!canEdit}
             />
             <span className="mr-5">원</span>
           </div>
@@ -423,6 +425,7 @@ const RequestDetailPage = () => {
             value={watch('content')}
             onChange={(e) => setValue('content', e.target.value, { shouldDirty: true })}
             readOnly={!canEdit}
+            placeholder="추가 요청사항을 입력해주세요"
           />
         </section>
       </section>

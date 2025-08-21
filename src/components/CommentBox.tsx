@@ -13,7 +13,7 @@ const CommentBox = ({
   max = 700,
   value,
   onChange,
-  readOnly = true,
+  readOnly = false,
 }: CommentBoxProps) => {
   return (
     <div className="relative w-full">
