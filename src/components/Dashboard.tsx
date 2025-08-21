@@ -452,19 +452,8 @@ const Dashboard = ({ userInfo }: DashboardProps) => {
         </div>
         {isModalOpen &&
           createPortal(
-            <div
-              className="fixed inset-0 z-[9999] flex h-screen min-h-screen w-screen items-center justify-center bg-black/40"
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsModalOpen(false);
-              }}
-            >
-              <div
-                className="mx-auto my-auto flex w-[min(92vw,520px)] flex-col justify-center rounded-xl bg-white p-6 shadow-xl"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <DeleteUserModal setIsModalOpen={setIsModalOpen} />
-              </div>
+            <div className="bg-opacity-50 fixed inset-0 z-[9999] flex items-center justify-center bg-black">
+              <DeleteUserModal setIsModalOpen={setIsModalOpen} />
             </div>,
             document.body,
           )}
