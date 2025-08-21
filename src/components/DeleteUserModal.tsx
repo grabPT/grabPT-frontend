@@ -83,7 +83,7 @@ export default function DeleteUserModal({ setIsModalOpen }: IDeleteUserModal) {
         </div>
       </div>
 
-      <div className="flex gap-3 p-6 pt-0">
+      <div className="flex items-center justify-center gap-3 p-6 pt-0">
         <Button onClick={() => setIsModalOpen(false)}>취소</Button>
         <Button onClick={handleDelete} disabled={isPending}>
           확인
