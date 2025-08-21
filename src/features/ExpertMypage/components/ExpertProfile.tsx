@@ -241,7 +241,7 @@ const ExpertProfile = () => {
         {isCommentEdit && (
           <div className="mt-[45px] flex h-[400px] flex-col gap-3">
             {/* 안내 */}
-            <div className="h-[50px] w-full resize-none rounded-lg border border-[#CCCCCC] bg-[#F5F5F5] p-4 text-sm leading-relaxed text-gray-400 placeholder:text-gray-400">
+            <div className="h-[50px] w-full resize-none rounded-lg border border-[#CCCCCC] bg-[#F5F5F5] p-4 text-sm text-[12px] leading-relaxed text-gray-400 placeholder:text-gray-400">
               * 전문가로서의 목표, 수업 방향성, 신념, 가치관 등 전문가님을 소개하고 표현할 수 있는
               이야기를 적어주세요!
             </div>

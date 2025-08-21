@@ -7,29 +7,31 @@ import { useGetProposalDetail } from '@/features/ProposalDetail/hooks/useGetProp
 import { usePostMatching } from '@/features/ProposalDetail/hooks/usePostMatching';
 import { onErrorImage } from '@/utils/onErrorImage';
 
-// 제안서 상세페이지입니다
-
+// 제안서 상세페이지
 const ProposalDetailPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const suggestionId = Number(id);
-  const { data: suggestion, error, isError } = useGetProposalDetail(suggestionId);
+
+  const { data: suggestion, error, isError, isLoading } = useGetProposalDetail(suggestionId);
+
   const navigateToExpertProfile = () => navigate(urlFor.expertDetail(suggestion?.expertId));
-  console.log(suggestion);
+
   const 채팅상담 = () => {
-    if (suggestion === undefined) return;
+    if (!suggestion) return;
     postCreateChatRoom({ userId: suggestion.userId, proId: suggestion.expertId });
     navigate(ROUTES.CHAT.ROOT);
   };
+
   const { mutateAsync: matchAsync } = usePostMatching();
 
   const 매칭수락 = async () => {
-    if (!suggestion) return; // 데이터 아직이면 막기
-    // requestionId는 필수이므로 존재 보장 후 숫자로 전달
+    if (!suggestion) return;
     const res = await matchAsync({
-      requestionId: Number(suggestion.requestionId) || 1,
+      requestionId: Number(suggestion.requestionId),
       suggestionId,
     });
+
     if (res.isSuccess) {
       navigate(urlFor.contractForm(res.result.contractId));
     } else {
@@ -37,29 +39,28 @@ const ProposalDetailPage = () => {
     }
   };
 
+  // ✅ 로딩 처리
+  if (isLoading) {
+    return (
+      <section className="my-10 flex flex-col items-center">
+        <p className="text-lg text-gray-600">불러오는 중...</p>
+      </section>
+    );
+  }
+
+  // ✅ 에러 처리
   if (isError && error) {
+    const status = (error as any)?.response?.status ?? (error as any)?.status;
     const isNotFoundError =
-      (error as any)?.response?.status === 400 ||
-      (error as any)?.status === 400 ||
+      status === 400 ||
       error.message?.includes('400') ||
       error.message?.includes('not found') ||
       error.message?.includes('존재하지 않는');
 
     if (isNotFoundError) {
-      // 즉시 알림 표시 후 리다이렉트
-      setTimeout(() => {
-        alert('존재하지 않는 제안서 입니다.');
-        navigate(ROUTES.HOME.ROOT);
-      }, 0);
-
-      // 리다이렉트 대기 중 표시할 UI
-      return (
-        <section className="my-10 flex flex-col items-center">
-          <div className="text-center">
-            <p className="text-lg text-gray-600">페이지를 확인하고 있습니다...</p>
-          </div>
-        </section>
-      );
+      alert('존재하지 않는 제안서 입니다.');
+      navigate(ROUTES.HOME.ROOT);
+      return null;
     }
   }
 
@@ -73,7 +74,7 @@ const ProposalDetailPage = () => {
           className="h-[300px] w-[300px] rounded-full object-cover"
         />
         <span className="mt-5 text-4xl font-bold text-[#21272A]">{suggestion?.nickname}</span>
-        <span className="text-button text-sm font-semibold">{suggestion?.center} </span>
+        <span className="text-button text-sm font-semibold">{suggestion?.center}</span>
       </div>
 
       <div className="mt-12 flex w-full justify-end gap-4">
@@ -88,8 +89,6 @@ const ProposalDetailPage = () => {
       <div className="mt-12 flex w-full flex-col gap-12 text-2xl font-extrabold">
         <div>
           <span className="text-button">제안 가격</span>
-
-          {/* 요청서상세페이지에서 가져옴. 컴포넌트로 뺄 수 있음. 근데 -50000 가격차이를 absolute로 처리해서 애매한데 바꿀 수 있음 */}
           <div className="relative mt-5 flex w-fit items-center">
             <input
               type="number"
@@ -138,7 +137,6 @@ const ProposalDetailPage = () => {
                 key={idx}
                 src={imageUrl}
                 onError={onErrorImage}
-                // src={Image}
                 alt="사진"
                 className="aspect-square h-full w-full rounded-xl object-cover"
               />
