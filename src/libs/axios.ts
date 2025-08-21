@@ -39,7 +39,6 @@ function processQueue(error: any) {
 
 // 공통 응답 인터셉터 부착: 401 처리 + 중복 리프레시 방지 + 큐 재시도
 function attachAuthInterceptors(instance: AxiosInstance) {
-  console.log('여기는 들어옴?');
   instance.interceptors.response.use(
     (response) => response,
     async (error: AxiosError) => {
@@ -57,7 +56,6 @@ function attachAuthInterceptors(instance: AxiosInstance) {
         (error.config as any)?._retry,
         (error.config as any)?.skipAuth,
       );
-      console.log('여기는 들어왔음?');
       const status = error.response?.status;
       const originalRequest = (error.config || {}) as AxiosRequestConfig & {
         _retry?: boolean;
