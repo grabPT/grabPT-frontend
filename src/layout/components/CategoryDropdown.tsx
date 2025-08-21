@@ -5,7 +5,7 @@ import { SPORTS } from '@/constants/sports';
 
 const CategoryDropdown = () => {
   return (
-    <Box width="w-[181px] h-[330px]" className="bg-white">
+    <Box width="w-[181px]" height="h-[330px]" className="bg-white">
       <div className="p-5">
         <header className="text-lg leading-[normal] font-extrabold">운동</header>
         <div className="mt-[18px] flex flex-col gap-[6px]">

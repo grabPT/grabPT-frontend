@@ -125,7 +125,7 @@ const ExpertCredentials = () => {
   };
 
   return (
-    <div className="mx-auto mt-[40px] flex flex-col items-center justify-center">
+    <div className="mx-auto mt-[40px] flex flex-col items-center">
       <div className="flex w-[600px] items-center justify-between">
         <span className="text-[24px] font-semibold">자격 사항</span>
         {!isEditMode ? (
