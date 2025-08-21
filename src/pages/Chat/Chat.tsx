@@ -1,5 +1,7 @@
 import { useCallback, useState } from 'react';
 
+import { useLocation } from 'react-router-dom';
+
 import { ChatInfo } from '@/features/Chat/components/ChatInfo';
 import ChatSideBar from '@/features/Chat/components/ChatSideBar';
 import { MessageInput } from '@/features/Chat/components/MessageInput';
@@ -15,6 +17,9 @@ import { useRoleStore } from '@/store/useRoleStore';
 // 경로 맞춰주세요
 
 const Chat = () => {
+  const location = useLocation();
+  const selectedProId: number | undefined = location.state?.proId;
+
   const [selectedChat, setSelectedChat] = useState<ChatRoomListItemType | null>(null);
   const [pendingFile, setPendingFile] = useState<File | null>(null);
 
@@ -80,7 +85,11 @@ const Chat = () => {
 
       <div className="flex h-full flex-1">
         {/* 좌측: 채팅방 리스트 */}
-        <ChatSideBar selectedChatId={selectedChat?.chatRoomId ?? null} onSelect={setSelectedChat} />
+        <ChatSideBar
+          selectedChatId={selectedChat?.chatRoomId ?? null}
+          selectedProId={selectedProId}
+          onSelect={setSelectedChat}
+        />
 
         {/* 우측: 채팅 상세 + 입력 */}
         <div className="flex h-full w-full flex-col bg-white">

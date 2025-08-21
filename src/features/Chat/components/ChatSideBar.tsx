@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import clsx from 'clsx';
 import { SearchIcon } from 'lucide-react';
@@ -10,14 +10,30 @@ import type { ChatRoomListItemType } from '@/features/Chat/types/getChatRoomList
 interface ChatSideBarProps {
   selectedChatId?: number | null;
   onSelect: (chat: ChatRoomListItemType) => void;
-  className?: string; // 필요 시 스타일 확장
+  className?: string;
+  selectedProId?: number; // ✅ optional로
 }
 
-export const ChatSideBar = ({ selectedChatId = null, onSelect, className }: ChatSideBarProps) => {
+export const ChatSideBar = ({
+  selectedChatId = null,
+  onSelect,
+  className,
+  selectedProId,
+}: ChatSideBarProps) => {
   const [keyword, setKeyword] = useState('');
-
-  // 서버 필터링용: keyword가 변할 때마다 refetch (현재 훅 구조 유지)
   const { data: rooms } = useGetChatRoomList({ keyword });
+
+  // ✅ rooms or selectedProId가 준비되면 자동 선택
+  useEffect(() => {
+    if (!rooms || !rooms.length) return;
+    if (!selectedProId) return;
+    if (selectedChatId) return; // 이미 선택되어 있으면 패스
+
+    const target = rooms.find((room) => room.userId === selectedProId);
+    if (target) onSelect(target);
+  }, [rooms, selectedProId, selectedChatId, onSelect]);
+
+  const filtered = useMemo(() => rooms ?? [], [rooms]);
 
   return (
     <aside
@@ -37,11 +53,7 @@ export const ChatSideBar = ({ selectedChatId = null, onSelect, className }: Chat
               value={keyword}
               onChange={(e) => setKeyword(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  // 필요 시 서버에 별도 검색 트리거가 있다면 추가
-                  // 현재는 keyword 상태 변화로 훅이 refetch
-                  console.log('검색:', keyword);
-                }
+                if (e.key === 'Enter') console.log('검색:', keyword);
               }}
             />
             <SearchIcon className="h-5 w-5 text-[#CCCCCC]" />
@@ -51,7 +63,7 @@ export const ChatSideBar = ({ selectedChatId = null, onSelect, className }: Chat
 
       {/* 채팅방 리스트 */}
       <div className="w-full flex-1 overflow-y-auto pt-5">
-        {rooms?.map((chat) => {
+        {filtered.map((chat) => {
           const isSelected = selectedChatId === chat.chatRoomId;
           return (
             <button

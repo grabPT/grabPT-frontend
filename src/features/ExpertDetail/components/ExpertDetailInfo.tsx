@@ -46,6 +46,7 @@ export const ExpertDetailInfo = () => {
       setPrices(profileData.ptPrices);
     }
   }, [profileData]);
+
   const 채팅상담 = async () => {
     if (userId == undefined || profileData?.proId === undefined) {
       console.log('안됨');
@@ -54,7 +55,9 @@ export const ExpertDetailInfo = () => {
     try {
       await postCreateChatRoom({ userId, proId: profileData.proId });
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      navigate(ROUTES.CHAT.ROOT);
+      navigate(ROUTES.CHAT.ROOT, {
+        state: { proId: profileData.proId },
+      });
     } catch (err) {
       console.error('채팅방 생성 실패:', err);
     }
