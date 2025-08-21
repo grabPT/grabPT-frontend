@@ -26,8 +26,8 @@ const UserMainPage = () => {
     role === 'GUEST'
       ? getRandomSportSlug()
       : role === 'USER'
-        ? (matched?.slug ?? 'health')
-        : 'health'; // fallback
+        ? (matched?.slug ?? 'boxing')
+        : 'boxing'; // fallback
   return (
     <div className="flex flex-col items-center justify-center">
       <UserSearchSection />
