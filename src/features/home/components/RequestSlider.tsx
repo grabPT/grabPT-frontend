@@ -127,7 +127,7 @@ function RequestSlider({ title, requests, location, name }: RequestSliderProps) 
 
   if (!isSliderReady) {
     return (
-      <section className="flex max-w-[1480px] flex-col gap-9 sm:w-[720px] md:w-[920px] lg:w-[720px] xl:w-[1080px] 2xl:w-[1280px] @max-3xl:w-[1480px]">
+      <section className="3xl:w-[1480px] flex flex-col gap-9 sm:w-[720px] md:w-[820px] lg:w-[920px] xl:w-[1080px] 2xl:w-[1280px]">
         <h2 className="font-pretendard ml-[10px] text-[30px] leading-[100%] font-extrabold tracking-[0%] sm:text-[24px] lg:text-[30px]">
           {title}
         </h2>
@@ -137,7 +137,7 @@ function RequestSlider({ title, requests, location, name }: RequestSliderProps) 
   }
 
   return (
-    <section className="3xl:w-[1480px] flex flex-col gap-9 sm:w-[720px] md:w-[920px] lg:w-[720px] xl:w-[1080px] 2xl:w-[1280px]">
+    <section className="3xl:w-[1480px] flex flex-col gap-9 sm:w-[720px] md:w-[820px] lg:w-[920px] xl:w-[1080px] 2xl:w-[1280px]">
       <h2 className="font-pretendard ml-[10px] text-[30px] leading-[100%] font-extrabold tracking-[0%] sm:text-[24px] lg:text-[30px]">
         {title}
       </h2>

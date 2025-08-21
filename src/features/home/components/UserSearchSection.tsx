@@ -38,7 +38,7 @@ const UserSearchSection = () => {
       <div className="absolute inset-0 z-10 bg-black/40" />
 
       {/* 텍스트 및 검색 UI */}
-      <div className="3xl:w-[1480px] absolute inset-0 z-20 mx-auto flex flex-col justify-center text-white sm:w-[720px] md:w-[920px] lg:w-[720px] xl:w-[1080px] 2xl:w-[1280px]">
+      <div className="3xl:w-[1480px] absolute inset-0 z-20 mx-auto flex flex-col justify-center text-white sm:w-[720px] md:w-[820px] lg:w-[920px] xl:w-[1080px] 2xl:w-[1280px]">
         <h1 className="mt-21 w-[747px] text-left text-[60px] leading-[74px] font-extrabold whitespace-pre-line">
           <span className="text-[#ACBEFF]">운동</span>
           <span className="text-white">이 필요한 순간,{'\n'}딱 맞는 전문가를 찾아보세요</span>

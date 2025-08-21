@@ -51,7 +51,7 @@ const RealtimeMatchingStatus = ({ categoryType }: RealtimeMatchingStatusProps) =
   if (error) return <ErrorComponent />;
 
   return (
-    <section className="3xl:w-[1480px] flex flex-col gap-9 px-4 sm:w-[720px] md:w-[920px] lg:w-[720px] xl:w-[1080px] 2xl:w-[1280px]">
+    <section className="3xl:w-[1480px] flex flex-col gap-9 px-4 sm:w-[720px] md:w-[820px] lg:w-[920px] xl:w-[1080px] 2xl:w-[1280px]">
       <h2 className="font-[Pretendard Variable] leading-[40px] font-extrabold text-black not-italic sm:text-[24px] xl:text-[30px]">
         <span className="text-button">{categoryLabel}</span> 실시간 매칭 현황
       </h2>
