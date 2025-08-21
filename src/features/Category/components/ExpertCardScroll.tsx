@@ -122,7 +122,7 @@ const ExpertCardScroll = ({ experts }: ExpertCardScrollProps) => {
   }
 
   return (
-    <div className="relative flex h-[400px] w-full items-center overflow-hidden">
+    <div className="3xl:w-[1480px] relative flex h-[400px] items-center overflow-hidden sm:w-[720px] md:w-[820px] lg:w-[920px] xl:w-[1080px] 2xl:w-[1280px]">
       {/* 오른쪽 Fade (필요 시 그라데이션 배경 추가) */}
       <div className="pointer-events-none absolute top-0 right-0 z-10 h-full w-[80px]" />
 
