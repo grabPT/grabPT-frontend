@@ -6,14 +6,14 @@ import RealtimeMatchingStatus from '@/components/RealtimeMatchingStatus';
 import { SPORTS } from '@/constants/sports';
 import RequestSlider from '@/features/home/components/RequestSlider';
 import UserSearchSection from '@/features/home/components/UserSearchSection';
-import { useGetMyRequestsList } from '@/hooks/useGetMyRequestsList';
+import { useGetMyRequestsListAtMainPage } from '@/hooks/useGetMyRequestListAtMainPage';
 import { useGetUserInfo } from '@/hooks/useGetUserInfo';
 import { useRoleStore } from '@/store/useRoleStore';
 import type { SportsSlugType } from '@/types/SportsType';
 
 const UserMainPage = () => {
   const { isLoggedIn, role } = useRoleStore();
-  const { data: requests } = useGetMyRequestsList({ page: 1, size: 40 }, isLoggedIn);
+  const { data: requests } = useGetMyRequestsListAtMainPage({ page: 1, size: 40 }, isLoggedIn);
   // 랜덤 선택 함수
   function getRandomSportSlug(): SportsSlugType {
     const randomIndex = Math.floor(Math.random() * SPORTS.length);
