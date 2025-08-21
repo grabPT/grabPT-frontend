@@ -34,6 +34,6 @@ export type SettlementListItem = {
   ptCount: number;
   paymentAmount: number;
   earnedAmount: number;
-  paymentDate: string;
+  paymentDate: number[];
 };
 export type getSettlementListResponse = CommonResponseDto<getSettlementListResult>;
