@@ -8,10 +8,23 @@ interface UserPaymentsCardProps {
     trainerName: string;
     ptCount: number;
     paymentAmount: number;
-    paymentDate: string;
+    paymentDate: number[]; // [year, month, day, hour, minute, second, nanos]
   };
 }
-//
+
+const formatPaymentDate = (arr: number[]) => {
+  const [year, month, day, hour, minute, second] = arr;
+  const date = new Date(year, month - 1, day, hour, minute, second);
+
+  const yyyy = date.getFullYear();
+  const MM = String(date.getMonth() + 1).padStart(2, '0');
+  const dd = String(date.getDate()).padStart(2, '0');
+  const HH = String(date.getHours()).padStart(2, '0');
+  const mm = String(date.getMinutes()).padStart(2, '0');
+  const ss = String(date.getSeconds()).padStart(2, '0');
+
+  return `${yyyy}/${MM}/${dd} ${HH}:${mm}:${ss}`;
+};
 export const UserPaymentsCard = ({ data }: UserPaymentsCardProps) => {
   const navigate = useNavigate();
   const navigateToContractDetail = () => {
@@ -32,7 +45,7 @@ export const UserPaymentsCard = ({ data }: UserPaymentsCardProps) => {
         <span>{data.paymentAmount}원</span>
       </div>
       <div className="flex-1 text-center">
-        <span>{data.paymentDate}</span>
+        <span>{formatPaymentDate(data.paymentDate)}</span>
       </div>
     </div>
   );

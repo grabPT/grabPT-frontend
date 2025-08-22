@@ -18,7 +18,7 @@ export type getUserSettlementsResultType = {
         trainerName: string;
         ptCount: number;
         paymentAmount: number;
-        paymentDate: string;
+        paymentDate: number[]; // [year, month, day, hour, minute, second, nanos]
       },
     ];
     number: number;
