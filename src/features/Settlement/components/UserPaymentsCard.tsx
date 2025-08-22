@@ -11,6 +11,7 @@ interface UserPaymentsCardProps {
     paymentDate: string;
   };
 }
+//
 export const UserPaymentsCard = ({ data }: UserPaymentsCardProps) => {
   const navigate = useNavigate();
   const navigateToContractDetail = () => {
