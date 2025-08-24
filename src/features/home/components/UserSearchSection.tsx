@@ -52,7 +52,7 @@ const UserSearchSection = () => {
               <div className="flex h-full w-full items-center rounded-full bg-white px-[16px] pr-[15px]">
                 <input
                   type="text"
-                  placeholder="원하는 운동을 찾아보세요"
+                  placeholder="원하는 운동 전문가를 찾아보세요."
                   className="font-inter w-full text-[13px] leading-[16px] font-semibold text-black placeholder-[#CCCCCC] outline-none"
                   value={keyword}
                   onChange={(e) => setKeyword(e.target.value)}
