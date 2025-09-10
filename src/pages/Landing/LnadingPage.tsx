@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import Logo from '@/assets/images/logo-white.svg';
+import mackBookImg from '@/assets/images/macbook.svg';
 import MoneyImg from '@/assets/images/money-landing.svg';
 import ThumbImg from '@/assets/images/thumb-landing.svg';
 import Button from '@/components/Button';
@@ -82,6 +83,18 @@ const LandingPage = () => {
                 grabPT • grabPT • grabPT • grabPT •{' '}
               </div>
             </div>
+            <div className="continuous-rolling2 absolute bottom-[20%] left-0 flex h-[80px] w-[130%] items-center overflow-hidden bg-amber-300 whitespace-nowrap">
+              <div className="continuous-text animate-continuousRoll inline-block">
+                grabPT • grabPT • grabPT • grabPT • grabPT • grabPT • grabPT • grabPT • grabPT •
+                grabPT • grabPT • grabPT • grabPT • grabPT • grabPT • grabPT • grabPT • grabPT •
+                grabPT • grabPT • grabPT • grabPT • grabPT • grabPT • grabPT • grabPT • grabPT •
+                grabPT • grabPT • grabPT • grabPT •{' '}
+              </div>
+            </div>
+            <img
+              src={mackBookImg}
+              alt="mackBook"
+              className="absolute bottom-[-200px] left-1/2 w-[700px] -translate-x-1/2" />
           </div>
         </section>
         <section className="mt-[60px] flex h-full w-full flex-col items-center justify-center bg-white">
@@ -103,7 +116,7 @@ const LandingPage = () => {
           <p className="mb-[60px] text-black">
             다양한 종목의 실시간 매칭 현황 정보를 통해 투명한 가격 정보를 확인하세요.
           </p>
-          <div className='flex flex-col gap-[30px] mb-[100px]'>
+          <div className="mb-[100px] flex flex-col gap-[30px]">
             <div className="animate-fadeIn flex h-[180px] w-[580px] items-center justify-center gap-[20px] rounded-2xl bg-gradient-to-r from-blue-500 to-indigo-600 p-4 text-white shadow-lg">
               <img src={MoneyImg} alt="투명한가격" />
               <div>
