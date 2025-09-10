@@ -15,11 +15,15 @@ import type { SportsSlugType } from '@/types/SportsType';
 
 interface RealtimeMatchingStatusProps {
   categoryType: SportsSlugType;
+  buttonShow?: boolean;
 }
 
 // 실시간 매칭 현황 컴포넌트입니다
 // category를 넘겨받으면 컴포넌트에서 요청을 날립니다
-const RealtimeMatchingStatus = ({ categoryType }: RealtimeMatchingStatusProps) => {
+const RealtimeMatchingStatus = ({
+  categoryType,
+  buttonShow = true,
+}: RealtimeMatchingStatusProps) => {
   const { data: matchingList, error, isPending } = useGetRealtimeMatching(categoryType);
   const navigate = useNavigate();
   const { isLoggedIn, role } = useRoleStore();
@@ -52,9 +56,9 @@ const RealtimeMatchingStatus = ({ categoryType }: RealtimeMatchingStatusProps) =
 
   return (
     <section className="3xl:w-[1480px] flex flex-col gap-9 px-4 sm:w-[720px] md:w-[820px] lg:w-[920px] xl:w-[1080px] 2xl:w-[1280px]">
-      <h2 className="font-[Pretendard Variable] leading-[40px] font-extrabold text-black not-italic sm:text-[24px] xl:text-[30px]">
+      {buttonShow && <h2 className="font-[Pretendard Variable] leading-[40px] font-extrabold text-black not-italic sm:text-[24px] xl:text-[30px]">
         <span className="text-button">{categoryLabel}</span> 실시간 매칭 현황
-      </h2>
+      </h2>}
 
       <div className="3xl:grid-cols-4 mt-6 grid grid-cols-1 gap-x-8 gap-y-8 md:grid-cols-2 xl:grid-cols-3">
         {matchingList
@@ -63,7 +67,7 @@ const RealtimeMatchingStatus = ({ categoryType }: RealtimeMatchingStatusProps) =
       </div>
 
       {/* 오른쪽 아래 정렬 */}
-      {!(role === 'EXPERT') && (
+      {!(role === 'EXPERT') && buttonShow && (
         <div className="flex justify-end">
           <Button
             label="요청서 작성"

@@ -16,6 +16,7 @@ import { ExpertDetail } from '@/pages/ExpertDetail/ExpertDetail';
 import ExpertMainPage from '@/pages/Home/ExpertMainPage';
 import UserMainPage from '@/pages/Home/UserMainPage';
 import type { AppRoute } from '@/types/Role';
+import LandingPage from '@/pages/Landing/LnadingPage';
 
 // 동적 import 에러 처리 함수
 const createLazyComponent = (importFn: () => Promise<{ default: React.ComponentType<any> }>) => {
@@ -361,4 +362,9 @@ export const routesManifest: AppRoute[] = [
     roles: ['EXPERT', 'USER', 'GUEST'],
     errorElement: <ErrorComponent />,
   },
+  {
+    path: '/home',
+    element: withFallback(<LandingPage />),
+    errorElement: <ErrorComponent />
+  }
 ];
