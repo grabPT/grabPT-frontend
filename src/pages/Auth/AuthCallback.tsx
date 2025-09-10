@@ -16,8 +16,8 @@ export const AuthCallback = () => {
 
   useEffect(() => {
     (async () => {
-      const roleRaw = decodeCookie('role');
-      const userIdRaw = Number(decodeCookie('userId'));
+      const roleRaw = decodeCookie('ROLE');
+      const userIdRaw = Number(decodeCookie('USER_ID'));
       console.log(roleRaw);
       console.log(userIdRaw);
       setUserId(userIdRaw);
