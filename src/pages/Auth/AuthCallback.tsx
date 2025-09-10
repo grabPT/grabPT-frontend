@@ -18,8 +18,10 @@ export const AuthCallback = () => {
     (async () => {
       const roleRaw = decodeCookie('ROLE');
       const userIdRaw = Number(decodeCookie('USER_ID'));
+      console.log('지금 제대로 되는중임?');
       console.log(roleRaw);
       console.log(userIdRaw);
+      console.log('여기까지는 오나?');
       setUserId(userIdRaw);
 
       // 초기 알람 세팅
