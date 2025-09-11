@@ -134,18 +134,21 @@ export const privateInstance = axios.create({
   withCredentials: true,
 });
 
-// //요청 인터셉터로 토큰 자동 주입
-// privateInstance.interceptors.request.use(
-//   (request) => {
-//     const accessToken = localStorage.getItem('accessToken');
-//     if (accessToken) {
-//       request.headers['Authorization'] = `Bearer ${accessToken}`;
-//     }
-//     return request;
-//   },
-//   (error) => Promise.reject(error),
-// );
-
+//요청 인터셉터로 토큰 자동 주입
+const isDev = import.meta.env.DEV;
+if (isDev) {
+  privateInstance.interceptors.request.use(
+    (request) => {
+      request.withCredentials = false; //개발 환경에서는 withCredentials false
+      const accessToken = localStorage.getItem('accessToken');
+      if (accessToken) {
+        request.headers['Authorization'] = `Bearer ${accessToken}`;
+      }
+      return request;
+    },
+    (error) => Promise.reject(error),
+  );
+}
 // // 응답 인터셉터 - 401일 때 리프레쉬 토큰을 이용하여 액세스 토큰 재발급
 // privateInstance.interceptors.response.use(
 //   (response) => response, // 정상 응답은 그대로 반환
@@ -198,6 +201,19 @@ export const multipartInstance = axios.create({
   timeout: 10_000,
   withCredentials: true,
 });
+if (isDev) {
+  multipartInstance.interceptors.request.use(
+    (request) => {
+      request.withCredentials = false; //개발 환경에서는 withCredentials false
+      const accessToken = localStorage.getItem('accessToken');
+      if (accessToken) {
+        request.headers['Authorization'] = `Bearer ${accessToken}`;
+      }
+      return request;
+    },
+    (error) => Promise.reject(error),
+  );
+}
 
 // attachAuthInterceptors(publicInstance); // 임시: 어떤 인스턴스가 401을 받는지 확인용
 attachAuthInterceptors(privateInstance);

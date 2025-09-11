@@ -13,15 +13,25 @@ import { decodeCookie } from '@/utils/decodeCookie';
 export const AuthCallback = () => {
   const nav = useNavigate();
   const { setRole, setUserId } = useRoleStore();
-
   useEffect(() => {
     (async () => {
-      const roleRaw = decodeCookie('ROLE');
-      const userIdRaw = Number(decodeCookie('USER_ID'));
-      console.log('지금 제대로 되는중임?');
+      let roleRaw: string | null = null;
+      let userIdRaw: number | null = null;
+      const isDev = import.meta.env.DEV; //개발 환경일 경우 uri에서 파라미터로 role, userId, accessToken 받음
+      if (isDev) {
+        const params = new URLSearchParams(window.location.search);
+        roleRaw = params.get('role');
+        userIdRaw = Number(params.get('user_Id'));
+        const accessTokenRaw = params.get('access_token');
+        localStorage.setItem('accessToken', accessTokenRaw || '');
+      }
+      //배포 환경일 경우 기존대로 쿠키에서 role, userId, accessToken 받음
+      else {
+        roleRaw = decodeCookie('ROLE');
+        userIdRaw = Number(decodeCookie('USER_ID'));
+      }
       console.log(roleRaw);
       console.log(userIdRaw);
-      console.log('여기까지는 오나?');
       setUserId(userIdRaw);
 
       // // 초기 알람 세팅
