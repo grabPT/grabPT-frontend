@@ -203,9 +203,10 @@ const Login = () => {
                 <div className="flex items-center justify-center">
                   <LoginButton
                     color="google"
-                    onClick={() =>
-                      (window.location.href = 'https://www.grabpt.com/oauth2/authorization/google')
-                    }
+                    onClick={() => {
+                      console.log(import.meta.env.VITE_OAUTH_GOOGLE_URL);
+                      window.location.href = import.meta.env.VITE_OAUTH_GOOGLE_URL;
+                    }}
                   >
                     <div className="flex items-center gap-2">
                       <img
