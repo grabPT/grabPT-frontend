@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 
 import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
 import SignupBtn from '@/features/Signup/components/SignupBtn';
+import { useCheckEmail } from '@/features/Signup/hooks/useCheckEmail';
 import useSmsSend from '@/features/Signup/hooks/useSmsSend';
 import useSmsVerify from '@/features/Signup/hooks/useSmsVerify';
 import { userInfoSchema } from '@/features/Signup/schema/signupSchema';
@@ -46,6 +47,10 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
   console.log(errors);
   //폼 제출 로직(폼 확인 및 store에 값 업데이트)
   const onSubmit = (data: UserInfoFormValues) => {
+    if (EmailDuplicate !== false) {
+      alert('이메일 중복 확인을 해주세요.');
+      return;
+    }
     if (!VerifyNumberCheckResult) {
       alert('전화번호 인증을 완료해주세요.');
       return;
@@ -195,6 +200,26 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
       },
     );
   };
+  const { mutate: checkEmail } = useCheckEmail();
+  const [EmailDuplicate, setEmailDuplicate] = useState<boolean | null>(null);
+  //이메일 중복 확인
+  const handleEmailCheck = () => {
+    checkEmail(email, {
+      onSuccess: (res) => {
+        if (res.duplicate) {
+          setEmailDuplicate(false);
+        } else {
+          setEmailDuplicate(true);
+          alert(`해당 이메일이 다음으로 이미 가입되었습니다: ${res.oauthProvider}`);
+          window.location.href = '/login';
+        }
+      },
+      onError: (err) => {
+        setEmailDuplicate(true);
+        console.log('이메일 중복 확인 실패:', err);
+      },
+    });
+  };
 
   return (
     <div className="flex scale-60 flex-col items-center justify-center xl:scale-70 2xl:scale-80">
@@ -207,15 +232,27 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
           <div className="mx-[4.375rem] mt-16 flex flex-col gap-5">
             <div className="flex flex-col gap-1">
               <span className="font-semibold">이메일</span>
-
-              <input
-                type="text"
-                {...register('email')}
-                placeholder="이메일"
-                //이메일 같은 경우 카카오는 입력받아서 나머지는 받아온 이메일을 띄워줘야함 oauthprovider로 구분
-                className="rounded-[0.625rem] border border-[#BDBDBD] py-[0.8rem] pl-4 text-[#616161]"
-                readOnly={oauthProvider !== 'kakao'}
-              />
+              <div className="relative flex h-[3.125rem] w-[25.625rem] items-center justify-between rounded-[0.625rem] border border-[#BDBDBD]">
+                <input
+                  type="text"
+                  {...register('email')}
+                  placeholder="이메일"
+                  //이메일 같은 경우 카카오는 입력받아서 나머지는 받아온 이메일을 띄워줘야함 oauthprovider로 구분
+                  className="rounded-[0.625rem] border border-[#BDBDBD] py-[0.8rem] pl-4 text-[#616161]"
+                  readOnly={oauthProvider !== 'kakao'}
+                />
+                <button
+                  className="absolute top-1/2 right-4 flex h-7 w-[4.375rem] -translate-y-1/2 items-center justify-center rounded-[3.125rem] bg-[color:var(--color-button)] text-[0.625rem] font-semibold text-white hover:bg-[color:var(--color-button-hover)] active:bg-[color:var(--color-button-pressed)]"
+                  onClick={handleEmailCheck}
+                >
+                  이메일 중복 확인
+                </button>
+              </div>
+              <div className="mt-1 flex flex-col gap-2">
+                {EmailDuplicate !== null && EmailDuplicate && (
+                  <p className="mt-1 text-sm text-green-600">이메일 사용 가능</p>
+                )}
+              </div>
             </div>
             <div className="flex flex-col gap-1">
               <span className="font-semibold">주소</span>

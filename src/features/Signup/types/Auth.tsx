@@ -66,3 +66,8 @@ export type SmsSendRequestDto = {
 export type LogoutDto = {
   refreshToken: string;
 };
+
+export type EmailCheckResponseDto = {
+  duplicate: boolean;
+  oauthProvider: string | null;
+}
