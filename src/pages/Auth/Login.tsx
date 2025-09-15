@@ -54,9 +54,7 @@ const Login = () => {
                 <div className="flex items-center justify-center">
                   <LoginButton
                     color="kakao"
-                    onClick={() =>
-                      (window.location.href = import.meta.env.VITE_OAUTH_KAKAO_URL)
-                    }
+                    onClick={() => (window.location.href = import.meta.env.VITE_OAUTH_KAKAO_URL)}
                   >
                     <div className="flex items-center gap-2">
                       <img
@@ -71,9 +69,7 @@ const Login = () => {
                 <div className="flex items-center justify-center">
                   <LoginButton
                     color="naver"
-                    onClick={() =>
-                      (window.location.href = import.meta.env.VITE_OAUTH_NAVER_URL)
-                    }
+                    onClick={() => (window.location.href = import.meta.env.VITE_OAUTH_NAVER_URL)}
                   >
                     <div className="flex items-center gap-2">
                       <img
@@ -111,7 +107,8 @@ const Login = () => {
       {/* 밑에 주석 */}
       <div className="absolute bottom-8 left-8 text-xs font-light xl:text-sm 2xl:text-base 2xl:font-normal">
         <span className="text-gray-400">최초 로그인 시 이용약관과 </span>
-        <span className="text-[#93A2EB]">개인정보 취급방침,</span><br />
+        <span className="text-[#93A2EB]">개인정보 취급방침,</span>
+        <br />
         <span className="text-[#93A2EB]">위치기반서비스 이용약관</span>
         <span className="text-gray-400">에 동의하는 것으로 간주합니다.</span>
       </div>

@@ -70,4 +70,4 @@ export type LogoutDto = {
 export type EmailCheckResponseDto = {
   duplicate: boolean;
   oauthProvider: string | null;
-}
+};

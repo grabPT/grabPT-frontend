@@ -96,9 +96,11 @@ export const postReissue = async (): Promise<CommonResponseDto<void>> => {
   return data;
 };
 
-export const getEmailCheck = async (email: string): Promise<CommonResponseDto<EmailCheckResponseDto>> => {
+export const getEmailCheck = async (
+  email: string,
+): Promise<CommonResponseDto<EmailCheckResponseDto>> => {
   const { data } = await publicInstance.get(END_POINT.AUTH.EMAIL_CHECK, {
     params: { email },
   });
   return data;
-}
+};

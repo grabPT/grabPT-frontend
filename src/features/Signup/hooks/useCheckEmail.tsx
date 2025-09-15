@@ -1,6 +1,7 @@
-import { getEmailCheck } from "@/features/Signup/apis/auth";
-import type { EmailCheckResponseDto } from "@/features/Signup/types/Auth";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation } from '@tanstack/react-query';
+
+import { getEmailCheck } from '@/features/Signup/apis/auth';
+import type { EmailCheckResponseDto } from '@/features/Signup/types/Auth';
 
 export const useCheckEmail = () => {
   return useMutation<EmailCheckResponseDto, Error, string>({
