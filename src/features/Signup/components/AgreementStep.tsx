@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import { createPortal } from 'react-dom';
+
 import FrontBtn from '@/features/Signup/assets/FrontBtn.png';
 import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
 import AgreementModal from '@/features/Signup/components/AgreementModal';
@@ -163,9 +165,11 @@ const AgreementStep = ({ onNext }: AgreementStepProps) => {
           </div>
         </div>
         {/* 상세 설명 모달 */}
-        {isModalOpen !== null && (
-          <AgreementModal index={isModalOpen} onClose={() => setIsModalOpen(null)} />
-        )}
+        {isModalOpen !== null &&
+          createPortal(
+            <AgreementModal index={isModalOpen} onClose={() => setIsModalOpen(null)} />,
+            document.body,
+          )}
       </div>
     </div>
   );

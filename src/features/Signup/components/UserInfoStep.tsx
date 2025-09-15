@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { createPortal } from 'react-dom';
 import { useForm } from 'react-hook-form';
 
 import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
@@ -206,7 +207,7 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
   const handleEmailCheck = () => {
     checkEmail(email, {
       onSuccess: (res) => {
-        if (res.duplicate) {
+        if (!res.duplicate) {
           setEmailDuplicate(false);
         } else {
           setEmailDuplicate(true);
@@ -229,7 +230,7 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
       </div>
       <div className="mt-14 flex h-[42.25rem] w-[34.375rem] flex-col items-center rounded-[1.25rem] border border-white bg-white shadow-2xl">
         <div className="relative flex h-full w-full flex-col items-center">
-          <div className="mx-[4.375rem] mt-16 flex flex-col gap-5">
+          <div className="mx-[4.375rem] mt-12 flex flex-col gap-5">
             <div className="flex flex-col gap-1">
               <span className="font-semibold">이메일</span>
               <div className="relative flex h-[3.125rem] w-[25.625rem] items-center justify-between rounded-[0.625rem] border border-[#BDBDBD]">
@@ -238,21 +239,32 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
                   {...register('email')}
                   placeholder="이메일"
                   //이메일 같은 경우 카카오는 입력받아서 나머지는 받아온 이메일을 띄워줘야함 oauthprovider로 구분
-                  className="rounded-[0.625rem] border border-[#BDBDBD] py-[0.8rem] pl-4 text-[#616161]"
+                  className="w-full rounded-[0.625rem] py-[0.8rem] pl-4 text-[#616161]"
                   readOnly={oauthProvider !== 'kakao'}
                 />
                 <button
                   className="absolute top-1/2 right-4 flex h-7 w-[4.375rem] -translate-y-1/2 items-center justify-center rounded-[3.125rem] bg-[color:var(--color-button)] text-[0.625rem] font-semibold text-white hover:bg-[color:var(--color-button-hover)] active:bg-[color:var(--color-button-pressed)]"
                   onClick={handleEmailCheck}
                 >
-                  이메일 중복 확인
+                  중복확인
                 </button>
               </div>
-              <div className="mt-1 flex flex-col gap-2">
-                {EmailDuplicate !== null && EmailDuplicate && (
-                  <p className="mt-1 text-sm text-green-600">이메일 사용 가능</p>
-                )}
-              </div>
+
+              <p
+                className={`pt-1 text-sm ${
+                  EmailDuplicate === null
+                    ? 'text-transparent'
+                    : !EmailDuplicate
+                      ? 'text-green-600'
+                      : 'text-red-600'
+                }`}
+              >
+                {EmailDuplicate === null
+                  ? 'placeholder'
+                  : !EmailDuplicate
+                    ? '이메일 사용 가능'
+                    : '이미 사용 중'}
+              </p>
             </div>
             <div className="flex flex-col gap-1">
               <span className="font-semibold">주소</span>
@@ -263,7 +275,7 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
                     readOnly
                     placeholder="주소"
                     value={`${userInfo.address.city} ${userInfo.address.district}`}
-                    className="w-[18.25rem] py-[0.8rem] pl-4 text-[#616161]"
+                    className="w-full rounded-[0.625rem] py-[0.8rem] pl-4 text-[#616161]"
                   />
                   <button
                     className="absolute top-1/2 right-4 flex h-7 w-[4.375rem] -translate-y-1/2 items-center justify-center rounded-[3.125rem] bg-[color:var(--color-button)] text-[0.625rem] font-semibold text-white hover:bg-[color:var(--color-button-hover)] active:bg-[color:var(--color-button-pressed)]"
@@ -358,30 +370,32 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
               </div>
             </div>
           </div>
-          {getUserErrorMessage() && (
-            <div className="my-4 h-[20px] text-center text-red-500">{getUserErrorMessage()}</div>
-          )}
           <div className="absolute bottom-12 left-1/2 w-[25.5625rem] -translate-x-1/2 transform">
+            {getUserErrorMessage() && (
+              <div className="mb-4 h-[20px] text-center text-red-500">{getUserErrorMessage()}</div>
+            )}
             <SignupBtn type="button" onClick={handleSubmit(onSubmit)}>
               다음
             </SignupBtn>
           </div>
         </div>
-        {postModalOpen && (
-          <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/20"
-            onClick={() => setPostModalOpen(false)}
-            role="dialog"
-            aria-modal="true"
-          >
-            <div className="relative p-8" onClick={(e) => e.stopPropagation()}>
-              <div
-                id="daum-postcode"
-                className="flex h-[600px] w-[600px] items-center justify-center rounded-[0.625rem] bg-white shadow-lg"
-              />
-            </div>
-          </div>
-        )}
+        {postModalOpen &&
+          createPortal(
+            <div
+              className="fixed inset-0 z-50 flex items-center justify-center bg-black/20"
+              onClick={() => setPostModalOpen(false)}
+              role="dialog"
+              aria-modal="true"
+            >
+              <div className="relative p-8" onClick={(e) => e.stopPropagation()}>
+                <div
+                  id="daum-postcode"
+                  className="flex h-[600px] w-[600px] items-center justify-center rounded-[0.625rem] bg-white shadow-lg"
+                />
+              </div>
+            </div>,
+            document.body,
+          )}
       </div>
     </div>
   );
