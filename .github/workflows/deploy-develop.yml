@@ -25,3 +25,4 @@ jobs:
           user-email: ${{ secrets.EMAIL }}
           commit-message: "[develop] ${{ github.sha }}"
           target-branch: develop
+          create-target-branch-if-needed: true
