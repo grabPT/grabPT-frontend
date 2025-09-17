@@ -23,6 +23,6 @@ jobs:
           destination-github-username: ssumai-kr
           destination-repository-name: grabPT-frontend
           user-email: ${{ secrets.EMAIL }}
-          commit-message: "[develop] ${{ github.sha }}"
+          commit-message: '[develop] ${{ github.sha }}'
           target-branch: develop
           create-target-branch-if-needed: true

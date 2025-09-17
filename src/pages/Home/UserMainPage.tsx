@@ -12,6 +12,8 @@ import { useRoleStore } from '@/store/useRoleStore';
 import type { SportsSlugType } from '@/types/SportsType';
 
 const UserMainPage = () => {
+  console.log('devleop테스트입니다.');
+
   const { isLoggedIn, role } = useRoleStore();
   const { data: requests } = useGetMyRequestsList({ page: 1, size: 40 }, isLoggedIn);
   // 랜덤 선택 함수
