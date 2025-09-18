@@ -8,9 +8,7 @@ import LoadingMuscle from '@/components/LoadingMuscle';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { ROLES } from '@/constants/roles';
 import ROUTES from '@/constants/routes';
-import { useGetUnreadCount } from '@/hooks/useGetUnreadCount';
 import { getAlarmList } from '@/layout/apis/alarm';
-import { useGetAlarmList } from '@/layout/hooks/useAlarm';
 import { useAlarmStore } from '@/store/useAlarmStore';
 import { useRoleStore } from '@/store/useRoleStore';
 import { useUnreadStore } from '@/store/useUnreadStore';
@@ -23,13 +21,9 @@ export const AuthCallback = () => {
   const setAlarmCount = useAlarmStore((state) => state.setAlarmCount);
   const setUnReadCount = useUnreadStore((state) => state.setUnReadCount);
 
-  // 2. 훅을 컴포넌트 최상단에서 호출합니다.
-  // enabled: false 옵션으로, 컴포넌트가 렌더링될 때 자동으로 API가 호출되는 것을 막습니다.
-  const { refetch: refetchAlarmList } = useGetAlarmList();
-  const { refetch: refetchUnreadCount } = useGetUnreadCount();
-
   useEffect(() => {
     const processAuthAndFetch = async () => {
+      // 1. 개발환경 분류해서 유저 분류
       const params = new URLSearchParams(window.location.search);
       const isDev = import.meta.env.DEV;
       let roleRaw: string | null = null;
@@ -49,11 +43,10 @@ export const AuthCallback = () => {
       setRole(role);
       setUserId(userIdRaw);
 
-      // 3. fetchQuery를 사용하여 데이터를 가져옵니다.
+      // 2. fetchQuery를 사용하여 데이터를 가져옵니다.
       try {
         const [alarmResponse, unreadResponse] = await Promise.all([
           // fetchQuery는 queryKey와 queryFn을 인자로 받습니다.
-          // useGetAlarmList 훅을 수정할 필요 없이, 해당 훅이 사용하는 queryKey와 queryFn을 그대로 사용합니다.
           queryClient.fetchQuery({
             queryKey: QUERY_KEYS.alarm,
             queryFn: getAlarmList,
@@ -64,7 +57,6 @@ export const AuthCallback = () => {
           }),
         ]);
 
-        // fetchQuery는 API 응답 전체를 반환하므로, 직접 데이터를 추출합니다.
         setAlarmCount(alarmResponse.result.length);
         setUnReadCount(unreadResponse.result);
       } catch (error) {
@@ -74,7 +66,7 @@ export const AuthCallback = () => {
         setUnReadCount(0);
       }
 
-      // 5. 홈으로 이동
+      // 3. 리다이렉트
       if (role === ROLES.EXPERT) {
         navigate(ROUTES.HOME.EXPERT);
       } else {
@@ -83,16 +75,7 @@ export const AuthCallback = () => {
     };
 
     processAuthAndFetch();
-  }, [
-    navigate,
-    setRole,
-    setUserId,
-    refetchAlarmList,
-    refetchUnreadCount,
-    setAlarmCount,
-    setUnReadCount,
-    queryClient,
-  ]);
+  }, [navigate, setRole, setUserId, setAlarmCount, setUnReadCount, queryClient]);
 
   return <LoadingMuscle />;
 };
