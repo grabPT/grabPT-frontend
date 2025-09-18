@@ -1,79 +1,98 @@
 import { useEffect } from 'react';
 
+import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 import { getUnreadCount } from '@/apis/getUnreadCount';
 import LoadingMuscle from '@/components/LoadingMuscle';
+import { QUERY_KEYS } from '@/constants/queryKeys';
+import { ROLES } from '@/constants/roles';
+import ROUTES from '@/constants/routes';
+import { useGetUnreadCount } from '@/hooks/useGetUnreadCount';
 import { getAlarmList } from '@/layout/apis/alarm';
+import { useGetAlarmList } from '@/layout/hooks/useAlarm';
 import { useAlarmStore } from '@/store/useAlarmStore';
 import { useRoleStore } from '@/store/useRoleStore';
 import { useUnreadStore } from '@/store/useUnreadStore';
 import { decodeCookie } from '@/utils/decodeCookie';
 
 export const AuthCallback = () => {
-  const nav = useNavigate();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { setRole, setUserId } = useRoleStore();
+  const setAlarmCount = useAlarmStore((state) => state.setAlarmCount);
+  const setUnReadCount = useUnreadStore((state) => state.setUnReadCount);
+
+  // 2. 훅을 컴포넌트 최상단에서 호출합니다.
+  // enabled: false 옵션으로, 컴포넌트가 렌더링될 때 자동으로 API가 호출되는 것을 막습니다.
+  const { refetch: refetchAlarmList } = useGetAlarmList();
+  const { refetch: refetchUnreadCount } = useGetUnreadCount();
+
   useEffect(() => {
-    (async () => {
+    const processAuthAndFetch = async () => {
+      const params = new URLSearchParams(window.location.search);
+      const isDev = import.meta.env.DEV;
       let roleRaw: string | null = null;
       let userIdRaw: number | null = null;
-      const isDev = import.meta.env.DEV; //개발 환경일 경우 uri에서 파라미터로 role, userId, accessToken 받음
+
       if (isDev) {
-        const params = new URLSearchParams(window.location.search);
         roleRaw = params.get('role');
-        userIdRaw = Number(params.get('user_Id'));
+        userIdRaw = Number(params.get('user_id'));
         const accessTokenRaw = params.get('access_token');
         localStorage.setItem('accessToken', accessTokenRaw || '');
-      }
-      //배포 환경일 경우 기존대로 쿠키에서 role, userId, accessToken 받음
-      else {
+      } else {
         roleRaw = decodeCookie('ROLE');
         userIdRaw = Number(decodeCookie('USER_ID'));
       }
-      console.log(roleRaw);
-      console.log(userIdRaw);
+
+      const role = roleRaw === ROLES.EXPERT || roleRaw === ROLES.USER ? roleRaw : ROLES.GUEST;
+      setRole(role);
       setUserId(userIdRaw);
 
-      // // 초기 알람 세팅
-      // const initialAlarm = await getAlarmList();
-      // useAlarmStore.getState().setAlarmCount(initialAlarm.result.length);
-
-      // // 초기 안읽은 메시지 세팅
-      // const initial = await getUnreadCount();
-      // useUnreadStore.getState().setUnReadCount(initial.result);
-      // console.log(`현재unreadCount : ${initial.result}`);
-
-      // 초기 알람 세팅
+      // 3. fetchQuery를 사용하여 데이터를 가져옵니다.
       try {
-        const initialAlarm = await getAlarmList();
-        useAlarmStore.getState().setAlarmCount(initialAlarm.result.length);
+        const [alarmResponse, unreadResponse] = await Promise.all([
+          // fetchQuery는 queryKey와 queryFn을 인자로 받습니다.
+          // useGetAlarmList 훅을 수정할 필요 없이, 해당 훅이 사용하는 queryKey와 queryFn을 그대로 사용합니다.
+          queryClient.fetchQuery({
+            queryKey: QUERY_KEYS.alarm,
+            queryFn: getAlarmList,
+          }),
+          queryClient.fetchQuery({
+            queryKey: QUERY_KEYS.unreadCount,
+            queryFn: getUnreadCount,
+          }),
+        ]);
+
+        // fetchQuery는 API 응답 전체를 반환하므로, 직접 데이터를 추출합니다.
+        setAlarmCount(alarmResponse.result.length);
+        setUnReadCount(unreadResponse.result);
       } catch (error) {
-        console.error('알람 데이터 로딩 실패:', error);
-        useAlarmStore.getState().setAlarmCount(0);
+        // fetchQuery는 실패 시 Promise를 reject하므로 try...catch로 에러를 잡을 수 있습니다.
+        console.error('초기 데이터 로딩 실패:', error);
+        setAlarmCount(0);
+        setUnReadCount(0);
       }
 
-      // 초기 안읽은 메시지 세팅
-      try {
-        const initial = await getUnreadCount();
-        useUnreadStore.getState().setUnReadCount(initial.result);
-        console.log(`현재unreadCount : ${initial.result}`);
-      } catch (error) {
-        console.error('읽지 않은 메시지 데이터 로딩 실패:', error);
-        useUnreadStore.getState().setUnReadCount(0);
-        console.log('현재unreadCount : 0 (기본값)');
-      }
-      if (roleRaw === 'EXPERT') {
-        setRole('EXPERT');
-        nav('/expert', { replace: true });
-      } else if (roleRaw === 'USER') {
-        setRole('USER');
-        nav('/', { replace: true });
+      // 5. 홈으로 이동
+      if (role === ROLES.EXPERT) {
+        navigate(ROUTES.HOME.EXPERT);
       } else {
-        setRole('GUEST');
-        nav('/', { replace: true });
+        navigate(ROUTES.HOME.ROOT);
       }
-    })();
-  }, [nav, setRole, setUserId]);
+    };
+
+    processAuthAndFetch();
+  }, [
+    navigate,
+    setRole,
+    setUserId,
+    refetchAlarmList,
+    refetchUnreadCount,
+    setAlarmCount,
+    setUnReadCount,
+    queryClient,
+  ]);
 
   return <LoadingMuscle />;
 };

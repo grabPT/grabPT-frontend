@@ -1,9 +1,7 @@
 const ROUTES = {
   HOME: {
     ROOT: '/',
-    USER: '/user',
     EXPERT: '/expert',
-    GUEST: '/guest',
   },
 
   AUTH: {
