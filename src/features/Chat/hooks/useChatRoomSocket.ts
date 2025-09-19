@@ -95,5 +95,6 @@ export function useChatRoomSocket<T = unknown>(
     publish(`/publish/chat/${roomId}`, body, headers);
   };
 
+  //connected상태와 sendMessage 함수를 리턴
   return { connected, sendMessage };
 }
