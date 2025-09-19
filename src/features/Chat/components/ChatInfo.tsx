@@ -8,6 +8,7 @@ import { useGetMessagesInfinite } from '@/features/Chat/hooks/useGetMessages';
 import { usePostReadWhenEnter } from '@/features/Chat/hooks/usePostReadWhenEnter';
 import { usePostReadWhenExist } from '@/features/Chat/hooks/usePostReadWhenExist';
 import type { messageType } from '@/features/Chat/types/getMessagesType';
+import { isDifferentDay } from '@/features/Chat/utils/isDifferentDay';
 import { upsertIncomingMessage } from '@/utils/castCache';
 import { onErrorImage } from '@/utils/onErrorImage';
 
@@ -18,27 +19,24 @@ interface ChatInfoProps {
 }
 
 export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
-  // ─────────────────────────────────────────────────────────────
   // 1) 기본 세팅: QueryClient, 최초 입장 시 읽음 처리
-  // ─────────────────────────────────────────────────────────────
   const queryClient = useQueryClient();
 
   const { mutate: readWhenEnter } = usePostReadWhenEnter(roomId);
+  const { mutate: readWhenExist } = usePostReadWhenExist(roomId);
 
   useEffect(() => {
     if (!roomId) return;
     readWhenEnter(roomId);
   }, [roomId, readWhenEnter]);
 
-  const { mutate: readWhenExist } = usePostReadWhenExist(roomId);
-
-  // ─────────────────────────────────────────────────────────────
   // 2) 소켓 핸들러: 메시지 수신, 읽음상태 수신
-  // ─────────────────────────────────────────────────────────────
   const onMessage = (message: messageType) => {
     // 캐시에 새 메시지 반영 (리렌더 후 scroll은 아래 effect에서 처리)
     upsertIncomingMessage(queryClient, roomId, message);
+    // 메시지업데이트마다 사이드바 방리스트 다시받아오기
     queryClient.invalidateQueries({ queryKey: ['chatList'], refetchType: 'active' });
+    // 방 읽음처리
     readWhenExist(roomId);
   };
 
@@ -78,72 +76,63 @@ export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
     { enableMessage: true, enableReadStatus: true },
   );
 
-  // ─────────────────────────────────────────────────────────────
   // 3) 데이터 패칭: 무한 스크롤 메시지
-  // ─────────────────────────────────────────────────────────────
-  const { data, fetchNextPage, isFetchingNextPage, isLoading } = useGetMessagesInfinite({ roomId });
+  const {
+    data: messages,
+    fetchNextPage,
+    isFetchingNextPage,
+    isLoading,
+    isError,
+  } = useGetMessagesInfinite({
+    roomId,
+  });
 
-  // ─────────────────────────────────────────────────────────────
   // 4) 스크롤/센티널 레퍼런스 및 상태
-  // ─────────────────────────────────────────────────────────────
   const scrollRef = useRef<HTMLDivElement>(null);
   const topSentinelRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const lastRequestedCursorRef = useRef<number | null>(null);
-  const [didInitialScroll, setDidInitialScroll] = useState(false);
+  const [didInitialScroll, setDidInitialScroll] = useState<boolean>(false);
 
-  // ─────────────────────────────────────────────────────────────
   // 5) 렌더용 메시지 가공
   //    - pages[0]가 최신 페이지
   //    - 각 페이지는 reverse 후, 오래된 페이지부터 앞으로 push → 최종 최신이 하단
-  // ─────────────────────────────────────────────────────────────
   const totalMessages: messageType[] = useMemo(() => {
-    const pages = data?.pages ?? [];
-    if (!pages.length) return [];
-    const out: messageType[] = [];
+    const pages = messages?.pages ?? [];
+    if (pages.length === 0) return [];
+    const reversedMessages: messageType[] = [];
+    //거꾸로 집어넣기~
     for (let i = pages.length - 1; i >= 0; i--) {
       const arr = pages[i].messages ?? [];
       const reversed = arr.length > 1 ? [...arr].reverse() : arr;
-      out.push(...reversed);
+      reversedMessages.push(...reversed);
     }
-    return out;
-  }, [data]);
+    return reversedMessages;
+  }, [messages]);
 
   // 다음 페이지 커서 (없으면 null)
   const nextCursor = useMemo(() => {
-    const pages = data?.pages ?? [];
-    if (!pages.length) return null;
+    const pages = messages?.pages ?? [];
+    if (pages.length === 0) return null;
     const last = pages[pages.length - 1];
     const c = last?.cursor;
     return c === 0 || c == null ? null : c;
-  }, [data]);
+  }, [messages]);
 
-  // ─────────────────────────────────────────────────────────────
-  // 6) 날짜 구분 렌더링 보조 함수
-  // ─────────────────────────────────────────────────────────────
-  const isDifferentDay = (prev: Date | null, curr: Date) => {
-    if (!prev) return true;
-    return (
-      prev.getFullYear() !== curr.getFullYear() ||
-      prev.getMonth() !== curr.getMonth() ||
-      prev.getDate() !== curr.getDate()
-    );
-  };
-
-  // ─────────────────────────────────────────────────────────────
-  // 7) 최초 로딩 완료 시 하단으로 스크롤
-  // ─────────────────────────────────────────────────────────────
+  // 6) 최초 로딩 완료 시 하단으로 스크롤
   useEffect(() => {
-    if (!isLoading && !isFetchingNextPage && totalMessages.length && !didInitialScroll) {
-      bottomRef.current?.scrollIntoView({ block: 'end' });
+    if (!isLoading && !isFetchingNextPage && totalMessages.length > 0 && !didInitialScroll) {
+      const scrollContainer = scrollRef.current;
+      if (scrollContainer) {
+        // scrollIntoView 대신 scrollTop을 직접 조작 => scrollIntoView사용시 맨 밑에가 애매하게 남음 ㅇㅇ 바꾸니까 잘 내려감
+        scrollContainer.scrollTop = scrollContainer.scrollHeight;
+      }
       setDidInitialScroll(true);
     }
   }, [isLoading, isFetchingNextPage, totalMessages.length, didInitialScroll]);
 
-  // ─────────────────────────────────────────────────────────────
-  // 8) 신규 메시지 도착 시 하단 스크롤 (사용자가 바닥 근처일 때만)
-  // ─────────────────────────────────────────────────────────────
+  // 7) 신규 메시지 도착 시 하단 스크롤 (사용자가 바닥 근처일 때만)
   const isNearBottom = () => {
     const el = scrollRef.current;
     if (!el) return true;
@@ -160,17 +149,15 @@ export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
     if (!latestMessageId) return;
     if (!isNearBottom()) return; // 위쪽을 보는 중이면 자동 스크롤 방지
 
-    // 리렌더→레이아웃 적용 이후 프레임에 실행
-    requestAnimationFrame(() => {
+    const scrollContainer = scrollRef.current;
+    if (scrollContainer) {
       requestAnimationFrame(() => {
-        bottomRef.current?.scrollIntoView({ block: 'end' });
+        scrollContainer.scrollTop = scrollContainer.scrollHeight;
       });
-    });
+    }
   }, [latestMessageId]);
 
-  // ─────────────────────────────────────────────────────────────
-  // 9) 상단 센티널: 과거 페이지 추가 로드 & 스크롤 점프 방지
-  // ─────────────────────────────────────────────────────────────
+  // 8) 상단 센티널: 과거 페이지 추가 로드 & 스크롤 점프 방지
   useEffect(() => {
     const root = scrollRef.current;
     const target = topSentinelRef.current;
@@ -205,17 +192,13 @@ export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
     return () => observer.disconnect();
   }, [fetchNextPage, nextCursor, isFetchingNextPage]);
 
-  // ─────────────────────────────────────────────────────────────
-  // 10) 방 변경 시 스크롤 상태 리셋 (데이터는 캐시로 즉시 렌더)
-  // ─────────────────────────────────────────────────────────────
+  // 9) 방 변경 시 스크롤 상태 리셋 (데이터는 캐시로 즉시 렌더)
   useEffect(() => {
     lastRequestedCursorRef.current = null;
     setDidInitialScroll(false);
   }, [roomId]);
 
-  // ─────────────────────────────────────────────────────────────
-  // 11) 렌더
-  // ─────────────────────────────────────────────────────────────
+  // 10) 렌더
   return (
     <div className="flex h-full flex-col pb-40">
       {/* 상단 헤더 */}
@@ -236,6 +219,11 @@ export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
 
         {isFetchingNextPage && (
           <div className="py-2 text-center text-sm text-gray-500">이전 메시지 불러오는 중…</div>
+        )}
+        {isError && (
+          <div className="flex h-full w-full items-center justify-center">
+            <h1 className="text-red-500">메시지를 불러오지 못했습니다.</h1>
+          </div>
         )}
 
         {totalMessages.map((message, index) => {
