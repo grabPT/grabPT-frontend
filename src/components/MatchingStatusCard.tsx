@@ -14,16 +14,16 @@ const MatchingStatusCard = ({ match }: MatchingStatusCardProps) => {
   return (
     <div className="flex h-[48px] w-full items-center justify-between">
       <UserRequestHeader
-        nickName={match.nickname}
+        nickName={match.userNickname}
         profileImg={match.profileImageUrl || undefined}
-        location={match.region}
+        location={match.requestLocation}
       />
       <div className="flex">
         {/* 오른쪽: 횟수 | 가격 ● */}
         <div className="flex items-center">
           {/* 횟수 + 구분선 + 가격 */}
           <p className="font-pretendard w-[94px] text-right text-[11px] leading-[15.4px] font-medium">
-            {match.sessionCount}회&nbsp;|&nbsp;{match.totalPrice.toLocaleString()}원
+            {match.requestSessionCount}회&nbsp;|&nbsp;{match.requestPrice.toLocaleString()}원
           </p>
         </div>
         {/* 상태 점 */}
