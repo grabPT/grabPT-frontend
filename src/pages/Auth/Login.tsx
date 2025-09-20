@@ -9,8 +9,6 @@ import LoginButton from '@/features/Login/components/LoginButton';
 import BackBtn from '@/features/Signup/assets/BackBtn.svg';
 import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
 
-export type UserType = 'normal' | 'expert';
-
 const Login = () => {
   const navigate = useNavigate();
   const navigateToBack = () => navigate(-1);

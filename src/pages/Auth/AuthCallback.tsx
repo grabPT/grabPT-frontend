@@ -12,6 +12,7 @@ import { getAlarmList } from '@/layout/apis/alarm';
 import { useAlarmStore } from '@/store/useAlarmStore';
 import { useRoleStore } from '@/store/useRoleStore';
 import { useUnreadStore } from '@/store/useUnreadStore';
+import { decodeBase64Utf8 } from '@/utils/decodeBaseUtf8';
 import { decodeCookie } from '@/utils/decodeCookie';
 
 export const AuthCallback = () => {
@@ -25,14 +26,14 @@ export const AuthCallback = () => {
     const processAuthAndFetch = async () => {
       // 1. 개발환경 분류해서 유저 분류
       const params = new URLSearchParams(window.location.search);
-      const isDev = import.meta.env.DEV;
+      const stage = import.meta.env.VITE_STAGE;
       let roleRaw: string | null = null;
       let userIdRaw: number | null = null;
-
-      if (isDev) {
-        roleRaw = params.get('role');
-        userIdRaw = Number(params.get('user_id'));
-        const accessTokenRaw = params.get('access_token');
+      //로컬 서버, 개발 서버는 파라미터로 받고 실제 배포 서버는 쿠키로 받음
+      if (stage == 'development' || stage == 'staging') {
+        roleRaw = decodeBase64Utf8(params.get('role'));
+        userIdRaw = Number(decodeBase64Utf8(params.get('user_id')));
+        const accessTokenRaw = decodeBase64Utf8(params.get('access_token'));
         localStorage.setItem('accessToken', accessTokenRaw || '');
       } else {
         roleRaw = decodeCookie('ROLE');

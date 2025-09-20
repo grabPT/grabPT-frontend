@@ -1,5 +1,5 @@
 import type {
-  RequestDetailPageResponse,
+  RequestDetailPageResponseDto,
   RequestRequestDto,
   RequestResponseDto,
 } from '@/features/Request/types/Request';
@@ -17,7 +17,7 @@ export const postRequest = async (
 
 export const getDetailRequest = async (
   requestionId: number,
-): Promise<CommonResponseDto<RequestDetailPageResponse>> => {
+): Promise<CommonResponseDto<RequestDetailPageResponseDto>> => {
   const { data } = await privateInstance.get(`/api/requestion/${requestionId}`);
   console.log('받은 데이터', data);
   return data;
