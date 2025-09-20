@@ -12,6 +12,7 @@ import { getAlarmList } from '@/layout/apis/alarm';
 import { useAlarmStore } from '@/store/useAlarmStore';
 import { useRoleStore } from '@/store/useRoleStore';
 import { useUnreadStore } from '@/store/useUnreadStore';
+import { decodeBase64Utf8 } from '@/utils/decodeBaseUtf8';
 import { decodeCookie } from '@/utils/decodeCookie';
 
 export const AuthCallback = () => {
@@ -30,9 +31,9 @@ export const AuthCallback = () => {
       let userIdRaw: number | null = null;
       //로컬 서버, 개발 서버는 파라미터로 받고 실제 배포 서버는 쿠키로 받음
       if (stage == 'development' || stage == 'staging') {
-        roleRaw = params.get('role');
-        userIdRaw = Number(params.get('user_id'));
-        const accessTokenRaw = params.get('access_token');
+        roleRaw = decodeBase64Utf8(params.get('role'));
+        userIdRaw = Number(decodeBase64Utf8(params.get('user_id')));
+        const accessTokenRaw = decodeBase64Utf8(params.get('access_token'));
         localStorage.setItem('accessToken', accessTokenRaw || '');
       } else {
         roleRaw = decodeCookie('ROLE');
