@@ -6,7 +6,7 @@ import Box from '@/components/Box';
 import ROUTES from '@/constants/routes';
 import { useLogout } from '@/features/Signup/hooks/useLogout';
 import { useRoleStore } from '@/store/useRoleStore';
-import { decodeCookie } from '@/utils/decodeCookie';
+import { decodeBase64Utf8 } from '@/utils/decodeBaseUtf8';
 
 type Item = {
   label: string;
@@ -30,7 +30,14 @@ function ProfileDropdown() {
   const { role } = useRoleStore();
   const isExpert = role === 'EXPERT';
   const { mutate: logout } = useLogout();
-  const refreshToken = decodeCookie('refreshToken');
+  const stage = import.meta.env.VITE_STAGE;
+  let refreshToken: string;
+  if (stage == 'development' || stage == 'staging') {
+    refreshToken = decodeBase64Utf8(localStorage.get('refreshToken'));
+  } else {
+    const match = document.cookie.split('; ').find((row) => row.startsWith('REFRESH_TOKEN' + '='));
+    refreshToken = match ? match.split('=')[1] : '';
+  }
   const navigateToMyInfo = useCallback(() => {
     if (isExpert) navigate(ROUTES.MYPAGE.EXPERT);
     else navigate(ROUTES.MYPAGE.USER);
