@@ -50,6 +50,7 @@ function ProfileDropdown() {
 
   /* isExpert 변동 시에만 재계산 */
   const handleLogout = useCallback(() => {
+    alert(`로그아웃:${refreshToken}`);
     logout({ refreshToken });
   }, [logout, refreshToken]);
 
