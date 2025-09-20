@@ -17,7 +17,7 @@ const ServiceInformationForm = ({
   onChangeStartDate,
   onChangeContractDate,
 }: ServiceInformationFormProps) => {
-  const totalPrice = (data?.price || 0) * (data?.totalSession || 0);
+  const totalPrice = (data?.contractPrice || 0) * (data?.contractSessionCount || 0);
 
   return (
     <div className="grid grid-cols-[auto_1fr_auto_1fr] gap-x-4 gap-y-4 text-sm">
@@ -25,7 +25,7 @@ const ServiceInformationForm = ({
       <label className="self-center">총 회차</label>
       <input
         type="text"
-        placeholder={`${data?.totalSession ?? ''}회`}
+        placeholder={`${data?.contractSessionCount ?? ''}회`}
         disabled
         className="h-10 w-full rounded-md border border-gray-300 bg-gray-200 px-3 text-gray-700"
       />
@@ -34,7 +34,7 @@ const ServiceInformationForm = ({
       <label className="self-center">회당 금액</label>
       <input
         type="text"
-        placeholder={`${data?.price ?? ''}원`}
+        placeholder={`${data?.contractPrice ?? ''}원`}
         disabled
         className="h-10 w-full rounded-md border border-gray-300 bg-gray-200 px-3 text-gray-700"
       />

@@ -1,0 +1,28 @@
+name: Deploy develop branch to Vercel Preview
+
+on:
+  push:
+    branches: [develop]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: pandoc/latex
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install mustache
+        run: apk add ruby && gem install mustache
+      - name: Build output
+        run: sh ./build.sh
+      - name: Push to grabPT-frontend:develop
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.AUTO_ACTIONS }}
+        with:
+          source-directory: 'output'
+          destination-github-username: ssumai-kr
+          destination-repository-name: grabPT-frontend
+          user-email: ${{ secrets.EMAIL }}
+          commit-message: '[develop] ${{ github.sha }}'
+          target-branch: develop
+          create-target-branch-if-needed: true

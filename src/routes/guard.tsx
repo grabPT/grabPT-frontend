@@ -1,6 +1,7 @@
 // routes/guards.tsx
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
+import ROUTES from '@/constants/routes';
 import { useRoleStore } from '@/store/useRoleStore';
 import type { Role } from '@/types/Role';
 
@@ -19,9 +20,9 @@ export function Guard({ allow }: { allow?: Role[]; guestOnly?: boolean }) {
       }
       // 로그인된 다른 역할이지만 권한 불일치
       if (role === 'EXPERT') {
-        return <Navigate to="/expert" replace />;
+        return <Navigate to={ROUTES.HOME.EXPERT} replace />;
       }
-      return <Navigate to="/" replace />;
+      return <Navigate to={ROUTES.HOME.ROOT} replace />;
     }
   }
   return <Outlet />;

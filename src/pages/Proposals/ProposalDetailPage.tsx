@@ -15,13 +15,13 @@ const ProposalDetailPage = () => {
 
   const { data: suggestion, error, isError, isLoading } = useGetProposalDetail(suggestionId);
 
-  const navigateToExpertProfile = () => navigate(urlFor.expertDetail(suggestion?.expertId));
+  const navigateToExpertProfile = () => navigate(urlFor.expertDetail(suggestion?.suggestExpertId));
 
   const 채팅상담 = () => {
     if (!suggestion) return;
-    postCreateChatRoom({ userId: suggestion.userId, proId: suggestion.expertId });
+    postCreateChatRoom({ userId: suggestion.suggestUserId, proId: suggestion.suggestExpertId });
     navigate(ROUTES.CHAT.ROOT, {
-      state: { proId: suggestion.expertId },
+      state: { proId: suggestion.suggestExpertId },
     });
   };
 
@@ -30,7 +30,7 @@ const ProposalDetailPage = () => {
   const 매칭수락 = async () => {
     if (!suggestion) return;
     const res = await matchAsync({
-      requestionId: Number(suggestion.requestionId),
+      requestionId: Number(suggestion.suggestRequestionId),
       suggestionId,
     });
 
@@ -41,7 +41,6 @@ const ProposalDetailPage = () => {
     }
   };
 
-  // ✅ 로딩 처리
   if (isLoading) {
     return (
       <section className="my-10 flex flex-col items-center">
@@ -50,7 +49,6 @@ const ProposalDetailPage = () => {
     );
   }
 
-  // ✅ 에러 처리
   if (isError && error) {
     const status = (error as any)?.response?.status ?? (error as any)?.status;
     const isNotFoundError =
@@ -75,8 +73,10 @@ const ProposalDetailPage = () => {
           alt="트레이너 프로필"
           className="h-[300px] w-[300px] rounded-full object-cover"
         />
-        <span className="mt-5 text-4xl font-bold text-[#21272A]">{suggestion?.nickname}</span>
-        <span className="text-button text-sm font-semibold">{suggestion?.center}</span>
+        <span className="mt-5 text-4xl font-bold text-[#21272A]">
+          {suggestion?.suggestUserNickname}
+        </span>
+        <span className="text-button text-sm font-semibold">{suggestion?.suggestCenter}</span>
       </div>
 
       <div className="mt-12 flex w-full justify-end gap-4">
@@ -102,16 +102,16 @@ const ProposalDetailPage = () => {
             <span className="mr-5">회</span>
             <input
               type="number"
-              value={suggestion?.suggestedPrice}
+              value={suggestion?.suggestSuggestedPrice}
               aria-label="제안 PT 가격"
               readOnly
               className="mr-1.5 h-12 w-[260px] rounded-xl border-2 border-[#BABABA] px-8 text-end text-2xl text-[#9F9F9F]"
             />
             <span className="mr-5">원</span>
 
-            {suggestion?.isDiscounted && (
+            {suggestion?.suggestIsDiscounted && (
               <p className="absolute top-full right-0 mt-1 mr-5 text-sm font-extrabold text-[#FF0000]">
-                - {suggestion.discountAmount}원
+                - {suggestion.suggestDiscountAmount}원
               </p>
             )}
           </div>
@@ -121,20 +121,20 @@ const ProposalDetailPage = () => {
           <span>
             제안 <span className="text-button">상세 설명</span>
           </span>
-          <p className="mt-2 text-xl font-medium">{suggestion?.message}</p>
+          <p className="mt-2 text-xl font-medium">{suggestion?.suggestMessage}</p>
         </div>
 
         <div>
           <span>
             상세 <span className="text-button">위치</span>
           </span>
-          <p className="mt-2 text-xl font-medium">{suggestion?.location}</p>
+          <p className="mt-2 text-xl font-medium">{suggestion?.suggestLocation}</p>
         </div>
 
         <div className="w-full">
           <span className="text-button">사진</span>
           <div className="mt-5 grid w-full grid-cols-5 gap-5">
-            {suggestion?.photoUrls.map((imageUrl, idx) => (
+            {suggestion?.photos.map((imageUrl, idx) => (
               <img
                 key={idx}
                 src={imageUrl}

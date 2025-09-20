@@ -35,6 +35,7 @@ export const QUERY_KEYS = {
     messages: (params: getMessagesRequestDto) => ['messages', params.roomId, params.cursor],
   },
   alarm: ['alarm'],
+  unreadCount: ['unreadCount'],
   matcingRequestsList: (params: getRequestsListRequestDto) => [
     'matchingreqeustsList',
     params.sortBy,

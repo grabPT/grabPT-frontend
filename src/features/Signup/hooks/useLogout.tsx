@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
+import ROUTES from '@/constants/routes';
 import { postLogout } from '@/features/Signup/apis/auth';
 import type { LogoutDto } from '@/features/Signup/types/Auth';
 import { useRoleStore } from '@/store/useRoleStore';
@@ -16,9 +17,9 @@ export const useLogout = () => {
       resetAuth();
       //microTask를 통해 role을 먼저 바꾸고 nav 진행
       if (typeof queueMicrotask === 'function') {
-        queueMicrotask(() => nav('/', { replace: true }));
+        queueMicrotask(() => nav(ROUTES.HOME.ROOT, { replace: true }));
       } else {
-        setTimeout(() => nav('/', { replace: true }), 0);
+        setTimeout(() => nav(ROUTES.HOME.ROOT, { replace: true }), 0);
       }
     },
     onError: (error) => {

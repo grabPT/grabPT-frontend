@@ -36,7 +36,7 @@ const Signup = () => {
 
   const handleBackClick = () => {
     if (step <= 0) {
-      nav('/'); // 첫 단계면 홈으로 이동
+      nav(ROUTES.HOME.ROOT); // 첫 단계면 홈으로 이동
     } else if (role === 1 && step === 4) {
       // 일반 유저일 경우 전문가 페이지 숨김
       setStep((prev) => prev - 2);

@@ -77,7 +77,7 @@ const RequestFormPage = () => {
       try {
         const data = await requestSend(payload);
         //응답으로 받은 requestionId를 바로 사용
-        const id = data.result.requestionId;
+        const id = data.result.requestRequestionId;
         // 성공 시 이동
         navigate(urlFor.requestDetail(id));
       } catch (err) {

@@ -454,7 +454,7 @@ const ContractFormPage = () => {
     // 2) 결제 사전 생성 (주문 생성) - 서버에서 주문 UID 등 발급
     postOrder(
       {
-        price: contract.price * contract.totalSession,
+        price: contract.contractPrice * contract.contractSessionCount,
         item_name: `${contract.userInfo.name}의 ${contract.proInfo.name}의 제안에 대한 결제건입니다.`,
         matching_id: contract.matchingId,
       },

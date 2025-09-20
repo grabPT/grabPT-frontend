@@ -15,10 +15,10 @@ interface AlarmDropdownItemProps {
 const AlramDropdownItem = ({ alarm }: AlarmDropdownItemProps) => {
   const navigate = useNavigate();
 
-  const { mutate: postReadAlarm } = usePatchReadAlarm(alarm.id);
+  const { mutate: postReadAlarm } = usePatchReadAlarm(alarm.alarmId);
 
   const handleClick = () => {
-    postReadAlarm(alarm.id);
+    postReadAlarm(alarm.alarmId);
     navigate(alarm.redirectUrl);
   };
 

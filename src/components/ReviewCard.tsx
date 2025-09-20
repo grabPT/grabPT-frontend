@@ -4,6 +4,8 @@ import Profile from '@/assets/images/HeaderProfile.png';
 import Box from '@/components/Box';
 import { Skeleton } from '@/components/Skeleton';
 import StarRating from '@/components/StarRating';
+import { ROLES } from '@/constants/roles';
+import { urlFor } from '@/constants/routes';
 import { useRoleStore } from '@/store/useRoleStore';
 
 interface ReviewCardProps {
@@ -32,8 +34,8 @@ const ReviewCard = ({
   const navigate = useNavigate();
 
   const boxClick = () => {
-    if (role === 'EXPERT') return;
-    else navigate(`/expert/${proId}`);
+    if (role === ROLES.EXPERT) return;
+    else navigate(urlFor.expertDetail(proId));
   };
 
   return (

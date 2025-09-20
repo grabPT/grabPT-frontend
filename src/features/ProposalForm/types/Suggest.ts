@@ -12,5 +12,5 @@ export type DetailProposalForm = {
 };
 
 export type SuggestResponseDto = {
-  suggestionId: number;
+  suggestSuggestionId: number;
 };

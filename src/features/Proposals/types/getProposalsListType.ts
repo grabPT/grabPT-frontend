@@ -7,12 +7,13 @@ export type getProposalsListRequestDto = {
 };
 
 export type proposalsListItemtype = {
-  requestionNickname: string;
-  price: number;
-  sessionCount: number;
-  status: MatchStatusType;
-  requestionId: number;
-  profileImageUrl: string;
+  suggestUserNickname: string;
+  suggestPrice: number;
+  suggestSessionCount: number;
+  suggestStatus: MatchStatusType;
+  photos: string;
+  suggestRequestionId: number;
+  suggestSuggestionId: number;
 };
 
 export type getProposalsListResulttype = {

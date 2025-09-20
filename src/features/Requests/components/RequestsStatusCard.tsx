@@ -18,25 +18,25 @@ interface RequestsStatusCardProps {
 
 const RequestsStatusCard = ({ request }: RequestsStatusCardProps) => {
   const navigate = useNavigate();
-  const isMatched = request.status === 'MATCHED';
+  const isMatched = request.matchStatus === 'MATCHED';
   const navigateToRequestDetail = (requestionId: number) =>
     navigate(urlFor.requestDetail(requestionId));
-  console.log('요청서아이디', request.requestId);
+  console.log('요청서아이디', request.requestRequestId);
 
   return (
     <div
-      onClick={() => navigateToRequestDetail(request.requestId)}
+      onClick={() => navigateToRequestDetail(request.requestRequestId)}
       className="flex h-[75px] w-[700px] cursor-pointer flex-row items-center justify-between rounded-2xl border border-gray-200 bg-white px-4 py-3 shadow-xl transition-shadow duration-200 hover:shadow-lg"
     >
       <UserRequestHeader
-        nickName={request.username}
-        profileImg={request.userProfileImageUrl}
-        location={request.userStreet}
+        nickName={request.requestUserName}
+        profileImg={request.photos}
+        location={request.requestUserStreet}
       />
       <div className="flex items-center space-x-2">
-        <span className="text-sm text-gray-700">{request.sessionCount}회</span>
+        <span className="text-sm text-gray-700">{request.requestSessionCount}회</span>
         <span className="text-gray-400">|</span>
-        <span className="text-sm text-gray-700">{request.price.toLocaleString()}원</span>
+        <span className="text-sm text-gray-700">{request.requestPrice.toLocaleString()}원</span>
         <div
           className={`ml-2 h-3 w-3 rounded-full ${isMatched ? 'bg-green-500' : 'bg-orange-400'}`}
         ></div>

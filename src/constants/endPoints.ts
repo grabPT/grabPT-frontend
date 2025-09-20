@@ -62,6 +62,7 @@ export const END_POINT = {
   CHAT: {
     list: '/chatRoom/list',
     messages: (roomId: number) => `/chatRoom/${roomId}/messages`,
+    unreadCount: '/chat/unreadCount',
   },
   SETTLEMENT: { settlement: '/api/trainer/dashboard', user_settlement: '/api/user/dashboard' },
   CONTRACTS: {},

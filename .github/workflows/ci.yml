@@ -2,9 +2,9 @@ name: CI Check (Lint + Build)
 
 on:
   pull_request:
-    branches: [main]
+    branches: [main, develop]
   push:
-    branches: [main]
+    branches: [main, develop]
 
 jobs:
   lint-and-build:

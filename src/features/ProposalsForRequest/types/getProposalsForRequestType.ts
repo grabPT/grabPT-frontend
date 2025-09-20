@@ -7,14 +7,14 @@ export type getProposalsForRequestRequestDto = {
 };
 
 export type proposalsForRequestItemType = {
-  nickname: string;
-  center: string;
-  address: string;
-  price: number;
-  averageRate: number;
-  sessionCount: number;
-  profileImageUrl: string;
-  suggestionId: number;
+  suggestUserNickname: string;
+  suggestCenter: string;
+  suggestAddress: string;
+  suggestPrice: number;
+  suggestAverageRate: number;
+  suggestSessionCount: number;
+  photos: string;
+  suggestSuggestionId: number;
 };
 
 export type getProposalsForRequestResultType = {

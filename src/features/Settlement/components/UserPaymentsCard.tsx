@@ -5,7 +5,7 @@ import { urlFor } from '@/constants/routes';
 interface UserPaymentsCardProps {
   data: {
     contractId: number;
-    trainerName: string;
+    userName: string;
     ptCount: number;
     paymentAmount: number;
     paymentDate: number[]; // [year, month, day, hour, minute, second, nanos]
@@ -36,7 +36,7 @@ export const UserPaymentsCard = ({ data }: UserPaymentsCardProps) => {
       onClick={navigateToContractDetail}
     >
       <div className="flex-1 text-center">
-        <span>{data.trainerName}</span>
+        <span>{data.userName}</span>
       </div>
       <div className="flex-1 text-center">
         <span>{data.ptCount}</span>
