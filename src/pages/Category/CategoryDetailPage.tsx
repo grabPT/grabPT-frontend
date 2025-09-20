@@ -21,12 +21,12 @@ const CategoryDetailPage = () => {
   const expertCards = useMemo<ExpertCardItem[]>(
     () =>
       (expertsList ?? []).map((e) => ({
-        id: e.id,
+        id: e.userId,
         imageUrl: e.profileImageUrl,
-        name: e.name,
-        center: e.centerName,
+        name: e.userName,
+        center: e.proCenterName,
         rating: e.rating,
-        pricePerSession: e.pricePerSession,
+        pricePerSession: e.suggestSessionCount,
       })),
     [expertsList],
   );

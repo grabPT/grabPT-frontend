@@ -17,7 +17,7 @@ interface RequestSliderProps {
   location?: string;
 }
 
-function RequestSlider({ title, requests, location, name }: RequestSliderProps) {
+const ExpertRequestSlider = ({ title, requests, location, name }: RequestSliderProps) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isSliderReady, setIsSliderReady] = useState(false);
   const { role } = useRoleStore();
@@ -182,6 +182,6 @@ function RequestSlider({ title, requests, location, name }: RequestSliderProps) 
       )}
     </section>
   );
-}
+};
 
-export default RequestSlider;
+export default ExpertRequestSlider;

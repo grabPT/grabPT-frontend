@@ -17,8 +17,8 @@ export type getContractInfoResultType = {
     address: string;
     signUrl: string;
   };
-  totalSession: 0;
-  price: 0;
+  contractSessionCount: 0;
+  contractPrice: 0;
   startDate: string;
   ptAddress: string;
   contractDate: string;
