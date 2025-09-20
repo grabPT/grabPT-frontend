@@ -13,14 +13,14 @@ interface MyProposalsListItemProps {
 }
 
 const MyProposalsListItem = ({ proposal }: MyProposalsListItemProps) => {
-  const profileImage = proposal.profileImageUrl || Profile;
+  const profileImage = proposal.photos || Profile;
   const navigate = useNavigate();
-  const isMatched = proposal.status === 'MATCHED';
+  const isMatched = proposal.suggestStatus === 'MATCHED';
 
   return (
     <Box
       height="h-[75px]"
-      onClick={() => navigate(urlFor.requestDetail(proposal.requestionId))}
+      onClick={() => navigate(urlFor.requestDetail(proposal.suggestRequestionId))}
       className="cursor-pointer"
       width="w-[700px]"
     >
@@ -33,10 +33,10 @@ const MyProposalsListItem = ({ proposal }: MyProposalsListItemProps) => {
           />
 
           <div className="text-sm font-medium">
-            <p className="text-base font-semibold">{proposal.requestionNickname} 님께 제안</p>
-            <span>{proposal.sessionCount}회</span>
+            <p className="text-base font-semibold">{proposal.suggestUserNickname} 님께 제안</p>
+            <span>{proposal.suggestSessionCount}회</span>
             <span> | </span>
-            <span className="text-button">{proposal.price}원</span>
+            <span className="text-button">{proposal.suggestPrice}원</span>
           </div>
         </div>
 

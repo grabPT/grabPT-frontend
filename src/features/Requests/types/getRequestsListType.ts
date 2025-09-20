@@ -11,19 +11,20 @@ export type getRequestsListRequestDto = {
 };
 
 export type RequestsListItemType = {
-  username: string;
-  userStreet: string;
-  sessionCount: number;
-  price: number;
-  status: MatchStatusType;
-  userProfileImageUrl: string;
-  requestId: number;
-  availableTimes: TimeSlot[];
-  availableDays: string[];
-  categoryName: string;
-  content: string;
-  nickname: string;
-  address: Address[];
+  requestUserName: string;
+  requestUserStreet: string;
+  requestSessionCount: number;
+  requestPrice: number;
+  requestStatus: MatchStatusType;
+  photos: string;
+  requestRequestId: number;
+  requestAvailableTimes: TimeSlot[];
+  requestAvailableDays: string[];
+  requestCategoryName: string;
+  requestContent: string;
+  requestUserNickname: string;
+  requestLocation: Address[];
+  requestEtcPurposeContent: string;
   matchStatus: MatchStatusType;
 };
 
@@ -85,4 +86,19 @@ export type RequestsListItemProps = {
   proProfileId?: number;
   proNickname?: string;
   canWriteReview?: boolean;
+  requestUserName: string;
+  requestUserStreet: string;
+  requestSessionCount: number;
+  requestPrice: number;
+  requestStatus: MatchStatusType;
+  photos: string;
+  requestRequestId: number;
+  requestAvailableTimes: TimeSlot[];
+  requestAvailableDays: string[];
+  requestCategoryName: string;
+  requestContent: string;
+  requestUserNickname: string;
+  requestLocation: Address[];
+  requestEtcPurposeContent: string;
+  matchStatus: MatchStatusType;
 };

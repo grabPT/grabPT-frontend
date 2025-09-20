@@ -21,12 +21,25 @@ export type RequestPriceStepDto = {
 };
 //조회 시에 필요한 response 타입
 export type RequestResponseDto = {
-  requestionId: number;
+  requestRequestionId: number;
 };
 
 //수정 창에 필요한 타입
-export type RequestDetailPageResponse = RequestRequestDto & {
-  nickname: string;
-  profileImageUrl: string;
-  requestionId: number;
+export type RequestDetailPageResponseDto = {
+  requestRequestionId: number;
+  requestCategoryId: number;
+  requestPurpose: Purpose[];
+  requestAgeGroup: AgeGroup;
+  requestUserGender: Gender;
+  requestPrice: number;
+  requestSessionCount: number;
+  requestLocation: string;
+  requestStartPreference: string;
+  requestAvailableDays: Day[];
+  requestAvailableTimes: TimeSlot[];
+  requestTrainerGender: Gender;
+  requestContent: string; // 상세 설명
+  requestEtcPurposeContent: string; // 기타 목적
+  requestUserNickName: string;
+  photos: string;
 };
