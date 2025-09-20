@@ -33,7 +33,7 @@ function ProfileDropdown() {
   const stage = import.meta.env.VITE_STAGE;
   let refreshToken: string;
   if (stage == 'development' || stage == 'staging') {
-    refreshToken = decodeBase64Utf8(localStorage.get('refreshToken'));
+    refreshToken = decodeBase64Utf8(localStorage.getItem('refreshToken'));
   } else {
     const match = document.cookie.split('; ').find((row) => row.startsWith('REFRESH_TOKEN' + '='));
     refreshToken = match ? match.split('=')[1] : '';
