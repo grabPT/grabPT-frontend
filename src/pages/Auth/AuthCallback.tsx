@@ -21,20 +21,24 @@ export const AuthCallback = () => {
   const { setRole, setUserId } = useRoleStore();
   const setAlarmCount = useAlarmStore((state) => state.setAlarmCount);
   const setUnReadCount = useUnreadStore((state) => state.setUnReadCount);
-
+  alert('여긴왔음');
   useEffect(() => {
     const processAuthAndFetch = async () => {
       // 1. 개발환경 분류해서 유저 분류
       const params = new URLSearchParams(window.location.search);
       const stage = import.meta.env.VITE_STAGE;
+      alert(stage);
       let roleRaw: string | null = null;
       let userIdRaw: number | null = null;
+      // grabpt-dev.vercel.app/authcallback?access_token=ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKemRXSWlPaUpzWldWMFlXVnpkV3RoUUdkdFlXbHNMbU52YlNJc0luSnZiR1VpT2lKVlUwVlNJaXdpYVdGMElqb3hOelU0TXpjNE9EWTVMQ0psZUhBaU9qRTNOVGd6T1RNeU5qbDkuUjdnQ3pNeGszUTAxcmN6djJNNFhRSENZanpRMDQ2b2FvMldvSjFTWDBZTQ==&refresh_token=ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKemRXSWlPaUpzWldWMFlXVnpkV3RoUUdkdFlXbHNMbU52YlNJc0ltbGhkQ0k2TVRjMU9ETTNPRGcyT1N3aVpYaHdJam94TnpVNE9UZ3pOalk1ZlEuc0xLbnEzdVJJYnJQU3o3NngzV0pXTnM3V3VKeWJPaG10VGtBbTI2T280Zw==&role=VVNFUg==&user_id=OA==
       //로컬 서버, 개발 서버는 파라미터로 받고 실제 배포 서버는 쿠키로 받음
       if (stage == 'development' || stage == 'staging') {
         roleRaw = decodeBase64Utf8(params.get('role'));
         userIdRaw = Number(decodeBase64Utf8(params.get('user_id')));
         const accessTokenRaw = decodeBase64Utf8(params.get('access_token'));
+        const refreshTokenRaw = decodeBase64Utf8(params.get('refresh_token'));
         localStorage.setItem('accessToken', accessTokenRaw || '');
+        localStorage.setItem('refreshToken', refreshTokenRaw || '');
       } else {
         roleRaw = decodeCookie('ROLE');
         userIdRaw = Number(decodeCookie('USER_ID'));

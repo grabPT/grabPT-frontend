@@ -30,22 +30,22 @@ const Chat = () => {
     { enableMessage: false, enableReadStatus: false },
   );
 
-  const { userId } = useRoleStore();
+  const userId = useRoleStore((state) => state.userId);
 
   // 입력컴포넌트 -> 부모로 전송 콜백
   const sendText = useCallback(
     (body: string) => {
-      if (!selectedChat || !connected) return;
+      if (!selectedChat || !connected || !userId) return;
 
       const dto: sendMessageRequestDto = {
         roomId: selectedChat.chatRoomId,
-        senderId: userId ?? 1000000000,
+        senderId: userId,
         content: body,
         messageType: 'TEXT',
       };
 
       // 서버가 나에게도 브로드캐스트하므로 캐시 조작 불필요
-      sendMessage(dto, { 'content-type': 'application/json;charset=UTF-8' });
+      sendMessage(dto);
     },
     [selectedChat, connected, userId, sendMessage],
   );

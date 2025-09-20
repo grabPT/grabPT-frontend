@@ -1,13 +1,15 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
 
 import { ChatText } from '@/features/Chat/components/ChatText';
+import NewMessageModal from '@/features/Chat/components/NewMessageModal';
 import { useChatRoomSocket } from '@/features/Chat/hooks/useChatRoomSocket';
 import { useGetMessagesInfinite } from '@/features/Chat/hooks/useGetMessages';
 import { usePostReadWhenEnter } from '@/features/Chat/hooks/usePostReadWhenEnter';
 import { usePostReadWhenExist } from '@/features/Chat/hooks/usePostReadWhenExist';
 import type { messageType } from '@/features/Chat/types/getMessagesType';
+import { isDifferentDay } from '@/features/Chat/utils/isDifferentDay';
 import { upsertIncomingMessage } from '@/utils/castCache';
 import { onErrorImage } from '@/utils/onErrorImage';
 
@@ -18,58 +20,74 @@ interface ChatInfoProps {
 }
 
 export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
-  // ─────────────────────────────────────────────────────────────
   // 1) 기본 세팅: QueryClient, 최초 입장 시 읽음 처리
-  // ─────────────────────────────────────────────────────────────
   const queryClient = useQueryClient();
 
   const { mutate: readWhenEnter } = usePostReadWhenEnter(roomId);
+  const { mutate: readWhenExist } = usePostReadWhenExist(roomId);
 
   useEffect(() => {
     if (!roomId) return;
     readWhenEnter(roomId);
   }, [roomId, readWhenEnter]);
 
-  const { mutate: readWhenExist } = usePostReadWhenExist(roomId);
+  // 7)번 로직에 정의된 isNearBottom 함수를 onMessage 핸들러에서 사용하기 위해 먼저 정의
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const isNearBottom = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return true;
+    const GAP = 800; // px: 바닥 인근으로 판단할 threshold
+    return el.scrollHeight - el.scrollTop - el.clientHeight < GAP;
+  }, []);
 
-  // ─────────────────────────────────────────────────────────────
   // 2) 소켓 핸들러: 메시지 수신, 읽음상태 수신
-  // ─────────────────────────────────────────────────────────────
-  const onMessage = (message: messageType) => {
-    // 캐시에 새 메시지 반영 (리렌더 후 scroll은 아래 effect에서 처리)
-    upsertIncomingMessage(queryClient, roomId, message);
-    queryClient.invalidateQueries({ queryKey: ['chatList'], refetchType: 'active' });
-    readWhenExist(roomId);
-  };
+  const onMessage = useCallback(
+    (message: messageType) => {
+      // 캐시에 새 메시지 반영 (리렌더 후 scroll은 아래 effect에서 처리)
+      upsertIncomingMessage(queryClient, roomId, message);
+      // 메시지업데이트마다 사이드바 방리스트 다시받아오기
+      queryClient.invalidateQueries({ queryKey: ['chatList'], refetchType: 'active' });
 
-  const onReadStatus = (payload: { messageId: number; readCount: number }) => {
-    // 캐시 내 해당 messageId의 readCount 갱신
-    queryClient.invalidateQueries({ queryKey: ['chatList'], refetchType: 'active' });
-    queryClient.setQueryData(['Chat', roomId], (prev: any) => {
-      if (!prev) return prev;
+      // ✨ 변경점: 스크롤이 바닥 근처에 있을 때만 읽음 처리를 호출
+      if (isNearBottom()) {
+        // 방 읽음처리
+        readWhenExist(roomId);
+      }
+    },
+    [queryClient, roomId, readWhenExist, isNearBottom],
+  );
 
-      const next = {
-        ...prev,
-        pages: prev.pages.map((page: any) => {
-          // 서버 응답이 page.result.messages 형태인 경우
-          if (page.result?.messages) {
-            return {
-              ...page,
-              result: {
-                ...page.result,
-                messages: page.result.messages.map((m: messageType) =>
-                  m.messageId === payload.messageId ? { ...m, readCount: payload.readCount } : m,
-                ),
-              },
-            };
-          }
-          return page;
-        }),
-      };
+  const onReadStatus = useCallback(
+    (payload: { messageId: number; readCount: number }) => {
+      // 캐시 내 해당 messageId의 readCount 갱신
+      queryClient.invalidateQueries({ queryKey: ['chatList'], refetchType: 'active' });
+      queryClient.setQueryData(['Chat', roomId], (prev: any) => {
+        if (!prev) return prev;
 
-      return next;
-    });
-  };
+        const next = {
+          ...prev,
+          pages: prev.pages.map((page: any) => {
+            // 서버 응답이 page.result.messages 형태인 경우
+            if (page.result?.messages) {
+              return {
+                ...page,
+                result: {
+                  ...page.result,
+                  messages: page.result.messages.map((m: messageType) =>
+                    m.messageId === payload.messageId ? { ...m, readCount: payload.readCount } : m,
+                  ),
+                },
+              };
+            }
+            return page;
+          }),
+        };
+
+        return next;
+      });
+    },
+    [queryClient, roomId],
+  );
 
   // 채팅방 소켓 구독 (메시지/읽음 상태)
   useChatRoomSocket<messageType>(
@@ -78,99 +96,105 @@ export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
     { enableMessage: true, enableReadStatus: true },
   );
 
-  // ─────────────────────────────────────────────────────────────
   // 3) 데이터 패칭: 무한 스크롤 메시지
-  // ─────────────────────────────────────────────────────────────
-  const { data, fetchNextPage, isFetchingNextPage, isLoading } = useGetMessagesInfinite({ roomId });
+  const {
+    data: messages,
+    fetchNextPage,
+    isFetchingNextPage,
+    isLoading,
+    isError,
+  } = useGetMessagesInfinite({
+    roomId,
+  });
 
-  // ─────────────────────────────────────────────────────────────
   // 4) 스크롤/센티널 레퍼런스 및 상태
-  // ─────────────────────────────────────────────────────────────
-  const scrollRef = useRef<HTMLDivElement>(null);
+  // scrollRef는 2)번 로직 위로 이동
   const topSentinelRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const lastRequestedCursorRef = useRef<number | null>(null);
-  const [didInitialScroll, setDidInitialScroll] = useState(false);
+  const [didInitialScroll, setDidInitialScroll] = useState<boolean>(false);
 
-  // ─────────────────────────────────────────────────────────────
   // 5) 렌더용 메시지 가공
-  //    - pages[0]가 최신 페이지
-  //    - 각 페이지는 reverse 후, 오래된 페이지부터 앞으로 push → 최종 최신이 하단
-  // ─────────────────────────────────────────────────────────────
+  // - pages[0]가 최신 페이지
+  // - 각 페이지는 reverse 후, 오래된 페이지부터 앞으로 push → 최종 최신이 하단
   const totalMessages: messageType[] = useMemo(() => {
-    const pages = data?.pages ?? [];
-    if (!pages.length) return [];
-    const out: messageType[] = [];
+    const pages = messages?.pages ?? [];
+    if (pages.length === 0) return [];
+    const reversedMessages: messageType[] = [];
+    //거꾸로 집어넣기~
     for (let i = pages.length - 1; i >= 0; i--) {
       const arr = pages[i].messages ?? [];
       const reversed = arr.length > 1 ? [...arr].reverse() : arr;
-      out.push(...reversed);
+      reversedMessages.push(...reversed);
     }
-    return out;
-  }, [data]);
+    return reversedMessages;
+  }, [messages]);
 
   // 다음 페이지 커서 (없으면 null)
   const nextCursor = useMemo(() => {
-    const pages = data?.pages ?? [];
-    if (!pages.length) return null;
+    const pages = messages?.pages ?? [];
+    if (pages.length === 0) return null;
     const last = pages[pages.length - 1];
     const c = last?.cursor;
     return c === 0 || c == null ? null : c;
-  }, [data]);
+  }, [messages]);
 
-  // ─────────────────────────────────────────────────────────────
-  // 6) 날짜 구분 렌더링 보조 함수
-  // ─────────────────────────────────────────────────────────────
-  const isDifferentDay = (prev: Date | null, curr: Date) => {
-    if (!prev) return true;
-    return (
-      prev.getFullYear() !== curr.getFullYear() ||
-      prev.getMonth() !== curr.getMonth() ||
-      prev.getDate() !== curr.getDate()
-    );
-  };
-
-  // ─────────────────────────────────────────────────────────────
-  // 7) 최초 로딩 완료 시 하단으로 스크롤
-  // ─────────────────────────────────────────────────────────────
+  // 6) 최초 로딩 완료 시 하단으로 스크롤
   useEffect(() => {
-    if (!isLoading && !isFetchingNextPage && totalMessages.length && !didInitialScroll) {
-      bottomRef.current?.scrollIntoView({ block: 'end' });
+    if (!isLoading && !isFetchingNextPage && totalMessages.length > 0 && !didInitialScroll) {
+      const scrollContainer = scrollRef.current;
+      if (scrollContainer) {
+        // scrollIntoView 대신 scrollTop을 직접 조작 => scrollIntoView사용시 맨 밑에가 애매하게 남음 ㅇㅇ 바꾸니까 잘 내려감
+        scrollContainer.scrollTop = scrollContainer.scrollHeight;
+      }
       setDidInitialScroll(true);
     }
   }, [isLoading, isFetchingNextPage, totalMessages.length, didInitialScroll]);
 
-  // ─────────────────────────────────────────────────────────────
-  // 8) 신규 메시지 도착 시 하단 스크롤 (사용자가 바닥 근처일 때만)
-  // ─────────────────────────────────────────────────────────────
-  const isNearBottom = () => {
-    const el = scrollRef.current;
-    if (!el) return true;
-    const GAP = 800; // px: 바닥 인근으로 판단할 threshold
-    return el.scrollHeight - el.scrollTop - el.clientHeight < GAP;
-  };
+  // 7) 신규 메시지 도착 시 하단 스크롤 (사용자가 바닥 근처일 때만)
+  // isNearBottom 함수는 2)번 로직 위로 이동
 
-  const latestMessageId = useMemo(
-    () => (totalMessages.length ? totalMessages[totalMessages.length - 1].messageId : null),
+  // 최신 메시지 'ID' 뿐만 아니라 '객체' 자체를 useMemo로 가져옵니다.
+  const latestMessage = useMemo(
+    () => (totalMessages.length ? totalMessages[totalMessages.length - 1] : null),
     [totalMessages],
   );
+  const latestMessageId = latestMessage?.messageId ?? null;
+
+  const [isVisibleNewMessageModal, setIsVisibleNewMessageModal] = useState<boolean>(false);
+
+  // NewMessageModal에 전달할 스크롤 함수를 정의합니다.
+  const handleScrollToBottom = useCallback(() => {
+    const scrollContainer = scrollRef.current;
+    if (scrollContainer) {
+      scrollContainer.scrollTop = scrollContainer.scrollHeight;
+    }
+    // 버튼 클릭 시 즉시 모달을 숨깁니다.
+    setIsVisibleNewMessageModal(false);
+    // ✨ 변경점: 모달 클릭(맨 아래로 이동) 시 방을 읽음 처리
+    readWhenEnter(roomId);
+  }, [readWhenEnter, roomId]);
 
   useEffect(() => {
     if (!latestMessageId) return;
-    if (!isNearBottom()) return; // 위쪽을 보는 중이면 자동 스크롤 방지
 
-    // 리렌더→레이아웃 적용 이후 프레임에 실행
-    requestAnimationFrame(() => {
+    // isNearBottom()의 결과에 따라 모달 표시 여부 결정
+    if (!isNearBottom()) {
+      setIsVisibleNewMessageModal(true);
+      return;
+    }
+
+    // 바닥 근처에 있다면 자동으로 스크롤
+    const scrollContainer = scrollRef.current;
+    if (scrollContainer) {
       requestAnimationFrame(() => {
-        bottomRef.current?.scrollIntoView({ block: 'end' });
+        scrollContainer.scrollTop = scrollContainer.scrollHeight;
       });
-    });
-  }, [latestMessageId]);
+    }
+  }, [latestMessageId, isNearBottom]); // latestMessageId를 의존성 배열로 유지 (isNearBottom 추가)
 
-  // ─────────────────────────────────────────────────────────────
-  // 9) 상단 센티널: 과거 페이지 추가 로드 & 스크롤 점프 방지
-  // ─────────────────────────────────────────────────────────────
+  // 8) 상단 센티널: 과거 페이지 추가 로드 & 스크롤 점프 방지
   useEffect(() => {
     const root = scrollRef.current;
     const target = topSentinelRef.current;
@@ -205,17 +229,13 @@ export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
     return () => observer.disconnect();
   }, [fetchNextPage, nextCursor, isFetchingNextPage]);
 
-  // ─────────────────────────────────────────────────────────────
-  // 10) 방 변경 시 스크롤 상태 리셋 (데이터는 캐시로 즉시 렌더)
-  // ─────────────────────────────────────────────────────────────
+  // 9) 방 변경 시 스크롤 상태 리셋 (데이터는 캐시로 즉시 렌더)
   useEffect(() => {
     lastRequestedCursorRef.current = null;
     setDidInitialScroll(false);
   }, [roomId]);
 
-  // ─────────────────────────────────────────────────────────────
-  // 11) 렌더
-  // ─────────────────────────────────────────────────────────────
+  // 10) 렌더
   return (
     <div className="flex h-full flex-col pb-40">
       {/* 상단 헤더 */}
@@ -226,42 +246,53 @@ export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
         </div>
       </div>
 
-      {/* 본문 스크롤 영역 */}
-      <div
-        ref={scrollRef}
-        className="flex-1 [transform:translateZ(0)] overflow-y-auto py-3 [will-change:transform] [contain:layout_paint]"
-      >
-        {/* 상단 센티널 (과거 로드 트리거) */}
-        <div ref={topSentinelRef} />
+      <div className="relative flex-1 overflow-hidden">
+        {/* 본문 스크롤 영역 */}
+        <div
+          ref={scrollRef}
+          className="h-full [transform:translateZ(0)] overflow-y-auto py-3 [will-change:transform] [contain:layout_paint]"
+        >
+          {/* 상단 센티널 (과거 로드 트리거) */}
+          <div ref={topSentinelRef} />
 
-        {isFetchingNextPage && (
-          <div className="py-2 text-center text-sm text-gray-500">이전 메시지 불러오는 중…</div>
-        )}
-
-        {totalMessages.map((message, index) => {
-          const currentDate = new Date(message.sendAt);
-          const prevDate = index > 0 ? new Date(totalMessages[index - 1].sendAt) : null;
-          const shouldShowDate = isDifferentDay(prevDate, currentDate);
-
-          return (
-            <div key={message.messageId} className="flex flex-col items-center gap-2">
-              {shouldShowDate && (
-                <div className="my-2 text-sm text-gray-500">
-                  {currentDate.toLocaleDateString('ko-KR', {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                    weekday: 'short',
-                  })}
-                </div>
-              )}
-              <ChatText chat={message} imageUrl={img} />
+          {isFetchingNextPage && (
+            <div className="py-2 text-center text-sm text-gray-500">이전 메시지 불러오는 중…</div>
+          )}
+          {isError && (
+            <div className="flex h-full w-full items-center justify-center">
+              <h1 className="text-red-500">메시지를 불러오지 못했습니다.</h1>
             </div>
-          );
-        })}
+          )}
 
-        {/* 하단 앵커 (최신이 맨 아래) */}
-        <div ref={bottomRef} />
+          {totalMessages.map((message, index) => {
+            const currentDate = new Date(message.sendAt);
+            const prevDate = index > 0 ? new Date(totalMessages[index - 1].sendAt) : null;
+            const shouldShowDate = isDifferentDay(prevDate, currentDate);
+
+            return (
+              <div key={message.messageId} className="flex flex-col items-center gap-2">
+                {shouldShowDate && (
+                  <div className="my-2 text-sm text-gray-500">
+                    {currentDate.toLocaleDateString('ko-KR', {
+                      year: 'numeric',
+                      month: '2-digit',
+                      day: '2-digit',
+                      weekday: 'short',
+                    })}
+                  </div>
+                )}
+                <ChatText chat={message} imageUrl={img} />
+              </div>
+            );
+          })}
+          {/* 하단 앵커 (최신이 맨 아래) */}
+          <div ref={bottomRef} />
+        </div>
+
+        {/* 최신메시지 미리보기 */}
+        {isVisibleNewMessageModal && (
+          <NewMessageModal latestMessage={latestMessage} onScrollToBottom={handleScrollToBottom} />
+        )}
       </div>
     </div>
   );
