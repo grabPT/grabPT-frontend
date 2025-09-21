@@ -92,7 +92,7 @@ const Chat = () => {
         />
 
         {/* 우측: 채팅 상세 + 입력 */}
-        <div className="flex h-full w-full flex-col bg-white">
+        <div className="flex h-full w-full flex-1 flex-col bg-white">
           {selectedChat ? (
             <>
               <ChatInfo
