@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 
 import { ChatInfo } from '@/features/Chat/components/ChatInfo';
 import ChatSideBar from '@/features/Chat/components/ChatSideBar';
-import { MessageInput } from '@/features/Chat/components/MessageInput';
+import MessageInput from '@/features/Chat/components/MessageInput';
 import {
   type sendMessageRequestDto,
   useChatRoomSocket,
