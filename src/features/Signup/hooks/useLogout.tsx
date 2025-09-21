@@ -8,18 +8,18 @@ import { useRoleStore } from '@/store/useRoleStore';
 import type { CommonResponseDto } from '@/types/commonResponseDto';
 
 export const useLogout = () => {
-  const { resetAuth } = useRoleStore();
-  const nav = useNavigate();
+  const resetAuth = useRoleStore((s) => s.resetAuth);
+  const navigate = useNavigate();
   return useMutation<CommonResponseDto<string>, Error, LogoutDto>({
     mutationFn: postLogout,
     onSuccess: (data) => {
       console.log('로그아웃 요청 성공:', data);
       resetAuth();
-      //microTask를 통해 role을 먼저 바꾸고 nav 진행
+      //microTask를 통해 role을 먼저 바꾸고 navigate 진행
       if (typeof queueMicrotask === 'function') {
-        queueMicrotask(() => nav(ROUTES.HOME.ROOT, { replace: true }));
+        queueMicrotask(() => navigate(ROUTES.HOME.ROOT, { replace: true }));
       } else {
-        setTimeout(() => nav(ROUTES.HOME.ROOT, { replace: true }), 0);
+        setTimeout(() => navigate(ROUTES.HOME.ROOT, { replace: true }), 0);
       }
     },
     onError: (error) => {

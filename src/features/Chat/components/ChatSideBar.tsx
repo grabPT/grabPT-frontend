@@ -33,19 +33,29 @@ export const ChatSideBar = ({
     if (target) onSelect(target);
   }, [rooms, selectedProId, selectedChatId, onSelect]);
 
+  const closeMobileKeyboard = (): void => {
+    // 현재 활성화된 요소를 찾습니다. (input, textarea 등)
+    const activeElement = document.activeElement as HTMLElement;
+
+    // 활성화된 요소가 있고, blur 메서드를 가지고 있다면 실행합니다.
+    if (activeElement?.blur) {
+      activeElement.blur();
+    }
+  };
+
   const filtered = useMemo(() => rooms ?? [], [rooms]);
 
   return (
     <aside
       className={clsx(
-        'flex h-full w-[26.125rem] flex-col items-center border-t-1 border-r-1 border-gray-300 bg-white',
+        'flex h-full w-[26rem] flex-col items-center border-t-1 border-r-1 border-gray-300 bg-white',
         className,
       )}
     >
       {/* 검색바 */}
-      <div className="sticky top-[70px] z-10 w-[22rem] bg-white pt-3">
-        <div className="h-10 w-full rounded-full bg-gradient-to-r from-[#003EFB] to-[#FF00B2] p-[3px]">
-          <div className="flex h-full w-full items-center rounded-full bg-white px-[16px] pr-[15px]">
+      <div className="flex h-16 w-full items-center justify-center p-4">
+        <div className="h-10 w-full rounded-full bg-gradient-to-r from-[#003EFB] to-[#FF00B2] p-[3px] pr-1">
+          <div className="flex h-full w-full items-center justify-center rounded-full bg-white px-4">
             <input
               type="text"
               placeholder="검색"
@@ -53,16 +63,16 @@ export const ChatSideBar = ({
               value={keyword}
               onChange={(e) => setKeyword(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === 'Enter') console.log('검색:', keyword);
+                if (e.key === 'Enter') closeMobileKeyboard();
               }}
             />
-            <SearchIcon className="h-5 w-5 text-[#CCCCCC]" />
+            <SearchIcon className="h-5 w-5 text-[#CCCCCC]" onClick={closeMobileKeyboard} />
           </div>
         </div>
       </div>
 
       {/* 채팅방 리스트 */}
-      <div className="w-full flex-1 overflow-y-auto pt-5">
+      <div className="w-full flex-1 overflow-y-auto">
         {filtered.map((chat) => {
           const isSelected = selectedChatId === chat.chatRoomId;
           return (
