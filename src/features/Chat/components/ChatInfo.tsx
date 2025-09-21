@@ -10,6 +10,7 @@ import { usePostReadWhenEnter } from '@/features/Chat/hooks/usePostReadWhenEnter
 import { usePostReadWhenExist } from '@/features/Chat/hooks/usePostReadWhenExist';
 import type { messageType } from '@/features/Chat/types/getMessagesType';
 import { isDifferentDay } from '@/features/Chat/utils/isDifferentDay';
+import { useRoleStore } from '@/store/useRoleStore';
 import { upsertIncomingMessage } from '@/utils/castCache';
 import { onErrorImage } from '@/utils/onErrorImage';
 
@@ -25,6 +26,8 @@ export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
 
   const { mutate: readWhenEnter } = usePostReadWhenEnter(roomId);
   const { mutate: readWhenExist } = usePostReadWhenExist(roomId);
+
+  const userId = useRoleStore((s) => s.userId);
 
   useEffect(() => {
     if (!roomId) return;
@@ -160,7 +163,6 @@ export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
     () => (totalMessages.length ? totalMessages[totalMessages.length - 1] : null),
     [totalMessages],
   );
-  const latestMessageId = latestMessage?.messageId ?? null;
 
   const [isVisibleNewMessageModal, setIsVisibleNewMessageModal] = useState<boolean>(false);
 
@@ -177,22 +179,36 @@ export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
   }, [readWhenEnter, roomId]);
 
   useEffect(() => {
-    if (!latestMessageId) return;
+    if (!latestMessage) return;
 
-    // isNearBottom()의 결과에 따라 모달 표시 여부 결정
+    // ✨ 변경점 1: 내가 보낸 메시지인지 확인하는 로직 추가
+    // 최신 메시지를 보낸 사람이 '나' 자신이라면, 스크롤 위치와 상관없이 맨 아래로 내립니다.
+    if (latestMessage.senderId === userId) {
+      const scrollContainer = scrollRef.current;
+      if (scrollContainer) {
+        requestAnimationFrame(() => {
+          scrollContainer.scrollTop = scrollContainer.scrollHeight;
+        });
+      }
+      // 혹시 다른 이유로 모달이 떠있을 수 있으니 확실하게 닫아줍니다.
+      setIsVisibleNewMessageModal(false);
+      return; // 이 로직을 실행했으면 아래 로직은 건너뜁니다.
+    }
+
+    // isNearBottom()의 결과에 따라 모달 표시 여부 결정 (기존 로직)
     if (!isNearBottom()) {
       setIsVisibleNewMessageModal(true);
       return;
     }
 
-    // 바닥 근처에 있다면 자동으로 스크롤
+    // 바닥 근처에 있다면 자동으로 스크롤 (기존 로직)
     const scrollContainer = scrollRef.current;
     if (scrollContainer) {
       requestAnimationFrame(() => {
         scrollContainer.scrollTop = scrollContainer.scrollHeight;
       });
     }
-  }, [latestMessageId, isNearBottom]); // latestMessageId를 의존성 배열로 유지 (isNearBottom 추가)
+  }, [latestMessage, userId, isNearBottom]); // ✨ 변경점 2: 의존성 배열에 latestMessage와 userId 추가
 
   // 8) 상단 센티널: 과거 페이지 추가 로드 & 스크롤 점프 방지
   useEffect(() => {
@@ -273,7 +289,7 @@ export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
               <div key={message.messageId} className="flex flex-col items-center gap-2">
                 {shouldShowDate && (
                   <div className="my-2 text-sm text-gray-500">
-                    {currentDate.toLocaleDateString('ko-KR', {
+                    {currentDate.toLocaleString('ko-KR', {
                       year: 'numeric',
                       month: '2-digit',
                       day: '2-digit',
