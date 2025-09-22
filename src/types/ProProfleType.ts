@@ -16,12 +16,13 @@ export type PtPrice = {
 };
 
 export type ProProfileType = {
-  proId: number;
+  userId: number;
   profileImageUrl: string;
   proName: string;
   userName: string;
-  center: string | null;
-  centerDescription: string | null;
+  userNickName: string;
+  proCenterName: string | null;
+  proCenterDescription: string | null;
   categoryName: string;
   averageRating: number;
   description: string | null;
@@ -32,7 +33,8 @@ export type ProProfileType = {
   pricePerSession: number;
   totalSessions: number;
   ptPrices?: PtPrice[];
-  address: Address[];
+  userLocations: Address[];
+  //여기 아래는  원래 바꾼 dto에 없는데 사용하는 곳이 있어서 일단 넣었습니다.. 나중에 확인하고 수정해보겠습닏...
   introduction?: string | null;
   name?: string | null;
   certifications?: certificationResponse[] | null;

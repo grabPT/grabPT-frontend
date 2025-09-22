@@ -31,7 +31,7 @@ export const ExpertDetailInfo = () => {
   // console.log(credentialList);
 
   const { data: profileData } = useGetProProfileWithUserId(proId);
-
+  console.log('profile Data 전부 출력', profileData);
   useEffect(() => {
     if (profileData?.photos) {
       setPhotos(profileData.photos);
@@ -46,17 +46,16 @@ export const ExpertDetailInfo = () => {
       setPrices(profileData.ptPrices);
     }
   }, [profileData]);
-
   const 채팅상담 = async () => {
-    if (userId == undefined || profileData?.proId === undefined) {
+    if (userId == undefined || profileData?.userId === undefined) {
       console.log('안됨');
       return;
     }
     try {
-      await postCreateChatRoom({ userId, proId: profileData.proId });
+      await postCreateChatRoom({ userId, proId: profileData.userId });
       await new Promise((resolve) => setTimeout(resolve, 1000));
       navigate(ROUTES.CHAT.ROOT, {
-        state: { proId: profileData.proId },
+        state: { proId: profileData.userId },
       });
     } catch (err) {
       console.error('채팅방 생성 실패:', err);
@@ -76,7 +75,7 @@ export const ExpertDetailInfo = () => {
         <div className="flex flex-col items-center justify-center">
           <span className="font-roboto text-[2rem] font-semibold">{profileData?.name}</span>
           <span className="font-inter text-[0.875rem] font-semibold text-[#003EFB]">
-            {profileData?.center}
+            {profileData?.centerName}
           </span>
         </div>
         <div className="mt-4 flex items-end justify-end">
@@ -162,11 +161,11 @@ export const ExpertDetailInfo = () => {
           <div className="flex flex-col gap-4">
             <div className="flex h-[40px] items-center gap-4">
               <div className="text-[20px] font-semibold">센터명</div>
-              <div className="text-[#013EFB]">{profileData?.center}</div>
+              <div className="text-[#013EFB]">{profileData?.centerName}</div>
             </div>
             <div className="flex flex-col gap-2">
               <div className="text-[20px] font-semibold">위치 설명</div>
-              <div className="h-[300px]">{profileData?.centerDescription}</div>
+              <div className="h-[300px]">{profileData?.proCenterDescription}</div>
             </div>
           </div>
         </div>

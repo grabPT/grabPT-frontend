@@ -62,20 +62,6 @@ const ROUTES = {
       DETAIL: '/matching/proposals/:id',
     },
   },
-
-  // REQUESTS: {
-  //   ROOT: '/requests',
-  //   NEW: '/requests/new',
-  //   DETAIL: '/requests/:id',
-  //   PROPOSALS: '/requests/:id/proposals',
-  // },
-
-  // PROPOSALS: {
-  //   ROOT: '/proposals',
-  //   NEW: '/proposals/new',
-  //   DETAIL: '/proposals/:id',
-  // },
-
   CONTRACTS: {
     ROOT: '/contracts',
     NEW: '/contracts/new/:id',

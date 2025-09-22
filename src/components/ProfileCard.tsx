@@ -29,7 +29,7 @@ const ProfileCard = ({ profileData }: ProfileCardProps) => {
           <p className="text-sm leading-none font-semibold tracking-[0.5em] text-[#697077]">
             {categoryName}
           </p>
-          <p className="text-[10px] font-semibold text-[#013EFB]">{profileData?.center}</p>
+          <p className="text-[10px] font-semibold text-[#013EFB]">{profileData?.centerName}</p>
           {/* 별이 벗어나는 버그가 있었는데 flex적용하니까 고쳐짐. 이유는 모름;; */}
           <StarRating rating={profileData?.averageRating} size={14} fontSize={10} />
         </div>
