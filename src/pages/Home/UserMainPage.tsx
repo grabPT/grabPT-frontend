@@ -12,8 +12,6 @@ import { useRoleStore } from '@/store/useRoleStore';
 import type { SportsSlugType } from '@/types/SportsType';
 
 const UserMainPage = () => {
-  console.log('devleop테스트입니다.');
-
   // const { isLoggedIn, role } = useRoleStore();
   const role = useRoleStore((state) => state.role);
   // const { data: requests } = useGetMyRequestsList({ page: 1, size: 40 }, isLoggedIn);

@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import type { certificationResponse } from '@/apis/getProCertifications';
 import { postCreateChatRoom } from '@/apis/postCreateChatRoom';
+import ProfileImg from '@/assets/images/HeaderProfile.png';
 import Button from '@/components/Button';
 import { CirtificationCard } from '@/components/CirtificationCard';
 import ProfileImageSlide, { type SlideImage } from '@/components/ProfileImageSlide';
@@ -48,15 +49,15 @@ export const ExpertDetailInfo = () => {
   }, [profileData]);
 
   const 채팅상담 = async () => {
-    if (userId == undefined || profileData?.proId === undefined) {
+    if (userId == undefined || profileData?.userId === undefined) {
       console.log('안됨');
       return;
     }
     try {
-      await postCreateChatRoom({ userId, proId: profileData.proId });
+      await postCreateChatRoom({ userId, proId: profileData.userId });
       await new Promise((resolve) => setTimeout(resolve, 1000));
       navigate(ROUTES.CHAT.ROOT, {
-        state: { proId: profileData.proId },
+        state: { proId: profileData.userId },
       });
     } catch (err) {
       console.error('채팅방 생성 실패:', err);
@@ -68,13 +69,13 @@ export const ExpertDetailInfo = () => {
       <div className="mt-10 flex w-full flex-col items-center justify-center gap-4">
         {/* <img src={ExpertDetailBgImg} alt="전문가 프로필 뱌경화면" className="w-full" /> */}
         <img
-          src={profileData?.profileImageUrl}
+          src={profileData?.profileImageUrl ? profileData?.profileImageUrl : ProfileImg}
           onError={onErrorImage}
           alt="전문가 프로필 사진"
           className="h-[11.25rem] w-[11.25rem] rounded-full"
         />
         <div className="flex flex-col items-center justify-center">
-          <span className="font-roboto text-[2rem] font-semibold">{profileData?.name}</span>
+          <span className="font-roboto text-[2rem] font-semibold">{profileData?.userNickName}</span>
           <span className="font-inter text-[0.875rem] font-semibold text-[#003EFB]">
             {profileData?.center}
           </span>
@@ -166,7 +167,7 @@ export const ExpertDetailInfo = () => {
             </div>
             <div className="flex flex-col gap-2">
               <div className="text-[20px] font-semibold">위치 설명</div>
-              <div className="h-[300px]">{profileData?.centerDescription}</div>
+              <div className="h-[300px]">{profileData?.proCenterDescription}</div>
             </div>
           </div>
         </div>

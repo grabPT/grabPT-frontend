@@ -10,11 +10,11 @@ interface MatchingStatusCardProps {
 // RealtimeMatchingStatus.tsx에 쓰이는 카드 컴포넌트입니다
 const MatchingStatusCard = ({ match }: MatchingStatusCardProps) => {
   const isMatched = match.matchStatus === 'MATCHED';
-
+  console.log(match);
   return (
     <div className="flex h-[48px] w-full items-center justify-between">
       <UserRequestHeader
-        nickName={match.userNickname}
+        nickName={match.userNickName}
         profileImg={match.profileImageUrl || undefined}
         location={match.requestLocation}
       />
@@ -23,7 +23,8 @@ const MatchingStatusCard = ({ match }: MatchingStatusCardProps) => {
         <div className="flex items-center">
           {/* 횟수 + 구분선 + 가격 */}
           <p className="font-pretendard w-[94px] text-right text-[11px] leading-[15.4px] font-medium">
-            {match.requestSessionCount}회&nbsp;|&nbsp;{match.requestPrice.toLocaleString()}원
+            {match.requestSessionCount}회&nbsp;|&nbsp;
+            {(match.requestPrice * match.requestSessionCount).toLocaleString()}원
           </p>
         </div>
         {/* 상태 점 */}

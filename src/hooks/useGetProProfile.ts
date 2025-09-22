@@ -2,12 +2,12 @@ import { useQuery } from '@tanstack/react-query';
 
 import { getProProfile, getProProfileWithUserId } from '@/apis/getProProfile';
 import { useRoleStore } from '@/store/useRoleStore';
-import type { ProProfileType } from '@/types/ProProfleType';
+import type { getProProfileType } from '@/types/ProProfleType';
 
 //전문가가 자기 프로필 조회
 export const useProProfileQuery = () => {
   const { role } = useRoleStore();
-  return useQuery<ProProfileType>({
+  return useQuery<getProProfileType>({
     queryKey: ['pro-profile'],
     queryFn: async () => {
       const data = await getProProfile();
@@ -20,7 +20,7 @@ export const useProProfileQuery = () => {
 
 //일반 사용자가 전문가 프로필 조회
 export const useGetProProfileWithUserId = (userId: number) => {
-  return useQuery<ProProfileType>({
+  return useQuery<getProProfileType>({
     queryKey: ['pro-profile', userId],
     queryFn: async () => {
       const data = await getProProfileWithUserId(userId);

@@ -9,7 +9,6 @@ import { useSelectedSportStore } from '@/store/useSelectedCategoryStore';
 import CategoryDetailPage from './CategoryDetailPage';
 
 export default function CategoryPage() {
-  //const [selected, setSelected] = useState<SportItem | null>(null);
   const navigate = useNavigate();
 
   const selected = useSelectedSportStore((s) => s.selected);

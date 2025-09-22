@@ -16,6 +16,7 @@ export type PtPrice = {
 };
 
 export type ProProfileType = {
+  //Dto 수정 이전 것
   proId: number;
   profileImageUrl: string;
   proName: string;
@@ -38,4 +39,23 @@ export type ProProfileType = {
   certifications?: certificationResponse[] | null;
 };
 
-export type getProProfileResponseDto = CommonResponseDto<ProProfileType>;
+export type getProProfileType = {
+  //Dto 수정 반영
+  userNickName: string;
+  center: string;
+  profileImageUrl: string;
+  userId: number;
+  proCenterDescription: string;
+  introduction: string;
+  certifications: certificationResponse[] | null;
+  photos: SlideImage[];
+  categoryName: string;
+  programDescription: string | null;
+  pricePerSession: number;
+  totalSessions: number;
+  ptPrices: PtPrice[];
+  reviews: any[] | null;
+  userLocations: Address[];
+};
+
+export type getProProfileResponseDto = CommonResponseDto<getProProfileType>;

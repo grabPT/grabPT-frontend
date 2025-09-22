@@ -1,3 +1,4 @@
+import ProfileImg from '@/assets/images/HeaderProfile.png';
 import StarRating from '@/components/StarRating';
 
 interface ExpertProfileCardProps {
@@ -18,7 +19,11 @@ const ExpertProfileCard = ({
   return (
     <div className="h-[370px] w-[280px] scale-[1] cursor-pointer overflow-hidden rounded-2xl bg-white shadow-[4px_4px_10px_rgba(0,0,0,0.25)] transition-transform duration-200 hover:scale-[1.02]">
       {/* 상단 이미지 영역 */}
-      <img src={imageUrl} alt={`${name} 프로필`} className="h-[270px] w-full object-cover" />
+      <img
+        src={imageUrl ? imageUrl : ProfileImg}
+        alt={`${name} 프로필`}
+        className="h-[270px] w-full object-cover"
+      />
 
       {/* 하단 텍스트 박스 */}
       <div className="flex flex-col gap-[10px] rounded-br-[10px] rounded-bl-[10px] px-[10px] pt-[13px] pb-[13px]">
