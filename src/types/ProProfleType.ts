@@ -34,10 +34,27 @@ export type ProProfileType = {
   totalSessions: number;
   ptPrices?: PtPrice[];
   userLocations: Address[];
-  //여기 아래는  원래 바꾼 dto에 없는데 사용하는 곳이 있어서 일단 넣었습니다.. 나중에 확인하고 수정해보겠습닏...
-  introduction?: string | null;
-  name?: string | null;
-  certifications?: certificationResponse[] | null;
 };
-
+export type ProProfileWithUserIdType = {
+  userNickName: string;
+  center: string;
+  profileImageUrl: string;
+  userId: number;
+  proCenterDescription: string;
+  introduction: string;
+  certifications: certificationResponse[];
+  photos: SlideImage[];
+  categoryName: string;
+  programDescription: string;
+  pricePerSession: number;
+  ptPrices: PtPrice[];
+  reviews: Review[];
+  userLocations: Address[];
+};
+export type Review = {
+  reviewer: string;
+  rating: number;
+  content: string;
+};
 export type getProProfileResponseDto = CommonResponseDto<ProProfileType>;
+export type getProProfileWithUserIdResponseDto = CommonResponseDto<ProProfileWithUserIdType>;
