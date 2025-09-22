@@ -12,7 +12,7 @@ export interface Address {
 
 export interface UserInfo {
   userId: number;
-  userNickname: string;
+  userNickName: string;
   userName: string;
   userLocation: Address[];
   email: string;

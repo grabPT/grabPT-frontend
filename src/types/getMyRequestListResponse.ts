@@ -27,11 +27,10 @@ export type MyRequestListItemType = {
   categoryName: string;
   sessionCount: number;
   requestContent: string;
-  userLocation: Address
+  userLocation: Address;
   proProfileId: number;
   proNickname: string;
   canWriteReview: boolean;
 };
-
 
 export type getMyRequestsListResponseDto = CommonResponseDto<getMyRequestsListResultType>;

@@ -65,7 +65,7 @@ const Dashboard = ({ userInfo }: DashboardProps) => {
   });
 
   // 기존 유저 주소(보기모드 및 기본값)
-  const originalAddress = userInfo?.address?.[0];
+  const originalAddress = userInfo?.userLocation?.[0];
   const addressTextFromUser = useMemo(
     () =>
       `${originalAddress?.city ?? ''} ${originalAddress?.district ?? ''} ${originalAddress?.street ?? ''} ${originalAddress?.specAddress ?? ''}`.trim(),
@@ -92,7 +92,7 @@ const Dashboard = ({ userInfo }: DashboardProps) => {
     formState: { isDirty, isSubmitting, errors },
   } = useForm<FormValues>({
     mode: 'onChange',
-    defaultValues: { nickname: userInfo?.nickname ?? '' },
+    defaultValues: { nickname: userInfo?.userNickName ?? '' },
   });
 
   const watchedNickname = watch('nickname');
@@ -100,13 +100,13 @@ const Dashboard = ({ userInfo }: DashboardProps) => {
   // 닉네임 변경 시 검증 상태
   useEffect(() => {
     if (!isEdit) return;
-    if ((watchedNickname?.trim() ?? '') === (userInfo?.nickname ?? '')) {
+    if ((watchedNickname?.trim() ?? '') === (userInfo?.userNickName ?? '')) {
       setNicknameVerified(true);
       clearErrors('nickname');
     } else {
       setNicknameVerified(false);
     }
-  }, [watchedNickname, isEdit, userInfo?.nickname, clearErrors]);
+  }, [watchedNickname, isEdit, userInfo?.userNickName, clearErrors]);
 
   const { mutate: checkNickname, isPending: isChecking, reset: resetCheck } = useCheckNickname();
 
@@ -118,7 +118,7 @@ const Dashboard = ({ userInfo }: DashboardProps) => {
       setNicknameVerified(false);
       return;
     }
-    if (nickname === (userInfo?.nickname ?? '')) {
+    if (nickname === (userInfo?.userNickName ?? '')) {
       setNicknameVerified(true);
       clearErrors('nickname');
       return;
@@ -148,7 +148,7 @@ const Dashboard = ({ userInfo }: DashboardProps) => {
   const imageDirty = !!profileImageFile;
 
   const onSubmit = (values: FormValues) => {
-    if (values.nickname.trim() !== (userInfo?.nickname ?? '') && !nicknameVerified) {
+    if (values.nickname.trim() !== (userInfo?.userNickName ?? '') && !nicknameVerified) {
       setError('nickname', { type: 'validate', message: '닉네임 중복 확인을 완료해주세요.' });
       return;
     }
@@ -167,7 +167,7 @@ const Dashboard = ({ userInfo }: DashboardProps) => {
 
   const handleEnterEdit = () => {
     setIsEdit(true);
-    reset({ nickname: userInfo?.nickname ?? '' });
+    reset({ nickname: userInfo?.userNickName ?? '' });
     setAddressDirty(false);
     setNicknameVerified(true);
     clearErrors('nickname');
@@ -175,7 +175,7 @@ const Dashboard = ({ userInfo }: DashboardProps) => {
 
   const handleCancel = () => {
     setIsEdit(false);
-    reset({ nickname: userInfo?.nickname ?? '' });
+    reset({ nickname: userInfo?.userNickName ?? '' });
     setAddressDirty(false);
     setNicknameVerified(true);
     clearErrors('nickname');
@@ -183,7 +183,7 @@ const Dashboard = ({ userInfo }: DashboardProps) => {
     setProfileImageFile(undefined);
   };
 
-  const nicknameChanged = (watchedNickname?.trim() ?? '') !== (userInfo?.nickname ?? '');
+  const nicknameChanged = (watchedNickname?.trim() ?? '') !== (userInfo?.userNickName ?? '');
   const canSubmit =
     (isDirty || addressDirty || imageDirty) &&
     !isSubmitting &&
@@ -292,7 +292,7 @@ const Dashboard = ({ userInfo }: DashboardProps) => {
             <ul className="flex w-[400px] flex-col gap-[20px]">
               <li className="flex items-center justify-between gap-[20px]">
                 <span className="w-15 text-right text-[15px] font-semibold">이름</span>
-                <div className="h-[24px] w-[493px] rounded-[10px]">{userInfo?.name}</div>
+                <div className="h-[24px] w-[493px] rounded-[10px]">{userInfo?.userName}</div>
               </li>
 
               <li className="flex items-center justify-between gap-[20px]">
@@ -335,7 +335,7 @@ const Dashboard = ({ userInfo }: DashboardProps) => {
                     </p>
                   </div>
                 ) : (
-                  <div className="h-[24px] w-[300px] rounded-[10px]">{userInfo?.nickname}</div>
+                  <div className="h-[24px] w-[300px] rounded-[10px]">{userInfo?.userNickName}</div>
                 )}
               </li>
 
