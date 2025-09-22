@@ -15,46 +15,39 @@ export type PtPrice = {
   price: number;
 };
 
-export type ProProfileType = {
-  userId: number;
-  profileImageUrl: string;
-  proName: string;
-  userName: string;
-  userNickName: string;
-  proCenterName: string | null;
-  proCenterDescription: string | null;
-  categoryName: string;
-  averageRating: number;
-  description: string | null;
-  centerName: string | null;
-  photos: SlideImage[]; // 이미지 URL 배열
-  reviews: any[] | null; // 상세 타입 정의가 필요한 경우 인터페이스 추가
-  programDescription: string | null;
-  pricePerSession: number;
-  totalSessions: number;
-  ptPrices?: PtPrice[];
-  userLocations: Address[];
-};
-export type ProProfileWithUserIdType = {
-  userNickName: string;
-  center: string;
-  profileImageUrl: string;
-  userId: number;
-  proCenterDescription: string;
-  introduction: string;
-  certifications: certificationResponse[];
-  photos: SlideImage[];
-  categoryName: string;
-  programDescription: string;
-  pricePerSession: number;
-  ptPrices: PtPrice[];
-  reviews: Review[];
-  userLocations: Address[];
-};
 export type Review = {
   reviewer: string;
   rating: number;
   content: string;
 };
+export type BaseProProfile = {
+  userId: number;
+  userNickName: string;
+  profileImageUrl: string;
+  proCenterDescription: string | null;
+  categoryName: string;
+  programDescription: string | null;
+  pricePerSession: number;
+  ptPrices?: PtPrice[];
+  photos: SlideImage[];
+  reviews: Review[] | null;
+  userLocations: Address[];
+};
+export type ProProfileType = BaseProProfile & {
+  proName: string;
+  userName: string;
+  proCenterName: string | null;
+  averageRating: number;
+  description: string | null;
+  centerName: string | null;
+  totalSessions: number;
+};
+
+export type ProProfileWithUserIdType = BaseProProfile & {
+  center: string;
+  introduction: string;
+  certifications: certificationResponse[];
+};
+
 export type getProProfileResponseDto = CommonResponseDto<ProProfileType>;
 export type getProProfileWithUserIdResponseDto = CommonResponseDto<ProProfileWithUserIdType>;
