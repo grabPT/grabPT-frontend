@@ -20,12 +20,12 @@ const ExpertDetailReviews = () => {
           <div key={idx}>
             <ReviewCard
               imageURL={rv.imageURL}
-              name={rv.nickName}
+              name={rv.reviewer}
               location={rv.residence}
               rating={rv.rating}
               content={rv.content}
               isExpertDetail={true}
-              proId={rv.proId}
+              proId={rv.revieweeId}
             />
           </div>
         ))}
