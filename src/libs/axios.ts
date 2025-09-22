@@ -135,8 +135,8 @@ export const privateInstance = axios.create({
 });
 
 //요청 인터셉터로 토큰 자동 주입
-const isDev = import.meta.env.DEV;
-if (isDev) {
+const stage = import.meta.env.VITE_STAGE;
+if (stage == 'development' || stage == 'staging') {
   privateInstance.interceptors.request.use(
     (request) => {
       request.withCredentials = false; //개발 환경에서는 withCredentials false
@@ -201,7 +201,7 @@ export const multipartInstance = axios.create({
   timeout: 10_000,
   withCredentials: true,
 });
-if (isDev) {
+if (stage == 'development' || stage == 'staging') {
   multipartInstance.interceptors.request.use(
     (request) => {
       request.withCredentials = false; //개발 환경에서는 withCredentials false

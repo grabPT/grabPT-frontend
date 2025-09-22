@@ -1,4 +1,3 @@
-// MessageInput.tsx
 import { memo, useCallback, useRef, useState } from 'react';
 
 import imageCompression from 'browser-image-compression';
@@ -6,20 +5,15 @@ import imageCompression from 'browser-image-compression';
 import ChatSendIcon from '@/features/Chat/assets/ChatSendIcon.svg';
 import ClipIcon from '@/features/Chat/assets/ClipIcon.svg';
 
-type Props = {
+interface MessageInputProps {
   onSend: (text: string) => void;
   pendingFile: File | null;
   onFileSelect?: (file: File | null) => void;
   onSendFile?: (file: File) => void; // ← 추가
   sending?: boolean; // ← 선택: 전송 중 버튼 잠금
-};
+}
 
-export const MessageInput = memo(function MessageInput({
-  onSend,
-  onFileSelect,
-  onSendFile,
-  sending = false,
-}: Props) {
+const MessageInput = ({ onSend, onFileSelect, onSendFile, sending = false }: MessageInputProps) => {
   const [text, setText] = useState('');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -151,4 +145,6 @@ export const MessageInput = memo(function MessageInput({
       </div>
     </div>
   );
-});
+};
+
+export default memo(MessageInput);
