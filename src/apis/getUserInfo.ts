@@ -12,9 +12,9 @@ export interface Address {
 
 export interface UserInfo {
   userId: number;
-  nickname: string;
-  name: string;
-  address: Address[];
+  userNickName: string;
+  userName: string;
+  userLocation: Address[];
   email: string;
   profileImageUrl: string;
   categoryName: string;

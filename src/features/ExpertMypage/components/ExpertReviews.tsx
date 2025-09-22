@@ -15,7 +15,7 @@ const ExpertReviews = () => {
           <div key={idx}>
             <ReviewCard
               imageURL={rv.imageURL}
-              name={rv.nickName}
+              name={rv.reviewer}
               location={rv.residence}
               rating={rv.rating}
               content={rv.content}

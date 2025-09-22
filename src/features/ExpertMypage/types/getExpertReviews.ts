@@ -30,12 +30,11 @@ export type getExpertReviewsResult = {
 
 export type expertReviewList = {
   reviewId: number;
-  nickName: string;
+  reviewer: string;
   residence: string;
   rating: number;
   content: string;
-  center: string;
-  proId: number;
-  proNickName: string;
+  reviewee: string;
+  revieweeId: number;
   imageURL: string;
 };

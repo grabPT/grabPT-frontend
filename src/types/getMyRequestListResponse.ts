@@ -1,5 +1,5 @@
 import type { PageableType } from '@/features/Requests/types/getRequestsListType';
-import type { MatchStatusType } from '@/types/RealtimeMatchingType';
+import type { Address } from '@/types/ProProfleType';
 import type { TimeSlot } from '@/types/ReqeustsType';
 import type { SortType } from '@/types/SortType';
 import type { CommonResponseDto } from '@/types/commonResponseDto';
@@ -26,8 +26,8 @@ export type MyRequestListItemType = {
   availableDays: string[];
   categoryName: string;
   sessionCount: number;
-  content: string;
-  matchStatus: MatchStatusType;
+  requestContent: string;
+  userLocation: Address;
   proProfileId: number;
   proNickname: string;
   canWriteReview: boolean;

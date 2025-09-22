@@ -19,8 +19,8 @@ const UserRequests = () => {
 
   const { data } = useGetUserInfo();
 
-  const location = `${data?.address?.[0]?.city ?? ''} ${data?.address?.[0]?.district ?? ''} ${
-    data?.address?.[0]?.street ?? ''
+  const location = `${data?.userLocation?.[0]?.city ?? ''} ${data?.userLocation?.[0]?.district ?? ''} ${
+    data?.userLocation?.[0]?.street ?? ''
   }`;
   const total = myRequestsList?.totalPages ?? 1;
 
@@ -44,14 +44,14 @@ const UserRequests = () => {
                 key={`${page}-${idx}`}
                 requestionId={rq.requestId}
                 location={location}
-                name={data?.nickname ?? '사용자'}
+                name={data?.userNickName ?? '사용자'}
                 profileImg={data?.profileImageUrl}
                 tags={{
                   availableTimes: rq.availableTimes,
                   daysPerWeek: rq.availableDays.length,
                   categoryName: rq.categoryName,
                 }}
-                content={rq.content}
+                content={rq.requestContent}
                 isWriter={true}
               />
             ))

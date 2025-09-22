@@ -31,7 +31,7 @@ const CategoryDetailPage = () => {
     [expertsList],
   );
 
-  const loc = userData?.address[0].street;
+  const loc = userData?.userLocation[0].street;
 
   useEffect(() => {
     if (loc) setLocation(loc);

@@ -28,13 +28,13 @@ const UserReviews = () => {
             myReviewsList.content.map((rv, idx) => (
               <ReviewCard
                 key={idx}
-                name={rv.nickName}
+                name={rv.reviewer}
                 location={rv.residence}
                 rating={rv.rating}
                 content={rv.content}
-                proNickName={rv.proNickName}
+                proNickName={rv.reviewee}
                 center={rv.center}
-                proId={rv.proId}
+                proId={rv.revieweeId}
                 imageURL={rv.imageURL}
               />
             ))
