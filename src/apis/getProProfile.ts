@@ -1,5 +1,8 @@
 import { privateInstance, publicInstance } from '@/libs/axios';
-import type { getProProfileResponseDto } from '@/types/ProProfleType';
+import type {
+  getProProfileResponseDto,
+  getProProfileWithUserIdResponseDto,
+} from '@/types/ProProfleType';
 
 export const getProProfile = async () => {
   try {
@@ -12,7 +15,7 @@ export const getProProfile = async () => {
 };
 
 export const getProProfileWithUserId = async (userId: number) => {
-  const { data } = await publicInstance.get<getProProfileResponseDto>(
+  const { data } = await publicInstance.get<getProProfileWithUserIdResponseDto>(
     `/api/category-proprofile/${userId}`,
     { headers: { accept: 'application/json' } },
   );

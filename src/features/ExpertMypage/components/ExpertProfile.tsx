@@ -46,13 +46,13 @@ const ExpertProfile = () => {
   const { data: profileData, isLoading, isError } = useProProfileQuery();
 
   useEffect(() => {
-    setComment(profileData?.description || '');
+    setComment(profileData?.programDescription || '');
     setOriginPhotos(profileData?.photos || []);
     setPhotos(profileData?.photos || []);
     setPrices(profileData?.ptPrices || []);
     setPricePerOne(profileData?.pricePerSession || null);
-    setCenterName(profileData?.center || '');
-    setCenterDescription(profileData?.centerDescription || '');
+    setCenterName(profileData?.centerName || '');
+    setCenterDescription(profileData?.proCenterDescription || '');
 
     const initialPrices: ptPriceUpdateRequestDtoList[] = [];
 
@@ -121,8 +121,8 @@ const ExpertProfile = () => {
   };
 
   const handleCenterCancel = () => {
-    setCenterName(profileData?.center ?? '');
-    setCenterDescription(profileData?.centerDescription ?? '');
+    setCenterName(profileData?.centerName ?? '');
+    setCenterDescription(profileData?.proCenterDescription ?? '');
     setIsLocationEdit(false);
   };
 
@@ -237,7 +237,9 @@ const ExpertProfile = () => {
         </div>
         <hr className="mt-[10px] border-t-2 border-[#B8B8B8]" />
         {/* 보기 모드 */}
-        {!isCommentEdit && <p className="mt-[45px] h-[400px] w-full">{profileData?.description}</p>}
+        {!isCommentEdit && (
+          <p className="mt-[45px] h-[400px] w-full">{profileData?.proCenterDescription}</p>
+        )}
 
         {/* 수정 모드 */}
         {isCommentEdit && (
@@ -348,7 +350,7 @@ const ExpertProfile = () => {
           <div className="flex flex-col gap-4">
             <div className="flex h-[40px] items-center gap-4">
               <div className="text-[20px] font-semibold">센터명</div>
-              <div className="text-[#013EFB]">{profileData?.center}</div>
+              <div className="text-[#013EFB]">{profileData?.centerName}</div>
             </div>
             <div className="flex flex-col gap-2">
               <div className="text-[20px] font-semibold">위치 설명</div>

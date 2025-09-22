@@ -15,27 +15,39 @@ export type PtPrice = {
   price: number;
 };
 
-export type ProProfileType = {
-  proId: number;
+export type Review = {
+  reviewer: string;
+  rating: number;
+  content: string;
+};
+export type BaseProProfile = {
+  userId: number;
+  userNickName: string;
   profileImageUrl: string;
+  proCenterDescription: string | null;
+  categoryName: string;
+  programDescription: string | null;
+  pricePerSession: number;
+  ptPrices?: PtPrice[];
+  photos: SlideImage[];
+  reviews: Review[] | null;
+  userLocations: Address[];
+};
+export type ProProfileType = BaseProProfile & {
   proName: string;
   userName: string;
-  center: string | null;
-  centerDescription: string | null;
-  categoryName: string;
+  proCenterName: string | null;
   averageRating: number;
   description: string | null;
   centerName: string | null;
-  photos: SlideImage[]; // 이미지 URL 배열
-  reviews: any[] | null; // 상세 타입 정의가 필요한 경우 인터페이스 추가
-  programDescription: string | null;
-  pricePerSession: number;
   totalSessions: number;
-  ptPrices?: PtPrice[];
-  address: Address[];
-  introduction?: string | null;
-  name?: string | null;
-  certifications?: certificationResponse[] | null;
+};
+
+export type ProProfileWithUserIdType = BaseProProfile & {
+  center: string;
+  introduction: string;
+  certifications: certificationResponse[];
 };
 
 export type getProProfileResponseDto = CommonResponseDto<ProProfileType>;
+export type getProProfileWithUserIdResponseDto = CommonResponseDto<ProProfileWithUserIdType>;
