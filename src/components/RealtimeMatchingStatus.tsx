@@ -28,7 +28,7 @@ const RealtimeMatchingStatus = ({ categoryType }: RealtimeMatchingStatusProps) =
     if (!isLoggedIn) {
       alert('로그인이 필요합니다.');
       navigate(ROUTES.AUTH.LOGIN);
-    } else if (role === 'EXPERT') {
+    } else if (role === 'PRO') {
       alert('전문가 계정은 요청서를 작성할 수 없습니다.');
     } else navigate(ROUTES.MATCHING_STATUS.REQUESTS.NEW);
   };
@@ -63,7 +63,7 @@ const RealtimeMatchingStatus = ({ categoryType }: RealtimeMatchingStatusProps) =
       </div>
 
       {/* 오른쪽 아래 정렬 */}
-      {!(role === 'EXPERT') && (
+      {!(role === 'PRO') && (
         <div className="flex justify-end">
           <Button
             label="요청서 작성"

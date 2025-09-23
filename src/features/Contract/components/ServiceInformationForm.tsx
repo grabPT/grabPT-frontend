@@ -2,7 +2,7 @@ import type { getContractInfoResultType } from '@/features/Contract/types/getCon
 
 interface ServiceInformationFormProps {
   data: getContractInfoResultType | undefined;
-  isExpert: boolean;
+  isPro: boolean;
   startDate: string; // YYYY-MM-DD
   contractDate: string; // YYYY-MM-DD
   onChangeStartDate: (v: string) => void;
@@ -11,7 +11,7 @@ interface ServiceInformationFormProps {
 
 const ServiceInformationForm = ({
   data,
-  isExpert,
+  isPro,
   startDate,
   contractDate,
   onChangeStartDate,
@@ -56,7 +56,7 @@ const ServiceInformationForm = ({
         name="visible-startDate"
         value={startDate}
         onChange={(e) => onChangeStartDate(e.target.value)}
-        disabled={!isExpert}
+        disabled={!isPro}
         className="focus:border-button h-10 w-full rounded-md border border-gray-300 bg-white px-3 outline-none disabled:bg-gray-200"
       />
 
@@ -78,7 +78,7 @@ const ServiceInformationForm = ({
         name="visible-contractDate"
         value={contractDate}
         onChange={(e) => onChangeContractDate(e.target.value)}
-        disabled={!isExpert}
+        disabled={!isPro}
         className="focus:border-button h-10 w-full rounded-md border border-gray-300 bg-white px-3 outline-none disabled:bg-gray-200"
       />
     </div>

@@ -1,0 +1,10 @@
+export interface ProCardProps {
+  imageUrl: string;
+  name: string;
+  center: string;
+  rating: number;
+  pricePerSession: number;
+}
+
+// ProCardScroll에서 사용할 리스트 아이템(상세 이동용 id 포함)
+export type ProCardItem = ProCardProps & { id: number };

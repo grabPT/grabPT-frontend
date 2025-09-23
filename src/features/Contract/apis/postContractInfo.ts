@@ -17,7 +17,7 @@ export const postContractUserInfo = async (
   }
 };
 
-export const postContractExpertInfo = async (
+export const postContractProInfo = async (
   params: postContractProInfoRequestDto,
 ): Promise<postContractInfoResponseDto> => {
   try {

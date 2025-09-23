@@ -2,7 +2,7 @@
 import { useMutation } from '@tanstack/react-query';
 
 import {
-  postContractExpertInfo,
+  postContractProInfo,
   postContractUserInfo,
 } from '@/features/Contract/apis/postContractInfo';
 import type {
@@ -22,9 +22,9 @@ export const usePostContractUserInfo = () =>
     },
   });
 
-export const usePostContractExpertInfo = () =>
+export const usePostContractProInfo = () =>
   useMutation<postContractInfoResponseDto, Error, postContractProInfoRequestDto>({
-    mutationFn: (params) => postContractExpertInfo(params),
+    mutationFn: (params) => postContractProInfo(params),
     onSuccess: (data) => {
       console.log('계약서 작성 proInfo 전송 성공', data);
     },

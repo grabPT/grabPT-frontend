@@ -28,8 +28,8 @@ export const END_POINT = {
     },
   },
   MYPROPAGE: {
-    CREDENTIALS: {
-      credentials: '/mypage/pro/certification',
+    CERTIFICATIONS: {
+      certifications: '/mypage/pro/certification',
     },
     REVIEWS: {
       reviews: `/mypage/pro/reviews`,
@@ -51,11 +51,11 @@ export const END_POINT = {
     },
     FORM: {},
     DETAIL: {},
-    PROPOSALS_FOR_REQUESTS: (requestionId: number) =>
+    SUGGESTS_FOR_REQUESTS: (requestionId: number) =>
       `/api/suggestion/requestionList/${requestionId}`,
   },
 
-  PROPOSALS: {
+  SUGGESTS: {
     list: '/api/suggestion/mySuggestions',
   },
 

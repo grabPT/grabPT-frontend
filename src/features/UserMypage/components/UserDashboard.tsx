@@ -4,7 +4,7 @@ import { type UserInfo } from '@/apis/getUserInfo';
 import Dashboard from '@/components/Dashboard';
 import { useGetUserInfo } from '@/hooks/useGetUserInfo';
 
-const ExpertDashboard = () => {
+const ProDashboard = () => {
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const { data } = useGetUserInfo();
   useEffect(() => {
@@ -18,4 +18,4 @@ const ExpertDashboard = () => {
   );
 };
 
-export default ExpertDashboard;
+export default ProDashboard;
