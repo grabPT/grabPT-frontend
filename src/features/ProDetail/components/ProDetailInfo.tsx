@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import type { certificationResponse } from '@/apis/getProCertifications';
 import { postCreateChatRoom } from '@/apis/postCreateChatRoom';
 import Button from '@/components/Button';
-import { CirtificationCard } from '@/components/CirtificationCard';
+import { CertificationCard } from '@/components/CertificationCard';
 import ProfileImageSlide, { type SlideImage } from '@/components/ProfileImageSlide';
 import ProfilePrice from '@/components/ProfilePrice';
 import { TitleLine } from '@/components/TitleLine';
@@ -127,9 +127,9 @@ export const ProDetailInfo = () => {
             {certifications.length > 0 ? (
               certifications.map((certification, index) => (
                 <div key={index} className="mb-4">
-                  <CirtificationCard
-                    CirtificationCode={certification.certificationType}
-                    CirtificationDescription={certification.description}
+                  <CertificationCard
+                    CertificationCode={certification.certificationType}
+                    CertificationDescription={certification.description}
                     imageUrl={certification.imageUrl}
                   />
                 </div>

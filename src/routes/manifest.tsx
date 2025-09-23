@@ -62,8 +62,8 @@ const ProDashboard = createLazyComponent(
 );
 const ProProfile = createLazyComponent(() => import('@/features/ProMypage/components/ProProfile'));
 const ProReviews = createLazyComponent(() => import('@/features/ProMypage/components/ProReviews'));
-const ProCredentials = createLazyComponent(
-  () => import('@/features/ProMypage/components/ProCredentials'),
+const ProCertifications = createLazyComponent(
+  () => import('@/features/ProMypage/components/ProCertifications'),
 );
 
 const UserMypage = createLazyComponent(() => import('@/pages/MyPage/UserMypage'));
@@ -85,16 +85,14 @@ const MatchingStatusPage = createLazyComponent(
   () => import('@/pages/MatchingStatus/MatchingStatusPage'),
 );
 const RequestsListPage = createLazyComponent(() => import('@/pages/Requests/RequestsListPage'));
-const ProposalsListPage = createLazyComponent(() => import('@/pages/Proposals/ProposalsListPage'));
+const SuggestListPage = createLazyComponent(() => import('@/pages/Suggests/SuggestListPage'));
 const RequestFormPage = createLazyComponent(() => import('@/pages/Requests/RequestFormPage'));
 const RequestDetailPage = createLazyComponent(() => import('@/pages/Requests/RequestDetailPage'));
-const ProposalsForRequest = createLazyComponent(
-  () => import('@/pages/Requests/ProposalsForRequest'),
+const SuggestsForRequest = createLazyComponent(
+  () => import('@/pages/Requests/SuggestListForRequest'),
 );
-const ProposalFormPage = createLazyComponent(() => import('@/pages/Proposals/ProposalFormPage'));
-const ProposalDetailPage = createLazyComponent(
-  () => import('@/pages/Proposals/ProposalDetailPage'),
-);
+const SuggestFormPage = createLazyComponent(() => import('@/pages/Suggests/SuggestFormPage'));
+const SuggestDetailPage = createLazyComponent(() => import('@/pages/Suggests/SuggestDetailPage'));
 
 // 계약/정산
 const ContractFormPage = createLazyComponent(() => import('@/pages/Contracts/ContractFormPage'));
@@ -180,14 +178,14 @@ export const routesManifest: AppRoute[] = [
             errorElement: <ErrorComponent />,
           },
           {
-            path: ROUTES.MYPAGE.PRO_TABS.REVIEWS,
+            path: ROUTES.MYPAGE.PRO_TABS.REVIEW_LIST,
             element: withFallback(<ProReviews />),
             roles: ['PRO'],
             errorElement: <ErrorComponent />,
           },
           {
-            path: ROUTES.MYPAGE.PRO_TABS.CREDENTIALS,
-            element: withFallback(<ProCredentials />),
+            path: ROUTES.MYPAGE.PRO_TABS.CERTIFICATIONS,
+            element: withFallback(<ProCertifications />),
             roles: ['PRO'],
             errorElement: <ErrorComponent />,
           },
@@ -208,13 +206,13 @@ export const routesManifest: AppRoute[] = [
             errorElement: <ErrorComponent />,
           },
           {
-            path: ROUTES.MYPAGE.USER_TABS.REQUESTS,
+            path: ROUTES.MYPAGE.USER_TABS.REQUEST_LIST,
             element: withFallback(<UserRequests />),
             roles: ['USER'],
             errorElement: <ErrorComponent />,
           },
           {
-            path: ROUTES.MYPAGE.USER_TABS.REVIEWS,
+            path: ROUTES.MYPAGE.USER_TABS.REVIEW_LIST,
             element: withFallback(<UserReviews />),
             roles: ['USER'],
             errorElement: <ErrorComponent />,
@@ -236,7 +234,7 @@ export const routesManifest: AppRoute[] = [
         children: [
           { index: true, element: <ProDetailInfo /> },
           {
-            path: ROUTES.PRO_DETAIL.TABS.REVIEWS,
+            path: ROUTES.PRO_DETAIL.TABS.REVIEW_LIST,
             element: <ProDetailReviews />,
             errorElement: <ErrorComponent />,
           },
@@ -258,8 +256,8 @@ export const routesManifest: AppRoute[] = [
             errorElement: <ErrorComponent />,
           },
           {
-            path: ROUTES.MATCHING_STATUS.PROPOSALS.ROOT,
-            element: withFallback(<ProposalsListPage />),
+            path: ROUTES.MATCHING_STATUS.SUGGESTS.ROOT,
+            element: withFallback(<SuggestListPage />),
             roles: ['USER', 'PRO'],
             errorElement: <ErrorComponent />,
           },
@@ -279,22 +277,22 @@ export const routesManifest: AppRoute[] = [
         errorElement: <ErrorComponent />,
       },
       {
-        path: ROUTES.MATCHING_STATUS.REQUESTS.PROPOSALS,
-        element: withFallback(<ProposalsForRequest />),
+        path: ROUTES.MATCHING_STATUS.REQUESTS.SUGGESTS,
+        element: withFallback(<SuggestsForRequest />),
         roles: ['USER'],
         errorElement: <ErrorComponent />,
       },
 
       // 제안서 (lazy)
       {
-        path: ROUTES.MATCHING_STATUS.PROPOSALS.NEW,
-        element: withFallback(<ProposalFormPage />),
+        path: ROUTES.MATCHING_STATUS.SUGGESTS.NEW,
+        element: withFallback(<SuggestFormPage />),
         roles: ['USER', 'PRO'],
         errorElement: <ErrorComponent />,
       },
       {
-        path: ROUTES.MATCHING_STATUS.PROPOSALS.DETAIL,
-        element: withFallback(<ProposalDetailPage />),
+        path: ROUTES.MATCHING_STATUS.SUGGESTS.DETAIL,
+        element: withFallback(<SuggestDetailPage />),
         errorElement: <ErrorComponent />,
       },
 

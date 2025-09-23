@@ -7,6 +7,7 @@ import { ZodError, z } from 'zod';
 
 import AppLogo from '@/assets/images/AppLogo.png';
 import Button from '@/components/Button';
+import ROUTES from '@/constants/routes';
 import {
   Header,
   개인정보처리방침,
@@ -491,7 +492,7 @@ const ContractFormPage = () => {
                   order_uid: rsp.merchant_uid,
                 });
                 alert('결제완료!');
-                navigate('/user/settlement');
+                navigate(ROUTES.USER_SETTLEMENT);
                 // 후처리 (알림, 라우팅 등)
               } else {
                 console.log('결제 검증 실패');

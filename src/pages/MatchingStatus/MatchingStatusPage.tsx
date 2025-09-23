@@ -5,7 +5,7 @@ import ROUTES from '@/constants/routes';
 
 const tabs = [
   { label: '요청 현황', to: ROUTES.MATCHING_STATUS.REQUESTS.ROOT },
-  { label: '제안 현황', to: ROUTES.MATCHING_STATUS.PROPOSALS.ROOT },
+  { label: '제안 현황', to: ROUTES.MATCHING_STATUS.SUGGESTS.ROOT },
 ];
 
 const MatchingStatusPage = () => {

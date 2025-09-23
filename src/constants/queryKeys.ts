@@ -3,9 +3,9 @@ import type { getMessagesRequestDto } from '@/features/Chat/types/getMessagesTyp
 import type { getMyInfoListRequestDto } from '@/features/Mypage/types/getMyRequestsListRequestDto';
 import type { getProReviewsRequestByUserId } from '@/features/ProDetail/types/getReviewsByUserId';
 import type { getProReviewsRequest } from '@/features/ProMypage/types/getProReviews';
-import type { getProposalsListRequestDto } from '@/features/Proposals/types/getProposalsListType';
-import type { getProposalsForRequestRequestDto } from '@/features/ProposalsForRequest/types/getProposalsForRequestType';
 import type { getRequestsListRequestDto } from '@/features/Requests/types/getRequestsListType';
+import type { getSuggestListRequestDto } from '@/features/SuggestList/types/getSuggestListType';
+import type { getSuggestListForRequestRequestDto } from '@/features/SuggestListForRequest/types/getSuggestListForRequestType';
 
 export const QUERY_KEYS = {
   realtimeMatching: (category: string) => ['realtimeMatching', category] as const,
@@ -22,14 +22,14 @@ export const QUERY_KEYS = {
   ],
   myRequestsList: (params: getMyInfoListRequestDto) => ['MyReqeustsList', params.page, params.size],
   myReviewsList: (params: getMyInfoListRequestDto) => ['MyReviewsList', params.page, params.size],
-  proposalsForRequest: (params: getProposalsForRequestRequestDto) => [
-    'proposalsForRequest',
+  suggestsForRequest: (params: getSuggestListForRequestRequestDto) => [
+    'suggestsForRequest',
     params.requestionId,
     params.page,
   ],
   proReviews: (params: getProReviewsRequest) => ['ProReviews', params.page, params.size],
-  credentialList: () => ['credentialList'],
-  proposalsList: (params: getProposalsListRequestDto) => ['proposalsList', params.page],
+  certificationList: () => ['certification'],
+  suggestList: (params: getSuggestListRequestDto) => ['suggestList', params.page],
   CHAT: {
     list: (parmas: getChatRoomListRequestDto) => ['chatList', parmas.keyword],
     messages: (params: getMessagesRequestDto) => ['messages', params.roomId, params.cursor],

@@ -1,4 +1,3 @@
-// routes/guards.tsx
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
 import ROUTES from '@/constants/routes';

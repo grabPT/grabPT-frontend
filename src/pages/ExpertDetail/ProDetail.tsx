@@ -6,7 +6,7 @@ import ROUTES from '@/constants/routes';
 export const ProDetail = () => {
   const tabs = [
     { label: '정보', to: '' },
-    { label: '후기', to: ROUTES.PRO_DETAIL.TABS.REVIEWS },
+    { label: '후기', to: ROUTES.PRO_DETAIL.TABS.REVIEW_LIST },
   ];
   return (
     <section className="my-[66px]">

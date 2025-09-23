@@ -20,7 +20,7 @@ const Footer = () => {
             <p>
               By building a user-centric online matching system, <br />
               <br />
-              through a trainer's proposal in accordance with a user-centered request.
+              through a trainer's suggest in accordance with a user-centered request.
               <br />
               We want to realize PT service at a reasonable price that users want for personalized
               trainers.

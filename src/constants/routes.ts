@@ -9,6 +9,7 @@ const ROUTES = {
     SIGNUP: '/signup',
     CALLBACK: '/authcallback',
   },
+
   OAUTH: '/auth/callback',
 
   CHAT: {
@@ -17,6 +18,7 @@ const ROUTES = {
 
   CATEGORY: {
     ROOT: '/category',
+    CATEGORY_DETAIL: '/category/:slug',
   },
 
   MYPAGE: {
@@ -26,13 +28,13 @@ const ROUTES = {
     PRO_TABS: {
       DASHBOARD: '', // index
       PROFILE: 'profile',
-      REVIEWS: 'reviews',
-      CREDENTIALS: 'credentials',
+      REVIEW_LIST: 'reviewlist',
+      CERTIFICATIONS: 'certifications',
     },
     USER_TABS: {
       DASHBOARD: '', // index
-      REQUESTS: 'requests',
-      REVIEWS: 'reviews',
+      REQUEST_LIST: 'requestlist',
+      REVIEW_LIST: 'reviewlist',
       SETTINGS: 'settings',
     },
   },
@@ -41,27 +43,29 @@ const ROUTES = {
     ROOT: '/pro/:id',
     TABS: {
       INFO: 'info',
-      REVIEWS: 'reviews',
+      REVIEW_LIST: 'reviewlist',
     },
   },
+
   PRO_SETTLEMENT: '/pro/settlement',
   USER_SETTLEMENT: '/user/settlement',
   MATCHING_STATUS: {
     ROOT: '/matching',
 
     REQUESTS: {
-      ROOT: '/matching/requests',
+      ROOT: '/matching/requestlist',
       NEW: '/matching/requests/new',
       DETAIL: '/matching/requests/:id',
-      PROPOSALS: '/matching/requests/:id/proposals',
+      SUGGESTS: '/matching/requests/:id/suggestList',
     },
 
-    PROPOSALS: {
-      ROOT: '/matching/proposals',
-      NEW: '/matching/proposals/new',
-      DETAIL: '/matching/proposals/:id',
+    SUGGESTS: {
+      ROOT: '/matching/suggestList',
+      NEW: '/matching/suggests/new',
+      DETAIL: '/matching/suggests/:id',
     },
   },
+
   CONTRACTS: {
     ROOT: '/contracts',
     NEW: '/contracts/new/:id',
@@ -72,10 +76,11 @@ const ROUTES = {
 export const urlFor = {
   proDetail: (id: number | undefined) => `/pro/${id}`,
   requestDetail: (id: number | undefined) => `/matching/requests/${id}`,
-  requestProposals: (id: number | undefined) => `/matching/requests/${id}/proposals`,
-  proposalDetail: (id: number | undefined) => `/matching/proposals/${id}`,
+  requestSuggests: (id: number | undefined) => `/matching/requests/${id}/suggests`,
+  suggestDetail: (id: number | undefined) => `/matching/suggests/${id}`,
   contractForm: (id: number | undefined) => `/contracts/new/${id}`,
   contractDetail: (id: number | undefined) => `/contracts/${id}`,
+  categoryDetail: (slug: string | undefined) => `/category/${slug}`,
 } as const;
 
 export default ROUTES;
