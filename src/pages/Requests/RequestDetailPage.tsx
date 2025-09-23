@@ -113,7 +113,7 @@ const RequestDetailPage = () => {
 
   const { mutate: editRequest } = usePatchRequest();
   const handleButton = () => {
-    if (role === 'EXPERT') {
+    if (role === 'PRO') {
       navigateToProposalForm();
     } else {
       handleSubmit((formData) => {
@@ -434,9 +434,9 @@ const RequestDetailPage = () => {
         </section>
       </section>
 
-      {(role === 'EXPERT' || isWriter) && (
+      {(role === 'PRO' || isWriter) && (
         <Button width="w-[425px]" className="my-16" onClick={handleButton}>
-          {role === 'EXPERT' ? '제안서 작성' : '수정하기'}
+          {role === 'PRO' ? '제안서 작성' : '수정하기'}
         </Button>
       )}
     </section>

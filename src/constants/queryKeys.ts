@@ -1,8 +1,8 @@
 import type { getChatRoomListRequestDto } from '@/features/Chat/types/getChatRoomListType';
 import type { getMessagesRequestDto } from '@/features/Chat/types/getMessagesType';
-import type { getExpertReviewsRequestByUserId } from '@/features/ExpertDetail/types/getReviewsByUserId';
-import type { getExpertReviewsRequest } from '@/features/ExpertMypage/types/getExpertReviews';
 import type { getMyInfoListRequestDto } from '@/features/Mypage/types/getMyRequestsListRequestDto';
+import type { getProReviewsRequestByUserId } from '@/features/ProDetail/types/getReviewsByUserId';
+import type { getProReviewsRequest } from '@/features/ProMypage/types/getProReviews';
 import type { getProposalsListRequestDto } from '@/features/Proposals/types/getProposalsListType';
 import type { getProposalsForRequestRequestDto } from '@/features/ProposalsForRequest/types/getProposalsForRequestType';
 import type { getRequestsListRequestDto } from '@/features/Requests/types/getRequestsListType';
@@ -15,8 +15,8 @@ export const QUERY_KEYS = {
     params.page,
     params.size,
   ],
-  expertReviewsByUserId: (params: getExpertReviewsRequestByUserId) => [
-    'ExpertReviewsByUserId',
+  proReviewsByUserId: (params: getProReviewsRequestByUserId) => [
+    'ProReviewsByUserId',
     params.page,
     params.size,
   ],
@@ -27,7 +27,7 @@ export const QUERY_KEYS = {
     params.requestionId,
     params.page,
   ],
-  expertReviews: (params: getExpertReviewsRequest) => ['ExpertReviews', params.page, params.size],
+  proReviews: (params: getProReviewsRequest) => ['ProReviews', params.page, params.size],
   credentialList: () => ['credentialList'],
   proposalsList: (params: getProposalsListRequestDto) => ['proposalsList', params.page],
   CHAT: {

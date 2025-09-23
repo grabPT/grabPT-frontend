@@ -19,8 +19,8 @@ export function Guard({ allow }: { allow?: Role[]; guestOnly?: boolean }) {
         return <Navigate to={`/login?next=${next}`} replace />;
       }
       // 로그인된 다른 역할이지만 권한 불일치
-      if (role === 'EXPERT') {
-        return <Navigate to={ROUTES.HOME.EXPERT} replace />;
+      if (role === 'PRO') {
+        return <Navigate to={ROUTES.HOME.PRO} replace />;
       }
       return <Navigate to={ROUTES.HOME.ROOT} replace />;
     }

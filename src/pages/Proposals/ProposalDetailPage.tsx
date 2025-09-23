@@ -15,13 +15,13 @@ const ProposalDetailPage = () => {
 
   const { data: suggestion, error, isError, isLoading } = useGetProposalDetail(suggestionId);
 
-  const navigateToExpertProfile = () => navigate(urlFor.expertDetail(suggestion?.suggestExpertId));
+  const navigateToProProfile = () => navigate(urlFor.proDetail(suggestion?.suggestProId));
 
   const 채팅상담 = () => {
     if (!suggestion) return;
-    postCreateChatRoom({ userId: suggestion.suggestUserId, proId: suggestion.suggestExpertId });
+    postCreateChatRoom({ userId: suggestion.suggestUserId, proId: suggestion.suggestProId });
     navigate(ROUTES.CHAT.ROOT, {
-      state: { proId: suggestion.suggestExpertId },
+      state: { proId: suggestion.suggestProId },
     });
   };
 
@@ -80,7 +80,7 @@ const ProposalDetailPage = () => {
       </div>
 
       <div className="mt-12 flex w-full justify-end gap-4">
-        <Button width="w-[155px]" onClick={navigateToExpertProfile}>
+        <Button width="w-[155px]" onClick={navigateToProProfile}>
           프로필 방문
         </Button>
         <Button width="w-[274px]" onClick={채팅상담}>

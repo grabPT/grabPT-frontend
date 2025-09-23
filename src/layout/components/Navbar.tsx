@@ -16,12 +16,12 @@ const Navbar = () => {
   // 페이지 생성 시 path 수정, memo도입 고려
   const menuList = [
     {
-      label: role === 'EXPERT' ? '매칭 현황' : '요청서 작성',
-      path: role === 'EXPERT' ? ROUTES.MATCHING_STATUS.ROOT : ROUTES.MATCHING_STATUS.REQUESTS.NEW,
+      label: role === 'PRO' ? '매칭 현황' : '요청서 작성',
+      path: role === 'PRO' ? ROUTES.MATCHING_STATUS.ROOT : ROUTES.MATCHING_STATUS.REQUESTS.NEW,
     },
     //   {
-    //   label: isExpert ? '매칭 현황' : '요청서 작성',
-    //   path: isExpert ? ROUTES.MATCHING_STATUS.ROOT : ROUTES.MATCHING_STATUS.REQUESTS.NEW,
+    //   label: isPro ? '매칭 현황' : '요청서 작성',
+    //   path: isPro ? ROUTES.MATCHING_STATUS.ROOT : ROUTES.MATCHING_STATUS.REQUESTS.NEW,
     // },
     { label: '트레이너 찾기', path: '/나중에설정' },
     { label: '내지역 센터', path: '/나중에설정' },

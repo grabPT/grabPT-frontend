@@ -24,7 +24,7 @@ export const useRoleStore = create<AuthState>()(
       setRole: (role: Role) =>
         set({
           role,
-          isLoggedIn: role === 'USER' || role === 'EXPERT',
+          isLoggedIn: role === 'USER' || role === 'PRO',
         }),
       resetAuth: () =>
         set({

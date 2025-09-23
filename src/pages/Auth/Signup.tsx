@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import ROUTES from '@/constants/routes';
 import BackBtn from '@/features/Signup/assets/BackBtn.svg';
 import AgreementStep from '@/features/Signup/components/AgreementStep';
-import ExpertInfoStep from '@/features/Signup/components/ExpertInfoStep';
 import NickNameStep from '@/features/Signup/components/NicknameStep';
+import ProInfoStep from '@/features/Signup/components/ProInfoStep';
 import SportsTypeStep from '@/features/Signup/components/SportsTypeStep';
 import UserInfoStep from '@/features/Signup/components/UserInfoStep';
 import UserTypeStep from '@/features/Signup/components/UserTypeStep';
@@ -128,7 +128,7 @@ const Signup = () => {
       {step === 0 && <AgreementStep onNext={handleNext} />}
       {step === 1 && <UserTypeStep onNext={handleNext} />}
       {step === 2 && <UserInfoStep onNext={handleNext} />}
-      {step === 3 && <ExpertInfoStep onNext={handleNext} />}
+      {step === 3 && <ProInfoStep onNext={handleNext} />}
       {step === 4 && <SportsTypeStep onNext={handleNext} />}
       {step === 5 && <NickNameStep onNext={handleNext} />}
     </div>

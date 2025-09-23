@@ -5,15 +5,15 @@ import { Navigate } from 'react-router-dom';
 import ErrorComponent from '@/components/ErrorComponent';
 import LoadingMuscle from '@/components/LoadingMuscle';
 import ROUTES from '@/constants/routes';
-import { ExpertDetailInfo } from '@/features/ExpertDetail/components/ExpertDetailInfo';
-import ExpertDetailReviews from '@/features/ExpertDetail/components/ExpertDetailReviews';
+import { ProDetailInfo } from '@/features/ProDetail/components/ProDetailInfo';
+import ProDetailReviews from '@/features/ProDetail/components/ProDetailReviews';
 import Layout from '@/layout/Layout';
 // ✅ 초기 번들에 포함 (정적 import)
 import { AuthCallback } from '@/pages/Auth/AuthCallback';
 import Login from '@/pages/Auth/Login';
 import Signup from '@/pages/Auth/Signup';
-import { ExpertDetail } from '@/pages/ExpertDetail/ExpertDetail';
-import ExpertMainPage from '@/pages/Home/ExpertMainPage';
+import { ProDetail } from '@/pages/ExpertDetail/ProDetail';
+import ProMainPage from '@/pages/Home/ProMainPage';
 import UserMainPage from '@/pages/Home/UserMainPage';
 import type { AppRoute } from '@/types/Role';
 
@@ -56,18 +56,14 @@ const NotFound = createLazyComponent(() => import('@/pages/NotFound'));
 const CategoryPage = createLazyComponent(() => import('@/pages/Category/CategoryPage'));
 
 // 마이페이지
-const ExpertMypage = createLazyComponent(() => import('@/pages/MyPage/ExpertMypage'));
-const ExpertDashboard = createLazyComponent(
-  () => import('@/features/ExpertMypage/components/ExpertDashboard'),
+const ProMypage = createLazyComponent(() => import('@/pages/MyPage/ProMypage'));
+const ProDashboard = createLazyComponent(
+  () => import('@/features/ProMypage/components/ProDashboard'),
 );
-const ExpertProfile = createLazyComponent(
-  () => import('@/features/ExpertMypage/components/ExpertProfile'),
-);
-const ExpertReviews = createLazyComponent(
-  () => import('@/features/ExpertMypage/components/ExpertReviews'),
-);
-const ExpertCredentials = createLazyComponent(
-  () => import('@/features/ExpertMypage/components/ExpertCredentials'),
+const ProProfile = createLazyComponent(() => import('@/features/ProMypage/components/ProProfile'));
+const ProReviews = createLazyComponent(() => import('@/features/ProMypage/components/ProReviews'));
+const ProCredentials = createLazyComponent(
+  () => import('@/features/ProMypage/components/ProCredentials'),
 );
 
 const UserMypage = createLazyComponent(() => import('@/pages/MyPage/UserMypage'));
@@ -105,9 +101,8 @@ const ContractFormPage = createLazyComponent(() => import('@/pages/Contracts/Con
 const ContractDetailPage = createLazyComponent(
   () => import('@/pages/Contracts/ContractDetailPage'),
 );
-const ExpertSettlementPage = createLazyComponent(
-  () => import('@/pages/Settlement/ExpertSettlementPage'),
-);
+// const ProSettlementPage = createLazyComponent(() => import('@/pages/Settlement/ProSee'));
+const ProSettlementPage = createLazyComponent(() => import('@/pages/Settlement/ProSettlementPage'));
 const UserSettlementPage = createLazyComponent(
   () => import('@/pages/Settlement/UserSettlementPage'),
 );
@@ -141,7 +136,7 @@ export const routesManifest: AppRoute[] = [
     path: ROUTES.HOME.ROOT,
     element: <Layout />,
     errorElement: <ErrorComponent />,
-    roles: ['EXPERT', 'GUEST', 'USER'],
+    roles: ['PRO', 'GUEST', 'USER'],
     children: [
       // 홈 (초기 번들)
       {
@@ -151,9 +146,9 @@ export const routesManifest: AppRoute[] = [
         errorElement: <ErrorComponent />,
       },
       {
-        path: ROUTES.HOME.EXPERT,
-        element: <ExpertMainPage />,
-        roles: ['EXPERT'],
+        path: ROUTES.HOME.PRO,
+        element: <ProMainPage />,
+        roles: ['PRO'],
         errorElement: <ErrorComponent />,
       },
 
@@ -161,39 +156,39 @@ export const routesManifest: AppRoute[] = [
       {
         path: 'category/*',
         element: withFallback(<CategoryPage />),
-        roles: ['EXPERT', 'GUEST', 'USER'],
+        roles: ['PRO', 'GUEST', 'USER'],
         errorElement: <ErrorComponent />, // 개별 에러 처리 추가
       },
 
-      /* 마이페이지 ─ Expert */
+      /* 마이페이지 ─ Pro */
       {
-        path: ROUTES.MYPAGE.EXPERT,
-        element: withFallback(<ExpertMypage />),
-        roles: ['EXPERT'],
+        path: ROUTES.MYPAGE.PRO,
+        element: withFallback(<ProMypage />),
+        roles: ['PRO'],
         errorElement: <ErrorComponent />,
         children: [
           {
             index: true,
-            element: withFallback(<ExpertDashboard />),
-            roles: ['EXPERT'],
+            element: withFallback(<ProDashboard />),
+            roles: ['PRO'],
             errorElement: <ErrorComponent />,
           },
           {
-            path: ROUTES.MYPAGE.EXPERT_TABS.PROFILE,
-            element: withFallback(<ExpertProfile />),
-            roles: ['EXPERT'],
+            path: ROUTES.MYPAGE.PRO_TABS.PROFILE,
+            element: withFallback(<ProProfile />),
+            roles: ['PRO'],
             errorElement: <ErrorComponent />,
           },
           {
-            path: ROUTES.MYPAGE.EXPERT_TABS.REVIEWS,
-            element: withFallback(<ExpertReviews />),
-            roles: ['EXPERT'],
+            path: ROUTES.MYPAGE.PRO_TABS.REVIEWS,
+            element: withFallback(<ProReviews />),
+            roles: ['PRO'],
             errorElement: <ErrorComponent />,
           },
           {
-            path: ROUTES.MYPAGE.EXPERT_TABS.CREDENTIALS,
-            element: withFallback(<ExpertCredentials />),
-            roles: ['EXPERT'],
+            path: ROUTES.MYPAGE.PRO_TABS.CREDENTIALS,
+            element: withFallback(<ProCredentials />),
+            roles: ['PRO'],
             errorElement: <ErrorComponent />,
           },
         ],
@@ -235,14 +230,14 @@ export const routesManifest: AppRoute[] = [
 
       /* 전문가 상세 (정적 import) */
       {
-        path: ROUTES.EXPERT_DETAIL.ROOT,
-        element: <ExpertDetail />,
+        path: ROUTES.PRO_DETAIL.ROOT,
+        element: <ProDetail />,
         errorElement: <ErrorComponent />,
         children: [
-          { index: true, element: <ExpertDetailInfo /> },
+          { index: true, element: <ProDetailInfo /> },
           {
-            path: ROUTES.EXPERT_DETAIL.TABS.REVIEWS,
-            element: <ExpertDetailReviews />,
+            path: ROUTES.PRO_DETAIL.TABS.REVIEWS,
+            element: <ProDetailReviews />,
             errorElement: <ErrorComponent />,
           },
         ],
@@ -252,20 +247,20 @@ export const routesManifest: AppRoute[] = [
       {
         path: ROUTES.MATCHING_STATUS.ROOT,
         element: withFallback(<MatchingStatusPage />),
-        roles: ['USER', 'EXPERT'],
+        roles: ['USER', 'PRO'],
         errorElement: <ErrorComponent />,
         children: [
           { index: true, element: <Navigate to="requests" replace /> },
           {
             path: ROUTES.MATCHING_STATUS.REQUESTS.ROOT,
             element: withFallback(<RequestsListPage />),
-            roles: ['USER', 'EXPERT'],
+            roles: ['USER', 'PRO'],
             errorElement: <ErrorComponent />,
           },
           {
             path: ROUTES.MATCHING_STATUS.PROPOSALS.ROOT,
             element: withFallback(<ProposalsListPage />),
-            roles: ['USER', 'EXPERT'],
+            roles: ['USER', 'PRO'],
             errorElement: <ErrorComponent />,
           },
         ],
@@ -275,7 +270,7 @@ export const routesManifest: AppRoute[] = [
       {
         path: ROUTES.MATCHING_STATUS.REQUESTS.NEW,
         element: withFallback(<RequestFormPage />),
-        roles: ['USER', 'EXPERT'],
+        roles: ['USER', 'PRO'],
         errorElement: <ErrorComponent />,
       },
       {
@@ -294,7 +289,7 @@ export const routesManifest: AppRoute[] = [
       {
         path: ROUTES.MATCHING_STATUS.PROPOSALS.NEW,
         element: withFallback(<ProposalFormPage />),
-        roles: ['USER', 'EXPERT'],
+        roles: ['USER', 'PRO'],
         errorElement: <ErrorComponent />,
       },
       {
@@ -306,19 +301,19 @@ export const routesManifest: AppRoute[] = [
       // 계약 (lazy)
       {
         path: ROUTES.CONTRACTS.ROOT,
-        roles: ['USER', 'EXPERT'],
+        roles: ['USER', 'PRO'],
         errorElement: <ErrorComponent />,
         children: [
           {
             path: ROUTES.CONTRACTS.NEW,
             element: withFallback(<ContractFormPage />),
-            roles: ['USER', 'EXPERT'],
+            roles: ['USER', 'PRO'],
             errorElement: <ErrorComponent />,
           },
           {
             path: ROUTES.CONTRACTS.DETAIL,
             element: withFallback(<ContractDetailPage />),
-            roles: ['USER', 'EXPERT'],
+            roles: ['USER', 'PRO'],
             errorElement: <ErrorComponent />,
           },
         ],
@@ -326,9 +321,9 @@ export const routesManifest: AppRoute[] = [
 
       // 정산 (lazy)
       {
-        path: ROUTES.EXPERT_SETTLEMENT,
-        element: withFallback(<ExpertSettlementPage />),
-        roles: ['EXPERT'],
+        path: ROUTES.PRO_SETTLEMENT,
+        element: withFallback(<ProSettlementPage />),
+        roles: ['PRO'],
         errorElement: <ErrorComponent />,
       },
       {
@@ -344,7 +339,7 @@ export const routesManifest: AppRoute[] = [
   {
     path: ROUTES.CHAT.ROOT,
     element: withFallback(<Chat />),
-    roles: ['USER', 'EXPERT'],
+    roles: ['USER', 'PRO'],
     errorElement: <ErrorComponent />,
   },
 
@@ -352,13 +347,13 @@ export const routesManifest: AppRoute[] = [
   {
     path: '/404',
     element: withFallback(<NotFound />),
-    roles: ['EXPERT', 'USER', 'GUEST'],
+    roles: ['PRO', 'USER', 'GUEST'],
     errorElement: <ErrorComponent />,
   },
   {
     path: '*',
     element: <Navigate to="/404" replace />,
-    roles: ['EXPERT', 'USER', 'GUEST'],
+    roles: ['PRO', 'USER', 'GUEST'],
     errorElement: <ErrorComponent />,
   },
 ];

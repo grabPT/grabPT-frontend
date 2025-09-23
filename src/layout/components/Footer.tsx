@@ -25,7 +25,7 @@ const Footer = () => {
               We want to realize PT service at a reasonable price that users want for personalized
               trainers.
               <br />
-              In addition, experts who have difficulty in securing new students will be given
+              In addition, pros who have difficulty in securing new students will be given
               opportunities to secure studentsIt aims to provide a win-win matching system by
               providing a platform environment.
             </p>

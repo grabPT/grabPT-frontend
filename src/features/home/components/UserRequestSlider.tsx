@@ -155,12 +155,12 @@ const UserRequestSlider = ({ title, requests, location, name }: RequestSliderPro
               <div key={`${r.requestId}-${i}`} className="h-[400px] px-4">
                 <RequestCardInMain
                   id={r.requestId}
-                  name={role === 'USER' ? name : role === 'EXPERT' ? r.nickname : ''}
+                  name={role === 'USER' ? name : role === 'PRO' ? r.nickname : ''}
                   location={location ?? ''}
                   profileImg={
                     role === 'USER'
                       ? r?.imageURL
-                      : role === 'EXPERT'
+                      : role === 'PRO'
                         ? r?.userProfileImageUrl
                         : HeaderProfile
                   }

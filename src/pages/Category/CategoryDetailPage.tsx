@@ -5,11 +5,11 @@ import { Navigate, useParams } from 'react-router-dom';
 
 import RealtimeMatchingStatus from '@/components/RealtimeMatchingStatus';
 import { SPORTS } from '@/constants/sports';
-import ExpertCardScroll from '@/features/Category/components/ExpertCardScroll';
+import ProCardScroll from '@/features/Category/components/ProCardScroll';
 import useGeolocation from '@/hooks/useGeolocation';
-import { useGetCategoryExperts } from '@/hooks/useGetCategoryExperts';
+import { useGetCategoryPros } from '@/hooks/useGetCategoryPros';
 import { useGetUserInfo } from '@/hooks/useGetUserInfo';
-import type { ExpertCardItem } from '@/types/ExpertCardItemType';
+import type { ProCardItem } from '@/types/ProCardItemType';
 
 const CategoryDetailPage = () => {
   const [location, setLocation] = useState<string>();
@@ -17,10 +17,10 @@ const CategoryDetailPage = () => {
   const sport = SPORTS.find((s) => s.slug === slug);
   const { address, loading, error } = useGeolocation();
   const { data: userData } = useGetUserInfo();
-  const { data: expertsList } = useGetCategoryExperts(slug, location);
-  const expertCards = useMemo<ExpertCardItem[]>(
+  const { data: prosList } = useGetCategoryPros(slug, location);
+  const proCards = useMemo<ProCardItem[]>(
     () =>
-      (expertsList ?? []).map((e) => ({
+      (prosList ?? []).map((e) => ({
         id: e.userId,
         imageUrl: e.profileImageUrl,
         name: e.userName,
@@ -28,7 +28,7 @@ const CategoryDetailPage = () => {
         rating: e.rating,
         pricePerSession: e.suggestSessionCount,
       })),
-    [expertsList],
+    [prosList],
   );
 
   const loc = userData?.userLocation[0].street;
@@ -52,7 +52,7 @@ const CategoryDetailPage = () => {
       </div>
 
       <section className="sm:mt-[4px] xl:mt-[17px]">
-        <ExpertCardScroll experts={expertCards} />
+        <ProCardScroll pros={proCards} />
       </section>
 
       <div className="mt-[156px] mb-[200px]">

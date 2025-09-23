@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 
 // routes/types.ts
-export type Role = 'GUEST' | 'USER' | 'EXPERT';
+export type Role = 'GUEST' | 'USER' | 'PRO';
 
 export interface AppRoute {
   path?: string;

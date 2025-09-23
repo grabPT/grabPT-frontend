@@ -42,7 +42,7 @@ const RequestCardInMain = ({
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
   const { role } = useRoleStore();
-  const isExpert = role === 'EXPERT';
+  const isPro = role === 'PRO';
   useEffect(() => {
     const { body } = document;
     if (!body) return;
@@ -92,19 +92,19 @@ const RequestCardInMain = ({
       <div
         className={clsx(
           'w-full rounded-md border border-blue-600/10 bg-[#f0f7ff]',
-          canWriteReview && !isExpert ? 'h-[140px]' : 'h-[200px]',
+          canWriteReview && !isPro ? 'h-[140px]' : 'h-[200px]',
         )}
       >
         <p
           className={clsx(
             'p-1.5 text-[12px] text-[#525252]',
-            canWriteReview && !isExpert ? 'line-clamp-4' : 'line-clamp-6',
+            canWriteReview && !isPro ? 'line-clamp-4' : 'line-clamp-6',
           )}
         >
           {text}
         </p>
       </div>
-      {canWriteReview && !isExpert && (
+      {canWriteReview && !isPro && (
         <Button
           className="z-10"
           type="button"

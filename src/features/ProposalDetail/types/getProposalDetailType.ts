@@ -4,7 +4,7 @@ export type proposalDetailType = {
   suggestUserNickname: string;
   suggestCenter: string;
   profileImageUrl: string;
-  suggestExpertId: number;
+  suggestProId: number;
   suggestMatchingId: number | null;
   suggestUserId: number;
   suggestSuggestedPrice: number;

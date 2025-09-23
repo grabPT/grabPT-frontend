@@ -1,7 +1,7 @@
 const ROUTES = {
   HOME: {
     ROOT: '/',
-    EXPERT: '/expert',
+    PRO: '/pro',
   },
 
   AUTH: {
@@ -22,8 +22,8 @@ const ROUTES = {
   MYPAGE: {
     ROOT: '/mypage',
     USER: '/mypage/user',
-    EXPERT: '/mypage/expert',
-    EXPERT_TABS: {
+    PRO: '/mypage/pro',
+    PRO_TABS: {
       DASHBOARD: '', // index
       PROFILE: 'profile',
       REVIEWS: 'reviews',
@@ -37,14 +37,14 @@ const ROUTES = {
     },
   },
 
-  EXPERT_DETAIL: {
-    ROOT: '/expert/:id',
+  PRO_DETAIL: {
+    ROOT: '/pro/:id',
     TABS: {
       INFO: 'info',
       REVIEWS: 'reviews',
     },
   },
-  EXPERT_SETTLEMENT: '/expert/settlement',
+  PRO_SETTLEMENT: '/pro/settlement',
   USER_SETTLEMENT: '/user/settlement',
   MATCHING_STATUS: {
     ROOT: '/matching',
@@ -70,7 +70,7 @@ const ROUTES = {
 } as const;
 
 export const urlFor = {
-  expertDetail: (id: number | undefined) => `/expert/${id}`,
+  proDetail: (id: number | undefined) => `/pro/${id}`,
   requestDetail: (id: number | undefined) => `/matching/requests/${id}`,
   requestProposals: (id: number | undefined) => `/matching/requests/${id}/proposals`,
   proposalDetail: (id: number | undefined) => `/matching/proposals/${id}`,
