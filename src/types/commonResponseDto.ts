@@ -1,5 +1,5 @@
 // 공통 응답 타입
-// type GetExpertDetailResponseDto = CommonResponse<ExpertDetail[]> 처럼 사용
+// type GetProDetailResponseDto = CommonResponse<ProDetail[]> 처럼 사용
 export interface CommonResponseDto<T = unknown> {
   isSuccess: boolean;
   code: string;

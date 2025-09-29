@@ -41,7 +41,7 @@ const RequestDetailPage = () => {
   const requestionId = Number(id);
   const { setSuggestInfo } = useSuggestStore();
   const { role } = useRoleStore();
-  //제안서 작성하기 버튼 누를 시 suggestStore의 requestionId를 업데이트하고 proposalFormPage에서 받아쓰기
+  //제안서 작성하기 버튼 누를 시 suggestStore의 requestionId를 업데이트하고 suggestFormPage에서 받아쓰기
 
   // api연결 시 isWriter 함수로 변경 (요청서의 작성자 id === 현재 유저 id)
   const { data: isWriter } = useGetCanEditRequest(requestionId);
@@ -49,7 +49,7 @@ const RequestDetailPage = () => {
 
   const TabItems: TabItem[] = [
     { label: '정보', to: urlFor.requestDetail(requestionId) },
-    { label: '제안 목록', to: urlFor.requestProposals(requestionId) },
+    { label: '제안 목록', to: urlFor.requestSuggests(requestionId) },
   ];
   const { data } = useGetDetailRequest(requestionId);
   const {
@@ -100,21 +100,21 @@ const RequestDetailPage = () => {
   }, [data, reset]);
   const category = SPORTS.find((s) => s.id === data?.requestCategoryId)?.label;
   // const profileImage = data?.profileImage;
-  const navigateToProposalForm = () => {
-    //request 페이지에서 url에 있는 id로 requestionId 업데이트 + 가격+위치 정보 업데이트 -> proposalFormPage에서 store의 저장된 값을 받아서 사용
+  const navigateToSuggestForm = () => {
+    //request 페이지에서 url에 있는 id로 requestionId 업데이트 + 가격+위치 정보 업데이트 -> suggestFormPage에서 store의 저장된 값을 받아서 사용
     setSuggestInfo({
       ...setSuggestInfo,
       requestionId: requestionId,
       price: data?.requestPrice,
       sessionCount: data?.requestSessionCount,
     });
-    navigate(ROUTES.MATCHING_STATUS.PROPOSALS.NEW);
+    navigate(ROUTES.MATCHING_STATUS.SUGGESTS.NEW);
   };
 
   const { mutate: editRequest } = usePatchRequest();
   const handleButton = () => {
-    if (role === 'EXPERT') {
-      navigateToProposalForm();
+    if (role === 'PRO') {
+      navigateToSuggestForm();
     } else {
       handleSubmit((formData) => {
         if (isWriter?.canEdit) {
@@ -434,9 +434,9 @@ const RequestDetailPage = () => {
         </section>
       </section>
 
-      {(role === 'EXPERT' || isWriter) && (
+      {(role === 'PRO' || isWriter) && (
         <Button width="w-[425px]" className="my-16" onClick={handleButton}>
-          {role === 'EXPERT' ? '제안서 작성' : '수정하기'}
+          {role === 'PRO' ? '제안서 작성' : '수정하기'}
         </Button>
       )}
     </section>

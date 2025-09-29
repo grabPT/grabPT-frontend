@@ -3,7 +3,7 @@ import SignupforUser from '@/features/Signup/assets/SignupforUser.png';
 import SignupBtn from '@/features/Signup/components/SignupBtn';
 import { useSignupStore } from '@/store/useSignupStore';
 
-export type UserType = 'normal' | 'expert';
+export type UserType = 'normal' | 'pro';
 interface UserTypeStepProps {
   onNext: () => void;
 }
@@ -11,7 +11,7 @@ interface UserTypeStepProps {
 const UserTypeStep = ({ onNext }: UserTypeStepProps) => {
   const { role, setRole } = useSignupStore();
 
-  const handleSelect = (type: 'normal' | 'expert') => {
+  const handleSelect = (type: 'normal' | 'pro') => {
     setRole(type === 'normal' ? 1 : 2);
   };
 
@@ -65,7 +65,7 @@ const UserTypeStep = ({ onNext }: UserTypeStepProps) => {
         {/* 전문가 카드 */}
         <div
           className="w-96 transform rounded-[1.25rem] shadow-2xl transition-transform duration-200 ease-in-out hover:scale-105"
-          onClick={() => handleSelect('expert')}
+          onClick={() => handleSelect('pro')}
         >
           <div className="relative cursor-pointer overflow-hidden rounded-[1.25rem]">
             <img

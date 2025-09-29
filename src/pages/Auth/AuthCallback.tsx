@@ -44,7 +44,7 @@ export const AuthCallback = () => {
         userIdRaw = Number(decodeCookie('USER_ID'));
       }
 
-      const role = roleRaw === ROLES.EXPERT || roleRaw === ROLES.USER ? roleRaw : ROLES.GUEST;
+      const role = roleRaw === ROLES.PRO || roleRaw === ROLES.USER ? roleRaw : ROLES.GUEST;
       setRole(role);
       setUserId(userIdRaw);
 
@@ -72,8 +72,8 @@ export const AuthCallback = () => {
       }
 
       // 3. 리다이렉트
-      if (role === ROLES.EXPERT) {
-        navigate(ROUTES.HOME.EXPERT);
+      if (role === ROLES.PRO) {
+        navigate(ROUTES.HOME.PRO);
       } else {
         navigate(ROUTES.HOME.ROOT);
       }

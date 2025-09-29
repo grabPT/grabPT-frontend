@@ -7,6 +7,7 @@ import { ZodError, z } from 'zod';
 
 import AppLogo from '@/assets/images/AppLogo.png';
 import Button from '@/components/Button';
+import ROUTES from '@/constants/routes';
 import {
   Header,
   개인정보처리방침,
@@ -19,7 +20,7 @@ import SignatureBox from '@/features/Contract/components/SignatureBox';
 import UserInformationForm from '@/features/Contract/components/UserInformationForm';
 import { useGetContractInfo } from '@/features/Contract/hooks/useGetContractInfo';
 import {
-  usePostContractExpertInfo,
+  usePostContractProInfo,
   usePostContractUserInfo,
 } from '@/features/Contract/hooks/usePostContractInfo';
 import { usePostContractPdf } from '@/features/Contract/hooks/usePostContractPdf';
@@ -136,14 +137,14 @@ const ContractFormPage = () => {
 
   // 서명(base64) — 미리보기 용
   const [memberSign, setMemberSign] = useState<string | null>(null);
-  const [expertSign, setExpertSign] = useState<string | null>(null);
+  const [proSign, setProSign] = useState<string | null>(null);
 
   // 업로드 결과 URL (#1 결과 보관)
   const [memberSignUrl, setMemberSignUrl] = useState<string | null>(null);
-  const [expertSignUrl, setExpertSignUrl] = useState<string | null>(null);
+  const [proSignUrl, setProSignUrl] = useState<string | null>(null);
 
   const role = useRoleStore((s) => s.role);
-  const isExpert = role === 'EXPERT';
+  const isPro = role === 'PRO';
   const handleAgree = () => setIsAgree((prev) => !prev);
 
   const userFormRef = useRef<HTMLFormElement>(null);
@@ -187,7 +188,7 @@ const ContractFormPage = () => {
   }, [contract]);
 
   const userInitialSignUrl = contract?.userInfo?.signUrl || null;
-  const expertInitialSignUrl = contract?.proInfo?.signUrl || null;
+  const proInitialSignUrl = contract?.proInfo?.signUrl || null;
 
   // ✅ 모든 필드 + 서명이 채워졌는지 판별
   const isFilledUser = (defs?: userInfoType | undefined, sign?: string | null) =>
@@ -217,25 +218,25 @@ const ContractFormPage = () => {
 
   // 서명은 서버초기/로컬 업로드 둘 다 고려
   const userSignAny = userInitialSignUrl ?? memberSignUrl;
-  const expertSignAny = expertInitialSignUrl ?? expertSignUrl;
+  const proSignAny = proInitialSignUrl ?? proSignUrl;
 
   // 날짜도 서버초기/로컬 입력 둘 다 고려
   const startAny = startDate || contract?.startDate || '';
   const contractAny = contractDate || contract?.contractDate || '';
 
   const userComplete = isFilledUser(userDefaults, userSignAny);
-  const proComplete = isFilledPro(proDefaults, expertSignAny, {
+  const proComplete = isFilledPro(proDefaults, proSignAny, {
     startDate: startAny,
     contractDate: contractAny,
   });
 
   // ✅ 편집 가능 여부
-  const canEditUser = !isExpert && !userComplete;
-  const canEditPro = isExpert && !proComplete;
+  const canEditUser = !isPro && !userComplete;
+  const canEditPro = isPro && !proComplete;
 
   // 업로드 훅
   const { mutate: uploadUserInfo, isPending: uploadingUserInfo } = usePostContractUserInfo();
-  const { mutate: uploadProInfo, isPending: uploadingProInfo } = usePostContractExpertInfo();
+  const { mutate: uploadProInfo, isPending: uploadingProInfo } = usePostContractProInfo();
   const { mutate: uploadUserSign, isPending: uploadingUser } = usePostUserSignatureFile();
   const { mutate: uploadProSign, isPending: uploadingPro } = usePostProSignatureFile();
   const { mutate: createPdf } = usePostContractPdf();
@@ -250,7 +251,7 @@ const ContractFormPage = () => {
   let primaryLabel = uploading ? '업로드 중…' : '작성 완료';
   let primaryFullWidth = false;
 
-  if (!isExpert) {
+  if (!isPro) {
     // USER 화면 규칙
     if (userComplete && !proComplete) {
       // 사용자 완료, 전문가 미완료 → 잠금 + 버튼 비활성 + w-full
@@ -265,7 +266,7 @@ const ContractFormPage = () => {
       primaryFullWidth = true;
     }
   } else {
-    // EXPERT 화면 규칙
+    // PRO 화면 규칙
     if (proComplete) {
       // 전문가 완료 → 잠금 + 버튼 비활성 + w-full
       showCancel = false;
@@ -277,8 +278,8 @@ const ContractFormPage = () => {
   // ─────────────────────────────────────────────────────────────
   // ✅ disabledAgree 파생값 계산 + effect로 동기화
   // - 사용자(user) 측: userComplete이면 동의 강제(완료/대기 모두)
-  // - 전문가(expert) 측: proComplete이면 동의 강제
-  const forceAgree = (!isExpert && userComplete) || (isExpert && proComplete);
+  // - 전문가(pro) 측: proComplete이면 동의 강제
+  const forceAgree = (!isPro && userComplete) || (isPro && proComplete);
 
   useEffect(() => {
     // disabledAgree는 effect에서만 갱신하여 렌더 중 setState를 피함
@@ -360,7 +361,7 @@ const ContractFormPage = () => {
     }
     if (primaryDisabled) return;
 
-    if (!isExpert) {
+    if (!isPro) {
       if (canEditUser) {
         // 1) info 먼저 - Zod 검증 적용
         const body = extractUserBodyFromForm(userFormRef.current);
@@ -424,16 +425,16 @@ const ContractFormPage = () => {
           {
             onSuccess: () => {
               // 2) sign 업로드
-              if (!expertSign) {
+              if (!proSign) {
                 alert('전문가 서명을 입력하세요.');
                 return;
               }
-              const file = dataURLtoFile(expertSign, `expert-sign-${Date.now()}.png`);
+              const file = dataURLtoFile(proSign, `pro-sign-${Date.now()}.png`);
               uploadProSign(
                 { contractId, file },
                 {
                   onSuccess: ({ result }) => {
-                    setExpertSignUrl(result.imageUrl);
+                    setProSignUrl(result.imageUrl);
                     location.reload();
                   },
                 },
@@ -491,7 +492,7 @@ const ContractFormPage = () => {
                   order_uid: rsp.merchant_uid,
                 });
                 alert('결제완료!');
-                navigate('/user/settlement');
+                navigate(ROUTES.USER_SETTLEMENT);
                 // 후처리 (알림, 라우팅 등)
               } else {
                 console.log('결제 검증 실패');
@@ -550,7 +551,7 @@ const ContractFormPage = () => {
               <InformationCard title={'서비스 이용 정보'} borderColor={'blue'}>
                 <ServiceInformationForm
                   data={contract}
-                  isExpert={isExpert}
+                  isPro={isPro}
                   startDate={startDate}
                   contractDate={contractDate}
                   onChangeStartDate={setStartDate}
@@ -599,10 +600,10 @@ const ContractFormPage = () => {
               />
               <SignatureBox
                 title="전문가"
-                value={expertSign}
-                onChange={setExpertSign}
+                value={proSign}
+                onChange={setProSign}
                 isCanEdit={canEditPro}
-                initialImageUrl={expertInitialSignUrl ?? undefined}
+                initialImageUrl={proInitialSignUrl ?? undefined}
               />
             </div>
           </div>
@@ -619,7 +620,7 @@ const ContractFormPage = () => {
             )}
             <Button
               width="w-full"
-              onClick={userComplete && proComplete && !isExpert ? handleSuccess : handleSubmit}
+              onClick={userComplete && proComplete && !isPro ? handleSuccess : handleSubmit}
               disabled={primaryDisabled}
               className={primaryFullWidth ? 'col-span-2' : undefined}
             >

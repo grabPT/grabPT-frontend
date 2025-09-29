@@ -20,12 +20,12 @@ const Footer = () => {
             <p>
               By building a user-centric online matching system, <br />
               <br />
-              through a trainer's proposal in accordance with a user-centered request.
+              through a trainer's suggest in accordance with a user-centered request.
               <br />
               We want to realize PT service at a reasonable price that users want for personalized
               trainers.
               <br />
-              In addition, experts who have difficulty in securing new students will be given
+              In addition, pros who have difficulty in securing new students will be given
               opportunities to secure studentsIt aims to provide a win-win matching system by
               providing a platform environment.
             </p>

@@ -13,6 +13,7 @@ import type { SportsSlugType } from '@/types/SportsType';
 
 const UserMainPage = () => {
   console.log('devleop테스트입니다.');
+  console.log('develop 배포 테스트');
 
   // const { isLoggedIn, role } = useRoleStore();
   const role = useRoleStore((state) => state.role);

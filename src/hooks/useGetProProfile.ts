@@ -13,7 +13,7 @@ export const useProProfileQuery = () => {
       const data = await getProProfile();
       return data.result;
     },
-    enabled: role === 'EXPERT',
+    enabled: role === 'PRO',
     staleTime: 1000 * 60 * 5,
   });
 };
