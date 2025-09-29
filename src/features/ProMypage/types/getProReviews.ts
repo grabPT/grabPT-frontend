@@ -31,10 +31,11 @@ export type getProReviewsResult = {
 export type proReviewList = {
   reviewId: number;
   reviewer: string;
-  residence: string;
+  location: string;
   rating: number;
   content: string;
   reviewee: string;
   revieweeId: number;
   imageURL: string;
+  centerName: string;
 };

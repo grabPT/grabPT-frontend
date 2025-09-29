@@ -1,3 +1,4 @@
+import { END_POINT } from '@/constants/endPoints';
 import { privateInstance } from '@/libs/axios';
 import type { CommonResponseDto } from '@/types/commonResponseDto';
 
@@ -17,7 +18,7 @@ export const getProCertifications = async (): Promise<getProCertificationRespons
   try {
     console.log('=== GET 요청 시작 ===');
     const response = await privateInstance.get<getProCertificationResponseDto>(
-      '/mypage/pro/certification',
+      END_POINT.MYPROPAGE.CERTIFICATIONS.certifications,
     );
     console.log('=== GET 요청 응답 ===');
     console.log('📋 Response data:', response.data);

@@ -159,8 +159,8 @@ const ContractFormPage = () => {
   // 서버 데이터 들어오면 초기화
   useEffect(() => {
     if (contract?.startDate) setStartDate(contract.startDate);
-    if (contract?.contractDate) setContractDate(contract.contractDate);
-  }, [contract?.startDate, contract?.contractDate]);
+    if (contract?.expireDate) setContractDate(contract.expireDate);
+  }, [contract?.startDate, contract?.expireDate]);
 
   // ✅ 기본값 구성
   const userDefaults = useMemo<userInfoType | undefined>(() => {
@@ -171,7 +171,7 @@ const ContractFormPage = () => {
       birth: u.birth ?? null,
       phoneNumber: u.phoneNumber ?? '',
       gender: u.gender ?? null,
-      address: u.address ?? '',
+      address: u.location ?? '',
     };
   }, [contract]);
 
@@ -183,12 +183,12 @@ const ContractFormPage = () => {
       birth: p.birth ?? null,
       phoneNumber: p.phoneNumber ?? '',
       gender: p.gender ?? null,
-      address: p.address ?? '',
+      address: p.location ?? '',
     };
   }, [contract]);
 
-  const userInitialSignUrl = contract?.userInfo?.signUrl || null;
-  const proInitialSignUrl = contract?.proInfo?.signUrl || null;
+  const userInitialSignUrl = contract?.userInfo?.signImageUrl || null;
+  const proInitialSignUrl = contract?.proInfo?.signImageUrl || null;
 
   // ✅ 모든 필드 + 서명이 채워졌는지 판별
   const isFilledUser = (defs?: userInfoType | undefined, sign?: string | null) =>
@@ -222,7 +222,7 @@ const ContractFormPage = () => {
 
   // 날짜도 서버초기/로컬 입력 둘 다 고려
   const startAny = startDate || contract?.startDate || '';
-  const contractAny = contractDate || contract?.contractDate || '';
+  const contractAny = contractDate || contract?.expireDate || '';
 
   const userComplete = isFilledUser(userDefaults, userSignAny);
   const proComplete = isFilledPro(proDefaults, proSignAny, {
@@ -475,7 +475,7 @@ const ContractFormPage = () => {
             buyer_tel: order.buyer_tel,
             buyer_addr: order.buyer_address,
             buyer_postcode: order.buyer_postcode,
-            // 필요시 모바일 리다이렉트: m_redirect_url: 'https://your.site/payments/complete'
+            // 필요시 모바일 리다이렉트: m_redirect_url: 'https://your.sites/complete'
             // 추가 옵션도 여기서 확장 가능
           } as const;
           // 4) 결제 요청

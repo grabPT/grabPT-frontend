@@ -1,3 +1,4 @@
+import { END_POINT } from '@/constants/endPoints';
 import type {
   postCustomOrderRequestDto,
   postCustomOrderResponseDto,
@@ -8,7 +9,10 @@ export const postCustomOrder = async (
   params: postCustomOrderRequestDto,
 ): Promise<postCustomOrderResponseDto> => {
   try {
-    const { data } = await privateInstance.post(`/customOrder`, params);
+    const { data } = await privateInstance.post(
+      END_POINT.CONTRACTS.CUSTOMORDER.customOrder,
+      params,
+    );
     return data;
   } catch (e) {
     console.log(e);
