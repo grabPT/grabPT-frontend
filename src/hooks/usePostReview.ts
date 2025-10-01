@@ -1,11 +1,12 @@
 import { useMutation } from '@tanstack/react-query';
 
-import { type ReviewForm, postReview } from '@/apis/postReview';
+import { postReview } from '@/apis/postReview';
+import type { postReviewRequestDto } from '@/features/home/types/reviews';
 import type { CommonResponseDto } from '@/types/commonResponseDto';
 
 export const usePostReview = () => {
-  return useMutation<CommonResponseDto<string>, Error, ReviewForm>({
-    mutationFn: (data: ReviewForm) => postReview(data),
+  return useMutation<CommonResponseDto<string>, Error, postReviewRequestDto>({
+    mutationFn: (data: postReviewRequestDto) => postReview(data),
     onSuccess: (data) => {
       console.log('리뷰 작성 요청 성공:', data);
     },

@@ -65,7 +65,6 @@ const ROUTES = {
       DETAIL: '/matching/suggests/:id',
     },
   },
-
   CONTRACTS: {
     ROOT: '/contracts',
     NEW: '/contracts/new/:id',

@@ -11,7 +11,7 @@ import CommentBox from '@/components/CommentBox';
 import { usePostReview } from '@/hooks/usePostReview';
 
 interface IReveiwFormModal {
-  proProfileId: number;
+  proId: number;
   rating: number;
   proName: string;
   setModalOpen: Dispatch<SetStateAction<boolean>>;
@@ -21,17 +21,12 @@ type ReviewSchema = {
   content: string;
 };
 
-export const ReviewFormModal = ({
-  setModalOpen,
-  proName,
-  proProfileId,
-  rating,
-}: IReveiwFormModal) => {
+export const ReviewFormModal = ({ setModalOpen, proName, proId, rating }: IReveiwFormModal) => {
   const reviewSchema = z.object({
     content: z.string().max(300, { message: '리뷰는 300자 이하여야 합니다.' }),
   });
 
-  console.log('현재 프로프로필아이디', proProfileId);
+  console.log('현재 프로프로필아이디', proId);
 
   const { handleSubmit, watch, setValue } = useForm<ReviewSchema>({
     mode: 'onChange',
@@ -49,7 +44,7 @@ export const ReviewFormModal = ({
     mutate({
       ...data,
       rating: rate ?? 0,
-      proProfileId,
+      proId,
     });
   });
 

@@ -21,11 +21,12 @@ const ProDetailReviews = () => {
             <ReviewCard
               imageURL={rv.imageURL}
               name={rv.reviewer}
-              location={rv.residence}
+              location={rv.location}
               rating={rv.rating}
               content={rv.content}
               isProDetail={true}
               proId={rv.revieweeId}
+              centerName={rv.centerName}
             />
           </div>
         ))}

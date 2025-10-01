@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
 
+import { END_POINT } from '@/constants/endPoints';
 import { privateInstance } from '@/libs/axios';
 import { useRoleStore } from '@/store/useRoleStore';
 import { useStompStore } from '@/store/useStompStore';
@@ -10,7 +11,7 @@ import { useStompStore } from '@/store/useStompStore';
 // 당신 프로젝트 axios 인스턴스
 
 async function fetchUnreadTotal(): Promise<number> {
-  const { data } = await privateInstance.get('/chat/unreadCount', { withCredentials: true });
+  const { data } = await privateInstance.get(END_POINT.CHAT.unreadCount, { withCredentials: true });
   return data?.isSuccess ? (data.result as number) : 0;
 }
 

@@ -65,7 +65,7 @@ const ServiceInformationForm = ({
       <input
         aria-label="이용 장소"
         type="text"
-        placeholder={`${data?.ptAddress ?? ''}`}
+        placeholder={`${data?.ptLocation ?? ''}`}
         disabled
         className="h-10 w-full rounded-md border border-gray-300 bg-gray-200 px-3 text-gray-700"
       />

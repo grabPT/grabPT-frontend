@@ -130,7 +130,7 @@ const ProProfile = () => {
 
   const handleCommentSave = () => {
     mutateComment(
-      { description: comment }, // comment는 입력 state
+      { profileDescription: comment }, // comment는 입력 state
       {
         onSuccess: () => {
           setIsCommentedit(false); // 편집 모드 종료
@@ -204,7 +204,7 @@ const ProProfile = () => {
     }
 
     mutateCenter(
-      { center: centerName, centerDescription },
+      { centerName: centerName, centerDescription },
       {
         onSuccess: () => {
           setIsLocationEdit(false);

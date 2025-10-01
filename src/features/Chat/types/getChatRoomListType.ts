@@ -11,7 +11,7 @@ export type ChatRoomListItemType = {
   roomName: string;
   lastMessage: string;
   lastMessageTime: string;
-  otherUserProfile: string;
+  otherUserProfileImageUrl: string;
   otherUserId: number;
 };
 

@@ -281,8 +281,8 @@ export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
           )}
 
           {totalMessages.map((message, index) => {
-            const currentDate = new Date(message.sendAt);
-            const prevDate = index > 0 ? new Date(totalMessages[index - 1].sendAt) : null;
+            const currentDate = new Date(message.sentAt);
+            const prevDate = index > 0 ? new Date(totalMessages[index - 1].sentAt) : null;
             const shouldShowDate = isDifferentDay(prevDate, currentDate);
 
             return (

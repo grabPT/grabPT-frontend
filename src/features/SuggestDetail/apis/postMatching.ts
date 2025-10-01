@@ -1,3 +1,4 @@
+import { END_POINT } from '@/constants/endPoints';
 import { privateInstance } from '@/libs/axios';
 import type { CommonResponseDto } from '@/types/commonResponseDto';
 
@@ -17,7 +18,7 @@ export const postMatching = async (
   params: postMatchingRequestDto,
 ): Promise<postMatchingResponseDto> => {
   const { data } = await privateInstance.post(
-    '/matching',
+    END_POINT.MATCHING.matching,
     {}, // body는 비워두고
     { params }, // ← 쿼리 스트링으로 전달
   );

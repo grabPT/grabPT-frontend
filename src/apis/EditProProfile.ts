@@ -1,7 +1,8 @@
+import { END_POINT } from '@/constants/endPoints';
 import { multipartInstance, privateInstance } from '@/libs/axios';
 
 export interface ProDescriptionPayload {
-  description: string;
+  profileDescription: string;
 }
 
 export interface ProPhotosPayload {
@@ -17,13 +18,16 @@ export interface ProPricePayload {
 }
 
 export interface ProCenterPayload {
-  center: string;
+  centerName: string;
   centerDescription: string;
 }
 
 // 프로 설명 description Edit (토큰 자동 주입)
 export const editProDescription = async (payload: ProDescriptionPayload) => {
-  const { data } = await privateInstance.patch('/mypage/pro/description', payload);
+  const { data } = await privateInstance.patch(
+    END_POINT.MYPROPAGE.DESCRIPTION.description,
+    payload,
+  );
   return data;
 };
 
@@ -43,16 +47,16 @@ export const editProPhotos = async (existingPhotoUrls: string[], newPhotos: File
   newPhotos.forEach((file) => formData.append('newPhotos', file, file.name));
 
   // ❌ Content-Type 수동 지정 금지 (boundary는 브라우저/axios가 설정)
-  const { data } = await multipartInstance.patch('/mypage/pro/photos', formData);
+  const { data } = await multipartInstance.patch(END_POINT.MYPROPAGE.PHOTOS.photos, formData);
   return data;
 };
 
 export const editProPrice = async (payload: ProPricePayload) => {
-  const { data } = await privateInstance.patch('/mypage/pro/ptPrice', payload);
+  const { data } = await privateInstance.patch(END_POINT.MYPROPAGE.PTPRICE.ptPrice, payload);
   return data;
 };
 
 export const editProCenter = async (payload: ProCenterPayload) => {
-  const { data } = await privateInstance.patch('/mypage/pro/center', payload);
+  const { data } = await privateInstance.patch(END_POINT.MYPROPAGE.CENTER.center, payload);
   return data;
 };

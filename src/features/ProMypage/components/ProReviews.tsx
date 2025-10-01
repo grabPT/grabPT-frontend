@@ -16,7 +16,7 @@ const ProReviews = () => {
             <ReviewCard
               imageURL={rv.imageURL}
               name={rv.reviewer}
-              location={rv.residence}
+              location={rv.location}
               rating={rv.rating}
               content={rv.content}
             />

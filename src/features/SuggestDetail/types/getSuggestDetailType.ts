@@ -1,20 +1,21 @@
 import type { CommonResponseDto } from '@/types/commonResponseDto';
 
 export type suggestDetailType = {
-  suggestUserNickname: string;
-  suggestCenter: string;
+  userNickname: string;
+  centerName: string;
   profileImageUrl: string;
-  suggestProId: number;
-  suggestMatchingId: number | null;
-  suggestUserId: number;
-  suggestSuggestedPrice: number;
-  suggestOriginalPrice: number;
-  suggestDiscountAmount: number;
-  suggestIsDiscounted: true;
-  suggestMessage: string;
-  suggestLocation: string;
+  proId: number;
+  matchingId: number | null;
+  userId: number;
+  suggestedPrice: number;
+  requestedPrice: number;
+  discountAmount: number;
+  isDiscounted: true;
+  message: string;
+  location: string;
   photos: string[];
-  suggestRequestionId: number;
+  requestionId: number;
+  suggestionId: number; //이거 추후에 사용하도록 추가할 에정
 };
 
 export type getSuggestDetailResponseDto = CommonResponseDto<suggestDetailType>;

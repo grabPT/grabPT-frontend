@@ -11,7 +11,7 @@ export type messageType = {
   senderId: number;
   content: string;
   messageType: 'FILE' | 'IMAGE' | 'TEXT';
-  sendAt: string;
+  sentAt: string;
   readCount: number;
 };
 

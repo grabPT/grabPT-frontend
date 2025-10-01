@@ -15,13 +15,13 @@ const SuggestDetailPage = () => {
 
   const { data: suggestion, error, isError, isLoading } = useGetSuggestDetail(suggestionId);
 
-  const navigateToProProfile = () => navigate(urlFor.proDetail(suggestion?.suggestProId));
+  const navigateToProProfile = () => navigate(urlFor.proDetail(suggestion?.proId));
 
   const 채팅상담 = () => {
     if (!suggestion) return;
-    postCreateChatRoom({ userId: suggestion.suggestUserId, proId: suggestion.suggestProId });
+    postCreateChatRoom({ userId: suggestion.userId, proId: suggestion.proId });
     navigate(ROUTES.CHAT.ROOT, {
-      state: { proId: suggestion.suggestProId },
+      state: { proId: suggestion.proId },
     });
   };
 
@@ -30,8 +30,8 @@ const SuggestDetailPage = () => {
   const 매칭수락 = async () => {
     if (!suggestion) return;
     const res = await matchAsync({
-      requestionId: Number(suggestion.suggestRequestionId),
-      suggestionId,
+      requestionId: Number(suggestion.requestionId),
+      suggestionId: Number(suggestion.suggestionId),
     });
 
     if (res.isSuccess) {
@@ -73,10 +73,8 @@ const SuggestDetailPage = () => {
           alt="트레이너 프로필"
           className="h-[300px] w-[300px] rounded-full object-cover"
         />
-        <span className="mt-5 text-4xl font-bold text-[#21272A]">
-          {suggestion?.suggestUserNickname}
-        </span>
-        <span className="text-button text-sm font-semibold">{suggestion?.suggestCenter}</span>
+        <span className="mt-5 text-4xl font-bold text-[#21272A]">{suggestion?.userNickname}</span>
+        <span className="text-button text-sm font-semibold">{suggestion?.centerName}</span>
       </div>
 
       <div className="mt-12 flex w-full justify-end gap-4">
@@ -102,16 +100,16 @@ const SuggestDetailPage = () => {
             <span className="mr-5">회</span>
             <input
               type="number"
-              value={suggestion?.suggestSuggestedPrice}
+              value={suggestion?.suggestedPrice}
               aria-label="제안 PT 가격"
               readOnly
               className="mr-1.5 h-12 w-[260px] rounded-xl border-2 border-[#BABABA] px-8 text-end text-2xl text-[#9F9F9F]"
             />
             <span className="mr-5">원</span>
 
-            {suggestion?.suggestIsDiscounted && (
+            {suggestion?.isDiscounted && (
               <p className="absolute top-full right-0 mt-1 mr-5 text-sm font-extrabold text-[#FF0000]">
-                - {suggestion.suggestDiscountAmount}원
+                - {suggestion.discountAmount}원
               </p>
             )}
           </div>
@@ -121,14 +119,14 @@ const SuggestDetailPage = () => {
           <span>
             제안 <span className="text-button">상세 설명</span>
           </span>
-          <p className="mt-2 text-xl font-medium">{suggestion?.suggestMessage}</p>
+          <p className="mt-2 text-xl font-medium">{suggestion?.message}</p>
         </div>
 
         <div>
           <span>
             상세 <span className="text-button">위치</span>
           </span>
-          <p className="mt-2 text-xl font-medium">{suggestion?.suggestLocation}</p>
+          <p className="mt-2 text-xl font-medium">{suggestion?.location}</p>
         </div>
 
         <div className="w-full">

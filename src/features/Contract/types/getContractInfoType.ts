@@ -6,22 +6,22 @@ export type getContractInfoResultType = {
     birth: string;
     phoneNumber: string;
     gender: 'MALE' | 'FEMALE';
-    address: string;
-    signUrl: string;
+    location: string;
+    signImageUrl: string;
   };
   proInfo: {
     name: string;
     birth: string;
     phoneNumber: string;
     gender: 'MALE' | 'FEMALE';
-    address: string;
-    signUrl: string;
+    location: string;
+    signImageUrl: string;
   };
   contractSessionCount: 0;
   contractPrice: 0;
   startDate: string;
-  ptAddress: string;
-  contractDate: string;
+  ptLocation: string;
+  expireDate: string;
   status: 'MATCHED' | 'MATCHING' | 'WAITING';
   matchingId: number;
 };

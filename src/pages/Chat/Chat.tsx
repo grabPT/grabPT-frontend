@@ -98,7 +98,7 @@ const Chat = () => {
               <ChatInfo
                 roomId={selectedChat.chatRoomId}
                 name={selectedChat.roomName}
-                img={selectedChat.otherUserProfile}
+                img={selectedChat.otherUserProfileImageUrl}
               />
               <MessageInput
                 onSend={sendText}

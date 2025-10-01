@@ -13,7 +13,7 @@ interface ReviewCardProps {
   location?: string;
   rating: number; // 0‒5
   content: string;
-  center?: string;
+  centerName?: string;
   proId?: number;
   proNickName?: string;
   imageURL?: string;
@@ -24,7 +24,7 @@ const ReviewCard = ({
   name,
   rating,
   content,
-  center,
+  centerName,
   proId,
   proNickName,
   imageURL,
@@ -57,7 +57,7 @@ const ReviewCard = ({
               {role === 'PRO' || isProDetail ? <>From. {name}</> : <>To. {proNickName}</>}
             </span>
             <span className="text-[12px] leading-[140%] font-semibold text-[#7A7A7A]">
-              {center}
+              {centerName}
             </span>
             <StarRating rating={rating} size={10} fontSize={6} />
           </div>

@@ -33,7 +33,7 @@ const UserReviews = () => {
                 rating={rv.rating}
                 content={rv.content}
                 proNickName={rv.reviewee}
-                center={rv.center}
+                centerName={rv.center}
                 proId={rv.revieweeId}
                 imageURL={rv.imageURL}
               />
