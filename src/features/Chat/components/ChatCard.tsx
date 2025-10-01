@@ -17,7 +17,7 @@ const ChatCard = ({ chat }: ChatCardProps) => {
   return (
     <div className="flex w-full justify-center gap-3">
       <img
-        src={chat.otherUserProfile}
+        src={chat.otherUserProfileImageUrl}
         onError={onErrorImage}
         alt="chat profile"
         className="h-12 w-12 rounded-full"

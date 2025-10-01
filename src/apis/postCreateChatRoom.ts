@@ -1,3 +1,4 @@
+import { END_POINT } from '@/constants/endPoints';
 import { privateInstance } from '@/libs/axios';
 import type { CommonResponseDto } from '@/types/commonResponseDto';
 
@@ -7,7 +8,7 @@ export type postCreateChatRoomRequestDto = {
 };
 
 export type postCreatechatRoomResultType = {
-  chatRoomId: number;
+  roomId: number;
 };
 
 export type postCreateChatRoomResponseDto = CommonResponseDto<postCreatechatRoomResultType>;
@@ -16,7 +17,7 @@ export const postCreateChatRoom = async (
   params: postCreateChatRoomRequestDto,
 ): Promise<postCreateChatRoomResponseDto> => {
   try {
-    const { data } = await privateInstance.post(`/chatRoom/request`, params);
+    const { data } = await privateInstance.post(END_POINT.CHAT.request, params);
     return data;
   } catch (e) {
     console.log(e);

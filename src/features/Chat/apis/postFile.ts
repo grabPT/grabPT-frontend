@@ -1,3 +1,4 @@
+import { END_POINT } from '@/constants/endPoints';
 import type { sendMessageRequestDto } from '@/features/Chat/hooks/useChatRoomSocket';
 import { privateInstance } from '@/libs/axios';
 import type { CommonResponseDto } from '@/types/commonResponseDto';
@@ -16,7 +17,7 @@ export const postFile = async ({
   const form = new FormData();
   form.append('file', file, file.name); // ← @RequestPart("file") 와 이름 일치
 
-  const { data } = await privateInstance.post(`/chatRoom/${roomId}/upload`, form, {
+  const { data } = await privateInstance.post(END_POINT.CHAT.upload(roomId), form, {
     // axios는 FormData 주면 boundary 포함해 자동으로 Content-Type 설정함.
     // 일부 환경에서 명시하고 싶다면 다음 줄을 켜도 무방:
     headers: { 'Content-Type': 'multipart/form-data' },

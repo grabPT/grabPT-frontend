@@ -14,7 +14,7 @@ export const ChatText = ({ chat, imageUrl }: ChatTextProps) => {
   const isMe = chat.senderId === userId;
   const isImage = chat.messageType === 'IMAGE';
   const isFile = chat.messageType === 'FILE';
-  const timeAgo = new Date(chat.sendAt).toLocaleTimeString('ko-KR', {
+  const timeAgo = new Date(chat.sentAt).toLocaleTimeString('ko-KR', {
     hour: '2-digit',
     minute: '2-digit',
   });

@@ -72,12 +72,18 @@ export const END_POINT = {
 
   SUGGESTS: {
     list: '/api/suggestion/mySuggestions',
+    suggestDetail: (suggestionId: number) => `/api/suggestion/${suggestionId}`,
+    save: '/api/suggestion',
   },
 
   CHAT: {
     list: '/chatRoom/list',
+    request: '/chatRoom/request',
+    upload: (roomId: number) => `/chatRoom/${roomId}/upload`,
     messages: (roomId: number) => `/chatRoom/${roomId}/messages`,
     unreadCount: '/chat/unreadCount',
+    readWhenExist: (roomId: number) => `/chatRoom/${roomId}/readWhenExist`,
+    readWhenEnter: (roomId: number) => `/chatRoom/${roomId}/readWhenEnter`,
   },
   SETTLEMENT: { settlement: '/api/trainer/dashboard', user_settlement: '/api/user/dashboard' },
   CONTRACTS: {

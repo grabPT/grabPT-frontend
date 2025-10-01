@@ -1,3 +1,4 @@
+import { END_POINT } from '@/constants/endPoints';
 import type { SuggestRequestDto, SuggestResponseDto } from '@/features/SuggestForm/types/Suggest';
 import { multipartInstance } from '@/libs/axios';
 import type { CommonResponseDto } from '@/types/commonResponseDto';
@@ -23,7 +24,7 @@ export const postSuggest = async (
     blob.text().then(console.log);
   }
 
-  const { data: responseData } = await multipartInstance.post('/api/suggestion', form, {
+  const { data: responseData } = await multipartInstance.post(END_POINT.SUGGESTS.save, form, {
     skipAuth: false,
   });
   return responseData;
