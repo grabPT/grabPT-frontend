@@ -207,7 +207,7 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
   const handleEmailCheck = () => {
     checkEmail(email, {
       onSuccess: (res) => {
-        if (!res.duplicate) {
+        if (!res.isDuplicated) {
           setEmailDuplicate(false);
         } else {
           setEmailDuplicate(true);

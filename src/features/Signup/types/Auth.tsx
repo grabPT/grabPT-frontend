@@ -68,6 +68,6 @@ export type LogoutDto = {
 };
 
 export type EmailCheckResponseDto = {
-  duplicate: boolean;
+  isDuplicated: boolean;
   oauthProvider: string | null;
 };
