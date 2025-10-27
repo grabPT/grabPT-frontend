@@ -90,7 +90,14 @@ export const END_POINT = {
     readWhenExist: (roomId: number) => `/chatRoom/${roomId}/readWhenExist`,
     readWhenEnter: (roomId: number) => `/chatRoom/${roomId}/readWhenEnter`,
   },
+
+  ALARM: {
+    read: (alarmId: number) => `/api/alarm/${alarmId}/read`,
+    list: '/api/alarmList',
+  },
+
   SETTLEMENT: { settlement: '/api/trainer/dashboard', user_settlement: '/api/user/dashboard' },
+
   CONTRACTS: {
     //사용처가 여기긴 한데 추후에 API 분리 가능성 있음
     CUSTOMORDER: {
