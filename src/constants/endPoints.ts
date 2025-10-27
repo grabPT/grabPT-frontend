@@ -67,6 +67,7 @@ export const END_POINT = {
     },
     FORM: {},
     PATCH: (requestionId: number) => `/api/reqeustion/${requestionId}`,
+    DELETE: (requestionId: number) => `/api/reqeustion/${requestionId}`,
     GET_DETAIL: (requestionId: number) => `/api/reqeustion/${requestionId}`,
     GET_CAN_EDIT: (requestionId: number) => `/api/reqeustion/${requestionId}/requestion-can-edit`,
     SUGGESTS_FOR_REQUESTS: (requestionId: number) =>

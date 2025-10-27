@@ -81,32 +81,32 @@ const RequestDetailPage = () => {
   useEffect(() => {
     if (data) {
       reset({
-        categoryId: data.requestCategoryId,
-        purpose: data.requestPurpose ?? [],
-        ageGroup: data.requestAgeGroup ?? null,
-        userGender: data.requestUserGender,
-        proGender: data.requestTrainerGender,
-        startDate: Array.isArray(data.requestStartPreference)
-          ? `${data.requestStartPreference[0]}-${String(data.requestStartPreference[1]).padStart(2, '0')}-${String(data.requestStartPreference[2]).padStart(2, '0')}`
-          : (data.requestStartPreference ?? ''),
-        availableDays: data.requestAvailableDays ?? [],
-        availableTimes: data.requestAvailableTimes ?? [],
-        content: data.requestContent ?? '',
-        etcPurposeContent: data.requestEtcPurposeContent ?? '',
-        price: data.requestPrice ?? 0,
-        sessionCount: data.requestSessionCount ?? 0,
+        categoryId: data.categoryId,
+        purpose: data.purposes ?? [],
+        ageGroup: data.ageGroup ?? null,
+        userGender: data.userGender,
+        proGender: data.proGender,
+        startDate: Array.isArray(data.startDate)
+          ? `${data.startDate[0]}-${String(data.startDate[1]).padStart(2, '0')}-${String(data.startDate[2]).padStart(2, '0')}`
+          : (data.startDate ?? ''),
+        availableDays: data.availableDays ?? [],
+        availableTimes: data.availableTimes ?? [],
+        content: data.content ?? '',
+        etcPurposeContent: data.etcPurposeContent ?? '',
+        price: data.requestedPrice ?? 0,
+        sessionCount: data.sessionCount ?? 0,
       });
     }
   }, [data, reset]);
-  const category = SPORTS.find((s) => s.id === data?.requestCategoryId)?.label;
+  const category = SPORTS.find((s) => s.id === data?.categoryId)?.label;
   // const profileImage = data?.profileImage;
   const navigateToSuggestForm = () => {
     //request 페이지에서 url에 있는 id로 requestionId 업데이트 + 가격+위치 정보 업데이트 -> suggestFormPage에서 store의 저장된 값을 받아서 사용
     setSuggestInfo({
       ...setSuggestInfo,
       requestionId: requestionId,
-      price: data?.requestPrice,
-      sessionCount: data?.requestSessionCount,
+      price: data?.requestedPrice,
+      sessionCount: data?.sessionCount,
     });
     navigate(ROUTES.MATCHING_STATUS.SUGGESTS.NEW);
   };
@@ -122,8 +122,8 @@ const RequestDetailPage = () => {
             requestionId,
             body: {
               ...formData,
-              location: data?.requestLocation ?? '',
-              categoryId: data?.requestCategoryId ?? 0,
+              location: data?.location ?? '',
+              categoryId: data?.categoryId ?? 0,
             },
           });
         }
@@ -186,13 +186,13 @@ const RequestDetailPage = () => {
       <div className="mt-16 flex h-[50px] w-full items-center justify-center gap-3">
         {/* 프로필 url 이미지로 바꾸는 로직 필요 */}
         <img
-          src={data?.photos}
+          src={data?.profileImageUrl}
           alt="요청서 프로필"
           className="h-[3.125rem] w-[3.125rem] rounded-full"
           onError={onErrorImage}
         />
         <span className="text-4xl font-extrabold">
-          {data?.requestLocation?.substring(2)} {data?.requestUserNickName}
+          {data?.location?.substring(2)} {data?.userNickname}
           {/* {category} */}
         </span>
         <span className="text-2xl leading-none font-bold"> 님의 요청서입니다.</span>
@@ -201,7 +201,7 @@ const RequestDetailPage = () => {
       <section className="mt-20 flex w-[800px] flex-col gap-20 text-4xl font-bold">
         <section>
           <span className="mr-3">{category}</span>
-          <span className="text-lg font-semibold">{data?.requestLocation}</span>
+          <span className="text-lg font-semibold">{data?.location}</span>
 
           <div className="mt-5 flex items-center">
             <input

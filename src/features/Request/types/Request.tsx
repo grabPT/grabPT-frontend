@@ -27,20 +27,20 @@ export type RequestResponseDto = {
 
 //수정 창에 필요한 타입
 export type RequestDetailPageResponseDto = {
-  requestRequestionId: number;
-  requestCategoryId: number;
-  requestPurpose: Purpose[];
-  requestAgeGroup: AgeGroup;
-  requestUserGender: Gender;
-  requestPrice: number;
-  requestSessionCount: number;
-  requestLocation: string;
-  requestStartPreference: string;
-  requestAvailableDays: Day[];
-  requestAvailableTimes: TimeSlot[];
-  requestTrainerGender: Gender;
-  requestContent: string; // 상세 설명
-  requestEtcPurposeContent: string; // 기타 목적
-  requestUserNickName: string;
-  photos: string;
+  requestionId: number;
+  categoryId: number;
+  purposes: Purpose[];
+  ageGroup: AgeGroup;
+  userGender: Gender;
+  requestedPrice: number;
+  sessionCount: number;
+  location: string;
+  startDate: string;
+  availableDays: Day[];
+  availableTimes: TimeSlot[];
+  proGender: Gender;
+  content: string; // 상세 설명
+  etcPurposeContent: string; // 기타 목적
+  userNickname: string;
+  profileImageUrl: string;
 };
