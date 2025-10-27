@@ -24,9 +24,9 @@ const CategoryDetailPage = () => {
         id: e.userId,
         imageUrl: e.profileImageUrl,
         name: e.userName,
-        center: e.proCenterName,
+        center: e.centerName,
         rating: e.rating,
-        pricePerSession: e.suggestSessionCount,
+        pricePerSession: e.sessionCount,
       })),
     [prosList],
   );

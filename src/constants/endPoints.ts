@@ -59,6 +59,8 @@ export const END_POINT = {
     PROREVIEWS: {
       reviews: (userId: number) => `/reviews/${userId}`,
     },
+    proList: (categoryCode: string) =>
+      `/api/v1/category/${encodeURIComponent(categoryCode)}/trainers`,
   },
 
   PRODETAIL: {
