@@ -13,14 +13,14 @@ interface MySuggestListItemProps {
 }
 
 const MySuggestListItem = ({ suggest }: MySuggestListItemProps) => {
-  const profileImage = suggest.photos || Profile;
+  const profileImage = suggest.profileImageUrl || Profile;
   const navigate = useNavigate();
-  const isMatched = suggest.suggestStatus === 'MATCHED';
+  const isMatched = suggest.matchingStatus === 'MATCHED';
 
   return (
     <Box
       height="h-[75px]"
-      onClick={() => navigate(urlFor.requestDetail(suggest.suggestRequestionId))}
+      onClick={() => navigate(urlFor.requestDetail(suggest.requestionId))}
       className="cursor-pointer"
       width="w-[700px]"
     >
@@ -33,10 +33,10 @@ const MySuggestListItem = ({ suggest }: MySuggestListItemProps) => {
           />
 
           <div className="text-sm font-medium">
-            <p className="text-base font-semibold">{suggest.suggestUserNickname} 님께 제안</p>
-            <span>{suggest.suggestSessionCount}회</span>
+            <p className="text-base font-semibold">{suggest.userNickname} 님께 제안</p>
+            <span>{suggest.sessionCount}회</span>
             <span> | </span>
-            <span className="text-button">{suggest.suggestPrice}원</span>
+            <span className="text-button">{suggest.suggestedPrice}원</span>
           </div>
         </div>
 

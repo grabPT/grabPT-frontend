@@ -7,13 +7,13 @@ export type getSuggestListRequestDto = {
 };
 
 export type suggestListItemtype = {
-  suggestUserNickname: string;
-  suggestPrice: number;
-  suggestSessionCount: number;
-  suggestStatus: MatchStatusType;
-  photos: string;
-  suggestRequestionId: number;
-  suggestSuggestionId: number;
+  userNickname: string;
+  suggestedPrice: number;
+  sessionCount: number;
+  matchingStatus: MatchStatusType;
+  profileImageUrl: string;
+  requestionId: number;
+  suggestionId: number;
 };
 
 export type getSuggestListResulttype = {
