@@ -45,7 +45,7 @@ export const useSignupStore = create<
     phoneNumber: '',
     address: { city: '', district: '', street: '', streetCode: '', zipcode: '', specAddress: '' },
   },
-  proInfo: { center: '', career: null, gender: 1, age: null },
+  proInfo: { centerName: '', career: null, gender: 1, age: null },
   sportsTypeInfo: { categoryId: 0 },
   nicknameInfo: { userNickname: '' },
   profileImageInfo: null,
@@ -81,7 +81,7 @@ export const useSignupStore = create<
           specAddress: '',
         },
       },
-      proInfo: { center: '', career: null, gender: 1, age: null },
+      proInfo: { centerName: '', career: null, gender: 1, age: null },
       sportsTypeInfo: { categoryId: 0 },
       nicknameInfo: { userNickname: '' },
       profileImageInfo: null,
@@ -128,7 +128,7 @@ export const useSignupStore = create<
       // 전문가 추가 정보
       age: state.proInfo.age,
       gender: state.proInfo.gender,
-      center: state.proInfo.center,
+      center: state.proInfo.centerName,
       career: state.proInfo.career,
     };
   },

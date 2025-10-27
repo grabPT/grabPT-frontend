@@ -25,7 +25,7 @@ export type SignupUserInfoStepDto = {
   address: AddressRequest;
 };
 export type SignupProInfoStepDto = {
-  center: string;
+  centerName: string;
   career: null | number;
   gender: number;
   age: null | number;

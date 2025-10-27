@@ -35,7 +35,7 @@ const ProInfoStep = ({ onNext }: ProInfoStepProps) => {
       age: proInfo.age,
       gender: proInfo.gender,
       career: proInfo.career,
-      center: proInfo.center,
+      center: proInfo.centerName,
     },
   });
 
@@ -46,7 +46,7 @@ const ProInfoStep = ({ onNext }: ProInfoStepProps) => {
       age: data.age,
       gender: Number(data.gender),
       career: data.career,
-      center: data.center,
+      centerName: data.center,
     });
     console.log(proInfo);
     onNext();
