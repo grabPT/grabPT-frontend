@@ -67,7 +67,7 @@ export const END_POINT = {
     FORM: {},
     DETAIL: {},
     SUGGESTS_FOR_REQUESTS: (requestionId: number) =>
-      `/api/suggestion/requestionList/${requestionId}`,
+      `/api/suggestion/suggestion/suggestionList/${requestionId}`,
   },
 
   SUGGESTS: {

@@ -7,14 +7,14 @@ export type getSuggestListForRequestRequestDto = {
 };
 
 export type suggestListForRequestItemType = {
-  suggestUserNickname: string;
-  suggestCenter: string;
-  suggestAddress: string;
-  suggestPrice: number;
-  suggestAverageRate: number;
-  suggestSessionCount: number;
-  photos: string;
-  suggestSuggestionId: number;
+  userNickname: string;
+  centerName: string;
+  location: string;
+  suggestedPrice: number;
+  averageRating: number;
+  sessionCount: number;
+  profileImageUrl: string;
+  suggestionId: number;
 };
 
 export type getSuggestListForRequestResultType = {

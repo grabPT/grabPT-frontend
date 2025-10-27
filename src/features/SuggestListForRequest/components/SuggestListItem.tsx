@@ -15,33 +15,31 @@ const SuggestListItem = ({ suggest }: SuggestListItemProps) => {
 
   return (
     <div
-      onClick={() => navigateToSuggest(suggest.suggestSuggestionId)}
+      onClick={() => navigateToSuggest(suggest.suggestionId)}
       className="flex h-36 w-4xl cursor-pointer items-center justify-between rounded-2xl bg-[#E6ECFF] px-5 shadow-[0_4px_4px_rgba(0,0,0,0.1)]"
     >
       <div className="flex gap-3.5">
         <img
-          src={suggest.photos}
+          src={suggest.profileImageUrl}
           onError={(e) => onErrorImage(e)}
           alt="제안 트레이너 프로필"
           className="h-24 w-24 rounded-full"
         />
 
         <div className="flex flex-col justify-between">
-          <p className="text-button text-2xl font-bold">
-            {suggest.suggestUserNickname} 전문가님의 제안
-          </p>
-          <p className="text-base font-bold">{suggest.suggestCenter}</p>
-          <StarRating rating={suggest.suggestAverageRate} size={14} fontSize={10} />
-          <p className="text-xs font-semibold">{suggest.suggestAddress}</p>
+          <p className="text-button text-2xl font-bold">{suggest.userNickname} 전문가님의 제안</p>
+          <p className="text-base font-bold">{suggest.centerName}</p>
+          <StarRating rating={suggest.averageRating} size={14} fontSize={10} />
+          <p className="text-xs font-semibold">{suggest.location}</p>
         </div>
       </div>
 
       <div className="mr-6 text-right text-2xl font-bold">
         <p>
-          <span className="text-button">{suggest.suggestSessionCount}</span> 회
+          <span className="text-button">{suggest.sessionCount}</span> 회
         </p>
         <p>
-          <span className="text-button">{suggest.suggestPrice.toLocaleString()}</span> 원
+          <span className="text-button">{suggest.suggestedPrice.toLocaleString()}</span> 원
         </p>
       </div>
     </div>
