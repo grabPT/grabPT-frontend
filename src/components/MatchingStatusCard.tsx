@@ -9,21 +9,21 @@ interface MatchingStatusCardProps {
 
 // RealtimeMatchingStatus.tsx에 쓰이는 카드 컴포넌트입니다
 const MatchingStatusCard = ({ match }: MatchingStatusCardProps) => {
-  const isMatched = match.matchStatus === 'MATCHED';
+  const isMatched = match.matchingStatus === 'MATCHED';
 
   return (
     <div className="flex h-[48px] w-full items-center justify-between">
       <UserRequestHeader
         nickName={match.userNickname}
         profileImg={match.profileImageUrl || undefined}
-        location={match.requestLocation}
+        location={match.location}
       />
       <div className="flex">
         {/* 오른쪽: 횟수 | 가격 ● */}
         <div className="flex items-center">
           {/* 횟수 + 구분선 + 가격 */}
           <p className="font-pretendard w-[94px] text-right text-[11px] leading-[15.4px] font-medium">
-            {match.requestSessionCount}회&nbsp;|&nbsp;{match.requestPrice.toLocaleString()}원
+            {match.sessionCount}회&nbsp;|&nbsp;{match.requestedPrice.toLocaleString()}원
           </p>
         </div>
         {/* 상태 점 */}
