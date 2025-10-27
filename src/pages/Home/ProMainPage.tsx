@@ -17,7 +17,7 @@ const ProMainPage = () => {
   const { data: requests } = useGetMatchingRequestsList({ sortBy: 'latest', page: 1, size: 40 });
   // const location = `${profileData?.address?.[0]?.city ?? ''} ${profileData?.address?.[0]?.district ?? ''} ${profileData?.address?.[0]?.street ?? ''}`;
   if (isError || !profileData) return <div>에러 발생</div>;
-  requests?.content.forEach((item) => console.log(item.requestLocation));
+  requests?.content.forEach((item) => console.log(item.location));
   return (
     <section className="mt-[70px] mb-[140px] flex flex-col items-center">
       <h1 className="text-[40px] font-bold">
