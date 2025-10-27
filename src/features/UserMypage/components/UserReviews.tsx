@@ -29,13 +29,13 @@ const UserReviews = () => {
               <ReviewCard
                 key={idx}
                 name={rv.reviewer}
-                location={rv.residence}
+                location={rv.location}
                 rating={rv.rating}
                 content={rv.content}
                 proNickName={rv.reviewee}
-                centerName={rv.center}
+                centerName={rv.centerName}
                 proId={rv.revieweeId}
-                imageURL={rv.imageURL}
+                imageURL={rv.profileImageUrl}
               />
             ))
           ) : (
