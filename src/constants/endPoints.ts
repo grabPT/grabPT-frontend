@@ -20,6 +20,7 @@ export const END_POINT = {
   HOME: {},
 
   MYPAGE: {
+    ROOT: '/mypage',
     REQUESTS: {
       requests: `/mypage/requests`,
     },

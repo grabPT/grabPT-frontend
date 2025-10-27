@@ -19,8 +19,8 @@ const UserRequests = () => {
 
   const { data } = useGetUserInfo();
 
-  const location = `${data?.userLocation?.[0]?.city ?? ''} ${data?.userLocation?.[0]?.district ?? ''} ${
-    data?.userLocation?.[0]?.street ?? ''
+  const location = `${data?.address?.[0]?.city ?? ''} ${data?.address?.[0]?.district ?? ''} ${
+    data?.address?.[0]?.street ?? ''
   }`;
   const total = myRequestsList?.totalPages ?? 1;
 

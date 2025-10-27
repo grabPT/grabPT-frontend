@@ -1,13 +1,12 @@
 import { privateInstance } from '@/libs/axios';
-
-import type { ApiResponse } from './getUserInfo';
+import type { CommonResponseDto } from '@/types/commonResponseDto';
 
 interface GetAvgPriceResponse {
   avgUnitPrice: string;
   sampleCount: string;
 }
 
-type GetAvgPriceResponseDto = ApiResponse<GetAvgPriceResponse>;
+type GetAvgPriceResponseDto = CommonResponseDto<GetAvgPriceResponse>;
 
 /**
  * 평균 PT 가격 조회 API
