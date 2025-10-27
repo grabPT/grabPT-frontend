@@ -51,7 +51,7 @@ const SuggestFormPage = () => {
     const newSuggestInfo = {
       ...data,
       sentAt: new Date().toISOString().split('T')[0],
-      isAgreed: false,
+      isMatched: false,
       requestionId: suggestInfo.requestionId,
     };
     setSuggestInfo(newSuggestInfo);

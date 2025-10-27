@@ -19,7 +19,7 @@ export const useSuggestStore = create<SuggestState>()(
         message: '',
         location: '',
         sentAt: '',
-        isAgreed: false,
+        isMatched: false,
       },
 
       setSuggestInfo: (info) =>
@@ -36,7 +36,7 @@ export const useSuggestStore = create<SuggestState>()(
           message: suggestInfo.message,
           location: suggestInfo.location,
           sentAt: suggestInfo.sentAt,
-          isAgreed: suggestInfo.isAgreed,
+          isMatched: suggestInfo.isMatched,
         };
       },
     }),
