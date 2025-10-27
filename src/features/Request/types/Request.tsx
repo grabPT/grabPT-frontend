@@ -1,6 +1,7 @@
 import type { AgeGroup, Day, Gender, Purpose, TimeSlot } from '@/types/ReqeustsType';
 import type { SportsTypeStepDto } from '@/types/SportsTypeStepDto';
 
+//요거요거
 export type RequestRequestDto = SportsTypeStepDto & RequestPriceStepDto & RequestDetailStepDto;
 
 export type RequestDetailStepDto = {
@@ -10,8 +11,8 @@ export type RequestDetailStepDto = {
   userGender: Gender | '';
   availableDays: Day[];
   availableTimes: TimeSlot[];
-  trainerGender: Gender | '';
-  startPreference: string;
+  proGender: Gender | '';
+  startDate: string;
   content: string;
 };
 export type RequestPriceStepDto = {

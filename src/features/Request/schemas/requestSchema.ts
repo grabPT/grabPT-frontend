@@ -11,10 +11,10 @@ export const detailInfoSchema = z.object({
   userGender: z
     .union([z.enum(GENDERS), z.literal('')])
     .refine((val) => val !== '', { message: '회원님의 성별을 선택해주세요.' }),
-  trainerGender: z
+  proGender: z
     .union([z.enum(GENDERS), z.literal('')])
     .refine((val) => val !== '', { message: '희망 트레이너 성별을 선택해주세요.' }),
-  startPreference: z.string().nonempty('시작 희망일을 입력해주세요.'),
+  startDate: z.string().nonempty('시작 희망일을 입력해주세요.'),
   availableDays: z.array(z.enum(DAYS)).min(1, '가능한 요일을 하나 이상 선택해주세요.'),
   availableTimes: z.array(z.enum(TIMES)).min(1, '가능한 시간대를 하나 이상 선택해주세요.'),
   content: z.string().max(500, '요청사항은 300자 이내로 입력해주세요.'),

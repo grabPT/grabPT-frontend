@@ -67,8 +67,8 @@ const RequestDetailPage = () => {
       purpose: [],
       ageGroup: null,
       userGender: '',
-      trainerGender: '',
-      startPreference: '',
+      proGender: '',
+      startDate: '',
       availableDays: [],
       availableTimes: [],
       content: '',
@@ -85,8 +85,8 @@ const RequestDetailPage = () => {
         purpose: data.requestPurpose ?? [],
         ageGroup: data.requestAgeGroup ?? null,
         userGender: data.requestUserGender,
-        trainerGender: data.requestTrainerGender,
-        startPreference: Array.isArray(data.requestStartPreference)
+        proGender: data.requestTrainerGender,
+        startDate: Array.isArray(data.requestStartPreference)
           ? `${data.requestStartPreference[0]}-${String(data.requestStartPreference[1]).padStart(2, '0')}-${String(data.requestStartPreference[2]).padStart(2, '0')}`
           : (data.requestStartPreference ?? ''),
         availableDays: data.requestAvailableDays ?? [],
@@ -145,8 +145,8 @@ const RequestDetailPage = () => {
   const setStudentGender = (g: Gender) => setValue('userGender', g);
 
   /* 트레이너 선호 성별(단일) */
-  const trainer = watch('trainerGender');
-  const setTrainerGender = (g: Gender) => setValue('trainerGender', g);
+  const trainer = watch('proGender');
+  const setTrainerGender = (g: Gender) => setValue('proGender', g);
 
   /* 가능 요일(다중) */
   const days = watch('availableDays');
@@ -161,8 +161,8 @@ const RequestDetailPage = () => {
     setValue('availableTimes', next);
   };
   /* PT 시작 희망일 */
-  const startDate = watch('startPreference');
-  const setStartDate = (v: string) => setValue('startPreference', v);
+  const startDate = watch('startDate');
+  const setStartDate = (v: string) => setValue('startDate', v);
 
   const togglePurpose = (p: Purpose) => {
     const current = watch('purpose');
@@ -316,14 +316,10 @@ const RequestDetailPage = () => {
           <div className="flex items-end gap-3">
             <h1>
               트레이너{' '}
-              <span className={errors.trainerGender ? 'text-red-500' : 'text-button'}>
-                선호 성별
-              </span>
+              <span className={errors.proGender ? 'text-red-500' : 'text-button'}>선호 성별</span>
             </h1>
-            {errors.trainerGender && (
-              <p className="text-[1rem] font-semibold text-red-500">
-                {errors.trainerGender.message}
-              </p>
+            {errors.proGender && (
+              <p className="text-[1rem] font-semibold text-red-500">{errors.proGender.message}</p>
             )}
           </div>
           <div className="mt-6 flex gap-2">
@@ -345,14 +341,10 @@ const RequestDetailPage = () => {
           <div className="flex items-end gap-3">
             <h1>
               PT{' '}
-              <span className={errors.startPreference ? 'text-red-500' : 'text-button'}>
-                시작 희망일
-              </span>
+              <span className={errors.startDate ? 'text-red-500' : 'text-button'}>시작 희망일</span>
             </h1>
-            {errors.startPreference && (
-              <p className="text-[1rem] font-semibold text-red-500">
-                {errors.startPreference.message}
-              </p>
+            {errors.startDate && (
+              <p className="text-[1rem] font-semibold text-red-500">{errors.startDate.message}</p>
             )}
           </div>
           <input
