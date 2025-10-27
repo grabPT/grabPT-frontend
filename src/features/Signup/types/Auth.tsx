@@ -4,7 +4,7 @@ export type BaseSignupRequestDto = SignupUserInfoStepDto &
   SportsTypeStepDto &
   SignupNicknameStepDto &
   SignupUserAgreementDto & {
-    username: string;
+    userName: string;
     oauthId: string;
     oauthProvider: string;
     role: number;
@@ -16,8 +16,8 @@ export type SocialLoginResponseDto = {
   oauthProvider: string;
 };
 export type SignupUserAgreementDto = {
-  agreedTermsId: number[];
-  agreeMarketing: boolean;
+  agreedTermsIds: number[];
+  isAgreeMarketing: boolean;
 };
 export type SignupUserInfoStepDto = {
   email: string;
@@ -32,7 +32,7 @@ export type SignupProInfoStepDto = {
 };
 
 export type SignupNicknameStepDto = {
-  nickname: string;
+  userNickname: string;
 };
 export type UserSignupRequestDto = {
   data: BaseSignupRequestDto;
@@ -47,8 +47,8 @@ export type AddressRequest = {
   city: string;
   district: string;
   street: string;
-  streetCode: string;
   zipcode: string;
+  streetCode: string;
   specAddress: string;
 };
 
