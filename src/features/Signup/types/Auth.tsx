@@ -21,7 +21,7 @@ export type SignupUserAgreementDto = {
 };
 export type SignupUserInfoStepDto = {
   email: string;
-  phoneNum: string;
+  phoneNumber: string;
   address: AddressRequest;
 };
 export type SignupProInfoStepDto = {
@@ -60,7 +60,7 @@ export type SmsVerifyRequestDto = SmsSendRequestDto & {
   inputCode: string;
 };
 export type SmsSendRequestDto = {
-  phoneNum: string;
+  phoneNumber: string;
 };
 
 export type LogoutDto = {

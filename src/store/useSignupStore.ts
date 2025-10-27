@@ -42,7 +42,7 @@ export const useSignupStore = create<
 >((set, get) => ({
   userInfo: {
     email: '',
-    phoneNum: '',
+    phoneNumber: '',
     address: { city: '', district: '', street: '', streetCode: '', zipcode: '', specAddress: '' },
   },
   proInfo: { center: '', career: null, gender: 1, age: null },
@@ -71,7 +71,7 @@ export const useSignupStore = create<
     set({
       userInfo: {
         email: '',
-        phoneNum: '',
+        phoneNumber: '',
         address: {
           city: '',
           district: '',
@@ -100,7 +100,7 @@ export const useSignupStore = create<
       role: state.role,
       categoryId: state.sportsTypeInfo.categoryId,
       email: state.userInfo.email,
-      phoneNum: state.userInfo.phoneNum,
+      phoneNumber: state.userInfo.phoneNumber,
       address: state.userInfo.address,
       nickname: state.nicknameInfo.nickname,
       agreedTermsIds: state.agreementInfo.agreedTermsId,
@@ -120,7 +120,7 @@ export const useSignupStore = create<
       role: state.role,
       categoryId: state.sportsTypeInfo.categoryId,
       email: state.userInfo.email,
-      phoneNum: state.userInfo.phoneNum,
+      phoneNumber: state.userInfo.phoneNumber,
       address: state.userInfo.address,
       nickname: state.nicknameInfo.nickname,
       agreedTermsIds: state.agreementInfo.agreedTermsId,
