@@ -45,7 +45,7 @@ const RequestDetailPage = () => {
 
   // api연결 시 isWriter 함수로 변경 (요청서의 작성자 id === 현재 유저 id)
   const { data: isWriter } = useGetCanEditRequest(requestionId);
-  const canEdit = isWriter?.canEdit;
+  const isEdit = isWriter?.isEdit;
 
   const TabItems: TabItem[] = [
     { label: '정보', to: urlFor.requestDetail(requestionId) },
@@ -117,7 +117,7 @@ const RequestDetailPage = () => {
       navigateToSuggestForm();
     } else {
       handleSubmit((formData) => {
-        if (isWriter?.canEdit) {
+        if (isWriter?.isEdit) {
           editRequest({
             requestionId,
             body: {
@@ -180,7 +180,7 @@ const RequestDetailPage = () => {
   }
   return (
     <section className="flex flex-col items-center py-6">
-      {isWriter?.canEdit ? <Tabs items={TabItems} width="w-[400px]" /> : <div></div>}
+      {isWriter?.isEdit ? <Tabs items={TabItems} width="w-[400px]" /> : <div></div>}
 
       {/* 헤더 */}
       <div className="mt-16 flex h-[50px] w-full items-center justify-center gap-3">
@@ -209,7 +209,7 @@ const RequestDetailPage = () => {
               {...register('sessionCount', { valueAsNumber: true })}
               aria-label="희망 PT 횟수"
               className="mr-1.5 h-12 w-[85px] rounded-xl border-2 border-[#BABABA] pl-3.5 text-center text-2xl text-[#9F9F9F]"
-              readOnly={!canEdit}
+              readOnly={!isEdit}
             />
 
             <span className="mr-5">회</span>
@@ -218,7 +218,7 @@ const RequestDetailPage = () => {
               {...register('price', { valueAsNumber: true })}
               aria-label="희망 PT 가격"
               className="mr-1.5 h-12 w-[260px] rounded-xl border-2 border-[#BABABA] px-8 text-end text-2xl text-[#9F9F9F]"
-              readOnly={!canEdit}
+              readOnly={!isEdit}
             />
             <span className="mr-5">원</span>
           </div>
@@ -242,7 +242,7 @@ const RequestDetailPage = () => {
                   isChecked={selectedPurposes.includes(p)}
                   onClick={() => togglePurpose(p)}
                   key={p}
-                  disabled={!canEdit}
+                  disabled={!isEdit}
                 >
                   {p}
                 </CheckedButton>
@@ -277,7 +277,7 @@ const RequestDetailPage = () => {
               <CheckedButton
                 key={a}
                 isChecked={age === a}
-                disabled={!canEdit}
+                disabled={!isEdit}
                 onClick={() => setAge(a)}
               >
                 {a}
@@ -302,7 +302,7 @@ const RequestDetailPage = () => {
               <CheckedButton
                 isChecked={studentGender === g}
                 onClick={() => setStudentGender(g)}
-                disabled={!canEdit}
+                disabled={!isEdit}
                 key={g}
               >
                 {g}
@@ -328,7 +328,7 @@ const RequestDetailPage = () => {
                 isChecked={trainer === g}
                 onClick={() => setTrainerGender(g)}
                 key={g}
-                disabled={!canEdit}
+                disabled={!isEdit}
               >
                 {g}
               </CheckedButton>
@@ -352,7 +352,7 @@ const RequestDetailPage = () => {
             aria-label="PT 시작 희망일"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
-            readOnly={!canEdit}
+            readOnly={!isEdit}
             className="mt-6 rounded-[10px] border border-[#CCCCCC] p-3 text-xl focus:border-gray-400 focus:outline-none"
           />
         </section>
@@ -377,7 +377,7 @@ const RequestDetailPage = () => {
                 onClick={() => toggleDay(d)}
                 key={d}
                 width="w-[56px]"
-                disabled={!canEdit}
+                disabled={!isEdit}
               >
                 {d}
               </CheckedButton>
@@ -404,7 +404,7 @@ const RequestDetailPage = () => {
                 isChecked={times.includes(t)}
                 onClick={() => toggleTime(t)}
                 key={t}
-                disabled={!canEdit}
+                disabled={!isEdit}
               >
                 {t}
               </CheckedButton>
@@ -420,7 +420,7 @@ const RequestDetailPage = () => {
           <CommentBox
             value={watch('content')}
             onChange={(e) => setValue('content', e.target.value, { shouldDirty: true })}
-            readOnly={!canEdit}
+            readOnly={!isEdit}
             placeholder="추가 요청사항을 입력해주세요"
           />
         </section>

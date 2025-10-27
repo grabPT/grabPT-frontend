@@ -1,3 +1,3 @@
 export type CanEditResponse = {
-  canEdit: boolean;
+  isEdit: boolean;
 };
