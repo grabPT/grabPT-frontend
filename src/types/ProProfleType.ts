@@ -31,7 +31,7 @@ export type BaseProProfile = {
   ptPrices?: PtPrice[];
   photos: SlideImage[];
   reviews: Review[] | null;
-  userLocations: Address[];
+  address: Address[];
 };
 export type ProProfileType = BaseProProfile & {
   proName: string;
@@ -44,7 +44,7 @@ export type ProProfileType = BaseProProfile & {
 };
 
 export type ProProfileWithUserIdType = BaseProProfile & {
-  center: string;
+  centerName: string;
   introduction: string;
   certifications: certificationResponse[];
 };

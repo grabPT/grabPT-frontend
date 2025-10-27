@@ -1,3 +1,4 @@
+import { END_POINT } from '@/constants/endPoints';
 import { privateInstance, publicInstance } from '@/libs/axios';
 import type {
   getProProfileResponseDto,
@@ -16,7 +17,7 @@ export const getProProfile = async () => {
 
 export const getProProfileWithUserId = async (userId: number) => {
   const { data } = await publicInstance.get<getProProfileWithUserIdResponseDto>(
-    `/api/category-proprofile/${userId}`,
+    END_POINT.PRODETAIL.profile(userId),
     { headers: { accept: 'application/json' } },
   );
   return data;

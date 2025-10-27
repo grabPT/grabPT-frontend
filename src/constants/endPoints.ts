@@ -61,6 +61,10 @@ export const END_POINT = {
     },
   },
 
+  PRODETAIL: {
+    profile: (userId: number) => `/api/category-proprofile/${userId}`,
+  },
+
   REQUESTS: {
     POST: '/api/reqeustion',
     LIST: {
