@@ -19,8 +19,8 @@ const UserRequests = () => {
 
   const { data } = useGetUserInfo();
 
-  const location = `${data?.userLocation?.[0]?.city ?? ''} ${data?.userLocation?.[0]?.district ?? ''} ${
-    data?.userLocation?.[0]?.street ?? ''
+  const location = `${data?.address?.[0]?.city ?? ''} ${data?.address?.[0]?.district ?? ''} ${
+    data?.address?.[0]?.street ?? ''
   }`;
   const total = myRequestsList?.totalPages ?? 1;
 
@@ -42,7 +42,7 @@ const UserRequests = () => {
             myRequestsList.content.map((rq, idx) => (
               <RequestCard
                 key={`${page}-${idx}`}
-                requestionId={rq.requestId}
+                requestionId={rq.requestionId}
                 location={location}
                 name={data?.userNickName ?? '사용자'}
                 profileImg={data?.profileImageUrl}

@@ -3,12 +3,12 @@ import type { CommonResponseDto } from '@/types/commonResponseDto';
 export type MatchStatusType = 'MATCHING' | 'MATCHED';
 
 export type RealtimeMatchingType = {
-  requestId: number | null;
+  requestionId: number | null;
   userNickname: string;
-  requestLocation: string;
-  requestSessionCount: number;
-  requestPrice: number;
-  matchStatus: MatchStatusType;
+  location: string;
+  sessionCount: number;
+  requestedPrice: number;
+  matchingStatus: MatchStatusType;
   profileImageUrl: string | null;
 };
 

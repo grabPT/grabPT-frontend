@@ -24,12 +24,12 @@ export type getMyReviewsListResultType = {
 export type getMyReviewsListItemType = {
   reviewId: number;
   reviewer: string;
-  residence: string;
+  location: string;
   rating: number;
   content: string;
-  center?: string;
+  centerName?: string;
   reviewee?: string;
   revieweeId?: number;
-  imageURL?: string;
+  profileImageUrl?: string;
 };
 export type getMyReviewsListResponseDto = CommonResponseDto<getMyReviewsListResultType>;

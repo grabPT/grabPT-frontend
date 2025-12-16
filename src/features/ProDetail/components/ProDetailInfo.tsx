@@ -75,7 +75,7 @@ export const ProDetailInfo = () => {
         <div className="flex flex-col items-center justify-center">
           <span className="font-roboto text-[2rem] font-semibold">{profileData?.userNickName}</span>
           <span className="font-inter text-[0.875rem] font-semibold text-[#003EFB]">
-            {profileData?.center}
+            {profileData?.centerName}
           </span>
         </div>
         <div className="mt-4 flex items-end justify-end">
@@ -161,7 +161,7 @@ export const ProDetailInfo = () => {
           <div className="flex flex-col gap-4">
             <div className="flex h-[40px] items-center gap-4">
               <div className="text-[20px] font-semibold">센터명</div>
-              <div className="text-[#013EFB]">{profileData?.center}</div>
+              <div className="text-[#013EFB]">{profileData?.centerName}</div>
             </div>
             <div className="flex flex-col gap-2">
               <div className="text-[20px] font-semibold">위치 설명</div>

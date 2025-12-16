@@ -42,18 +42,18 @@ export const useSignupStore = create<
 >((set, get) => ({
   userInfo: {
     email: '',
-    phoneNum: '',
+    phoneNumber: '',
     address: { city: '', district: '', street: '', streetCode: '', zipcode: '', specAddress: '' },
   },
-  proInfo: { center: '', career: null, gender: 1, age: null },
+  proInfo: { centerName: '', career: null, gender: 1, age: null },
   sportsTypeInfo: { categoryId: 0 },
-  nicknameInfo: { nickname: '' },
+  nicknameInfo: { userNickname: '' },
   profileImageInfo: null,
   username: '',
   oauthId: '',
   oauthProvider: '',
   role: 0,
-  agreementInfo: { agreedTermsId: [], agreeMarketing: false },
+  agreementInfo: { agreedTermsIds: [], isAgreeMarketing: false },
 
   setUserInfo: (info) => set((state) => ({ userInfo: { ...state.userInfo, ...info } })),
   setProInfo: (info) => set((state) => ({ proInfo: { ...state.proInfo, ...info } })),
@@ -71,7 +71,7 @@ export const useSignupStore = create<
     set({
       userInfo: {
         email: '',
-        phoneNum: '',
+        phoneNumber: '',
         address: {
           city: '',
           district: '',
@@ -81,15 +81,15 @@ export const useSignupStore = create<
           specAddress: '',
         },
       },
-      proInfo: { center: '', career: null, gender: 1, age: null },
+      proInfo: { centerName: '', career: null, gender: 1, age: null },
       sportsTypeInfo: { categoryId: 0 },
-      nicknameInfo: { nickname: '' },
+      nicknameInfo: { userNickname: '' },
       profileImageInfo: null,
       username: '',
       oauthId: '',
       oauthProvider: '',
       role: 0,
-      agreementInfo: { agreedTermsId: [], agreeMarketing: false },
+      agreementInfo: { agreedTermsIds: [], isAgreeMarketing: false },
     }),
   getUserSignupDto: () => {
     const state = get();
@@ -100,11 +100,11 @@ export const useSignupStore = create<
       role: state.role,
       categoryId: state.sportsTypeInfo.categoryId,
       email: state.userInfo.email,
-      phoneNum: state.userInfo.phoneNum,
+      phoneNumber: state.userInfo.phoneNumber,
       address: state.userInfo.address,
-      nickname: state.nicknameInfo.nickname,
-      agreedTermsIds: state.agreementInfo.agreedTermsId,
-      agreeMarketing: state.agreementInfo.agreeMarketing,
+      nickname: state.nicknameInfo.userNickname,
+      agreedTermsIds: state.agreementInfo.agreedTermsIds,
+      agreeMarketing: state.agreementInfo.isAgreeMarketing,
     };
   },
   getProfileImageInfo: () => {
@@ -120,15 +120,15 @@ export const useSignupStore = create<
       role: state.role,
       categoryId: state.sportsTypeInfo.categoryId,
       email: state.userInfo.email,
-      phoneNum: state.userInfo.phoneNum,
+      phoneNumber: state.userInfo.phoneNumber,
       address: state.userInfo.address,
-      nickname: state.nicknameInfo.nickname,
-      agreedTermsIds: state.agreementInfo.agreedTermsId,
-      agreeMarketing: state.agreementInfo.agreeMarketing,
+      nickname: state.nicknameInfo.userNickname,
+      agreedTermsIds: state.agreementInfo.agreedTermsIds,
+      agreeMarketing: state.agreementInfo.isAgreeMarketing,
       // 전문가 추가 정보
       age: state.proInfo.age,
       gender: state.proInfo.gender,
-      center: state.proInfo.center,
+      center: state.proInfo.centerName,
       career: state.proInfo.career,
     };
   },

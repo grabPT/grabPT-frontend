@@ -65,7 +65,7 @@ const Dashboard = ({ userInfo }: DashboardProps) => {
   });
 
   // 기존 유저 주소(보기모드 및 기본값)
-  const originalAddress = userInfo?.userLocation?.[0];
+  const originalAddress = userInfo?.address?.[0];
   const addressTextFromUser = useMemo(
     () =>
       `${originalAddress?.city ?? ''} ${originalAddress?.district ?? ''} ${originalAddress?.street ?? ''} ${originalAddress?.specAddress ?? ''}`.trim(),

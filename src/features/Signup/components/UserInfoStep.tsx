@@ -19,7 +19,7 @@ interface UserInfoFormValues {
   email: string;
   address: string;
   specAddress: string;
-  phoneNum: string;
+  phoneNumber: string;
 }
 
 const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
@@ -40,7 +40,7 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
       email: userInfo.email || '',
       address: `${userInfo.address.city} ${userInfo.address.district}`,
       specAddress: userInfo.address.specAddress,
-      phoneNum: userInfo.phoneNum,
+      phoneNumber: userInfo.phoneNumber,
       verifyNum: '',
     },
   });
@@ -59,7 +59,7 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
     setUserInfo({
       ...userInfo,
       email: data.email,
-      phoneNum: data.phoneNum,
+      phoneNumber: data.phoneNumber,
       address: {
         ...userInfo.address,
         specAddress: data.specAddress,
@@ -69,7 +69,7 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
     onNext();
   };
   const email = watch('email');
-  const phoneNum = watch('phoneNum');
+  const phoneNumber = watch('phoneNumber');
   const verifyNum = watch('verifyNum');
   //주소 api 모달 띄우기
   const [postModalOpen, setPostModalOpen] = useState(false);
@@ -144,7 +144,7 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
     if (errors.email && touchedFields.email) return errors.email.message;
     if (errors.address && touchedFields.address) return errors.address.message;
     if (errors.specAddress && touchedFields.specAddress) return errors.specAddress.message;
-    if (errors.phoneNum && touchedFields.phoneNum) return errors.phoneNum.message;
+    if (errors.phoneNumber && touchedFields.phoneNumber) return errors.phoneNumber.message;
     if (errors.verifyNum && touchedFields.verifyNum) return errors.verifyNum.message;
   };
 
@@ -152,18 +152,18 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
   const { mutate: sendSms } = useSmsSend();
   //수정 해야함
   const handlePhoneNumVerification = async () => {
-    if (!phoneNum) {
+    if (!phoneNumber) {
       alert('전화번호를 입력해주세요.');
       return;
     }
-    const isPhoneValid = await trigger('phoneNum');
+    const isPhoneValid = await trigger('phoneNumber');
     if (!isPhoneValid) {
       alert('올바른 전화번호 형식을 입력해주세요. (010-XXXX-XXXX)');
       return;
     }
     // 여기서 서버에 인증번호 요청 API 호출
     sendSms(
-      { phoneNum },
+      { phoneNumber },
       {
         onSuccess: (res) => {
           console.log(res);
@@ -182,7 +182,7 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
   //인증번호 확인 로직
   const handleVerifyNumberCheck = () => {
     verifySms(
-      { phoneNum, inputCode: verifyNum },
+      { phoneNumber, inputCode: verifyNum },
       {
         onSuccess: (res) => {
           if (res.isSuccess) {
@@ -207,7 +207,7 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
   const handleEmailCheck = () => {
     checkEmail(email, {
       onSuccess: (res) => {
-        if (!res.duplicate) {
+        if (!res.isDuplicated) {
           setEmailDuplicate(false);
         } else {
           setEmailDuplicate(true);
@@ -325,7 +325,7 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
                   <input
                     type="tel"
                     placeholder="3334586492"
-                    {...register('phoneNum')}
+                    {...register('phoneNumber')}
                     className="ml-[1.25rem] text-black"
                   />
                   <button

@@ -20,6 +20,7 @@ export const END_POINT = {
   HOME: {},
 
   MYPAGE: {
+    ROOT: '/mypage',
     REQUESTS: {
       requests: `/mypage/requests`,
     },
@@ -58,16 +59,26 @@ export const END_POINT = {
     PROREVIEWS: {
       reviews: (userId: number) => `/reviews/${userId}`,
     },
+    proList: (categoryCode: string) =>
+      `/api/v1/category/${encodeURIComponent(categoryCode)}/trainers`,
+  },
+
+  PRODETAIL: {
+    profile: (userId: number) => `/api/category-proprofile/${userId}`,
   },
 
   REQUESTS: {
+    POST: '/api/reqeustion',
     LIST: {
       list: '/api/requestion/nearby',
     },
     FORM: {},
-    DETAIL: {},
+    PATCH: (requestionId: number) => `/api/reqeustion/${requestionId}`,
+    DELETE: (requestionId: number) => `/api/reqeustion/${requestionId}`,
+    GET_DETAIL: (requestionId: number) => `/api/reqeustion/${requestionId}`,
+    GET_CAN_EDIT: (requestionId: number) => `/api/reqeustion/${requestionId}/requestion-can-edit`,
     SUGGESTS_FOR_REQUESTS: (requestionId: number) =>
-      `/api/suggestion/requestionList/${requestionId}`,
+      `/api/suggestion/suggestion/suggestionList/${requestionId}`,
   },
 
   SUGGESTS: {
@@ -85,7 +96,14 @@ export const END_POINT = {
     readWhenExist: (roomId: number) => `/chatRoom/${roomId}/readWhenExist`,
     readWhenEnter: (roomId: number) => `/chatRoom/${roomId}/readWhenEnter`,
   },
+
+  ALARM: {
+    read: (alarmId: number) => `/api/alarm/${alarmId}/read`,
+    list: '/api/alarmList',
+  },
+
   SETTLEMENT: { settlement: '/api/trainer/dashboard', user_settlement: '/api/user/dashboard' },
+
   CONTRACTS: {
     //사용처가 여기긴 한데 추후에 API 분리 가능성 있음
     CUSTOMORDER: {

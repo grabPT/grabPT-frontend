@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const userInfoSchema = z.object({
   email: z.email({ message: '유효하지 않은 이메일 형식입니다.' }),
-  phoneNum: z
+  phoneNumber: z
     .string()
     .min(1, { message: '전화번호를 입력해주세요.' })
     .transform((val) => val.replace(/[-\s]/g, '')) // 하이픈과 공백 제거

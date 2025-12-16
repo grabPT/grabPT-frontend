@@ -18,37 +18,37 @@ const AgreementStep = ({ onNext }: AgreementStepProps) => {
   const [isModalOpen, setIsModalOpen] = useState<number | null>(null);
   // checkedList
   const checkedList = [
-    agreementInfo.agreedTermsId.length === 4 && agreementInfo.agreeMarketing,
-    agreementInfo.agreedTermsId.includes(1),
-    agreementInfo.agreedTermsId.includes(2),
-    agreementInfo.agreedTermsId.includes(3),
-    agreementInfo.agreedTermsId.includes(4),
-    agreementInfo.agreeMarketing,
+    agreementInfo.agreedTermsIds.length === 4 && agreementInfo.isAgreeMarketing,
+    agreementInfo.agreedTermsIds.includes(1),
+    agreementInfo.agreedTermsIds.includes(2),
+    agreementInfo.agreedTermsIds.includes(3),
+    agreementInfo.agreedTermsIds.includes(4),
+    agreementInfo.isAgreeMarketing,
   ];
   // 전체 선택 버튼 관리
   const isAllRequiredChecked =
-    agreementInfo.agreedTermsId.includes(1) &&
-    agreementInfo.agreedTermsId.includes(2) &&
-    agreementInfo.agreedTermsId.includes(3) &&
-    agreementInfo.agreedTermsId.includes(4);
+    agreementInfo.agreedTermsIds.includes(1) &&
+    agreementInfo.agreedTermsIds.includes(2) &&
+    agreementInfo.agreedTermsIds.includes(3) &&
+    agreementInfo.agreedTermsIds.includes(4);
   // 체크박스 로직
   const toggleCheckbox = (index: number) => {
     if (index === 5) {
-      setAgreementInfo({ ...agreementInfo, agreeMarketing: !agreementInfo.agreeMarketing });
+      setAgreementInfo({ ...agreementInfo, isAgreeMarketing: !agreementInfo.isAgreeMarketing });
     } else {
       const termId = index;
-      const newIds = agreementInfo.agreedTermsId.includes(termId)
-        ? agreementInfo.agreedTermsId.filter((id) => id !== termId)
-        : [...agreementInfo.agreedTermsId, termId];
-      setAgreementInfo({ ...agreementInfo, agreedTermsId: newIds });
+      const newIds = agreementInfo.agreedTermsIds.includes(termId)
+        ? agreementInfo.agreedTermsIds.filter((id) => id !== termId)
+        : [...agreementInfo.agreedTermsIds, termId];
+      setAgreementInfo({ ...agreementInfo, agreedTermsIds: newIds });
     }
   };
   // 전체 동의 로직
   const toggleAllCheckbox = () => {
-    if (!isAllRequiredChecked || !agreementInfo.agreeMarketing) {
-      setAgreementInfo({ agreedTermsId: [1, 2, 3, 4], agreeMarketing: true });
+    if (!isAllRequiredChecked || !agreementInfo.isAgreeMarketing) {
+      setAgreementInfo({ agreedTermsIds: [1, 2, 3, 4], isAgreeMarketing: true });
     } else {
-      setAgreementInfo({ agreedTermsId: [], agreeMarketing: false });
+      setAgreementInfo({ agreedTermsIds: [], isAgreeMarketing: false });
     }
   };
   // 필수 약관 동의 안하면 alert, 동의 시 onNext

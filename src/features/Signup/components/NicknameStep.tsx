@@ -38,7 +38,7 @@ const NickNameStep = ({ onNext }: NicknameStepProps) => {
   };
   // 닉네임 중복 확인 로직
   const handleCheckNickname = () => {
-    checkNickname(nicknameInfo.nickname, {
+    checkNickname(nicknameInfo.userNickname, {
       onSuccess: (res) => {
         if (!res.result) {
           setNicknameCheckResult('available');
@@ -58,7 +58,7 @@ const NickNameStep = ({ onNext }: NicknameStepProps) => {
     mode: 'onChange',
     resolver: zodResolver(nicknameInfoSchema),
     defaultValues: {
-      nickname: nicknameInfo.nickname,
+      nickname: nicknameInfo.userNickname,
     },
   });
   console.log(errors);
@@ -71,7 +71,7 @@ const NickNameStep = ({ onNext }: NicknameStepProps) => {
     }
     setNicknameInfo({
       ...nicknameInfo,
-      nickname: data.nickname,
+      userNickname: data.nickname,
     });
     console.log(signupStore);
     onNext();

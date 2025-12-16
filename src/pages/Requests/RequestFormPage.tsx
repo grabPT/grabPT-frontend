@@ -43,7 +43,7 @@ const RequestFormPage = () => {
 
   useEffect(() => {
     if (isPending) return;
-    const primaryAddress = userInfo?.userLocation?.[0];
+    const primaryAddress = userInfo?.address?.[0];
     const addressStr = primaryAddress
       ? `${primaryAddress.city} ${primaryAddress.district} ${primaryAddress.street}`
       : '';

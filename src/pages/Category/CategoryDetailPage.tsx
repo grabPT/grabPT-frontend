@@ -24,14 +24,14 @@ const CategoryDetailPage = () => {
         id: e.userId,
         imageUrl: e.profileImageUrl,
         name: e.userName,
-        center: e.proCenterName,
+        center: e.centerName,
         rating: e.rating,
-        pricePerSession: e.suggestSessionCount,
+        pricePerSession: e.sessionCount,
       })),
     [prosList],
   );
 
-  const loc = userData?.userLocation[0].street;
+  const loc = userData?.address[0].street;
 
   useEffect(() => {
     if (loc) setLocation(loc);

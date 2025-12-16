@@ -1,7 +1,7 @@
 export type SuggestRequestDto = DetailSuggestForm & {
   requestionId: number | null; //store에서 초기값 때문에 우선 nul도 포함
   sentAt: string;
-  isAgreed: boolean;
+  isMatched: boolean;
 };
 
 export type DetailSuggestForm = {

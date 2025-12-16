@@ -1,5 +1,7 @@
 // src/apis/user.ts
+import { END_POINT } from '@/constants/endPoints';
 import { privateInstance } from '@/libs/axios';
+import type { CommonResponseDto } from '@/types/commonResponseDto';
 
 export interface Address {
   city: string;
@@ -14,27 +16,20 @@ export interface UserInfo {
   userId: number;
   userNickName: string;
   userName: string;
-  userLocation: Address[];
+  address: Address[];
   email: string;
   profileImageUrl: string;
   categoryName: string;
 }
 
-export interface ApiResponse<T> {
-  isSuccess: boolean;
-  code: string; // e.g., "COMMON200"
-  message: string; // e.g., "성공입니다."
-  result: T;
-}
-
 // /api/v1/users/info 응답 타입
-export type GetUserInfoResponse = ApiResponse<UserInfo>;
+export type GetUserInfoResponse = CommonResponseDto<UserInfo>;
 
 /** accessToken으로 사용자 정보 조회 */
 
 export async function getUserInfo(): Promise<GetUserInfoResponse> {
   try {
-    const { data } = await privateInstance.get<ApiResponse<UserInfo>>('/mypage');
+    const { data } = await privateInstance.get<CommonResponseDto<UserInfo>>(END_POINT.MYPAGE.ROOT);
     return data;
   } catch (error) {
     console.error(error);

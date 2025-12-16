@@ -51,7 +51,7 @@ const SuggestFormPage = () => {
     const newSuggestInfo = {
       ...data,
       sentAt: new Date().toISOString().split('T')[0],
-      isAgreed: false,
+      isMatched: false,
       requestionId: suggestInfo.requestionId,
     };
     setSuggestInfo(newSuggestInfo);
@@ -76,13 +76,13 @@ const SuggestFormPage = () => {
       {/* 헤더 */}
       <div className="flex items-center gap-3">
         <img
-          src={requestInfo?.photos || Profile}
+          src={requestInfo?.profileImageUrl || Profile}
           alt="요청자 프로필"
           className="h-12 w-12 rounded-full"
         />
         <span className="text-[2.5rem] font-bold">
-          {(requestInfo?.requestLocation ?? '').split(' ').slice(1).join(' ')}{' '}
-          {requestInfo?.requestUserNickName}{' '}
+          {(requestInfo?.location ?? '').split(' ').slice(1).join(' ')}{' '}
+          {requestInfo?.userNickname}{' '}
         </span>
         <span className="text-2xl font-semibold">고객에게 제안서 작성</span>
       </div>
