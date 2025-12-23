@@ -15,7 +15,8 @@ export const postUserSignup = async (
   profileImage: File | null,
 ): Promise<CommonResponseDto<string>> => {
   const form = new FormData();
-  form.append('data', new Blob([JSON.stringify(data)], { type: 'application/json' })); //data 주입
+  // data.json 파일명 명시
+  form.append('data', new Blob([JSON.stringify(data)], { type: 'application/json' }), 'data.json');
 
   if (profileImage) {
     form.append('profileImage', profileImage);
@@ -43,7 +44,8 @@ export const postProSignup = async (
   profileImage: File | null,
 ): Promise<CommonResponseDto<string>> => {
   const form = new FormData();
-  form.append('data', new Blob([JSON.stringify(data)], { type: 'application/json' })); //data 주입
+  // data.json 파일명 명시
+  form.append('data', new Blob([JSON.stringify(data)], { type: 'application/json' }), 'data.json');
 
   if (profileImage) {
     form.append('profileImage', profileImage);

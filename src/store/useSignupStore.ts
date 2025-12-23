@@ -94,7 +94,7 @@ export const useSignupStore = create<
   getUserSignupDto: () => {
     const state = get();
     return {
-      username: state.username,
+      userName: state.username,
       oauthId: state.oauthId,
       oauthProvider: state.oauthProvider,
       role: state.role,
@@ -102,9 +102,9 @@ export const useSignupStore = create<
       email: state.userInfo.email,
       phoneNumber: state.userInfo.phoneNumber,
       address: state.userInfo.address,
-      nickname: state.nicknameInfo.userNickname,
+      userNickname: state.nicknameInfo.userNickname,
       agreedTermsIds: state.agreementInfo.agreedTermsIds,
-      agreeMarketing: state.agreementInfo.isAgreeMarketing,
+      isAgreeMarketing: state.agreementInfo.isAgreeMarketing,
     };
   },
   getProfileImageInfo: () => {
@@ -114,7 +114,7 @@ export const useSignupStore = create<
   getProSignupDto: () => {
     const state = get();
     return {
-      username: state.username,
+      userName: state.username,
       oauthId: state.oauthId,
       oauthProvider: state.oauthProvider,
       role: state.role,
@@ -122,13 +122,13 @@ export const useSignupStore = create<
       email: state.userInfo.email,
       phoneNumber: state.userInfo.phoneNumber,
       address: state.userInfo.address,
-      nickname: state.nicknameInfo.userNickname,
+      userNickname: state.nicknameInfo.userNickname,
       agreedTermsIds: state.agreementInfo.agreedTermsIds,
-      agreeMarketing: state.agreementInfo.isAgreeMarketing,
+      isAgreeMarketing: state.agreementInfo.isAgreeMarketing,
       // 전문가 추가 정보
       age: state.proInfo.age,
       gender: state.proInfo.gender,
-      center: state.proInfo.centerName,
+      centerName: state.proInfo.centerName,
       career: state.proInfo.career,
     };
   },

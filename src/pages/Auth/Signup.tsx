@@ -13,11 +13,22 @@ import UserTypeStep from '@/features/Signup/components/UserTypeStep';
 import { useProSignup } from '@/features/Signup/hooks/useProSignup';
 import { useUserSignup } from '@/features/Signup/hooks/useUserSignup';
 import { useSignupStore } from '@/store/useSignupStore';
-import { decodeCookie } from '@/utils/decodeCookie';
 
 const Signup = () => {
   const nav = useNavigate();
   const { role, setUserInfo, setOauthId, setOauthProvider, setUserName } = useSignupStore();
+
+  // 🔍 URL 파라미터 확인용 테스트 코드
+  useEffect(() => {
+    console.log('📍 Signup Page Loaded');
+    console.log('🔗 Full URL:', window.location.href);
+    console.log('❓ Search Params:', window.location.search);
+    const params = new URLSearchParams(window.location.search);
+    params.forEach((value, key) => {
+      console.log(`   👉 ${key}:`, value);
+    });
+  }, []);
+
   const [step, setStep] = useState<number>(0);
   const { mutate: userSignup } = useUserSignup();
   const { mutate: proSignup } = useProSignup();
@@ -44,22 +55,30 @@ const Signup = () => {
       setStep((prev) => prev - 1);
     }
   };
-  const oauthId = decodeCookie('oauthId') || '';
-  const oauthProvider = decodeCookie('oauthProvider') || '';
-  const username = decodeCookie('oauthName') || '';
-  const email = decodeCookie('oauthEmail') || '';
+  // 수정: 서버에서 URL 파라미터로 넘겨주는 값 처리
   useEffect(() => {
-    setOauthId(oauthId);
-    setOauthProvider(oauthProvider);
-    setUserName(username);
-    // 이메일은 "카카오 외" 공급자이고 쿠키에 값이 있을 때만 초기화 (빈 문자열로 덮어쓰지 않도록)
-    if (oauthProvider !== 'kakao' && email !== '') {
-      setUserInfo({ email });
+    const params = new URLSearchParams(window.location.search);
+    const paramOauthId = params.get('oauthId') || '';
+    const paramOauthProvider = params.get('oauthProvider') || '';
+    const paramEmail = params.get('oauthEmail') || ''; // 수정: email -> oauthEmail
+    const paramUsername = params.get('oauthName') || ''; // 수정: name -> oauthName
+
+    // URL 파라미터를 우선사용
+    setOauthId(paramOauthId);
+    setOauthProvider(paramOauthProvider);
+    setUserName(paramUsername);
+
+    // 이메일 처리
+    if (paramOauthProvider !== 'kakao' && paramEmail !== '') {
+      setUserInfo({ email: paramEmail });
     }
+  }, [setOauthId, setOauthProvider, setUserName, setUserInfo]);
+  // 회원가입 완료 로직
+  useEffect(() => {
     if (step === 6) {
       if (role === 1) {
         const payload = useSignupStore.getState().getUserSignupDto();
-        console.log('📦 보내는 user-signup payload:', payload); //
+        console.log('📦 보내는 user-signup payload:', payload);
         userSignup(
           {
             data: useSignupStore.getState().getUserSignupDto(),
@@ -79,7 +98,7 @@ const Signup = () => {
         );
       } else if (role === 2) {
         const payload = useSignupStore.getState().getProSignupDto();
-        console.log('📦 보내는 user-signup payload:', payload); //
+        console.log('📦 보내는 user-signup payload:', payload);
         proSignup(
           {
             data: useSignupStore.getState().getProSignupDto(),
@@ -99,21 +118,7 @@ const Signup = () => {
         );
       }
     }
-  }, [
-    email,
-    nav,
-    oauthId,
-    oauthProvider,
-    proSignup,
-    role,
-    setOauthId,
-    setOauthProvider,
-    setUserInfo,
-    setUserName,
-    step,
-    userSignup,
-    username,
-  ]);
+  }, [step, role, userSignup, proSignup, nav]);
 
   return (
     <div className="relative flex h-dvh w-full items-center justify-center bg-gradient-to-bl from-[#8CAFFF] to-[#FFFFFF]">
