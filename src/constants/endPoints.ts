@@ -68,15 +68,15 @@ export const END_POINT = {
   },
 
   REQUESTS: {
-    POST: '/api/reqeustion',
+    POST: '/api/requestion',
     LIST: {
       list: '/api/requestion/nearby',
     },
     FORM: {},
-    PATCH: (requestionId: number) => `/api/reqeustion/${requestionId}`,
-    DELETE: (requestionId: number) => `/api/reqeustion/${requestionId}`,
-    GET_DETAIL: (requestionId: number) => `/api/reqeustion/${requestionId}`,
-    GET_CAN_EDIT: (requestionId: number) => `/api/reqeustion/${requestionId}/requestion-can-edit`,
+    PATCH: (requestionId: number) => `/api/requestion/${requestionId}`,
+    DELETE: (requestionId: number) => `/api/requestion/${requestionId}`,
+    GET_DETAIL: (requestionId: number) => `/api/requestion/${requestionId}`,
+    GET_CAN_EDIT: (requestionId: number) => `/api/requestion/${requestionId}/requestion-can-edit`,
     SUGGESTS_FOR_REQUESTS: (requestionId: number) =>
       `/api/suggestion/suggestion/suggestionList/${requestionId}`,
   },

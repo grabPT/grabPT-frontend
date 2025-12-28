@@ -136,18 +136,25 @@ export const privateInstance = axios.create({
 
 //요청 인터셉터로 토큰 자동 주입
 const stage = import.meta.env.VITE_STAGE;
+console.log('🚧 [Axios Debug] Current Stage:', stage); // 디버깅용 로그
+
 if (stage == 'development' || stage == 'staging') {
+  console.log('🚧 [Axios Debug] Development/Staging mode detected. Attaching interceptor.');
   privateInstance.interceptors.request.use(
     (request) => {
       request.withCredentials = false; //개발 환경에서는 withCredentials false
       const accessToken = localStorage.getItem('accessToken');
+      console.log('🚧 [Axios Debug] AccessToken found in localStorage:', !!accessToken);
       if (accessToken) {
         request.headers['Authorization'] = `Bearer ${accessToken}`;
+        console.log('🚧 [Axios Debug] Authorization header attached.');
       }
       return request;
     },
     (error) => Promise.reject(error),
   );
+} else {
+  console.log('🚧 [Axios Debug] Production mode (or unknown). Interceptor NOT attached.');
 }
 // // 응답 인터셉터 - 401일 때 리프레쉬 토큰을 이용하여 액세스 토큰 재발급
 // privateInstance.interceptors.response.use(
