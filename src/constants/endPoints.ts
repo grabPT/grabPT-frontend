@@ -116,8 +116,8 @@ export const END_POINT = {
     // pdfLink: (contractId: number) => `/contract/${contractId}/pdf`,
 
     // 이건 왜 쓰인 곳이 없지
-    // userWrite: (contractId: number) => `/contract/${contractId}/user`,
-    // proWrite: (contractId: number) => `/contract/${contractId}/pro`,
+    userWrite: (contractId: number) => `/contract/${contractId}/user`,
+    proWrite: (contractId: number) => `/contract/${contractId}/pro`,
 
     // 서명 업로드
     uploadUserSign: (contractId: number) => `/contract/${contractId}/uploadUserSign`,

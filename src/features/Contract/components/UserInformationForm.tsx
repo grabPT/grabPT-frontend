@@ -96,9 +96,9 @@ const UserInformationForm = ({ isCanEdit, defaultValues }: UserInformationFormPr
       <input
         type="text"
         placeholder="주소"
-        name="address"
+        name="location"
         readOnly={!isCanEdit}
-        defaultValue={defaultValues?.address ?? ''}
+        defaultValue={defaultValues?.location ?? ''}
         className={`${baseInputClass} ${isCanEdit ? editableClass : readOnlyClass}`}
       />
     </div>
