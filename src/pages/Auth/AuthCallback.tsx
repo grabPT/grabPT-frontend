@@ -33,8 +33,10 @@ export const AuthCallback = () => {
       // grabpt-dev.vercel.app/authcallback?access_token=ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKemRXSWlPaUpzWldWMFlXVnpkV3RoUUdkdFlXbHNMbU52YlNJc0luSnZiR1VpT2lKVlUwVlNJaXdpYVdGMElqb3hOelU0TXpjNE9EWTVMQ0psZUhBaU9qRTNOVGd6T1RNeU5qbDkuUjdnQ3pNeGszUTAxcmN6djJNNFhRSENZanpRMDQ2b2FvMldvSjFTWDBZTQ==&refresh_token=ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKemRXSWlPaUpzWldWMFlXVnpkV3RoUUdkdFlXbHNMbU52YlNJc0ltbGhkQ0k2TVRjMU9ETTNPRGcyT1N3aVpYaHdJam94TnpVNE9UZ3pOalk1ZlEuc0xLbnEzdVJJYnJQU3o3NngzV0pXTnM3V3VKeWJPaG10VGtBbTI2T280Zw==&role=VVNFUg==&user_id=OA==
       //로컬 서버, 개발 서버는 파라미터로 받고 실제 배포 서버는 쿠키로 받음
       if (stage == 'development' || stage == 'staging') {
-        roleRaw = decodeBase64Utf8(params.get('role'));
-        userIdRaw = Number(decodeBase64Utf8(params.get('user_id')));
+        roleRaw = params.get('role');
+        console.log(`롤러:${roleRaw}`);
+        userIdRaw = Number(params.get('user_id'));
+        console.log(`유저아이디:${userIdRaw}`);
         const accessTokenRaw = decodeBase64Utf8(params.get('access_token'));
         const refreshTokenRaw = decodeBase64Utf8(params.get('refresh_token'));
         localStorage.setItem('accessToken', accessTokenRaw || '');
@@ -45,6 +47,8 @@ export const AuthCallback = () => {
       }
 
       const role = roleRaw === ROLES.PRO || roleRaw === ROLES.USER ? roleRaw : ROLES.GUEST;
+      console.log(role);
+      console.log(userIdRaw);
       setRole(role);
       setUserId(userIdRaw);
 

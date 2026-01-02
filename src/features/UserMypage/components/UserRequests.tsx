@@ -51,7 +51,7 @@ const UserRequests = () => {
                   daysPerWeek: rq.availableDays.length,
                   categoryName: rq.categoryName,
                 }}
-                content={rq.requestContent}
+                content={rq.content}
                 isWriter={true}
               />
             ))

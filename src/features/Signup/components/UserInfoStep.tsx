@@ -24,7 +24,10 @@ interface UserInfoFormValues {
 
 const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
   //store에서 업데이트할 목록 불러오기
-  const { userInfo, setUserInfo, oauthProvider } = useSignupStore();
+  // oauthProvider 빌드에러
+  // const { userInfo, setUserInfo, oauthProvider } = useSignupStore();
+  const { userInfo, setUserInfo } = useSignupStore();
+
   //유효성 검사
   const {
     register,
@@ -127,17 +130,18 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
     document.body.appendChild(script);
   }, []);
   // email 동기화: 카카오는 사용자가 입력한 값을 RHF가 관리하고, 비-카카오는 스토어 값을 폼에 유지
-  useEffect(() => {
-    if (oauthProvider !== 'kakao') {
-      if (email !== userInfo.email) {
-        setValue('email', userInfo.email || '', {
-          shouldDirty: false,
-          shouldTouch: false,
-          shouldValidate: false,
-        });
-      }
-    }
-  }, [oauthProvider, email, userInfo.email, setValue]);
+  // 이새끼떄매 입력이 안 되네
+  // useEffect(() => {
+  //   if (oauthProvider !== 'kakao') {
+  //     if (email !== userInfo.email) {
+  //       setValue('email', userInfo.email || '', {
+  //         shouldDirty: false,
+  //         shouldTouch: false,
+  //         shouldValidate: false,
+  //       });
+  //     }
+  //   }
+  // }, [oauthProvider, email, userInfo.email, setValue]);
 
   //폼 검사 에러 메시지 출력
   const getUserErrorMessage = () => {
@@ -235,12 +239,14 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
               <span className="font-semibold">이메일</span>
               <div className="relative flex h-[3.125rem] w-[25.625rem] items-center justify-between rounded-[0.625rem] border border-[#BDBDBD]">
                 <input
-                  type="text"
+                  //type="email"로 수정
+                  type="email"
                   {...register('email')}
                   placeholder="이메일"
                   //이메일 같은 경우 카카오는 입력받아서 나머지는 받아온 이메일을 띄워줘야함 oauthprovider로 구분
                   className="w-full rounded-[0.625rem] py-[0.8rem] pl-4 text-[#616161]"
-                  readOnly={oauthProvider !== 'kakao'}
+                  // 일단 주석처리.
+                  // readOnly={oauthProvider !== 'kakao'}
                 />
                 <button
                   className="absolute top-1/2 right-4 flex h-7 w-[4.375rem] -translate-y-1/2 items-center justify-center rounded-[3.125rem] bg-[color:var(--color-button)] text-[0.625rem] font-semibold text-white hover:bg-[color:var(--color-button-hover)] active:bg-[color:var(--color-button-pressed)]"

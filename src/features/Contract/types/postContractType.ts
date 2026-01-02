@@ -5,12 +5,12 @@ export type userInfoType = {
   birth: string | null;
   phoneNumber: string;
   gender: 'MALE' | 'FEMALE' | null;
-  address: string;
+  location: string;
 };
 
 export type proInfoType = userInfoType & {
   startDate: string;
-  contractDate: string;
+  expireDate: string;
 };
 
 export type postContractUserInfoRequestDto = {

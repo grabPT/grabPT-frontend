@@ -68,15 +68,15 @@ export const END_POINT = {
   },
 
   REQUESTS: {
-    POST: '/api/reqeustion',
+    POST: '/api/requestion',
     LIST: {
       list: '/api/requestion/nearby',
     },
     FORM: {},
-    PATCH: (requestionId: number) => `/api/reqeustion/${requestionId}`,
-    DELETE: (requestionId: number) => `/api/reqeustion/${requestionId}`,
-    GET_DETAIL: (requestionId: number) => `/api/reqeustion/${requestionId}`,
-    GET_CAN_EDIT: (requestionId: number) => `/api/reqeustion/${requestionId}/requestion-can-edit`,
+    PATCH: (requestionId: number) => `/api/requestion/${requestionId}`,
+    DELETE: (requestionId: number) => `/api/requestion/${requestionId}`,
+    GET_DETAIL: (requestionId: number) => `/api/requestion/${requestionId}`,
+    GET_CAN_EDIT: (requestionId: number) => `/api/requestion/${requestionId}/requestion-can-edit`,
     SUGGESTS_FOR_REQUESTS: (requestionId: number) =>
       `/api/suggestion/suggestion/suggestionList/${requestionId}`,
   },
@@ -116,8 +116,8 @@ export const END_POINT = {
     // pdfLink: (contractId: number) => `/contract/${contractId}/pdf`,
 
     // 이건 왜 쓰인 곳이 없지
-    // userWrite: (contractId: number) => `/contract/${contractId}/user`,
-    // proWrite: (contractId: number) => `/contract/${contractId}/pro`,
+    userWrite: (contractId: number) => `/contract/${contractId}/user`,
+    proWrite: (contractId: number) => `/contract/${contractId}/pro`,
 
     // 서명 업로드
     uploadUserSign: (contractId: number) => `/contract/${contractId}/uploadUserSign`,

@@ -47,7 +47,7 @@ const userInfoSchema = z.object({
   name: z.string().min(1, '이름을 입력해주세요'),
   birth: z.string().min(1, '생년월일을 입력해주세요'),
   phoneNumber: z.string().min(1, '전화번호를 입력해주세요'),
-  address: z.string().min(1, '주소를 입력해주세요'),
+  location: z.string().min(1, '주소를 입력해주세요'),
   // ✅ enum: readonly 튜플 + 에러 메시지
   gender: z.enum(['MALE', 'FEMALE'] as const, { error: '성별을 선택해주세요' }),
   // 또는: gender: z.enum(['MALE', 'FEMALE'] as const, '성별을 선택해주세요'),
@@ -69,16 +69,16 @@ const toFieldErrorMap = (e: ZodError): Record<string, string> => {
 const proInfoSchema = userInfoSchema
   .extend({
     startDate: z.string().min(1, '시작일을 입력해주세요'),
-    contractDate: z.string().min(1, '계약 종료일을 입력해주세요'),
+    expireDate: z.string().min(1, '계약 종료일을 입력해주세요'),
   })
   .refine(
     (data) => {
-      if (!data.startDate || !data.contractDate) return true; // 개별 필드 검증에서 처리
-      return new Date(data.contractDate) > new Date(data.startDate);
+      if (!data.startDate || !data.expireDate) return true; // 개별 필드 검증에서 처리
+      return new Date(data.expireDate) > new Date(data.startDate);
     },
     {
       message: '계약 종료일은 시작일보다 뒤여야 합니다',
-      path: ['contractDate'],
+      path: ['expireDate'],
     },
   );
 
@@ -88,7 +88,7 @@ function extractUserBodyFromForm(form: HTMLFormElement | null): userInfoType | n
   const name = String(fd.get('name') ?? '').trim();
   const birthRaw = String(fd.get('birth') ?? '').trim();
   const phoneNumber = String(fd.get('phoneNumber') ?? '').trim();
-  const address = String(fd.get('address') ?? '').trim();
+  const location = String(fd.get('location') ?? '').trim();
   const genderRaw = String(fd.get('gender') ?? '')
     .trim()
     .toUpperCase();
@@ -98,7 +98,7 @@ function extractUserBodyFromForm(form: HTMLFormElement | null): userInfoType | n
 
   const birth: string | null = birthRaw.length ? birthRaw : null;
 
-  return { name, birth, phoneNumber, gender, address };
+  return { name, birth, phoneNumber, gender, location };
 }
 
 function extractProBodyFromForm(form: HTMLFormElement | null): proInfoType | null {
@@ -107,19 +107,19 @@ function extractProBodyFromForm(form: HTMLFormElement | null): proInfoType | nul
   const name = String(fd.get('name') ?? '').trim();
   const birthRaw = String(fd.get('birth') ?? '').trim();
   const phoneNumber = String(fd.get('phoneNumber') ?? '').trim();
-  const address = String(fd.get('address') ?? '').trim();
+  const location = String(fd.get('location') ?? '').trim();
   const genderRaw = String(fd.get('gender') ?? '')
     .trim()
     .toUpperCase();
   const startDate = String(fd.get('startDate') ?? '').trim();
-  const contractDate = String(fd.get('contractDate') ?? '').trim();
+  const expireDate = String(fd.get('expireDate') ?? '').trim();
 
   const gender: 'MALE' | 'FEMALE' | null =
     genderRaw === 'MALE' || genderRaw === 'FEMALE' ? (genderRaw as any) : null;
 
   const birth: string | null = birthRaw.length ? birthRaw : null;
 
-  return { name, birth, phoneNumber, gender, address, startDate, contractDate };
+  return { name, birth, phoneNumber, gender, location, startDate, expireDate };
 }
 
 // 계약서 작성페이지입니다.
@@ -171,7 +171,7 @@ const ContractFormPage = () => {
       birth: u.birth ?? null,
       phoneNumber: u.phoneNumber ?? '',
       gender: u.gender ?? null,
-      address: u.location ?? '',
+      location: u.location ?? '',
     };
   }, [contract]);
 
@@ -183,7 +183,7 @@ const ContractFormPage = () => {
       birth: p.birth ?? null,
       phoneNumber: p.phoneNumber ?? '',
       gender: p.gender ?? null,
-      address: p.location ?? '',
+      location: p.location ?? '',
     };
   }, [contract]);
 
@@ -197,7 +197,7 @@ const ContractFormPage = () => {
     !!defs.birth &&
     !!defs.phoneNumber &&
     !!defs.gender &&
-    !!defs.address &&
+    !!defs.location &&
     !!sign;
 
   // 전문가 완료: 기본 정보 + 날짜 2개 + 서명
@@ -211,7 +211,7 @@ const ContractFormPage = () => {
     !!defs.birth &&
     !!defs.phoneNumber &&
     !!defs.gender &&
-    !!defs.address &&
+    !!defs.location &&
     !!dates?.startDate &&
     !!dates?.contractDate &&
     !!sign;
@@ -317,7 +317,7 @@ const ContractFormPage = () => {
         name: body.name || '',
         birth: body.birth || '',
         phoneNumber: body.phoneNumber || '',
-        address: body.address || '',
+        location: body.location || '',
         gender: body.gender || undefined,
       });
       setUserErrors({});
@@ -337,10 +337,10 @@ const ContractFormPage = () => {
         name: body.name || '',
         birth: body.birth || '',
         phoneNumber: body.phoneNumber || '',
-        address: body.address || '',
+        location: body.location || '',
         gender: body.gender || undefined,
         startDate: body.startDate || '',
-        contractDate: body.contractDate || '',
+        expireDate: body.expireDate || '',
       });
       setProErrors({});
       return true;
@@ -536,7 +536,7 @@ const ContractFormPage = () => {
                 <form ref={proFormRef}>
                   <UserInformationForm isCanEdit={canEditPro} defaultValues={proDefaults} />
                   <input type="hidden" name="startDate" value={startAny} />
-                  <input type="hidden" name="contractDate" value={contractAny} />
+                  <input type="hidden" name="expireDate" value={contractAny} />
                   {/* 검증 에러 표시 */}
                   {Object.entries(proErrors).map(([field, error]) => (
                     <div key={field} className="mt-2 text-xs text-red-500">
