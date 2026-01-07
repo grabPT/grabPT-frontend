@@ -8,6 +8,10 @@ interface ProProfileCardProps {
   pricePerSession: number;
 }
 
+/**
+ * 프로슬라이더에 쓰이는 카드 컴포넌트
+ * todo: 이미지없을때 처리해주세요
+ */
 const ProProfileCard = ({
   imageUrl,
   name,

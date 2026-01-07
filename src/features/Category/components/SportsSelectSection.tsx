@@ -20,6 +20,8 @@ const SportsSelectSection = ({ selected, onSelect }: SportsSelectSectionProps) =
 
         <SportsTypeSelector value={selected} onChange={onSelect} />
       </div>
+
+      {/* 배너 */}
       <div className="mx-auto mt-[200px] max-w-[1480px] sm:w-[720px] lg:w-[720px]">
         <Banner />
       </div>
