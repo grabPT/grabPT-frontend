@@ -8,6 +8,7 @@ export type Address = {
   district: string;
   street: string;
   zipcode: string;
+  specAddress: string;
 };
 
 export type PtPrice = {
@@ -20,7 +21,25 @@ export type Review = {
   rating: number;
   content: string;
 };
-export type BaseProProfile = {
+
+export type ProProfileType = {
+  userId: number;
+  profileImageUrl: string;
+  userName: string;
+  userNickName: string;
+  centerName: string;
+  categoryName: string;
+  averageRating: number;
+  profileDescription: string;
+  centerDescription: string;
+  photos: SlideImage[];
+  reviews: Review[];
+  pricePerSession: number;
+  ptPrices: PtPrice[];
+  userLocations: Address[];
+};
+
+export type ProProfileWithUserIdType = {
   userId: number;
   userNickName: string;
   profileImageUrl: string;
@@ -32,18 +51,6 @@ export type BaseProProfile = {
   photos: SlideImage[];
   reviews: Review[] | null;
   address: Address[];
-};
-export type ProProfileType = BaseProProfile & {
-  proName: string;
-  userName: string;
-  proCenterName: string | null;
-  averageRating: number;
-  description: string | null;
-  centerName: string | null;
-  totalSessions: number;
-};
-
-export type ProProfileWithUserIdType = BaseProProfile & {
   centerName: string;
   introduction: string;
   certifications: certificationResponse[];

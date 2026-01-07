@@ -46,13 +46,13 @@ const ProProfile = () => {
   const { data: profileData, isLoading, isError } = useProProfileQuery();
 
   useEffect(() => {
-    setComment(profileData?.programDescription || '');
+    setComment(profileData?.profileDescription || '');
     setOriginPhotos(profileData?.photos || []);
     setPhotos(profileData?.photos || []);
     setPrices(profileData?.ptPrices || []);
     setPricePerOne(profileData?.pricePerSession || null);
     setCenterName(profileData?.centerName || '');
-    setCenterDescription(profileData?.proCenterDescription || '');
+    setCenterDescription(profileData?.centerDescription || '');
 
     const initialPrices: ptPriceUpdateRequestDtoList[] = [];
 
@@ -122,7 +122,7 @@ const ProProfile = () => {
 
   const handleCenterCancel = () => {
     setCenterName(profileData?.centerName ?? '');
-    setCenterDescription(profileData?.proCenterDescription ?? '');
+    setCenterDescription(profileData?.centerDescription ?? '');
     setIsLocationEdit(false);
   };
 
@@ -238,7 +238,7 @@ const ProProfile = () => {
         <hr className="mt-[10px] border-t-2 border-[#B8B8B8]" />
         {/* 보기 모드 */}
         {!isCommentEdit && (
-          <p className="mt-[45px] h-[400px] w-full">{profileData?.proCenterDescription}</p>
+          <p className="mt-[45px] h-[400px] w-full">{profileData?.profileDescription}</p>
         )}
 
         {/* 수정 모드 */}

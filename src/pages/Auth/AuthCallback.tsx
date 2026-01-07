@@ -15,47 +15,69 @@ import { useUnreadStore } from '@/store/useUnreadStore';
 import { decodeBase64Utf8 } from '@/utils/decodeBaseUtf8';
 import { decodeCookie } from '@/utils/decodeCookie';
 
-export const AuthCallback = () => {
+/**
+ * 소셜 로그인 후 콜백 페이지
+ * @params : access_token,refresh_token,role,user_id
+ */
+const AuthCallback = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+
+  // 유저정보 store불러옴 셋팅 위해서
   const { setRole, setUserId } = useRoleStore();
+
+  // 소켓연결
   const setAlarmCount = useAlarmStore((state) => state.setAlarmCount);
   const setUnReadCount = useUnreadStore((state) => state.setUnReadCount);
-  alert('여긴왔음');
+
   useEffect(() => {
     const processAuthAndFetch = async () => {
-      // 1. 개발환경 분류해서 유저 분류
       const params = new URLSearchParams(window.location.search);
       const stage = import.meta.env.VITE_STAGE;
+
+      // 지우십쇼
       alert(stage);
+
       let roleRaw: string | null = null;
       let userIdRaw: number | null = null;
-      // grabpt-dev.vercel.app/authcallback?access_token=ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKemRXSWlPaUpzWldWMFlXVnpkV3RoUUdkdFlXbHNMbU52YlNJc0luSnZiR1VpT2lKVlUwVlNJaXdpYVdGMElqb3hOelU0TXpjNE9EWTVMQ0psZUhBaU9qRTNOVGd6T1RNeU5qbDkuUjdnQ3pNeGszUTAxcmN6djJNNFhRSENZanpRMDQ2b2FvMldvSjFTWDBZTQ==&refresh_token=ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKemRXSWlPaUpzWldWMFlXVnpkV3RoUUdkdFlXbHNMbU52YlNJc0ltbGhkQ0k2TVRjMU9ETTNPRGcyT1N3aVpYaHdJam94TnpVNE9UZ3pOalk1ZlEuc0xLbnEzdVJJYnJQU3o3NngzV0pXTnM3V3VKeWJPaG10VGtBbTI2T280Zw==&role=VVNFUg==&user_id=OA==
-      //로컬 서버, 개발 서버는 파라미터로 받고 실제 배포 서버는 쿠키로 받음
+
+      // 로컬 서버, 개발 서버는 파라미터로 받고 로컬스토리지에 저장
+      // 실제 배포 서버는 쿠키로 받아서 set Cookie - 확인 못했음 아직
       if (stage == 'development' || stage == 'staging') {
-        roleRaw = params.get('role');
-        console.log(`롤러:${roleRaw}`);
-        userIdRaw = Number(params.get('user_id'));
-        console.log(`유저아이디:${userIdRaw}`);
+        // todo: decode유틸 삭제
+        // 로컬스토리지에는 인코딩된 Base64Url그대로 넣고 그대로 사용하는 겁니다
+        // 지금 유틸에서는 catch발동되서 그대로 저장되긴 하는데... 삭제합시다
         const accessTokenRaw = decodeBase64Utf8(params.get('access_token'));
         const refreshTokenRaw = decodeBase64Utf8(params.get('refresh_token'));
         localStorage.setItem('accessToken', accessTokenRaw || '');
         localStorage.setItem('refreshToken', refreshTokenRaw || '');
+
+        // 로컬,개발서버에선 paramse에서
+        roleRaw = params.get('role');
+        userIdRaw = Number(params.get('user_id'));
       } else {
+        // 배포에선 쿠키에서 decode
         roleRaw = decodeCookie('ROLE');
         userIdRaw = Number(decodeCookie('USER_ID'));
+        // 쿠키는 1차 task 끝나고 다시 다듬어봅시다 에러전부 해결되면 main에 병합 후 ~
       }
 
+      // 이거 서버에서 PRO 아님 USER로 넘겨줘서 필요없지 않나요?
+      // 최상단에서 PARAMS 4개중 잘못된 거 있으면 에러처리하는 게 좋을 듯?
       const role = roleRaw === ROLES.PRO || roleRaw === ROLES.USER ? roleRaw : ROLES.GUEST;
-      console.log(role);
-      console.log(userIdRaw);
+
+      // 스토어 최신화
       setRole(role);
       setUserId(userIdRaw);
 
-      // 2. fetchQuery를 사용하여 데이터를 가져옵니다.
+      // 디버깅용 - 지우십쇼
+      console.log(`롤:${role}`);
+      console.log(`유저아이디:${userIdRaw}`);
+
+      // 2.fetchQuery를 사용하여 알람, 안읽은수 api 날리고 스토어 최신화
+      // 내가 이런 코드를 썼었네..;;
       try {
         const [alarmResponse, unreadResponse] = await Promise.all([
-          // fetchQuery는 queryKey와 queryFn을 인자로 받습니다.
           queryClient.fetchQuery({
             queryKey: QUERY_KEYS.alarm,
             queryFn: getAlarmList,
@@ -69,13 +91,12 @@ export const AuthCallback = () => {
         setAlarmCount(alarmResponse.result.length);
         setUnReadCount(unreadResponse.result);
       } catch (error) {
-        // fetchQuery는 실패 시 Promise를 reject하므로 try...catch로 에러를 잡을 수 있습니다.
         console.error('초기 데이터 로딩 실패:', error);
         setAlarmCount(0);
         setUnReadCount(0);
       }
 
-      // 3. 리다이렉트
+      // 3.리다이렉트
       if (role === ROLES.PRO) {
         navigate(ROUTES.HOME.PRO);
       } else {
@@ -86,5 +107,8 @@ export const AuthCallback = () => {
     processAuthAndFetch();
   }, [navigate, setRole, setUserId, setAlarmCount, setUnReadCount, queryClient]);
 
+  // 지워도될듯
   return <LoadingMuscle />;
 };
+
+export default AuthCallback;
