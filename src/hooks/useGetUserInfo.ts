@@ -9,6 +9,7 @@ export function useGetUserInfo() {
       const data = await getUserInfo();
       return data.result;
     },
+    // todo: 비로그인시 enabled
     enabled: true,
     staleTime: 1000 * 60 * 5,
   });

@@ -17,13 +17,19 @@ interface RealtimeMatchingStatusProps {
   categoryType: SportsSlugType;
 }
 
-// 실시간 매칭 현황 컴포넌트입니다
-// category를 넘겨받으면 컴포넌트에서 요청을 날립니다
+/**
+ * 실시간 매칭 현황
+ * categoryType을 넘겨받아 실시간 매칭 현황을 조회합니다
+ * todo: 매칭현황 없을 떄 아무것도 안 보임. ui 처리도 해주세요
+ */
 const RealtimeMatchingStatus = ({ categoryType }: RealtimeMatchingStatusProps) => {
-  const { data: matchingList, error, isPending } = useGetRealtimeMatching(categoryType);
   const navigate = useNavigate();
   const { isLoggedIn, role } = useRoleStore();
+
   const [cardCount, setCardCount] = useState(8);
+
+  const { data: matchingList, error, isPending } = useGetRealtimeMatching(categoryType);
+
   const handleRequestWriteClick = () => {
     if (!isLoggedIn) {
       alert('로그인이 필요합니다.');
@@ -32,7 +38,9 @@ const RealtimeMatchingStatus = ({ categoryType }: RealtimeMatchingStatusProps) =
       alert('전문가 계정은 요청서를 작성할 수 없습니다.');
     } else navigate(ROUTES.MATCHING_STATUS.REQUESTS.NEW);
   };
+
   const categoryLabel = getLabelFromSlug(categoryType);
+
   // 화면 폭에 따라 카드 개수 조정
   useEffect(() => {
     const update = () => {
@@ -46,7 +54,7 @@ const RealtimeMatchingStatus = ({ categoryType }: RealtimeMatchingStatusProps) =
     return () => window.removeEventListener('resize', update);
   }, []);
 
-  //ui 처리
+  // todo: ui 처리 => 컴포넌트는 스켈레톤으로 처리
   if (isPending) return <LoadingMuscle />;
   if (error) return <ErrorComponent />;
 
@@ -63,6 +71,7 @@ const RealtimeMatchingStatus = ({ categoryType }: RealtimeMatchingStatusProps) =
       </div>
 
       {/* 오른쪽 아래 정렬 */}
+      {/* todo: 전문가면 요청서 작성 버튼 안 보여야 함 */}
       {!(role === 'PRO') && (
         <div className="flex justify-end">
           <Button
