@@ -21,13 +21,6 @@ export const postUserSignup = async (
   if (profileImage) {
     form.append('profileImage', profileImage);
   }
-  //콘솔 출력(나중에 지우거나 주석 처리)
-  for (const [key, value] of form.entries()) {
-    console.log('FormData:', key, value);
-    const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
-
-    blob.text().then(console.log);
-  }
 
   const { data: responseData } = await multipartInstance.post(
     END_POINT.AUTH.SIGNUP.userSignup,
@@ -50,13 +43,7 @@ export const postProSignup = async (
   if (profileImage) {
     form.append('profileImage', profileImage);
   }
-  //콘솔 출력(나중에 지우거나 주석 처리)
-  for (const [key, value] of form.entries()) {
-    console.log('FormData:', key, value);
-    const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
 
-    blob.text().then(console.log);
-  }
   const { data: responseData } = await multipartInstance.post(
     END_POINT.AUTH.SIGNUP.proSignup,
     form,
@@ -88,13 +75,29 @@ export const postLogout = async (body: LogoutDto): Promise<CommonResponseDto<str
   return data;
 };
 
-export const postReissue = async (): Promise<CommonResponseDto<void>> => {
-  const { data } = await publicInstance.post(
-    END_POINT.AUTH.REISSUE,
-    {},
-    { withCredentials: true, skipAuth: true },
-  );
-  console.log('reissue 성공인가??', data);
+// todo: 로컬/개발에서 리프레시토큰 헤더에 담기
+export const postReissue = async (): Promise<
+  CommonResponseDto<{ accessToken: string; refreshToken: string }>
+> => {
+  const stage = import.meta.env.VITE_STAGE;
+
+  const headers: Record<string, string> = {};
+
+  if (stage === 'development' || stage === 'staging') {
+    const refreshToken = localStorage.getItem('refreshToken');
+    if (refreshToken) {
+      // 서버에서 헤더 토큰추가로직 반영 아직 안 된 듯
+      // todo: 서버랑 헤더 키 값 맞춰야 함 Bearer 원래 안 붙일텐데 붙이는지도 함 보삼
+      headers['Authorization'] = `Bearer ${refreshToken}`;
+    }
+  }
+
+  const config: any = {
+    withCredentials: true,
+    headers,
+  };
+
+  const { data } = await publicInstance.post(END_POINT.AUTH.REISSUE, {}, config);
   return data;
 };
 

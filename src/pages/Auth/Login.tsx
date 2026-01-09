@@ -8,7 +8,6 @@ import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
 
 /**
  * 로그인 페이지
- * todo: 접근성 작업 필요 = type, aria-label, title 등 추가
  */
 const Login = () => {
   const navigate = useNavigate();

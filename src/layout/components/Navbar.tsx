@@ -17,7 +17,8 @@ const Navbar = () => {
   const menuList = [
     {
       label: role === 'PRO' ? '매칭 현황' : '요청서 작성',
-      path: role === 'PRO' ? ROUTES.MATCHING_STATUS.ROOT : ROUTES.MATCHING_STATUS.REQUESTS.NEW,
+      path:
+        role === 'PRO' ? ROUTES.MATCHING_STATUS.REQUESTS.ROOT : ROUTES.MATCHING_STATUS.REQUESTS.NEW,
     },
     //   {
     //   label: isPro ? '매칭 현황' : '요청서 작성',
