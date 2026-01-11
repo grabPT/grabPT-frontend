@@ -55,7 +55,12 @@ const SignatureModal = ({ open, onClose, onSave }: SignatureModalProps) => {
           지우기
         </MuiButton>
 
-        <MuiButton onClick={handleSave} variant="contained" disabled={!hasStroke}>
+        <MuiButton
+          onClick={handleSave}
+          variant="contained"
+          disabled={!hasStroke}
+          className="bg-button"
+        >
           저장
         </MuiButton>
       </DialogActions>
