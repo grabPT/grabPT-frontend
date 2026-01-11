@@ -6,6 +6,10 @@ interface SportsTypeBtnProps {
   onClick: () => void;
   isSelected: boolean;
 }
+
+/**
+ * 스포츠 선택 시 버튼 컴포넌트
+ */
 const SportsTypeBtn = ({ label, img, isSelected, onClick }: SportsTypeBtnProps) => {
   // 선택된 운동 종목과 현재 버튼의 종목이 일치하는지 확인
   return (

@@ -426,7 +426,7 @@ const RequestDetailPage = () => {
         </section>
       </section>
 
-      {(role === 'PRO' || isWriter) && (
+      {(role === 'PRO' || isWriter?.isEdit) && (
         <Button width="w-[425px]" className="my-16" onClick={handleButton}>
           {role === 'PRO' ? '제안서 작성' : '수정하기'}
         </Button>

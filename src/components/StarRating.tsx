@@ -7,6 +7,10 @@ interface StarRatingProps {
   fontSize?: number;
 }
 
+/**
+ * 별점컴포넌트 - 별이랑 숫자까지 들어있는 거
+ * 별점정보 없을 때 처리해야 할 듯?
+ */
 const StarRating = ({ rating, size, fontSize }: StarRatingProps) => {
   const fontSizeClass = `text-[${fontSize}px]`;
   return (

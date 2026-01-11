@@ -9,7 +9,7 @@ import { ProDetailInfo } from '@/features/ProDetail/components/ProDetailInfo';
 import ProDetailReviews from '@/features/ProDetail/components/ProDetailReviews';
 import Layout from '@/layout/Layout';
 // ✅ 초기 번들에 포함 (정적 import)
-import { AuthCallback } from '@/pages/Auth/AuthCallback';
+import AuthCallback from '@/pages/Auth/AuthCallback';
 import Login from '@/pages/Auth/Login';
 import Signup from '@/pages/Auth/Signup';
 import { ProDetail } from '@/pages/ExpertDetail/ProDetail';

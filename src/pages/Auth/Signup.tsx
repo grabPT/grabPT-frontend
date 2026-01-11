@@ -14,8 +14,11 @@ import { useProSignup } from '@/features/Signup/hooks/useProSignup';
 import { useUserSignup } from '@/features/Signup/hooks/useUserSignup';
 import { useSignupStore } from '@/store/useSignupStore';
 
+/**
+ * 회원가입페이지
+ */
 const Signup = () => {
-  const nav = useNavigate();
+  const navigate = useNavigate();
   const { role, setUserInfo, setOauthId, setOauthProvider, setUserName } = useSignupStore();
 
   // 🔍 URL 파라미터 확인용 테스트 코드
@@ -47,7 +50,7 @@ const Signup = () => {
 
   const handleBackClick = () => {
     if (step <= 0) {
-      nav(ROUTES.HOME.ROOT); // 첫 단계면 홈으로 이동
+      navigate(ROUTES.HOME.ROOT); // 첫 단계면 홈으로 이동
     } else if (role === 1 && step === 4) {
       // 일반 유저일 경우 전문가 페이지 숨김
       setStep((prev) => prev - 2);
@@ -84,10 +87,12 @@ const Signup = () => {
             data: useSignupStore.getState().getUserSignupDto(),
             profileImage: useSignupStore.getState().getProfileImageInfo(),
           },
+          // todo: 핸들링 컴포에서 쓸건지 훅정의에서 쓸건지 하나만 => console.log중복됨
+
           {
             onSuccess: (res) => {
               console.log('User signup success:', res);
-              nav(ROUTES.AUTH.CALLBACK);
+              navigate(ROUTES.AUTH.CALLBACK);
             },
             onError: (err) => {
               console.error('User signup failed:', err);
@@ -104,10 +109,11 @@ const Signup = () => {
             data: useSignupStore.getState().getProSignupDto(),
             profileImage: useSignupStore.getState().getProfileImageInfo(),
           },
+          // todo: 핸들링 컴포에서 쓸건지 훅정의에서 쓸건지 하나만 => console.log중복됨
           {
             onSuccess: (res) => {
               console.log('Pro signup success:', res);
-              nav(ROUTES.AUTH.CALLBACK);
+              navigate(ROUTES.AUTH.CALLBACK);
             },
             onError: (err) => {
               console.error('Pro signup failed:', err);
@@ -118,7 +124,7 @@ const Signup = () => {
         );
       }
     }
-  }, [step, role, userSignup, proSignup, nav]);
+  }, [step, role, userSignup, proSignup, navigate]);
 
   return (
     <div className="relative flex h-dvh w-full items-center justify-center bg-gradient-to-bl from-[#8CAFFF] to-[#FFFFFF]">

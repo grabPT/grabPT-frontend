@@ -27,6 +27,7 @@ export const useGetMatchingRequestsList = (params: getRequestsListRequestDto) =>
   useQuery<getRequestsListResponseDto, Error, getRequestsListResultType>({
     queryKey: QUERY_KEYS.matcingRequestsList(params),
     queryFn: () => getMatcingRequestsList(params),
+    // todo: 프로일떄만 요청 가능하게
     enabled: Boolean(params),
     select: (res) => res.result,
     staleTime: 5_000, // 5 초 동안 fresh = 실시간이라서

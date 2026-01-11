@@ -17,6 +17,9 @@ interface RequestSliderProps {
   location?: string;
 }
 
+/**
+ * 프로요청서슬라이더
+ */
 const ProRequestSlider = ({ title, requests, location, name }: RequestSliderProps) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isSliderReady, setIsSliderReady] = useState(false);
