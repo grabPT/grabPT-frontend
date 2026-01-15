@@ -32,9 +32,8 @@ const UserMainPage = () => {
 
   // 이건 뭐죠 => const location = `${userData?.address?.[0]?.city ?? ''} ${userData?.address?.[0]?.district ?? ''} ${userData?.address?.[0]?.street ?? ''}`;
 
-  // 지금문제점 => 로그아웃 시 로컬스토리지 비우기 안됨 => 비로그인상태에서도 useGetUserInfo() 호출되고 200뜸 ㅋㅋ 옘병
-  // 로그아웃 시 로컬스토리지 비우고(useLogout.ts에서) 로그아웃상태에서 useGetUserInfo() 호출하지 않도록 수정(useGetUserInfo.ts에서)
-  const { data: userData } = useGetUserInfo();
+  // GUEST일 경우 useGetUserInfo 호출하지 않음
+  const { data: userData } = useGetUserInfo(role === 'USER');
   const matched = SPORTS.find((s) => s.slug === userData?.categoryName);
   // role 최신화는 잘 되서 랜덤으로 불러오긴 하는데,,,
   const categoryType: SportsSlugType =
