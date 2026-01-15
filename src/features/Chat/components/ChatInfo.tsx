@@ -30,6 +30,7 @@ export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
   const userId = useRoleStore((s) => s.userId);
 
   useEffect(() => {
+    console.log('[ChatInfo] Mounted with roomId:', roomId);
     if (!roomId) return;
     readWhenEnter(roomId);
   }, [roomId, readWhenEnter]);

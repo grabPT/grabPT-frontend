@@ -74,11 +74,11 @@ export const ChatSideBar = ({
       {/* 채팅방 리스트 */}
       <div className="w-full flex-1 overflow-y-auto">
         {filtered.map((chat) => {
-          const isSelected = selectedChatId === chat.chatRoomId;
+          const isSelected = selectedChatId === chat.roomId;
           return (
             <button
               type="button"
-              key={chat.chatRoomId}
+              key={chat.roomId}
               className={clsx(
                 'flex h-20 w-full cursor-pointer items-center px-3 text-left duration-150 hover:bg-gray-300 hover:ease-in-out',
                 isSelected ? 'bg-gray-200' : 'bg-white',

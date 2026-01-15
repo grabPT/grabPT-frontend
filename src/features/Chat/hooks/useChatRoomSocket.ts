@@ -57,7 +57,9 @@ export function useChatRoomSocket<T = unknown>(
       { path: `${base}`, enabled: enableMessage },
       { path: `${base}/read-status`, enabled: enableReadStatus },
     ];
-    return list.filter((x) => x.enabled).map((x) => x.path);
+    const filtered = list.filter((x) => x.enabled).map((x) => x.path);
+    console.log('[useChatRoomSocket] Target paths:', filtered);
+    return filtered;
   }, [roomId, enableMessage, enableReadStatus]);
 
   // roomId가 바뀌면 기존구독을 모두 해제하는 useEffect
