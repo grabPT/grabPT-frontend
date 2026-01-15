@@ -1,5 +1,6 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 
+import { QUERY_KEYS } from '@/constants/queryKeys';
 import { getMessages } from '@/features/Chat/apis/getMessages';
 import type {
   getMessagesRequestDto,
@@ -16,7 +17,7 @@ export const useGetMessagesInfinite = (params: getMessagesRequestDto) => {
   const roomId = params.roomId;
 
   return useInfiniteQuery<getMessagesResponseDto, Error, Exposed>({
-    queryKey: ['Chat', roomId],
+    queryKey: QUERY_KEYS.CHAT.messages(params),
 
     // 첫 호출은 cursor 미포함
     initialPageParam: undefined,

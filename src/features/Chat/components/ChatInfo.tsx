@@ -2,6 +2,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
 
+import ProfileImage from '@/components/ProfileImage';
+import { QUERY_KEYS } from '@/constants/queryKeys';
 import { ChatText } from '@/features/Chat/components/ChatText';
 import NewMessageModal from '@/features/Chat/components/NewMessageModal';
 import { useChatRoomSocket } from '@/features/Chat/hooks/useChatRoomSocket';
@@ -12,7 +14,6 @@ import type { messageType } from '@/features/Chat/types/getMessagesType';
 import { isDifferentDay } from '@/features/Chat/utils/isDifferentDay';
 import { useRoleStore } from '@/store/useRoleStore';
 import { upsertIncomingMessage } from '@/utils/castCache';
-import { onErrorImage } from '@/utils/onErrorImage';
 
 interface ChatInfoProps {
   roomId: number;
@@ -26,11 +27,9 @@ export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
 
   const { mutate: readWhenEnter } = usePostReadWhenEnter(roomId);
   const { mutate: readWhenExist } = usePostReadWhenExist(roomId);
-
   const userId = useRoleStore((s) => s.userId);
 
   useEffect(() => {
-    console.log('[ChatInfo] Mounted with roomId:', roomId);
     if (!roomId) return;
     readWhenEnter(roomId);
   }, [roomId, readWhenEnter]);
@@ -50,7 +49,7 @@ export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
       // 캐시에 새 메시지 반영 (리렌더 후 scroll은 아래 effect에서 처리)
       upsertIncomingMessage(queryClient, roomId, message);
       // 메시지업데이트마다 사이드바 방리스트 다시받아오기
-      queryClient.invalidateQueries({ queryKey: ['chatList'], refetchType: 'active' });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.CHAT.allList });
 
       // ✨ 변경점: 스크롤이 바닥 근처에 있을 때만 읽음 처리를 호출
       if (isNearBottom()) {
@@ -64,8 +63,8 @@ export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
   const onReadStatus = useCallback(
     (payload: { messageId: number; readCount: number }) => {
       // 캐시 내 해당 messageId의 readCount 갱신
-      queryClient.invalidateQueries({ queryKey: ['chatList'], refetchType: 'active' });
-      queryClient.setQueryData(['Chat', roomId], (prev: any) => {
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.CHAT.allList });
+      queryClient.setQueryData(QUERY_KEYS.CHAT.messages({ roomId }), (prev: any) => {
         if (!prev) return prev;
 
         const next = {
@@ -256,9 +255,12 @@ export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
   return (
     <div className="flex h-full flex-col pb-40">
       {/* 상단 헤더 */}
-      <div className="flex h-14 items-center justify-between bg-[#1F56FF] px-5">
+      <div className="bg-grabpt flex h-14 items-center justify-between px-5">
         <div className="flex items-center justify-start gap-3">
-          <img src={img} onError={onErrorImage} alt={name} className="h-9 w-9 rounded-full" />
+          {/* <img src={img} onError={onErrorImage} alt={name} className="h-9 w-9 rounded-full" /> */}
+          <div className="h-9 w-9 overflow-hidden rounded-full">
+            <ProfileImage src={img} alt={name} />
+          </div>
           <span className="text-[1rem] font-extrabold text-white">{name}</span>
         </div>
       </div>
