@@ -4,7 +4,7 @@ export type MatchStatusType = 'MATCHING' | 'MATCHED';
 
 export type RealtimeMatchingType = {
   requestionId: number | null;
-  userNickname: string;
+  userNickName: string;
   location: string;
   sessionCount: number;
   requestedPrice: number;
