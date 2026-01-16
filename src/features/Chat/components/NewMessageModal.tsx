@@ -23,7 +23,7 @@ const NewMessageModal = ({
       role="button"
       tabIndex={0}
       onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') onScrollToBottom();
+        if (e.key === 'Enter') onScrollToBottom();
       }}
     >
       <div className="h-8 w-8 overflow-hidden rounded-full">
