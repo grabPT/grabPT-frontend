@@ -8,6 +8,7 @@ import ProfileImage from '@/components/ProfileImage';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { ChatText } from '@/features/Chat/components/ChatText';
 import NewMessageModal from '@/features/Chat/components/NewMessageModal';
+import SkeletonMessages from '@/features/Chat/components/SkeletonMessages';
 import { useChatRoomSocket } from '@/features/Chat/hooks/useChatRoomSocket';
 import { useGetMessagesInfinite } from '@/features/Chat/hooks/useGetMessages';
 import { usePostReadWhenEnter } from '@/features/Chat/hooks/usePostReadWhenEnter';
@@ -289,6 +290,7 @@ export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
       </div>
 
       <div className="relative flex-1 overflow-hidden">
+        {isLoading && <SkeletonMessages />}
         {/* 본문 스크롤 영역 */}
         <div
           ref={scrollRef}
@@ -326,6 +328,7 @@ export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
               </div>
             );
           })}
+
           {/* 하단 앵커 (최신이 맨 아래) */}
           <div ref={bottomRef} />
         </div>
