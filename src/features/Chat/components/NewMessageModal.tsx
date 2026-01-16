@@ -1,11 +1,17 @@
+import ProfileImage from '@/components/ProfileImage';
 import type { messageType } from '@/features/Chat/types/getMessagesType';
 
 interface NewMessageModalProps {
+  profileImage: string | null;
   latestMessage: messageType | null;
   onScrollToBottom: () => void;
 }
 
-const NewMessageModal = ({ latestMessage, onScrollToBottom }: NewMessageModalProps) => {
+const NewMessageModal = ({
+  profileImage,
+  latestMessage,
+  onScrollToBottom,
+}: NewMessageModalProps) => {
   if (!latestMessage) {
     return null;
   }
@@ -20,6 +26,9 @@ const NewMessageModal = ({ latestMessage, onScrollToBottom }: NewMessageModalPro
         if (e.key === 'Enter' || e.key === ' ') onScrollToBottom();
       }}
     >
+      <div className="h-8 w-8 overflow-hidden rounded-full">
+        <ProfileImage src={profileImage} alt={'프로필 이미지'} />
+      </div>
       <div className="flex max-w-[200px] min-w-0 flex-col">
         <span className="truncate text-sm font-medium text-gray-800">{latestMessage.content}</span>
       </div>

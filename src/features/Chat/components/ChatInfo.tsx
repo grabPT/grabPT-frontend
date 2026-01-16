@@ -335,7 +335,11 @@ export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
 
         {/* 최신메시지 미리보기 */}
         {isVisibleNewMessageModal && (
-          <NewMessageModal latestMessage={latestMessage} onScrollToBottom={handleScrollToBottom} />
+          <NewMessageModal
+            profileImage={img}
+            latestMessage={latestMessage}
+            onScrollToBottom={handleScrollToBottom}
+          />
         )}
       </div>
     </div>
