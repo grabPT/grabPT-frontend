@@ -15,7 +15,7 @@ export function formatTimeAgo(input: string | Date | null | undefined) {
 
   const diffSec = (Date.now() - date.getTime()) / 1000;
 
-  if (diffSec < 30) return '방금 전';
+  if (diffSec < 60) return '방금 전';
 
   return formatDistanceToNow(date, {
     addSuffix: true,

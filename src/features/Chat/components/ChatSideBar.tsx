@@ -48,7 +48,7 @@ export const ChatSideBar = ({
   return (
     <aside className="flex h-full w-[26rem] flex-col items-center border-t border-r border-gray-300 bg-white">
       {/* 검색바 */}
-      <div className="flex w-full items-center justify-center px-4 py-5">
+      <div className="flex w-full items-center justify-center p-4">
         <div className="flex h-11 w-full items-center rounded-2xl bg-[#F0F2F5] px-3.5 transition-colors focus-within:bg-[#EAECEF]">
           <SearchIcon className="mr-2 h-5 w-5 text-[#8B95A1]" strokeWidth={2} />
           <input
