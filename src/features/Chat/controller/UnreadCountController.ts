@@ -7,8 +7,6 @@ import { useRoleStore } from '@/store/useRoleStore';
 import { useStompStore } from '@/store/useStompStore';
 import { useUnreadStore } from '@/store/useUnreadStore';
 
-// 로그인 유저 id 꺼내오는 곳 (당신 프로젝트 기준)
-
 export default function UnreadCountController() {
   const queryClient = useQueryClient();
   const userId = useRoleStore((s) => s.userId);

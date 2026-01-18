@@ -32,7 +32,7 @@ export const useGetMessagesInfinite = (params: getMessagesRequestDto) => {
     // 서버 커서 그대로 사용 (없으면 stop)
     getNextPageParam: (lastPage) => lastPage?.result?.cursor ?? undefined,
 
-    // 🔒 응답 모양 고정: data.result + data.pages
+    // 응답 모양 고정: data.result + data.pages
     select: (data) => ({
       result: data.pages[0].result,
       pages: data.pages.map((p) => p.result),
@@ -40,8 +40,8 @@ export const useGetMessagesInfinite = (params: getMessagesRequestDto) => {
     }),
 
     enabled: Boolean(roomId),
-    staleTime: 0,
-    gcTime: 300_000,
+    // staleTime: 0,
+    // gcTime: 300_000,
     retry: 2,
     refetchOnMount: true,
     refetchOnWindowFocus: true,
