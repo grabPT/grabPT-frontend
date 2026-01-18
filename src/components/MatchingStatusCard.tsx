@@ -14,7 +14,7 @@ const MatchingStatusCard = ({ match }: MatchingStatusCardProps) => {
   return (
     <div className="flex h-[48px] w-full items-center justify-between">
       <UserRequestHeader
-        nickName={match.userNickName}
+        nickName={match.userNickname}
         profileImg={match.profileImageUrl || undefined}
         location={match.location}
       />
