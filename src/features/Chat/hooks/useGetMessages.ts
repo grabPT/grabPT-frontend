@@ -24,8 +24,8 @@ export const useGetMessagesInfinite = (params: getMessagesRequestDto) => {
     queryFn: ({ pageParam }) => {
       const hasCursor = pageParam !== undefined && pageParam !== null;
       const q: getMessagesRequestDto = hasCursor
-        ? { roomId, cursor: pageParam as number }
-        : { roomId };
+        ? { roomId: params.roomId, cursor: pageParam as number }
+        : { roomId: params.roomId };
       return getMessages(q);
     },
 
