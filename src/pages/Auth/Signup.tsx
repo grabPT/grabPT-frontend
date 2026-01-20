@@ -90,7 +90,7 @@ const Signup = () => {
               navigate(ROUTES.AUTH.LOGIN);
             },
             onError: (err) => {
-              alert('회원가입 실패. 홈으로 돌아갑니다.');
+              alert('회원가입에 실패하였습니다. 다시 시도해주세요.');
               console.error('회원가입 실패 이유:', err);
               navigate(ROUTES.HOME.ROOT);
             },
@@ -107,7 +107,7 @@ const Signup = () => {
               navigate(ROUTES.AUTH.LOGIN);
             },
             onError: (err) => {
-              alert('회원가입 실패. 홈으로 돌아갑니다.');
+              alert('회원가입에 실패하였습니다. 다시 시도해주세요.');
               console.error('회원가입 실패 이유:', err);
               navigate(ROUTES.HOME.ROOT);
             },

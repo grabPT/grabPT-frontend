@@ -45,6 +45,7 @@ const AuthCallback = () => {
         const refreshTokenRaw = params.get('refresh_token');
         // 토큰 없으면 에러처리
         if (accessTokenRaw == null || refreshTokenRaw == null) {
+          alert('로그인 중 에러가 발생했습니다. 다시 시도해주세요.');
           console.error('토큰이 존재하지 않습니다.');
           navigate(ROUTES.HOME.ROOT);
           return;
@@ -63,6 +64,7 @@ const AuthCallback = () => {
       }
       //유저 정보 없으면 에러 처리
       if (roleRaw == null || isNaN(userIdRaw)) {
+        alert('로그인 중 에러가 발생했습니다. 다시 시도해주세요.');
         console.error('유저 정보가 존재하지 않습니다.');
         navigate(ROUTES.HOME.ROOT);
         return;
@@ -71,10 +73,6 @@ const AuthCallback = () => {
       // 스토어 최신화
       setRole(roleRaw as Role);
       setUserId(userIdRaw);
-
-      // 디버깅용 - 지우십쇼
-      console.log(`롤:${roleRaw}`);
-      console.log(`유저아이디:${userIdRaw}`);
 
       // 2.fetchQuery를 사용하여 알람, 안읽은수 api 날리고 스토어 최신화
       // 내가 이런 코드를 썼었네..;;
@@ -93,6 +91,7 @@ const AuthCallback = () => {
         setAlarmCount(alarmResponse.result.length);
         setUnReadCount(unreadResponse.result);
       } catch (error) {
+        alert('로그인 중 에러가 발생했습니다. 다시 시도해주세요.');
         console.error('초기 데이터 로딩 실패:', error);
         setAlarmCount(0);
         setUnReadCount(0);

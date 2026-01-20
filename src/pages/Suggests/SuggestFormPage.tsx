@@ -140,11 +140,7 @@ const SuggestFormPage = () => {
               readOnly={mode === 'accept'}
               {...register('sessionCount', {
                 valueAsNumber: true,
-                setValueAs: (v) => {
-                  if (v === '' || v === null || v === undefined) return 0;
-                  const num = Number(v);
-                  return isNaN(num) ? 0 : num;
-                },
+                setValueAs: (v) => Number(v) || 0,
               })}
               className={clsx(
                 'mr-1.5 h-12 w-[85px] rounded-xl border-2 border-[#BABABA] pl-3.5 text-center text-2xl font-normal text-[#9F9F9F] disabled:bg-gray-100',
