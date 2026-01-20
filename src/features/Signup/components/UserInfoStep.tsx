@@ -173,7 +173,6 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
     );
   };
 
-
   //인증번호 확인
   const { mutate: verifySms } = useSmsVerify();
   const [VerifyNumberCheckResult, setVerifyNumberCheckResult] = useState<boolean | null>(null);

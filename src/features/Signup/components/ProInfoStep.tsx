@@ -76,8 +76,8 @@ const ProInfoStep = ({ onNext }: ProInfoStepProps) => {
                 <input
                   placeholder="나이"
                   type="number"
-                  min='0'
-                  className="w-full rounded-[0.625rem] border border-[#BDBDBD] py-[0.88rem] pl-4 no-spinner"
+                  min="0"
+                  className="no-spinner w-full rounded-[0.625rem] border border-[#BDBDBD] py-[0.88rem] pl-4"
                   {...register('age')}
                 />
               </div>
@@ -104,9 +104,8 @@ const ProInfoStep = ({ onNext }: ProInfoStepProps) => {
                 <input
                   type="number"
                   min={0}
-                
                   placeholder="경력을 입력해주세요"
-                  className="w-full outline-none no-spinner"
+                  className="no-spinner w-full outline-none"
                   {...register('career')}
                 />
                 <span className="ml-2 text-[#707070]">년</span>

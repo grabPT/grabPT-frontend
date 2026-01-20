@@ -19,12 +19,15 @@ export const useLogout = () => {
     mutationFn: postLogout,
     onSuccess: (data) => {
       // 개발 및 스테이징 환경에서만 로컬 스토리지 정리
-      if (import.meta.env.VITE_STAGE === 'development' || import.meta.env.VITE_STAGE === 'staging') {
-       localStorage.removeItem('accessToken');
-       localStorage.removeItem('refreshToken');
-       localStorage.removeItem('role-storage');
-       localStorage.removeItem('alarm-storage');
-       localStorage.removeItem('unread-storage');
+      if (
+        import.meta.env.VITE_STAGE === 'development' ||
+        import.meta.env.VITE_STAGE === 'staging'
+      ) {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        localStorage.removeItem('role-storage');
+        localStorage.removeItem('alarm-storage');
+        localStorage.removeItem('unread-storage');
       }
       console.log('로그아웃 요청 성공:', data);
 

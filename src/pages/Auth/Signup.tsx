@@ -89,8 +89,9 @@ const Signup = () => {
             onSuccess: () => {
               navigate(ROUTES.AUTH.LOGIN);
             },
-            onError: () => {
+            onError: (err) => {
               alert('회원가입 실패. 홈으로 돌아갑니다.');
+              console.error('회원가입 실패 이유:', err);
               navigate(ROUTES.HOME.ROOT);
             },
           },
@@ -105,8 +106,9 @@ const Signup = () => {
             onSuccess: () => {
               navigate(ROUTES.AUTH.LOGIN);
             },
-            onError: () => {
+            onError: (err) => {
               alert('회원가입 실패. 홈으로 돌아갑니다.');
+              console.error('회원가입 실패 이유:', err);
               navigate(ROUTES.HOME.ROOT);
             },
           },
