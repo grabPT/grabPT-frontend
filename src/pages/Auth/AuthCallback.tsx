@@ -4,7 +4,6 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 import { getUnreadCount } from '@/apis/getUnreadCount';
-import LoadingMuscle from '@/components/LoadingMuscle';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { ROLES } from '@/constants/roles';
 import ROUTES from '@/constants/routes';
@@ -12,8 +11,8 @@ import { getAlarmList } from '@/layout/apis/alarm';
 import { useAlarmStore } from '@/store/useAlarmStore';
 import { useRoleStore } from '@/store/useRoleStore';
 import { useUnreadStore } from '@/store/useUnreadStore';
-import { decodeBase64Utf8 } from '@/utils/decodeBaseUtf8';
 import { decodeCookie } from '@/utils/decodeCookie';
+import type { Role } from '@/types/Role';
 
 /**
  * 소셜 로그인 후 콜백 페이지
@@ -34,25 +33,25 @@ const AuthCallback = () => {
     const processAuthAndFetch = async () => {
       const params = new URLSearchParams(window.location.search);
       const stage = import.meta.env.VITE_STAGE;
-
-      // 지우십쇼
-      alert(stage);
-
+      
       let roleRaw: string | null = null;
       let userIdRaw: number | null = null;
 
       // 로컬 서버, 개발 서버는 파라미터로 받고 로컬스토리지에 저장
       // 실제 배포 서버는 쿠키로 받아서 set Cookie - 확인 못했음 아직
       if (stage == 'development' || stage == 'staging') {
-        // todo: decode유틸 삭제
-        // 로컬스토리지에는 인코딩된 Base64Url그대로 넣고 그대로 사용하는 겁니다
-        // 지금 유틸에서는 catch발동되서 그대로 저장되긴 하는데... 삭제합시다
-        const accessTokenRaw = decodeBase64Utf8(params.get('access_token'));
-        const refreshTokenRaw = decodeBase64Utf8(params.get('refresh_token'));
+        const accessTokenRaw = params.get('access_token');
+        const refreshTokenRaw = params.get('refresh_token');
+        // 토큰 없으면 에러처리
+        if(accessTokenRaw == null || refreshTokenRaw == null) {
+          console.error('토큰이 존재하지 않습니다.');
+          navigate(ROUTES.HOME.ROOT);
+          return;
+        }
         localStorage.setItem('accessToken', accessTokenRaw || '');
         localStorage.setItem('refreshToken', refreshTokenRaw || '');
-
-        // 로컬,개발서버에선 paramse에서
+        
+        // 로컬,개발서버에선 params에서
         roleRaw = params.get('role');
         userIdRaw = Number(params.get('user_id'));
       } else {
@@ -61,17 +60,19 @@ const AuthCallback = () => {
         userIdRaw = Number(decodeCookie('USER_ID'));
         // 쿠키는 1차 task 끝나고 다시 다듬어봅시다 에러전부 해결되면 main에 병합 후 ~
       }
-
-      // 이거 서버에서 PRO 아님 USER로 넘겨줘서 필요없지 않나요?
-      // 최상단에서 PARAMS 4개중 잘못된 거 있으면 에러처리하는 게 좋을 듯?
-      const role = roleRaw === ROLES.PRO || roleRaw === ROLES.USER ? roleRaw : ROLES.GUEST;
+      //유저 정보 없으면 에러 처리 
+      if(roleRaw == null || isNaN(userIdRaw)) {
+        console.error('유저 정보가 존재하지 않습니다.');
+        navigate(ROUTES.HOME.ROOT);
+        return;
+      }
 
       // 스토어 최신화
-      setRole(role);
+      setRole(roleRaw as Role);
       setUserId(userIdRaw);
 
       // 디버깅용 - 지우십쇼
-      console.log(`롤:${role}`);
+      console.log(`롤:${roleRaw}`);
       console.log(`유저아이디:${userIdRaw}`);
 
       // 2.fetchQuery를 사용하여 알람, 안읽은수 api 날리고 스토어 최신화
@@ -97,7 +98,7 @@ const AuthCallback = () => {
       }
 
       // 3.리다이렉트
-      if (role === ROLES.PRO) {
+      if (roleRaw === ROLES.PRO) {
         navigate(ROUTES.HOME.PRO);
       } else {
         navigate(ROUTES.HOME.ROOT);
@@ -105,10 +106,7 @@ const AuthCallback = () => {
     };
 
     processAuthAndFetch();
-  }, [navigate, setRole, setUserId, setAlarmCount, setUnReadCount, queryClient]);
-
-  // 지워도될듯
-  return <LoadingMuscle />;
+  }, [navigate, setRole, setUserId, setAlarmCount, setUnReadCount, queryClient]); 
 };
 
 export default AuthCallback;

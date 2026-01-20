@@ -80,45 +80,34 @@ const Signup = () => {
   useEffect(() => {
     if (step === 6) {
       if (role === 1) {
-        const payload = useSignupStore.getState().getUserSignupDto();
-        console.log('📦 보내는 user-signup payload:', payload);
         userSignup(
           {
             data: useSignupStore.getState().getUserSignupDto(),
             profileImage: useSignupStore.getState().getProfileImageInfo(),
           },
-          // todo: 핸들링 컴포에서 쓸건지 훅정의에서 쓸건지 하나만 => console.log중복됨
-
           {
-            onSuccess: (res) => {
-              console.log('User signup success:', res);
-              navigate(ROUTES.AUTH.CALLBACK);
+            onSuccess: () => {
+              navigate(ROUTES.AUTH.LOGIN);
             },
-            onError: (err) => {
-              console.error('User signup failed:', err);
-              alert('회원가입 실패');
-              setStep(5);
+            onError: () => {
+              alert('회원가입 실패. 홈으로 돌아갑니다.');
+              navigate(ROUTES.HOME.ROOT);
             },
           },
         );
       } else if (role === 2) {
-        const payload = useSignupStore.getState().getProSignupDto();
-        console.log('📦 보내는 user-signup payload:', payload);
         proSignup(
           {
             data: useSignupStore.getState().getProSignupDto(),
             profileImage: useSignupStore.getState().getProfileImageInfo(),
           },
-          // todo: 핸들링 컴포에서 쓸건지 훅정의에서 쓸건지 하나만 => console.log중복됨
           {
-            onSuccess: (res) => {
-              console.log('Pro signup success:', res);
-              navigate(ROUTES.AUTH.CALLBACK);
+            onSuccess: () => {
+              navigate(ROUTES.AUTH.LOGIN);
             },
-            onError: (err) => {
-              console.error('Pro signup failed:', err);
-              alert('회원가입 실패');
-              setStep(5);
+            onError: () => {
+              alert('회원가입 실패. 홈으로 돌아갑니다.');
+              navigate(ROUTES.HOME.ROOT);
             },
           },
         );
