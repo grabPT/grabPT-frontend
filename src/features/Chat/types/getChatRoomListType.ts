@@ -5,7 +5,7 @@ export type getChatRoomListRequestDto = {
 };
 
 export type ChatRoomListItemType = {
-  chatRoomId: number;
+  roomId: number;
   userId: number;
   unreadCount: number;
   roomName: string;

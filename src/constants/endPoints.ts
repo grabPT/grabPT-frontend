@@ -28,6 +28,7 @@ export const END_POINT = {
       reviews: `/mypage/reviews`,
     },
   },
+
   MYPROPAGE: {
     CERTIFICATIONS: {
       certifications: '/mypage/pro/certification',
@@ -54,6 +55,7 @@ export const END_POINT = {
       center: '/mypage/pro/center',
     },
   },
+
   CATEGORY: {
     realtime: (categoryCode: SportsSlugType) => `/api/v1/requests/${categoryCode}`,
     PROREVIEWS: {

@@ -5,7 +5,6 @@ import type {
 } from '@/features/Chat/types/getChatRoomListType';
 import { privateInstance } from '@/libs/axios';
 
-// parameter: keyword
 export const getChatRoomList = async (
   params: getChatRoomListRequestDto,
 ): Promise<getChatRoomListResponseDto> => {

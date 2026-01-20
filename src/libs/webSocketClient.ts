@@ -2,11 +2,14 @@ import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 
 export function createStompClient() {
+  const accessToken = localStorage.getItem('accessToken');
+
   const client = new Client({
-    // Spring에서 registerStompEndpoints("/ws-connect") 했다고 가정
     webSocketFactory: () => new SockJS(import.meta.env.VITE_SERVER_API_URL + '/ws-connect'),
+    connectHeaders: {
+      Authorization: `Bearer ${accessToken}`,
+    },
     reconnectDelay: 3000,
-    debug: (msg) => console.log('[STOMP:debug]', msg),
     onConnect: () => console.log('[STOMP] connected'),
     onStompError: (frame) =>
       console.log('[STOMP] broker error:', frame.headers['message'], frame.body),

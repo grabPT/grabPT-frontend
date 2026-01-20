@@ -3,6 +3,8 @@
 
 /* ───────── 1) 디자인 토큰 (@theme) ───────── */
 @theme {
+  /* 그랩피티 */
+  --color-grabpt: #003efb;
   /* 폰트 패밀리 변수 */
   --font-sans: 'Pretendard Variable', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
   --font-inter: 'Inter', 'Helvetica Neue', Arial, sans-serif;
