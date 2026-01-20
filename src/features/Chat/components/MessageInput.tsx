@@ -88,16 +88,20 @@ const MessageInput = ({ onSend, onFileSelect, onSendFile, sending = false }: Mes
   };
 
   return (
-    <div className="sticky bottom-0 z-10 rounded-t-4xl bg-white p-4 shadow-[4px_4px_18px_10px_rgba(0,0,0,0.15)]">
+    <div className="sticky bottom-0 z-10 w-full bg-white pt-2 pb-6">
+      {/* 파일 미리보기 영역 */}
       {selectedFile && (
-        <div className="mb-2 flex items-center gap-2 text-sm text-gray-600">
-          <span className="max-w-[60%] truncate rounded-full border px-3 py-1">
-            {selectedFile.name} ({formatBytes(selectedFile.size)})
-          </span>
+        <div className="mx-6 mb-3 flex items-center gap-2 text-sm text-gray-600">
+          <div className="flex max-w-[80%] items-center gap-2 rounded-xl bg-gray-100 px-3 py-2">
+            <span className="truncate font-medium">{selectedFile.name}</span>
+            <span className="text-xs whitespace-nowrap text-gray-400">
+              ({formatBytes(selectedFile.size)})
+            </span>
+          </div>
           <button
             type="button"
             onClick={clearFile}
-            className="rounded-full border px-2 leading-none text-gray-500 hover:bg-gray-50 disabled:opacity-50"
+            className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-200 text-gray-500 hover:bg-gray-300 disabled:opacity-50"
             disabled={sending}
           >
             ×
@@ -105,43 +109,57 @@ const MessageInput = ({ onSend, onFileSelect, onSendFile, sending = false }: Mes
         </div>
       )}
 
-      <div className="flex items-center gap-3">
-        <div className="flex h-[3.75rem] flex-1 items-center rounded-full bg-gradient-to-r from-[#003EFB] to-[#FF00B2] p-[3px]">
-          <div className="flex h-full w-full items-center gap-3 rounded-full bg-white px-4">
-            <input
-              type="text"
-              placeholder={selectedFile ? '파일 전송 모드' : '메시지를 입력하세요'}
-              className="font-inter h-full w-full text-xl leading-[16px] font-semibold text-black placeholder-[#CCCCCC] outline-none disabled:opacity-60"
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              onKeyDown={(e) => !selectedFile && e.key === 'Enter' && handleSend()}
-              disabled={Boolean(selectedFile) || sending}
-            />
+      {/* 입력 영역 */}
+      <div className="mx-5 flex items-end gap-2">
+        <div className="flex min-h-[3.25rem] flex-1 items-center gap-3 rounded-[24px] bg-[#F0F2F5] px-5 py-2 transition-colors focus-within:bg-[#EAECEF]">
+          <img
+            src={ClipIcon}
+            alt="파일 첨부"
+            className={`h-6 w-6 cursor-pointer opacity-50 transition-opacity hover:opacity-100 ${
+              sending ? 'pointer-events-none' : ''
+            }`}
+            onClick={triggerFilePick}
+          />
 
-            <input
-              aria-label="파일"
-              ref={fileInputRef}
-              type="file"
-              className="hidden"
-              accept="image/*,application/pdf,application/zip,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-              onChange={handleFileChange}
-            />
+          <input
+            type="text"
+            placeholder={selectedFile ? '파일에 대한 메시지 입력' : '메시지 보내기'}
+            className="h-full w-full bg-transparent text-[16px] leading-normal font-medium text-[#333D4B] placeholder-[#8B95A1] outline-none disabled:opacity-60"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            onKeyDown={(e) =>
+              !selectedFile && e.key === 'Enter' && !e.nativeEvent.isComposing && handleSend()
+            }
+            disabled={Boolean(selectedFile) || sending}
+          />
 
-            <img
-              src={ClipIcon}
-              alt="클립 아이콘"
-              className={`h-6 w-6 cursor-pointer ${sending ? 'pointer-events-none opacity-40' : ''}`}
-              onClick={triggerFilePick}
-            />
-
-            <img
-              src={ChatSendIcon}
-              alt="전송 아이콘"
-              className={`h-6 w-6 cursor-pointer ${sending ? 'pointer-events-none opacity-40' : ''}`}
-              onClick={handleSend}
-            />
-          </div>
+          <input
+            aria-label="파일"
+            ref={fileInputRef}
+            type="file"
+            className="hidden"
+            accept="image/*,application/pdf,application/zip,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            onChange={handleFileChange}
+          />
         </div>
+
+        {/* 전송 버튼 (독립형) */}
+        <button
+          type="button"
+          onClick={handleSend}
+          disabled={(!text && !selectedFile) || sending}
+          className={`flex h-[3.25rem] w-[3.25rem] flex-shrink-0 items-center justify-center rounded-full transition-all duration-200 ${
+            (!text && !selectedFile) || sending
+              ? 'cursor-not-allowed bg-gray-200'
+              : 'bg-grabpt shadow-md hover:bg-blue-600 active:scale-95'
+          }`}
+        >
+          <img
+            src={ChatSendIcon}
+            alt="전송"
+            className={`h-6 w-6 ${(!text && !selectedFile) || sending ? 'opacity-40' : 'brightness-30 invert'}`}
+          />
+        </button>
       </div>
     </div>
   );

@@ -5,7 +5,6 @@ import type {
 } from '@/features/Chat/types/getMessagesType';
 import { privateInstance } from '@/libs/axios';
 
-// parameter: roomId, cursor?
 export const getMessages = async (
   params: getMessagesRequestDto,
 ): Promise<getMessagesResponseDto> => {

@@ -31,6 +31,7 @@ export const QUERY_KEYS = {
   certificationList: () => ['certification'],
   suggestList: (params: getSuggestListRequestDto) => ['suggestList', params.page],
   CHAT: {
+    allList: ['chatList'] as const,
     list: (parmas: getChatRoomListRequestDto) => ['chatList', parmas.keyword],
     messages: (params: getMessagesRequestDto) => ['messages', params.roomId, params.cursor],
   },

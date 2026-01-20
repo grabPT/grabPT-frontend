@@ -14,18 +14,20 @@ import type { ChatRoomListItemType } from '@/features/Chat/types/getChatRoomList
 import Header from '@/layout/components/Header';
 import { useRoleStore } from '@/store/useRoleStore';
 
-// 경로 맞춰주세요
-
+/**
+ * 채팅 페이지
+ */
 const Chat = () => {
   const location = useLocation();
   const selectedProId: number | undefined = location.state?.proId;
 
   const [selectedChat, setSelectedChat] = useState<ChatRoomListItemType | null>(null);
+
   const [pendingFile, setPendingFile] = useState<File | null>(null);
 
   // 전송만 쓰는 소켓 훅 (구독 off)
   const { sendMessage, connected } = useChatRoomSocket(
-    selectedChat?.chatRoomId,
+    selectedChat?.roomId,
     {},
     { enableMessage: false, enableReadStatus: false },
   );
@@ -38,7 +40,7 @@ const Chat = () => {
       if (!selectedChat || !connected || !userId) return;
 
       const dto: sendMessageRequestDto = {
-        roomId: selectedChat.chatRoomId,
+        roomId: selectedChat.roomId,
         senderId: userId,
         content: body,
         messageType: 'TEXT',
@@ -57,13 +59,13 @@ const Chat = () => {
     (file: File) => {
       if (!selectedChat) return;
       uploadFile(
-        { roomId: selectedChat.chatRoomId, file },
+        { roomId: selectedChat.roomId, file },
         {
           onSuccess: (res) => {
             // 서버가 STOMP로 브로드캐스트해주면 캐시 조작 불필요
             console.log('파일 업로드 성공', res);
             const dto: sendMessageRequestDto = {
-              roomId: selectedChat.chatRoomId,
+              roomId: selectedChat.roomId,
               senderId: userId ?? 1000000000,
               content: res.result.content,
               messageType: res.result.messageType,
@@ -86,17 +88,17 @@ const Chat = () => {
       <div className="flex h-full flex-1">
         {/* 좌측: 채팅방 리스트 */}
         <ChatSideBar
-          selectedChatId={selectedChat?.chatRoomId ?? null}
+          selectedChatId={selectedChat?.roomId ?? null}
           selectedProId={selectedProId}
           onSelect={setSelectedChat}
         />
 
         {/* 우측: 채팅 상세 + 입력 */}
-        <div className="flex h-full w-full flex-1 flex-col bg-white">
+        <div className="flex h-full w-full flex-1 flex-col border-t border-gray-300 bg-white">
           {selectedChat ? (
             <>
               <ChatInfo
-                roomId={selectedChat.chatRoomId}
+                roomId={selectedChat.roomId}
                 name={selectedChat.roomName}
                 img={selectedChat.otherUserProfileImageUrl}
               />

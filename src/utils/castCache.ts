@@ -1,5 +1,6 @@
 import { QueryClient } from '@tanstack/react-query';
 
+import { QUERY_KEYS } from '@/constants/queryKeys';
 import type { messageType } from '@/features/Chat/types/getMessagesType';
 
 export const upsertIncomingMessage = (
@@ -9,7 +10,7 @@ export const upsertIncomingMessage = (
 ) => {
   const toNum = (x: any) => Number(x);
 
-  queryClient.setQueryData(['Chat', roomId], (prev: any) => {
+  queryClient.setQueryData(QUERY_KEYS.CHAT.messages({ roomId }), (prev: any) => {
     // 1) 비어있을 때: 당신의 select 구조를 그대로 생성
     if (!prev) {
       return {
