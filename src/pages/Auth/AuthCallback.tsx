@@ -4,6 +4,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 import { getUnreadCount } from '@/apis/getUnreadCount';
+import LoadingMuscle from '@/components/LoadingMuscle';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { ROLES } from '@/constants/roles';
 import ROUTES from '@/constants/routes';
@@ -107,6 +108,7 @@ const AuthCallback = () => {
 
     processAuthAndFetch();
   }, [navigate, setRole, setUserId, setAlarmCount, setUnReadCount, queryClient]);
+  return <LoadingMuscle />;
 };
 
 export default AuthCallback;
