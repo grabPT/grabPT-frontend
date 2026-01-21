@@ -97,7 +97,7 @@ const SuggestDetailPage = () => {
           <div className="relative mt-5 flex w-fit items-center">
             <input
               type="number"
-              // TODO: 제안서 상세 조회 api에 suggestedCount 추가 
+              // TODO: 제안서 상세 조회 api에 suggestedCount 추가해서 반영
               value={10}
               aria-label="제안 PT 횟수"
               readOnly
