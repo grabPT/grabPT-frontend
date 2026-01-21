@@ -46,7 +46,9 @@ const AuthCallback = () => {
         // 토큰 없으면 에러처리
         if (accessTokenRaw == null || refreshTokenRaw == null) {
           alert('로그인 중 에러가 발생했습니다. 다시 시도해주세요.');
-          console.error('토큰이 존재하지 않습니다.');
+          console.error(
+            `토큰이 존재하지 않습니다. accessToken: ${accessTokenRaw} refreshToken: ${refreshTokenRaw}`,
+          );
           navigate(ROUTES.HOME.ROOT);
           return;
         }
@@ -65,7 +67,7 @@ const AuthCallback = () => {
       //유저 정보 없으면 에러 처리
       if (roleRaw == null || isNaN(userIdRaw)) {
         alert('로그인 중 에러가 발생했습니다. 다시 시도해주세요.');
-        console.error('유저 정보가 존재하지 않습니다.');
+        console.error(`유저 정보가 존재하지 않습니다. roleRaw: ${roleRaw} userIdRaw: ${userIdRaw}`);
         navigate(ROUTES.HOME.ROOT);
         return;
       }
