@@ -62,7 +62,7 @@ const SuggestFormPage = () => {
         },
         {
           onSuccess: (res) => {
-            console.log("내가 요청에 담은 정보",newSuggestInfo);
+            console.log('내가 요청에 담은 정보', newSuggestInfo);
             navigate(urlFor.suggestDetail(res.result.suggestionId));
           },
           onError: (err) => {
