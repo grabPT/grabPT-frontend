@@ -7,10 +7,9 @@ import { useGetSuggestList } from '@/features/SuggestList/hooks/useGetSuggestLis
 const SuggestListPage = () => {
   const [page, setPage] = useState<number>(1);
   const { data, isPending } = useGetSuggestList({ page });
-
+console.log(data);
   const totalPage = data?.totalPages || 1;
   const hasSuggests = data?.content && data.content.length > 0;
-
   return (
     <section className="flex flex-col items-center py-12">
       <div className="w-[700px]">

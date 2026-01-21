@@ -5,6 +5,7 @@ import Button from '@/components/Button';
 import ROUTES, { urlFor } from '@/constants/routes';
 import { useGetSuggestDetail } from '@/features/SuggestDetail/hooks/useGetSuggestDetail';
 import { usePostMatching } from '@/features/SuggestDetail/hooks/usePostMatching';
+import { useRoleStore } from '@/store/useRoleStore';
 import { onErrorImage } from '@/utils/onErrorImage';
 
 // 제안서 상세페이지
@@ -12,6 +13,7 @@ const SuggestDetailPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const suggestionId = Number(id);
+  const { userId } = useRoleStore();
 
   const { data: suggestion, error, isError, isLoading } = useGetSuggestDetail(suggestionId);
 
@@ -76,22 +78,26 @@ const SuggestDetailPage = () => {
         <span className="mt-5 text-4xl font-bold text-[#21272A]">{suggestion?.userNickname}</span>
         <span className="text-button text-sm font-semibold">{suggestion?.centerName}</span>
       </div>
-
-      <div className="mt-12 flex w-full justify-end gap-4">
-        <Button width="w-[155px]" onClick={navigateToProProfile}>
-          프로필 방문
-        </Button>
-        <Button width="w-[274px]" onClick={채팅상담}>
-          채팅 상담
-        </Button>
-      </div>
-
+      {/* 스토어에서 가져온 회원 id와 제안서 proId가 같을 경우 전문가 -> 버튼 사용 불가 */}
+      {userId !== suggestion?.proId ? (
+        <div className="mt-12 flex w-full justify-end gap-4">
+          <Button width="w-[155px]" onClick={navigateToProProfile}>
+            프로필 방문
+          </Button>
+          <Button width="w-[274px]" onClick={채팅상담}>
+            채팅 상담
+          </Button>
+        </div>
+      ) : (
+        <div></div>
+      )}
       <div className="mt-12 flex w-full flex-col gap-12 text-2xl font-extrabold">
         <div>
           <span className="text-button">제안 가격</span>
           <div className="relative mt-5 flex w-fit items-center">
             <input
               type="number"
+              // TODO: 제안서 상세 조회 api에 suggestedCount 추가 
               value={10}
               aria-label="제안 PT 횟수"
               readOnly
@@ -144,10 +150,14 @@ const SuggestDetailPage = () => {
           </div>
         </div>
       </div>
-
-      <Button width="w-96" className="mt-18" onClick={매칭수락}>
-        매칭 수락
-      </Button>
+      {/* 스토어에서 가져온 회원 id와 제안서 proId가 같을 경우 전문가 -> 버튼 사용 불가 */}
+      {userId !== suggestion?.proId ? (
+        <Button width="w-96" className="mt-18" onClick={매칭수락}>
+          매칭 수락
+        </Button>
+      ) : (
+        <div></div>
+      )}
     </section>
   );
 };

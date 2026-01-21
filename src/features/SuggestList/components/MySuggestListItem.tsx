@@ -20,7 +20,7 @@ const MySuggestListItem = ({ suggest }: MySuggestListItemProps) => {
   return (
     <Box
       height="h-[75px]"
-      onClick={() => navigate(urlFor.requestDetail(suggest.requestionId))}
+      onClick={() => navigate(urlFor.suggestDetail(suggest.suggestionId))}
       className="cursor-pointer"
       width="w-[700px]"
     >
