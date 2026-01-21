@@ -45,7 +45,6 @@ const SuggestFormPage = () => {
   const { data: requestInfo } = useGetDetailRequest(
     suggestInfo.requestionId !== null ? suggestInfo.requestionId : 0,
   );
-
   console.log(errors);
   const onSubmit = async (data: DetailSuggestForm) => {
     const newSuggestInfo = {
@@ -105,7 +104,20 @@ const SuggestFormPage = () => {
               type="radio"
               className="accent-button"
               checked={mode === 'accept'}
-              onChange={() => setMode('accept')}
+              onChange={() => {
+                setMode('accept');
+                const acceptedPrice = suggestInfo.price;
+                const acceptedSessionCount = suggestInfo.sessionCount;
+                if (typeof acceptedPrice === 'number') {
+                  setValue('price', acceptedPrice, { shouldValidate: true, shouldDirty: true });
+                }
+                if (typeof acceptedSessionCount === 'number') {
+                  setValue('sessionCount', acceptedSessionCount, {
+                    shouldValidate: true,
+                    shouldDirty: true,
+                  });
+                }
+              }}
               aria-label="고객 요청 수락"
             />
             <span className="mr-3 text-base font-medium">고객 요청 수락</span>
@@ -126,7 +138,10 @@ const SuggestFormPage = () => {
               type="number"
               aria-label="희망 PT 횟수"
               readOnly={mode === 'accept'}
-              {...register('sessionCount', { valueAsNumber: true })}
+              {...register('sessionCount', {
+                valueAsNumber: true,
+                setValueAs: (v) => Number(v) || 0,
+              })}
               className={clsx(
                 'mr-1.5 h-12 w-[85px] rounded-xl border-2 border-[#BABABA] pl-3.5 text-center text-2xl font-normal text-[#9F9F9F] disabled:bg-gray-100',
                 mode === 'custom' && 'text-black',
@@ -137,7 +152,14 @@ const SuggestFormPage = () => {
               type="number"
               aria-label="희망 PT 가격"
               readOnly={mode === 'accept'}
-              {...register('price', { valueAsNumber: true })}
+              {...register('price', {
+                valueAsNumber: true,
+                setValueAs: (v) => {
+                  if (v === '' || v === null || v === undefined) return 0;
+                  const num = Number(v);
+                  return isNaN(num) ? 0 : num;
+                },
+              })}
               className={clsx(
                 'mr-1.5 h-12 w-[260px] rounded-xl border-2 border-[#BABABA] px-8 text-end text-2xl font-normal text-[#9F9F9F] disabled:bg-gray-100',
                 mode === 'custom' && 'text-black',
@@ -149,7 +171,7 @@ const SuggestFormPage = () => {
 
         {/* 제안 상세설명 */}
         <div>
-          <div className="flex gap-3">
+          <div className="flex items-end gap-3">
             <span>
               제안{' '}
               <span className={errors.message ? 'text-red-500' : 'text-button'}>상세 설명</span>
@@ -171,7 +193,7 @@ const SuggestFormPage = () => {
 
         {/* 상세 위치 */}
         <div>
-          <div className="flex gap-3">
+          <div className="flex items-end gap-3">
             <span>
               상세 <span className={errors.location ? 'text-red-500' : 'text-button'}>위치</span>
             </span>

@@ -180,6 +180,17 @@
   display: none; /* Chrome, Safari */
 }
 
+/* 숫자 입력창 스피너 제거 유틸리티(온보딩에서 numer type 화살표 안보이게 사용) */
+.no-spinner::-webkit-outer-spin-button,
+.no-spinner::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.no-spinner {
+  -moz-appearance: textfield;
+}
+
 @theme {
   --animate-shake: shake 0.1s ease-in-out;
 
