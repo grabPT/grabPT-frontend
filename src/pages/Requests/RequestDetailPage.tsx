@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -41,6 +41,7 @@ const RequestDetailPage = () => {
   const requestionId = Number(id);
   const { setSuggestInfo } = useSuggestStore();
   const { role } = useRoleStore();
+  const [isEditing, setIsEditing] = useState(false);
   //제안서 작성하기 버튼 누를 시 suggestStore의 requestionId를 업데이트하고 suggestFormPage에서 받아쓰기
 
   // api연결 시 isWriter 함수로 변경 (요청서의 작성자 id === 현재 유저 id)
@@ -115,7 +116,10 @@ const RequestDetailPage = () => {
   const handleButton = () => {
     if (role === 'PRO') {
       navigateToSuggestForm();
-    } else {
+    } else if (!isEditing) {
+      setIsEditing(true);
+      containerRef?.current?.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (isEditing) {
       handleSubmit((formData) => {
         if (isWriter?.isEdit) {
           editRequest({
@@ -127,8 +131,9 @@ const RequestDetailPage = () => {
             },
           });
         }
-      });
+      })();
       containerRef?.current?.scrollTo({ top: 0, behavior: 'smooth' });
+      setIsEditing(false);
     }
   };
   /* 목적(다중) */
@@ -209,7 +214,7 @@ const RequestDetailPage = () => {
               {...register('sessionCount', { valueAsNumber: true })}
               aria-label="희망 PT 횟수"
               className="mr-1.5 h-12 w-[85px] rounded-xl border-2 border-[#BABABA] pl-3.5 text-center text-2xl text-[#9F9F9F]"
-              readOnly={!isEdit}
+              readOnly={!isEdit || !isEditing}
             />
 
             <span className="mr-5">회</span>
@@ -218,7 +223,7 @@ const RequestDetailPage = () => {
               {...register('price', { valueAsNumber: true })}
               aria-label="희망 PT 가격"
               className="mr-1.5 h-12 w-[260px] rounded-xl border-2 border-[#BABABA] px-8 text-end text-2xl text-[#9F9F9F]"
-              readOnly={!isEdit}
+              readOnly={!isEdit || !isEditing}
             />
             <span className="mr-5">원</span>
           </div>
@@ -242,7 +247,7 @@ const RequestDetailPage = () => {
                   isChecked={selectedPurposes.includes(p)}
                   onClick={() => togglePurpose(p)}
                   key={p}
-                  disabled={!isEdit}
+                  disabled={!isEdit || !isEditing}
                 >
                   {p}
                 </CheckedButton>
@@ -256,6 +261,7 @@ const RequestDetailPage = () => {
                 }
                 className="mt-4 h-[180px] w-full resize-none rounded-[10px] border border-[#CCCCCC] bg-[#F5F5F5] p-4 text-[15px] placeholder:text-[#CCCCCC] focus:border-gray-400 focus:outline-none"
                 placeholder="세부 내용을 입력해주세요"
+                disabled={!isEdit || !isEditing}
               />
             )}
           </div>
@@ -277,7 +283,7 @@ const RequestDetailPage = () => {
               <CheckedButton
                 key={a}
                 isChecked={age === a}
-                disabled={!isEdit}
+                disabled={!isEdit || !isEditing}
                 onClick={() => setAge(a)}
               >
                 {a}
@@ -302,7 +308,7 @@ const RequestDetailPage = () => {
               <CheckedButton
                 isChecked={studentGender === g}
                 onClick={() => setStudentGender(g)}
-                disabled={!isEdit}
+                disabled={!isEdit || !isEditing}
                 key={g}
               >
                 {g}
@@ -328,7 +334,7 @@ const RequestDetailPage = () => {
                 isChecked={trainer === g}
                 onClick={() => setTrainerGender(g)}
                 key={g}
-                disabled={!isEdit}
+                disabled={!isEdit || !isEditing}
               >
                 {g}
               </CheckedButton>
@@ -352,7 +358,7 @@ const RequestDetailPage = () => {
             aria-label="PT 시작 희망일"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
-            readOnly={!isEdit}
+            readOnly={!isEdit || !isEditing}
             className="mt-6 rounded-[10px] border border-[#CCCCCC] p-3 text-xl focus:border-gray-400 focus:outline-none"
           />
         </section>
@@ -377,7 +383,7 @@ const RequestDetailPage = () => {
                 onClick={() => toggleDay(d)}
                 key={d}
                 width="w-[56px]"
-                disabled={!isEdit}
+                disabled={!isEdit || !isEditing}
               >
                 {d}
               </CheckedButton>
@@ -404,7 +410,7 @@ const RequestDetailPage = () => {
                 isChecked={times.includes(t)}
                 onClick={() => toggleTime(t)}
                 key={t}
-                disabled={!isEdit}
+                disabled={!isEdit || !isEditing}
               >
                 {t}
               </CheckedButton>
@@ -420,7 +426,7 @@ const RequestDetailPage = () => {
           <CommentBox
             value={watch('content')}
             onChange={(e) => setValue('content', e.target.value, { shouldDirty: true })}
-            readOnly={!isEdit}
+            readOnly={!isEdit || !isEditing}
             placeholder="추가 요청사항을 입력해주세요"
           />
         </section>
@@ -428,7 +434,11 @@ const RequestDetailPage = () => {
 
       {(role === 'PRO' || isWriter?.isEdit) && (
         <Button width="w-[425px]" className="my-16" onClick={handleButton}>
-          {role === 'PRO' ? '제안서 작성' : '수정하기'}
+          {role === 'PRO'
+            ? '제안서 작성'
+            : isWriter?.isEdit && !isEditing
+              ? '수정하기'
+              : '수정 완료'}
         </Button>
       )}
     </section>
