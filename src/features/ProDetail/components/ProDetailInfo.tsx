@@ -6,6 +6,7 @@ import type { certificationResponse } from '@/apis/getProCertifications';
 import { postCreateChatRoom } from '@/apis/postCreateChatRoom';
 import Button from '@/components/Button';
 import { CertificationCard } from '@/components/CertificationCard';
+import ProfileImage from '@/components/ProfileImage';
 import ProfileImageSlide, { type SlideImage } from '@/components/ProfileImageSlide';
 import ProfilePrice from '@/components/ProfilePrice';
 import { TitleLine } from '@/components/TitleLine';
@@ -13,7 +14,6 @@ import ROUTES from '@/constants/routes';
 import { useGetProProfileWithUserId } from '@/hooks/useGetProProfile';
 import { useGetUserInfo } from '@/hooks/useGetUserInfo';
 import type { PtPrice } from '@/types/ProProfleType';
-import { onErrorImage } from '@/utils/onErrorImage';
 
 export const ProDetailInfo = () => {
   const [photos, setPhotos] = useState<SlideImage[]>([]);
@@ -66,12 +66,9 @@ export const ProDetailInfo = () => {
     <div className="flex w-[600px] flex-col items-center justify-center">
       <div className="mt-10 flex w-full flex-col items-center justify-center gap-4">
         {/* <img src={ProDetailBgImg} alt="전문가 프로필 뱌경화면" className="w-full" /> */}
-        <img
-          src={profileData?.profileImageUrl}
-          onError={onErrorImage}
-          alt="전문가 프로필 사진"
-          className="h-[11.25rem] w-[11.25rem] rounded-full"
-        />
+        <div className="h-[11.25rem] w-[11.25rem] overflow-hidden rounded-full">
+          <ProfileImage src={profileData?.profileImageUrl} alt="전문가 프로필 사진" />
+        </div>
         <div className="flex flex-col items-center justify-center">
           <span className="font-roboto text-[2rem] font-semibold">{profileData?.userNickName}</span>
           <span className="font-inter text-[0.875rem] font-semibold text-[#003EFB]">

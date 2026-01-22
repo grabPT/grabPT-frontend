@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
-import HeaderProfile from '@/assets/images/HeaderProfile.png';
+import ProfileImage from '@/components/ProfileImage';
 import ChangeProfile from '@/features/Signup/assets/ChangeProfile.png';
 import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
 import SignupBtn from '@/features/Signup/components/SignupBtn';
@@ -101,13 +101,13 @@ const NickNameStep = ({ onNext }: NicknameStepProps) => {
               className="relative cursor-pointer rounded-full bg-white"
               onClick={() => document.getElementById('file-upload')?.click()}
             >
-              <img
-                src={previewUrl ?? HeaderProfile}
-                alt="프로필"
-                className={`h-[11.25rem] w-[11.25rem] rounded-full ${
+              <div
+                className={`h-[11.25rem] w-[11.25rem] overflow-hidden rounded-full ${
                   previewUrl ? 'object-cover' : ''
                 }`}
-              />
+              >
+                <ProfileImage src={previewUrl} alt="프로필" />
+              </div>
               <div className="absolute right-0 bottom-0 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-white">
                 <img
                   src={ChangeProfile}

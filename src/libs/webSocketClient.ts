@@ -4,6 +4,8 @@ import SockJS from 'sockjs-client';
 export function createStompClient() {
   const accessToken = localStorage.getItem('accessToken');
 
+  if (!accessToken) return;
+
   const client = new Client({
     webSocketFactory: () => new SockJS(import.meta.env.VITE_SERVER_API_URL + '/ws-connect'),
     connectHeaders: {

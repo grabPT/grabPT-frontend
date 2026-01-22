@@ -54,18 +54,23 @@ const SuggestFormPage = () => {
       requestionId: suggestInfo.requestionId,
     };
     setSuggestInfo(newSuggestInfo);
-    console.log('제안서 data: ', suggestInfo);
     if (newSuggestInfo.requestionId !== null) {
-      try {
-        await suggestSend({
+      suggestSend(
+        {
           data: newSuggestInfo,
           photos: imageFiles,
-        });
-      } catch (err) {
-        console.error('Suggest failed:', err);
-      }
+        },
+        {
+          onSuccess: (res) => {
+            console.log('내가 요청에 담은 정보', newSuggestInfo);
+            navigate(urlFor.suggestDetail(res.result.suggestionId));
+          },
+          onError: (err) => {
+            console.error('제안서 작성 중 오류가 발생하였습니다.', err);
+          },
+        },
+      );
     }
-    navigate(urlFor.requestDetail(suggestInfo.requestionId || undefined));
   };
 
   const amountErrorMsg = errors.price?.message ?? errors.sessionCount?.message;
