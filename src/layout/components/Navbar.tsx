@@ -20,10 +20,6 @@ const Navbar = () => {
       path:
         role === 'PRO' ? ROUTES.MATCHING_STATUS.REQUESTS.ROOT : ROUTES.MATCHING_STATUS.REQUESTS.NEW,
     },
-    //   {
-    //   label: isPro ? '매칭 현황' : '요청서 작성',
-    //   path: isPro ? ROUTES.MATCHING_STATUS.ROOT : ROUTES.MATCHING_STATUS.REQUESTS.NEW,
-    // },
     { label: '트레이너 찾기', path: '/나중에설정' },
     { label: '내지역 센터', path: '/나중에설정' },
     { label: '카테고리', path: ROUTES.CATEGORY.ROOT },
@@ -58,6 +54,7 @@ const Navbar = () => {
             >
               {label}
             </NavLink>
+
             {/* 드롭다운을 해당 메뉴 아래에 가운데 정렬로 붙임 */}
             {isCategory && isOpenCategoryDropdown && (
               <div className="absolute top-full left-1/2 z-10 -translate-x-1/2">
