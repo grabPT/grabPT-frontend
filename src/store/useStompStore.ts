@@ -33,6 +33,8 @@ export const useStompStore = create<StompState>((set, get) => ({
 
     const newClient = createStompClient();
 
+    if (!newClient) return;
+
     // 연결 성공 시 콜백
     newClient.onConnect = () => {
       console.log('[STOMP] 연결 성공');
