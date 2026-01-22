@@ -4,7 +4,6 @@ import clsx from 'clsx';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 
-import Profile from '@/assets/images/HeaderProfile.png';
 import XIcon from '@/assets/images/x.png';
 import Box from '@/components/Box';
 import Button from '@/components/Button';
