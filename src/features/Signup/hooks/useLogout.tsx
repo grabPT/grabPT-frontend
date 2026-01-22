@@ -27,8 +27,8 @@ export const useLogout = () => {
         import.meta.env.VITE_STAGE === 'development' ||
         import.meta.env.VITE_STAGE === 'staging'
       ) {
-        localStorage.setItem('accessToken', '');
-        localStorage.setItem('refreshToken', '');
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
       }
       console.log('로그아웃 요청 성공:', data);
 
