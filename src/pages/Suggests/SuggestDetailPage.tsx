@@ -2,12 +2,12 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { postCreateChatRoom } from '@/apis/postCreateChatRoom';
 import Button from '@/components/Button';
+import ProfileImage from '@/components/ProfileImage';
 import ROUTES, { urlFor } from '@/constants/routes';
 import { useGetSuggestDetail } from '@/features/SuggestDetail/hooks/useGetSuggestDetail';
 import { usePostMatching } from '@/features/SuggestDetail/hooks/usePostMatching';
 import { useRoleStore } from '@/store/useRoleStore';
 import { onErrorImage } from '@/utils/onErrorImage';
-import ProfileImage from '@/components/ProfileImage';
 
 // 제안서 상세페이지
 const SuggestDetailPage = () => {
@@ -66,15 +66,12 @@ const SuggestDetailPage = () => {
       return null;
     }
   }
-  console.log(suggestion)
+  console.log(suggestion);
   return (
     <section className="my-10 flex flex-col items-center">
       <div className="flex flex-col items-center gap-2">
-        <div className="h-[300px] w-[300px] rounded-full object-cover overflow-hidden">
-        <ProfileImage
-          src={suggestion?.profileImageUrl}
-          alt="트레이너 프로필"
-        />
+        <div className="h-[300px] w-[300px] overflow-hidden rounded-full object-cover">
+          <ProfileImage src={suggestion?.profileImageUrl} alt="트레이너 프로필" />
         </div>
         <span className="mt-5 text-4xl font-bold text-[#21272A]">{suggestion?.userNickname}</span>
         <span className="text-button text-sm font-semibold">{suggestion?.centerName}</span>
