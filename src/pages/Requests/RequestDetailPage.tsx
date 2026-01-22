@@ -32,7 +32,6 @@ import {
   TIMES,
   type TimeSlot,
 } from '@/types/ReqeustsType';
-import toast from 'react-hot-toast';
 
 //에러 보여주기 추가할것
 const RequestDetailPage = () => {
@@ -136,9 +135,9 @@ const RequestDetailPage = () => {
                 categoryId: data?.categoryId ?? 0,
               },
             },
-            
+
             {
-              onError: async () => {  
+              onError: async () => {
                 //실패시 롤백
                 if (originalValuesRef.current) {
                   reset(originalValuesRef.current);

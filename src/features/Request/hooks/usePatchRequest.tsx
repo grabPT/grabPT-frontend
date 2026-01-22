@@ -1,9 +1,9 @@
 import { useMutation } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
 
 import { patchRequest } from '@/features/Request/apis/request';
 import type { RequestRequestDto, RequestResponseDto } from '@/features/Request/types/Request';
 import type { CommonResponseDto } from '@/types/commonResponseDto';
-import toast from 'react-hot-toast';
 
 type PatchRequestParams = {
   requestionId: number;
@@ -12,7 +12,7 @@ type PatchRequestParams = {
 export const usePatchRequest = () => {
   return useMutation<CommonResponseDto<RequestResponseDto>, Error, PatchRequestParams>({
     mutationFn: ({ requestionId, body }) => patchRequest(requestionId, body),
-    onSuccess: (data) => {
+    onSuccess: () => {
       toast.success('요청서가 성공적으로 수정되었습니다.');
     },
     onError: (error) => {
