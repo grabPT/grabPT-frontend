@@ -86,8 +86,6 @@ export const END_POINT = {
   SUGGESTS: {
     list: '/api/suggestion/mySuggestions',
     suggestDetail: (suggestionId: number) => `/api/suggestion/${suggestionId}`,
-    GET_CAN_RESPOND: (suggestionId: number) =>
-      `/api/suggestion/${suggestionId}/suggestion-can-respond`,
     save: '/api/suggestion',
   },
 

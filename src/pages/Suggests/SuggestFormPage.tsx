@@ -22,7 +22,7 @@ const SuggestFormPage = () => {
   const [mode, setMode] = useState<'accept' | 'custom'>('accept');
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   //api 연결
-  const { mutateAsync: suggestSend } = useSuggest();
+  const { mutate: suggestSend } = useSuggest();
   const { suggestInfo, setSuggestInfo } = useSuggestStore();
 
   //유효성 검사

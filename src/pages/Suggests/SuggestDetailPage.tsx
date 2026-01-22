@@ -77,7 +77,7 @@ const SuggestDetailPage = () => {
         <span className="text-button text-sm font-semibold">{suggestion?.centerName}</span>
       </div>
       {/* 스토어에서 가져온 회원 id와 제안서 proId가 같을 경우 전문가 -> 버튼 사용 불가 */}
-      {userId !== suggestion?.proId ? (
+      {userId !== suggestion?.proId && (
         <div className="mt-12 flex w-full justify-end gap-4">
           <Button width="w-[155px]" onClick={navigateToProProfile}>
             프로필 방문
@@ -86,8 +86,6 @@ const SuggestDetailPage = () => {
             채팅 상담
           </Button>
         </div>
-      ) : (
-        <div></div>
       )}
       <div className="mt-12 flex w-full flex-col gap-12 text-2xl font-extrabold">
         <div>
@@ -148,12 +146,10 @@ const SuggestDetailPage = () => {
         </div>
       </div>
       {/* 스토어에서 가져온 회원 id와 제안서 proId가 같을 경우 전문가 -> 버튼 사용 불가 */}
-      {userId !== suggestion?.proId ? (
+      {userId !== suggestion?.proId && (
         <Button width="w-96" className="mt-18" onClick={매칭수락}>
           매칭 수락
         </Button>
-      ) : (
-        <div></div>
       )}
     </section>
   );
