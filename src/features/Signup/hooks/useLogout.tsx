@@ -4,7 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import ROUTES from '@/constants/routes';
 import { postLogout } from '@/features/Signup/apis/auth';
 import type { LogoutDto } from '@/features/Signup/types/Auth';
+import { useAlarmStore } from '@/store/useAlarmStore';
 import { useRoleStore } from '@/store/useRoleStore';
+import { useUnreadStore } from '@/store/useUnreadStore';
 import type { CommonResponseDto } from '@/types/commonResponseDto';
 
 /**
@@ -14,10 +16,12 @@ import type { CommonResponseDto } from '@/types/commonResponseDto';
  */
 export const useLogout = () => {
   const resetAuth = useRoleStore((s) => s.resetAuth);
+  const resetUnread = useUnreadStore((s) => s.resetUnreadCount);
+  const resetAlarm = useAlarmStore((s) => s.resetAlarmCount);
   const navigate = useNavigate();
   return useMutation<CommonResponseDto<string>, Error, LogoutDto>({
     mutationFn: postLogout,
-    onSuccess: (data) => {
+    onSettled: (data) => {
       // 개발 및 스테이징 환경에서만 로컬 스토리지 정리
       if (
         import.meta.env.VITE_STAGE === 'development' ||
@@ -25,13 +29,13 @@ export const useLogout = () => {
       ) {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
-        localStorage.removeItem('role-storage');
-        localStorage.removeItem('alarm-storage');
-        localStorage.removeItem('unread-storage');
       }
       console.log('로그아웃 요청 성공:', data);
 
       resetAuth();
+      resetAlarm();
+      resetUnread();
+
       //microTask를 통해 role을 먼저 바꾸고 navigate 진행 -> 여기서 role storage만 guest 상태로 재생성
       if (typeof queueMicrotask === 'function') {
         queueMicrotask(() => navigate(ROUTES.HOME.ROOT, { replace: true }));
