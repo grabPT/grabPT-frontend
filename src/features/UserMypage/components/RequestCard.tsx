@@ -82,7 +82,7 @@ const RequestCard = ({
         <div className="flex items-start gap-[11px]">
           {/* 아바타 */}
           <div className="h-[50px] w-[50px] overflow-hidden rounded-full">
-            <ProfileImage src={profileImg ?? Profile} alt="profile" />
+            <ProfileImage src={profileImg} alt="profile" />
           </div>
 
           <div className="flex flex-col">

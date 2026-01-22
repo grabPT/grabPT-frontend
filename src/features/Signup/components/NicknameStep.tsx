@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
-import HeaderProfile from '@/assets/images/HeaderProfile.png';
 import ProfileImage from '@/components/ProfileImage';
 import ChangeProfile from '@/features/Signup/assets/ChangeProfile.png';
 import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
@@ -107,7 +106,7 @@ const NickNameStep = ({ onNext }: NicknameStepProps) => {
                   previewUrl ? 'object-cover' : ''
                 }`}
               >
-                <ProfileImage src={previewUrl ?? HeaderProfile} alt="프로필" />
+                <ProfileImage src={previewUrl} alt="프로필" />
               </div>
               <div className="absolute right-0 bottom-0 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-white">
                 <img
