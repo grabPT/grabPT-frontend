@@ -113,6 +113,7 @@ const RequestDetailPage = () => {
   };
 
   const { mutate: editRequest } = usePatchRequest();
+  const { refetch } = useGetDetailRequest(requestionId);
   const handleButton = () => {
     if (role === 'PRO') {
       navigateToSuggestForm();
@@ -122,18 +123,25 @@ const RequestDetailPage = () => {
     } else if (isEditing) {
       handleSubmit((formData) => {
         if (isWriter?.isEdit) {
-          editRequest({
-            requestionId,
-            body: {
-              ...formData,
-              location: data?.location ?? '',
-              categoryId: data?.categoryId ?? 0,
+          editRequest(
+            {
+              requestionId,
+              body: {
+                ...formData,
+                location: data?.location ?? '',
+                categoryId: data?.categoryId ?? 0,
+              },
             },
-          });
+            {
+              onError: async () => {
+                await refetch();
+              },
+            },
+          );
         }
       })();
-      containerRef?.current?.scrollTo({ top: 0, behavior: 'smooth' });
       setIsEditing(false);
+      containerRef?.current?.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
   /* 목적(다중) */
