@@ -7,6 +7,7 @@ import { useGetSuggestDetail } from '@/features/SuggestDetail/hooks/useGetSugges
 import { usePostMatching } from '@/features/SuggestDetail/hooks/usePostMatching';
 import { useRoleStore } from '@/store/useRoleStore';
 import { onErrorImage } from '@/utils/onErrorImage';
+import ProfileImage from '@/components/ProfileImage';
 
 // 제안서 상세페이지
 const SuggestDetailPage = () => {
@@ -65,16 +66,16 @@ const SuggestDetailPage = () => {
       return null;
     }
   }
-
+  console.log(suggestion)
   return (
     <section className="my-10 flex flex-col items-center">
       <div className="flex flex-col items-center gap-2">
-        <img
+        <div className="h-[300px] w-[300px] rounded-full object-cover overflow-hidden">
+        <ProfileImage
           src={suggestion?.profileImageUrl}
-          onError={onErrorImage}
           alt="트레이너 프로필"
-          className="h-[300px] w-[300px] rounded-full object-cover"
         />
+        </div>
         <span className="mt-5 text-4xl font-bold text-[#21272A]">{suggestion?.userNickname}</span>
         <span className="text-button text-sm font-semibold">{suggestion?.centerName}</span>
       </div>
@@ -97,8 +98,7 @@ const SuggestDetailPage = () => {
           <div className="relative mt-5 flex w-fit items-center">
             <input
               type="number"
-              // TODO: 제안서 상세 조회 api에 suggestedCount 추가해서 반영
-              value={10}
+              value={suggestion?.sessionCount}
               aria-label="제안 PT 횟수"
               readOnly
               className="mr-1.5 h-12 w-[85px] rounded-xl border-2 border-[#BABABA] pl-3.5 text-center text-2xl text-[#9F9F9F]"
