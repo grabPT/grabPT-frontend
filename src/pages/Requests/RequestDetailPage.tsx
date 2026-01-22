@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -52,13 +52,14 @@ const RequestDetailPage = () => {
     { label: '정보', to: urlFor.requestDetail(requestionId) },
     { label: '제안 목록', to: urlFor.requestSuggests(requestionId) },
   ];
-  const { data } = useGetDetailRequest(requestionId);
+  const { data, refetch } = useGetDetailRequest(requestionId);
   const {
     register,
     watch,
     handleSubmit,
     formState: { errors },
     setValue,
+    getValues,
     reset,
   } = useForm<Omit<RequestRequestDto, 'location'>>({
     mode: 'onChange',
@@ -78,7 +79,7 @@ const RequestDetailPage = () => {
       sessionCount: 0,
     },
   });
-
+  const originalValuesRef = useRef<Omit<RequestRequestDto, 'location'> | null>(null);
   useEffect(() => {
     if (data) {
       reset({
@@ -113,19 +114,21 @@ const RequestDetailPage = () => {
   };
 
   const { mutate: editRequest } = usePatchRequest();
-  const { refetch } = useGetDetailRequest(requestionId);
   const handleButton = () => {
     if (role === 'PRO') {
       navigateToSuggestForm();
+      return;
     } else if (!isEditing) {
+      originalValuesRef.current = getValues(); // 현재 값을 저장
       setIsEditing(true);
       containerRef?.current?.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
     } else if (isEditing) {
       handleSubmit((formData) => {
         if (isWriter?.isEdit) {
           editRequest(
             {
-              requestionId,
+              requestionId: -1,
               body: {
                 ...formData,
                 location: data?.location ?? '',
@@ -134,6 +137,10 @@ const RequestDetailPage = () => {
             },
             {
               onError: async () => {
+                //실패시 롤백
+                if (originalValuesRef.current) {
+                  reset(originalValuesRef.current);
+                }
                 await refetch();
               },
             },
