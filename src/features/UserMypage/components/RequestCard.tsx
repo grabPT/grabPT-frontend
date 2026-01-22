@@ -8,6 +8,7 @@ import Profile from '@/assets/images/HeaderProfile.png';
 import XIcon from '@/assets/images/x.png';
 import Box from '@/components/Box';
 import Button from '@/components/Button';
+import ProfileImage from '@/components/ProfileImage';
 import { Skeleton } from '@/components/Skeleton';
 import { urlFor } from '@/constants/routes';
 import { useDeleteRequest } from '@/features/UserMypage/hooks/useDeleteRequest';
@@ -80,12 +81,8 @@ const RequestCard = ({
         {/* 상단 정보 */}
         <div className="flex items-start gap-[11px]">
           {/* 아바타 */}
-          <div>
-            <img
-              src={profileImg ?? Profile}
-              alt="profile"
-              className="h-[50px] w-[50px] rounded-full"
-            />
+          <div className="h-[50px] w-[50px] overflow-hidden rounded-full">
+            <ProfileImage src={profileImg ?? Profile} alt="profile" />
           </div>
 
           <div className="flex flex-col">

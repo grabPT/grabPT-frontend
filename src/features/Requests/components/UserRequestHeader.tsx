@@ -1,4 +1,4 @@
-import { onErrorImage } from '@/utils/onErrorImage';
+import ProfileImage from '@/components/ProfileImage';
 
 /*
 유저의 요청 현황 카드의 보여지는
@@ -15,12 +15,9 @@ const UserRequestHeader = ({ nickName, profileImg, location }: UserRequestHeader
     <div className="flex flex-row items-center">
       <div className="mr-3 flex h-12 w-12 items-center justify-center rounded-full bg-gray-300">
         {profileImg ? (
-          <img
-            src={profileImg}
-            onError={onErrorImage}
-            alt="profile"
-            className="h-[50px] w-[50px] rounded-full object-cover"
-          />
+          <div className="h-[50px] w-[50px] overflow-hidden rounded-full">
+            <ProfileImage src={profileImg} alt="유저 프로필 이미지" />
+          </div>
         ) : (
           <svg className="h-6 w-6 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
             <path

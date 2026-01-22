@@ -8,6 +8,7 @@ import z from 'zod';
 import Button from '@/components/Button';
 import CheckedButton from '@/components/CheckedButton';
 import CommentBox from '@/components/CommentBox';
+import ProfileImage from '@/components/ProfileImage';
 import Tabs, { type TabItem } from '@/components/Tabs';
 import ROUTES, { urlFor } from '@/constants/routes';
 import { SPORTS } from '@/constants/sports';
@@ -31,7 +32,6 @@ import {
   TIMES,
   type TimeSlot,
 } from '@/types/ReqeustsType';
-import { onErrorImage } from '@/utils/onErrorImage';
 
 //에러 보여주기 추가할것
 const RequestDetailPage = () => {
@@ -205,12 +205,9 @@ const RequestDetailPage = () => {
       {/* 헤더 */}
       <div className="mt-16 flex h-[50px] w-full items-center justify-center gap-3">
         {/* 프로필 url 이미지로 바꾸는 로직 필요 */}
-        <img
-          src={data?.profileImageUrl}
-          alt="요청서 프로필"
-          className="h-[3.125rem] w-[3.125rem] rounded-full"
-          onError={onErrorImage}
-        />
+        <div className="h-[3.125rem] w-[3.125rem] overflow-hidden rounded-full">
+          <ProfileImage src={data?.profileImageUrl} alt="요청서 프로필" />
+        </div>
         <span className="text-4xl font-extrabold">
           {data?.location?.substring(2)} {data?.userNickname}
           {/* {category} */}

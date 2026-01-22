@@ -6,6 +6,7 @@ import Alert from '@/assets/images/Alert.png';
 import Chat from '@/assets/images/Chat.png';
 import HeaderProfile from '@/assets/images/HeaderProfile.png';
 import Button from '@/components/Button';
+import ProfileImage from '@/components/ProfileImage';
 import ROUTES from '@/constants/routes';
 import { useGetUserInfo } from '@/hooks/useGetUserInfo';
 import AlarmDropdown from '@/layout/components/AlarmDropdown';
@@ -94,12 +95,12 @@ function AuthMenu() {
 
           {/* 프로필 */}
           <div className="relative flex h-full items-center" ref={profileRef}>
-            <img
-              src={profileImage}
-              alt="프로필"
-              className="h-[45px] w-[45px] cursor-pointer rounded-full"
+            <div
+              className="h-[45px] w-[45px] cursor-pointer overflow-hidden rounded-full"
               onClick={() => setIsOpenProfileDropdown((prev) => !prev)}
-            />
+            >
+              <ProfileImage src={profileImage} alt="프로필" />
+            </div>
             {isOpenProfileDropdown && (
               <div className="absolute top-full right-0">
                 <ProfileDropdown />
