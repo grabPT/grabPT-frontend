@@ -60,14 +60,14 @@ function AuthMenu({ onOpenSidebar }: AuthMenuProps) {
   }, []);
 
   return (
-    <div className="flex items-center justify-end gap-3 sm:min-w-40 sm:gap-5">
+    <div className="flex items-center justify-end gap-4 sm:min-w-40 sm:gap-5">
       {isLoggedIn ? (
         <>
           {/* 채팅 + 알림 (Always visible) */}
-          <div className="relative flex h-[21px] gap-3 sm:gap-5" ref={alarmRef}>
+          <div className="relative flex h-[21px] gap-4 sm:gap-5" ref={alarmRef}>
             <div className="relative">
               {unreadCount > 0 && (
-                <div className="absolute bottom-3 left-3 z-[3000] rounded-full bg-red-500 px-1.5 text-center text-[12px] text-white">
+                <div className="absolute bottom-3 left-2 z-[3000] rounded-full bg-red-500 px-1.5 text-center text-[12px] text-white">
                   {unreadCount}
                 </div>
               )}
@@ -80,7 +80,7 @@ function AuthMenu({ onOpenSidebar }: AuthMenuProps) {
             </div>
             <div className="relative">
               {alarmCount !== null && alarmCount > 0 && (
-                <div className="absolute bottom-3 left-3 z-[3000] rounded-full bg-red-500 px-1.5 text-center text-[12px] text-white">
+                <div className="absolute bottom-3 left-2 z-[3000] rounded-full bg-red-500 px-1.5 text-center text-[12px] text-white">
                   {alarmCount}
                 </div>
               )}
@@ -92,7 +92,7 @@ function AuthMenu({ onOpenSidebar }: AuthMenuProps) {
               />
             </div>
             {isOpenAlarmDropdown && (
-              <div className="absolute top-12 -right-2.5">
+              <div className="absolute top-11 -right-2.5">
                 <AlarmDropdown />
               </div>
             )}
@@ -115,7 +115,7 @@ function AuthMenu({ onOpenSidebar }: AuthMenuProps) {
 
           {/* Hamburger (Mobile Only) */}
           <button className="flex cursor-pointer md:hidden" onClick={onOpenSidebar}>
-            <HamburgerIcon className="h-7 w-7" />
+            <HamburgerIcon className="h-6 w-6" />
           </button>
         </>
       ) : (
@@ -130,7 +130,7 @@ function AuthMenu({ onOpenSidebar }: AuthMenuProps) {
 
           {/* Hamburger (Mobile Only) */}
           <button className="flex cursor-pointer md:hidden" onClick={onOpenSidebar}>
-            <HamburgerIcon className="h-7 w-7" />
+            <HamburgerIcon className="h-6 w-6" />
           </button>
         </>
       )}

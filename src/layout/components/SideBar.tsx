@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import clsx from 'clsx';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 
 import XIcon from '@/assets/icons/XIcon';
 import HeaderProfile from '@/assets/images/HeaderProfile.png';
@@ -21,6 +21,7 @@ interface SideBarProps {
 
 const SideBar = ({ isOpen, onClose }: SideBarProps) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { role, isLoggedIn } = useRoleStore();
   const { data: myInfo } = useGetUserInfo();
   const profileImage = myInfo?.profileImageUrl ?? HeaderProfile;
@@ -56,6 +57,14 @@ const SideBar = ({ isOpen, onClose }: SideBarProps) => {
     // Category is handled separately
   ];
 
+  /* 
+    Calculate if ANY of the sidebar items are active.
+    This includes the paths in menuList AND the Category path.
+  */
+  const isAnyActive =
+    menuList.some((item) => location.pathname === item.path) ||
+    location.pathname.startsWith(ROUTES.CATEGORY.ROOT);
+
   /* Prevent scrolling when sidebar is open */
   useEffect(() => {
     if (isOpen) {
@@ -82,21 +91,13 @@ const SideBar = ({ isOpen, onClose }: SideBarProps) => {
       {/* Sidebar Content */}
       <div
         className={clsx(
-          'fixed top-0 right-0 z-50 h-full w-full bg-white shadow-xl transition-transform duration-300 ease-in-out sm:max-w-xs',
+          'fixed top-0 right-0 z-50 h-full w-full bg-white shadow-xl transition-transform duration-300 ease-in-out sm:max-w-md',
           isOpen ? 'translate-x-0' : 'translate-x-full',
         )}
       >
-        <div className="scrollbar-hide flex h-full flex-col overflow-y-auto p-6">
-          {/* Close Button */}
-          <div className="flex justify-end">
-            <button onClick={onClose} className="cursor-pointer p-2 text-gray-500 hover:text-black">
-              {/* X Icon */}
-              <XIcon className="h-8 w-8" />
-            </button>
-          </div>
-
+        <div className="scrollbar-hide flex h-full flex-col overflow-y-auto p-5">
           {/* User Profile / Auth Section */}
-          <div className="mt-4 mb-8">
+          <div className="mt-4 mb-8 flex items-start justify-between">
             {isLoggedIn ? (
               <div className="flex flex-col gap-4">
                 <div className="flex items-center gap-4">
@@ -124,6 +125,10 @@ const SideBar = ({ isOpen, onClose }: SideBarProps) => {
                 <Button>로그인</Button>
               </div>
             )}
+            <button onClick={onClose} className="cursor-pointer text-gray-500 hover:text-black">
+              {/* X Icon */}
+              <XIcon className="h-8 w-8" />
+            </button>
           </div>
 
           <hr className="mb-6 border-gray-200" />
@@ -136,8 +141,9 @@ const SideBar = ({ isOpen, onClose }: SideBarProps) => {
                 to={path}
                 className={({ isActive }) =>
                   clsx(
-                    'text-xl font-bold text-black transition-colors',
-                    isActive ? 'opacity-100' : 'opacity-100', // Always black/visible as requested
+                    'text-xl font-bold transition-colors hover:text-black',
+                    // If NOTHING is active, default to black. Otherwise follow strict active/inactive.
+                    !isAnyActive || isActive ? 'text-black' : 'text-gray-400',
                   )
                 }
                 onClick={onClose}
@@ -149,7 +155,12 @@ const SideBar = ({ isOpen, onClose }: SideBarProps) => {
             {/* Category Toggle */}
             <div>
               <div
-                className="flex cursor-pointer items-center justify-between text-xl font-bold text-black"
+                className={clsx(
+                  'flex cursor-pointer items-center justify-between text-xl font-bold transition-colors hover:text-black',
+                  !isAnyActive || location.pathname.startsWith(ROUTES.CATEGORY.ROOT)
+                    ? 'text-black'
+                    : 'text-gray-400',
+                )}
                 onClick={() => setIsCategoryOpen(!isCategoryOpen)}
               >
                 <span>카테고리</span>
