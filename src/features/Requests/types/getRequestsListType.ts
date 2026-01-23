@@ -56,7 +56,7 @@ export type RequestsListResultType = {
   totalPages: number;
   totalElements: number;
   size: number;
-  content: RequestsListItemProps[];
+  content?: RequestsListItemProps[];
   number: number;
   sort: SortType;
   numberOfElements: number;
@@ -81,7 +81,7 @@ export type RequestsListItemProps = {
   availableDays: string[];
   categoryName: string;
   sessionCount?: number;
-  content: string;
+  content?: string;
   profileImageUrl?: string;
   proProfileId?: number;
   proNickname?: string;

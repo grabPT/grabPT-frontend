@@ -44,7 +44,7 @@ const UserRequests = () => {
                 key={`${page}-${idx}`}
                 requestionId={rq.requestionId}
                 location={location}
-                name={data?.userNickName ?? '사용자'}
+                name={data?.userNickname ?? '사용자'}
                 profileImg={data?.profileImageUrl}
                 tags={{
                   availableTimes: rq.availableTimes,

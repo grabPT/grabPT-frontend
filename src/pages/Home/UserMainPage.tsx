@@ -60,7 +60,7 @@ const UserMainPage = () => {
             title={'나의 요청서'}
             requests={mappedRequests}
             location={userLocation}
-            name={userData?.userNickName}
+            name={userData?.userNickname}
           />
         </div>
       )}

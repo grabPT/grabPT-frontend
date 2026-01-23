@@ -3,7 +3,7 @@ import ProfileCard from '@/components/ProfileCard';
 import RealtimeMatchingStatus from '@/components/RealtimeMatchingStatus';
 import { SPORTS } from '@/constants/sports';
 import { useGetMatchingRequestsList } from '@/features/Requests/hooks/useGetMyRequestsList';
-// import RequestSlider from '@/features/home/components/UserRequestSlider';
+import RequestSlider from '@/features/home/components/UserRequestSlider';
 import { useProProfileQuery } from '@/hooks/useGetProProfile';
 import type { SportsSlugType } from '@/types/SportsType';
 
@@ -18,7 +18,8 @@ const ProMainPage = () => {
   console.log('matched', matched);
   console.log('categoryType', categoryType);
 
-  // 여기도 있네 이거 => 아 위치가져오는 거구나const location = `${profileData?.address?.[0]?.city ?? ''} ${profileData?.address?.[0]?.district ?? ''} ${profileData?.address?.[0]?.street ?? ''}`;
+  // 여기도 있네 이거 => 아 위치가져오는 거구나
+  const location = `${profileData?.userLocations?.[0]?.city ?? ''} ${profileData?.userLocations?.[0]?.district ?? ''} ${profileData?.userLocations?.[0]?.street ?? ''}`;
 
   // 전문가의 요청서 조회 훅
   const { data: requests } = useGetMatchingRequestsList({ sortBy: 'latest', page: 1, size: 40 });
@@ -41,11 +42,11 @@ const ProMainPage = () => {
 
       {/* 요청서 슬라이더 */}
       <div className="mt-[145px]">
-        {/* <RequestSlider
+        <RequestSlider
           title={'받은 요청서'}
           requests={requests?.content ?? []}
           location={location}
-        /> */}
+        />
       </div>
 
       {/* 실시간 매칭 현황 */}
