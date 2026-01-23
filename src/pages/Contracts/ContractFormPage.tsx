@@ -542,8 +542,9 @@ const ContractFormPage = () => {
           </p>
 
           <div className={`grid w-full ${showCancel ? 'grid-cols-2 gap-3' : ''}`}>
+            {/* TODO: 취소 버튼 로직 어떻게 할 지, 현재 뒤로가기만 되어있는데 이러면 계약서 페이지 접근이 안됨 */}
             {showCancel && (
-              <Button width="w-full" disabled={uploading}>
+              <Button width="w-full" disabled={uploading} onClick={() => navigate(-1)}>
                 취소
               </Button>
             )}
