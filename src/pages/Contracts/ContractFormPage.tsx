@@ -547,14 +547,15 @@ const ContractFormPage = () => {
                 취소
               </Button>
             )}
-            <Button
-              width="w-full"
-              onClick={userComplete && proComplete && !isPro ? handleSuccess : handleSubmit}
-              disabled={primaryDisabled}
-              className={primaryFullWidth ? 'col-span-2' : undefined}
-            >
-              {primaryLabel}
-            </Button>
+            {!primaryDisabled && (
+              <Button
+                width="w-full"
+                onClick={userComplete && proComplete && !isPro ? handleSuccess : handleSubmit}
+                className={primaryFullWidth ? 'col-span-2' : undefined}
+              >
+                {primaryLabel}
+              </Button>
+            )}
           </div>
         </div>
       </section>
