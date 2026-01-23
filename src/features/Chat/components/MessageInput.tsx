@@ -1,9 +1,8 @@
 import { memo, useCallback, useRef, useState } from 'react';
 
-import imageCompression from 'browser-image-compression';
-
 import ChatSendIcon from '@/features/Chat/assets/ChatSendIcon.svg';
 import ClipIcon from '@/features/Chat/assets/ClipIcon.svg';
+import { compressImage } from '@/utils/imageCompression';
 
 interface MessageInputProps {
   onSend: (text: string) => void;
@@ -34,8 +33,7 @@ const MessageInput = ({ onSend, onFileSelect, onSendFile, sending = false }: Mes
 
       try {
         if (isImage) {
-          const options = { maxSizeMB: 1, maxWidthOrHeight: 1024, useWebWorker: true };
-          const compressed = await imageCompression(f, options);
+          const compressed = await compressImage(f, { maxSizeMB: 1 });
           console.log('compressed', compressed);
           setSelectedFile(compressed);
           onFileSelect?.(compressed); // ← 이미지면 압축본을 전달
