@@ -391,11 +391,11 @@ const ContractFormPage = () => {
       {
         onSuccess: (response) => {
           const { IMP } = window;
-          IMP.init('imp05656377');
+          IMP.init(import.meta.env.VITE_PORTONE_IMP_KEY); // 가맹점 식별코드
           const order = response.result;
           const body = {
-            pg: 'html5_inicis.INIpayTest',
-            pay_method: 'card',
+            pg: import.meta.env.VITE_PORTONE_PG, // 결제대행사
+            pay_method: import.meta.env.VITE_PORTONE_PAY_METHOD, // 결제수단
             merchant_uid: order.order_uid,
             name: order.item_name,
             amount: order.payment_price,

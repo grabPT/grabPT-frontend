@@ -37,10 +37,10 @@ export const contractProInfoSchema = contractUserInfoSchema
           today.setHours(0, 0, 0, 0);
           start.setHours(0, 0, 0, 0);
 
-          return start > today;
+          return start >= today;
         },
         {
-          message: '시작일은 오늘 이후 날짜여야 합니다.',
+          message: '이미 지난 날짜로는 시작할 수 없어요.',
         },
       ),
     expireDate: z.string().min(1, '계약 종료일을 입력해주세요'),
