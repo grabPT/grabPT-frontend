@@ -5,14 +5,14 @@ import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 
 import HeaderProfile from '@/assets/images/HeaderProfile.png';
-import type { RequestsListResultType } from '@/features/Requests/types/getRequestsListType';
 import { NextArrow, PrevArrow } from '@/features/home/components/CustomArrow';
 import RequestCardInMain from '@/features/home/components/RequestCard';
+import type { RequestSliderItemType } from '@/features/home/types/request';
 import { useRoleStore } from '@/store/useRoleStore';
 
 interface RequestSliderProps {
   title: string;
-  requests: RequestsListResultType['content'];
+  requests: RequestSliderItemType[];
   name?: string;
   location?: string;
 }

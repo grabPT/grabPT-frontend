@@ -25,7 +25,7 @@ function AuthMenu() {
   const unreadCount = useUnreadStore((s) => s.unreadCount);
   const alarmCount = useAlarmStore((s) => s.alarmCount);
 
-  const { data: myInfo } = useGetUserInfo();
+  const { data: myInfo } = useGetUserInfo(isLoggedIn); // 로그인 상태일 때만 호출
   const profileImage = myInfo?.profileImageUrl ?? HeaderProfile;
   const nav = useNavigate();
 
