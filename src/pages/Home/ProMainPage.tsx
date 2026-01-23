@@ -4,31 +4,44 @@ import RealtimeMatchingStatus from '@/components/RealtimeMatchingStatus';
 import { SPORTS } from '@/constants/sports';
 import { useGetMatchingRequestsList } from '@/features/Requests/hooks/useGetMyRequestsList';
 import RequestSlider from '@/features/home/components/UserRequestSlider';
+import type { RequestSliderItemType } from '@/features/home/types/request';
 import { useProProfileQuery } from '@/hooks/useGetProProfile';
+import { useRoleStore } from '@/store/useRoleStore';
 import type { SportsSlugType } from '@/types/SportsType';
 
 const ProMainPage = () => {
+  const { isLoggedIn, role } = useRoleStore();
+
   // 전문가가 자신의 프로필 조회 훅
   const { data: profileData, isError } = useProProfileQuery();
 
   // 전문가의 카테고리명을 통해 SPORTS에서 해당 카테고리의 slug를 찾음
   const matched = SPORTS.find((s) => s.slug === profileData?.categoryName);
   const categoryType: SportsSlugType = matched?.slug ?? 'health';
-  // 디버깅용 삭제하기
-  console.log('matched', matched);
-  console.log('categoryType', categoryType);
 
-  // 여기도 있네 이거 => 아 위치가져오는 거구나
-  const location = `${profileData?.userLocations?.[0]?.city ?? ''} ${profileData?.userLocations?.[0]?.district ?? ''} ${profileData?.userLocations?.[0]?.street ?? ''}`;
+  const proLocation = `${profileData?.userLocations?.[0]?.city ?? ''} ${profileData?.userLocations?.[0]?.district ?? ''} ${profileData?.userLocations?.[0]?.street ?? ''}`;
 
-  // 전문가의 요청서 조회 훅
-  const { data: requests } = useGetMatchingRequestsList({ sortBy: 'latest', page: 1, size: 40 });
+  // 전문가의 요청서 조회 훅 (PRO일 때만 호출)
+  const { data: requests } = useGetMatchingRequestsList(
+    { sortBy: 'latest', page: 1, size: 40 },
+    isLoggedIn && role === 'PRO',
+  );
+
+  // RequestsListItemType → RequestSliderItemType 매핑
+  const mappedRequests: RequestSliderItemType[] =
+    requests?.content?.map((r) => ({
+      requestId: r.requestionId,
+      availableDays: r.availableDays,
+      availableTimes: r.availableTimes,
+      categoryName: r.categoryName,
+      content: r.content,
+      status: r.matchingStatus,
+      nickname: r.userNickname,
+      userProfileImageUrl: r.profileImageUrl,
+    })) ?? [];
 
   // todo: 이쁘게 만들어주세요
   if (isError || !profileData) return <div>에러 발생</div>;
-
-  // 디버깅용 삭제하셈
-  requests?.content.forEach((item) => console.log(item.location));
 
   return (
     <section className="mt-[70px] mb-[140px] flex flex-col items-center">
@@ -42,11 +55,7 @@ const ProMainPage = () => {
 
       {/* 요청서 슬라이더 */}
       <div className="mt-[145px]">
-        <RequestSlider
-          title={'받은 요청서'}
-          requests={requests?.content ?? []}
-          location={location}
-        />
+        <RequestSlider title={'받은 요청서'} requests={mappedRequests} location={proLocation} />
       </div>
 
       {/* 실시간 매칭 현황 */}
