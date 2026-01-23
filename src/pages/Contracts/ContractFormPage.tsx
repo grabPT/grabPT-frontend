@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ZodError, z } from 'zod';
+import { ZodError } from 'zod';
 
 import AppLogo from '@/assets/images/AppLogo.png';
 import Button from '@/components/Button';
