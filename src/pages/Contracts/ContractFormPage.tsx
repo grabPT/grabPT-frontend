@@ -370,7 +370,6 @@ const ContractFormPage = () => {
               );
             },
             onError: () => {
-              console.log('보낸 정보body:', body);
               alert('전문가 정보 업로드에 실패했습니다.');
             },
           },
