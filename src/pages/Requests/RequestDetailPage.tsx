@@ -1,13 +1,13 @@
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
-import z from 'zod';
 
 import Button from '@/components/Button';
 import CheckedButton from '@/components/CheckedButton';
 import CommentBox from '@/components/CommentBox';
+import ProfileImage from '@/components/ProfileImage';
 import Tabs, { type TabItem } from '@/components/Tabs';
 import ROUTES, { urlFor } from '@/constants/routes';
 import { SPORTS } from '@/constants/sports';
@@ -31,7 +31,6 @@ import {
   TIMES,
   type TimeSlot,
 } from '@/types/ReqeustsType';
-import { onErrorImage } from '@/utils/onErrorImage';
 
 //에러 보여주기 추가할것
 const RequestDetailPage = () => {
@@ -41,6 +40,7 @@ const RequestDetailPage = () => {
   const requestionId = Number(id);
   const { setSuggestInfo } = useSuggestStore();
   const { role } = useRoleStore();
+  const [isEditing, setIsEditing] = useState(false);
   //제안서 작성하기 버튼 누를 시 suggestStore의 requestionId를 업데이트하고 suggestFormPage에서 받아쓰기
 
   // api연결 시 isWriter 함수로 변경 (요청서의 작성자 id === 현재 유저 id)
@@ -51,13 +51,14 @@ const RequestDetailPage = () => {
     { label: '정보', to: urlFor.requestDetail(requestionId) },
     { label: '제안 목록', to: urlFor.requestSuggests(requestionId) },
   ];
-  const { data } = useGetDetailRequest(requestionId);
+  const { data, refetch } = useGetDetailRequest(requestionId);
   const {
     register,
     watch,
     handleSubmit,
     formState: { errors },
     setValue,
+    getValues,
     reset,
   } = useForm<Omit<RequestRequestDto, 'location'>>({
     mode: 'onChange',
@@ -77,7 +78,7 @@ const RequestDetailPage = () => {
       sessionCount: 0,
     },
   });
-
+  const originalValuesRef = useRef<Omit<RequestRequestDto, 'location'> | null>(null);
   useEffect(() => {
     if (data) {
       reset({
@@ -115,19 +116,48 @@ const RequestDetailPage = () => {
   const handleButton = () => {
     if (role === 'PRO') {
       navigateToSuggestForm();
-    } else {
-      handleSubmit((formData) => {
-        if (isWriter?.isEdit) {
-          editRequest({
-            requestionId,
-            body: {
-              ...formData,
-              location: data?.location ?? '',
-              categoryId: data?.categoryId ?? 0,
-            },
-          });
-        }
-      });
+      return;
+    } else if (!isEditing) {
+      originalValuesRef.current = getValues(); // 현재 값을 저장
+      setIsEditing(true);
+      containerRef?.current?.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    } else if (isEditing) {
+      handleSubmit(
+        (formData) => {
+          if (isWriter?.isEdit) {
+            editRequest(
+              {
+                requestionId,
+                body: {
+                  ...formData,
+                  location: data?.location ?? '',
+                  categoryId: data?.categoryId ?? 0,
+                },
+              },
+              {
+                onSuccess: async () => {
+                  await refetch();
+                  setIsEditing(false);
+                },
+                onError: async () => {
+                  //실패시 롤백
+                  if (originalValuesRef.current) {
+                    reset(originalValuesRef.current);
+                  }
+                  await refetch();
+                },
+              },
+            );
+          }
+        },
+        (errors) => {
+          const firstError = Object.values(errors)[0];
+          if (firstError?.message) {
+            alert(firstError.message);
+          }
+        },
+      )();
       containerRef?.current?.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
@@ -170,14 +200,6 @@ const RequestDetailPage = () => {
     setValue('purpose', next);
   };
 
-  try {
-    // 검증 통과 → 제출 가능
-  } catch (err) {
-    if (err instanceof z.ZodError) {
-      console.log(err); // 각 필드별 에러 메시지 접근 가능
-      alert(err.message); // 첫 번째 에러 메시지 alert
-    }
-  }
   return (
     <section className="flex flex-col items-center py-6">
       {isWriter?.isEdit ? <Tabs items={TabItems} width="w-[400px]" /> : <div></div>}
@@ -185,12 +207,9 @@ const RequestDetailPage = () => {
       {/* 헤더 */}
       <div className="mt-16 flex h-[50px] w-full items-center justify-center gap-3">
         {/* 프로필 url 이미지로 바꾸는 로직 필요 */}
-        <img
-          src={data?.profileImageUrl}
-          alt="요청서 프로필"
-          className="h-[3.125rem] w-[3.125rem] rounded-full"
-          onError={onErrorImage}
-        />
+        <div className="h-[3.125rem] w-[3.125rem] overflow-hidden rounded-full">
+          <ProfileImage src={data?.profileImageUrl} alt="요청서 프로필" />
+        </div>
         <span className="text-4xl font-extrabold">
           {data?.location?.substring(2)} {data?.userNickname}
           {/* {category} */}
@@ -202,25 +221,31 @@ const RequestDetailPage = () => {
         <section>
           <span className="mr-3">{category}</span>
           <span className="text-lg font-semibold">{data?.location}</span>
-
-          <div className="mt-5 flex items-center">
+          {/* 가격 및 횟수 */}
+          <div className="mt-5 flex items-end">
             <input
               type="number"
-              {...register('sessionCount', { valueAsNumber: true })}
+              {...register('sessionCount', {
+                valueAsNumber: true,
+                setValueAs: (v) => Number(v) || 0,
+              })}
               aria-label="희망 PT 횟수"
               className="mr-1.5 h-12 w-[85px] rounded-xl border-2 border-[#BABABA] pl-3.5 text-center text-2xl text-[#9F9F9F]"
-              readOnly={!isEdit}
+              readOnly={!isEdit || !isEditing}
             />
 
             <span className="mr-5">회</span>
             <input
               type="number"
-              {...register('price', { valueAsNumber: true })}
+              {...register('price', { valueAsNumber: true, setValueAs: (v) => Number(v) || 0 })}
               aria-label="희망 PT 가격"
               className="mr-1.5 h-12 w-[260px] rounded-xl border-2 border-[#BABABA] px-8 text-end text-2xl text-[#9F9F9F]"
-              readOnly={!isEdit}
+              readOnly={!isEdit || !isEditing}
             />
             <span className="mr-5">원</span>
+            {(errors.price || errors.sessionCount) && (
+              <p className="text-[1rem] font-semibold text-red-500">{errors.price?.message}</p>
+            )}
           </div>
         </section>
 
@@ -242,7 +267,7 @@ const RequestDetailPage = () => {
                   isChecked={selectedPurposes.includes(p)}
                   onClick={() => togglePurpose(p)}
                   key={p}
-                  disabled={!isEdit}
+                  disabled={!isEdit || !isEditing}
                 >
                   {p}
                 </CheckedButton>
@@ -256,6 +281,7 @@ const RequestDetailPage = () => {
                 }
                 className="mt-4 h-[180px] w-full resize-none rounded-[10px] border border-[#CCCCCC] bg-[#F5F5F5] p-4 text-[15px] placeholder:text-[#CCCCCC] focus:border-gray-400 focus:outline-none"
                 placeholder="세부 내용을 입력해주세요"
+                disabled={!isEdit || !isEditing}
               />
             )}
           </div>
@@ -277,7 +303,7 @@ const RequestDetailPage = () => {
               <CheckedButton
                 key={a}
                 isChecked={age === a}
-                disabled={!isEdit}
+                disabled={!isEdit || !isEditing}
                 onClick={() => setAge(a)}
               >
                 {a}
@@ -302,7 +328,7 @@ const RequestDetailPage = () => {
               <CheckedButton
                 isChecked={studentGender === g}
                 onClick={() => setStudentGender(g)}
-                disabled={!isEdit}
+                disabled={!isEdit || !isEditing}
                 key={g}
               >
                 {g}
@@ -328,7 +354,7 @@ const RequestDetailPage = () => {
                 isChecked={trainer === g}
                 onClick={() => setTrainerGender(g)}
                 key={g}
-                disabled={!isEdit}
+                disabled={!isEdit || !isEditing}
               >
                 {g}
               </CheckedButton>
@@ -352,7 +378,7 @@ const RequestDetailPage = () => {
             aria-label="PT 시작 희망일"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
-            readOnly={!isEdit}
+            readOnly={!isEdit || !isEditing}
             className="mt-6 rounded-[10px] border border-[#CCCCCC] p-3 text-xl focus:border-gray-400 focus:outline-none"
           />
         </section>
@@ -377,7 +403,7 @@ const RequestDetailPage = () => {
                 onClick={() => toggleDay(d)}
                 key={d}
                 width="w-[56px]"
-                disabled={!isEdit}
+                disabled={!isEdit || !isEditing}
               >
                 {d}
               </CheckedButton>
@@ -404,7 +430,7 @@ const RequestDetailPage = () => {
                 isChecked={times.includes(t)}
                 onClick={() => toggleTime(t)}
                 key={t}
-                disabled={!isEdit}
+                disabled={!isEdit || !isEditing}
               >
                 {t}
               </CheckedButton>
@@ -420,7 +446,7 @@ const RequestDetailPage = () => {
           <CommentBox
             value={watch('content')}
             onChange={(e) => setValue('content', e.target.value, { shouldDirty: true })}
-            readOnly={!isEdit}
+            readOnly={!isEdit || !isEditing}
             placeholder="추가 요청사항을 입력해주세요"
           />
         </section>
@@ -428,7 +454,7 @@ const RequestDetailPage = () => {
 
       {(role === 'PRO' || isWriter?.isEdit) && (
         <Button width="w-[425px]" className="my-16" onClick={handleButton}>
-          {role === 'PRO' ? '제안서 작성' : '수정하기'}
+          {role === 'PRO' ? '제안서 작성' : !isEditing ? '수정하기' : '수정 완료'}
         </Button>
       )}
     </section>

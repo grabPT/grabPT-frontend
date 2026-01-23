@@ -9,6 +9,7 @@ import ProCardScroll from '@/features/Category/components/ProCardScroll';
 import useGeolocation from '@/hooks/useGeolocation';
 import { useGetCategoryPros } from '@/hooks/useGetCategoryPros';
 import { useGetUserInfo } from '@/hooks/useGetUserInfo';
+import { useRoleStore } from '@/store/useRoleStore';
 import type { ProCardItem } from '@/types/ProCardItemType';
 
 /**
@@ -17,14 +18,13 @@ import type { ProCardItem } from '@/types/ProCardItemType';
  */
 const CategoryDetailPage = () => {
   const [location, setLocation] = useState<string>('');
-
+  const role = useRoleStore((s) => s.role);
   // 파라미터에서 스포츠를 가져오고 SPORTS상수랑 매칭
   const { slug } = useParams<{ slug: string }>();
   const sport = SPORTS.find((s) => s.slug === slug);
 
-  // 위치 정보가져오기 => 유저정보가 있다면 받아오면 안됩니다 !!
-  // todo: 조건부실행 (로그인상태라면 받아오면 안됨)
-  const { address, loading, error } = useGeolocation();
+  // 위치 정보가져오기(유저 정보 없을때만)
+  const { address, loading, error } = useGeolocation(role === 'GUEST');
 
   // 유저정보
   const { data: userData } = useGetUserInfo();
@@ -33,8 +33,8 @@ const CategoryDetailPage = () => {
   // 없으면 걍 안하는 듯 그러면 useGetCategoryPros 훅에서 enabled처리
   const loc = userData?.address[0].street;
   useEffect(() => {
-    if (loc) setLocation(loc);
-    else if (address) setLocation(address);
+    if (address) setLocation(address);
+    else if (loc) setLocation(loc);
   }, [loc, address]);
 
   // 프로카드 리스트 - useEffect로 설정한 location을 담아서

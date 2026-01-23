@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 
+import ProfileImage from '@/components/ProfileImage';
 import StarRating from '@/components/StarRating';
 import { urlFor } from '@/constants/routes';
 import type { suggestListForRequestItemType } from '@/features/SuggestListForRequest/types/getSuggestListForRequestType';
-import { onErrorImage } from '@/utils/onErrorImage';
 
 interface SuggestListItemProps {
   suggest: suggestListForRequestItemType;
@@ -19,13 +19,9 @@ const SuggestListItem = ({ suggest }: SuggestListItemProps) => {
       className="flex h-36 w-4xl cursor-pointer items-center justify-between rounded-2xl bg-[#E6ECFF] px-5 shadow-[0_4px_4px_rgba(0,0,0,0.1)]"
     >
       <div className="flex gap-3.5">
-        <img
-          src={suggest.profileImageUrl}
-          onError={(e) => onErrorImage(e)}
-          alt="제안 트레이너 프로필"
-          className="h-24 w-24 rounded-full"
-        />
-
+        <div className="h-24 w-24 rounded-full">
+          <ProfileImage src={suggest.profileImageUrl} alt="제안 트레이너 프로필" />
+        </div>
         <div className="flex flex-col justify-between">
           <p className="text-button text-2xl font-bold">{suggest.userNickname} 전문가님의 제안</p>
           <p className="text-base font-bold">{suggest.centerName}</p>

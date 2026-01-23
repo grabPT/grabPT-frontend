@@ -8,7 +8,7 @@ interface GeoLocationResult {
   error: string | null;
 }
 
-const useGeolocation = (): GeoLocationResult => {
+const useGeolocation = (enabled: boolean): GeoLocationResult => {
   const [latitude, setLatitude] = useState<number>(0);
   const [longitude, setLongitude] = useState<number>(0);
   const [address, setAddress] = useState<string | null>(null);
@@ -16,6 +16,11 @@ const useGeolocation = (): GeoLocationResult => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!enabled) {
+      setLoading(false);
+      return;
+    }
+
     if (!navigator.geolocation) {
       setError('이 브라우저는 위치 정보를 지원하지 않습니다.');
       setLoading(false);
@@ -28,7 +33,6 @@ const useGeolocation = (): GeoLocationResult => {
         setLatitude(latitude);
         setLongitude(longitude);
 
-        // 카카오 주소 변환 요청
         // 카카오 주소 변환 요청
         try {
           const url = `https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${longitude}&y=${latitude}&input_coord=WGS84`;
@@ -62,7 +66,7 @@ const useGeolocation = (): GeoLocationResult => {
         console.log(err);
       },
     );
-  }, []);
+  }, [enabled]);
 
   return { latitude, longitude, address, loading, error };
 };

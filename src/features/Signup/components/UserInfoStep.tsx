@@ -24,9 +24,7 @@ interface UserInfoFormValues {
 
 const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
   //store에서 업데이트할 목록 불러오기
-  // oauthProvider 빌드에러
-  // const { userInfo, setUserInfo, oauthProvider } = useSignupStore();
-  const { userInfo, setUserInfo } = useSignupStore();
+  const { userInfo, setUserInfo, oauthProvider } = useSignupStore();
 
   //유효성 검사
   const {
@@ -68,7 +66,6 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
         specAddress: data.specAddress,
       },
     });
-    console.log('이메일이 담겨있나용:', userInfo);
     onNext();
   };
   const email = watch('email');
@@ -130,18 +127,17 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
     document.body.appendChild(script);
   }, []);
   // email 동기화: 카카오는 사용자가 입력한 값을 RHF가 관리하고, 비-카카오는 스토어 값을 폼에 유지
-  // 이새끼떄매 입력이 안 되네
-  // useEffect(() => {
-  //   if (oauthProvider !== 'kakao') {
-  //     if (email !== userInfo.email) {
-  //       setValue('email', userInfo.email || '', {
-  //         shouldDirty: false,
-  //         shouldTouch: false,
-  //         shouldValidate: false,
-  //       });
-  //     }
-  //   }
-  // }, [oauthProvider, email, userInfo.email, setValue]);
+  useEffect(() => {
+    if (oauthProvider !== 'kakao') {
+      if (email !== userInfo.email) {
+        setValue('email', userInfo.email || '', {
+          shouldDirty: false,
+          shouldTouch: false,
+          shouldValidate: false,
+        });
+      }
+    }
+  }, [oauthProvider, email, userInfo.email, setValue]);
 
   //폼 검사 에러 메시지 출력
   const getUserErrorMessage = () => {
@@ -154,7 +150,6 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
 
   //전화번호 인증
   const { mutate: sendSms } = useSmsSend();
-  //수정 해야함
   const handlePhoneNumVerification = async () => {
     if (!phoneNumber) {
       alert('전화번호를 입력해주세요.');
@@ -178,8 +173,6 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
     );
   };
 
-  //잘못 입력 시 칸 흔들림 모션
-  const [shakeKey, setShakeKey] = useState('initial');
   //인증번호 확인
   const { mutate: verifySms } = useSmsVerify();
   const [VerifyNumberCheckResult, setVerifyNumberCheckResult] = useState<boolean | null>(null);
@@ -192,14 +185,9 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
           if (res.isSuccess) {
             setVerifyNumberCheckResult(true);
           }
-          //   else {
-          //     setVerifyNumberCheckResult(false);
-          //     setShakeKey(`shake-${Date.now()}`);
-          //   }
         },
         onError: (err) => {
           setVerifyNumberCheckResult(false);
-          setShakeKey(`shake-${Date.now()}`);
           console.error('인증 실패:', err);
         },
       },
@@ -245,8 +233,7 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
                   placeholder="이메일"
                   //이메일 같은 경우 카카오는 입력받아서 나머지는 받아온 이메일을 띄워줘야함 oauthprovider로 구분
                   className="w-full rounded-[0.625rem] py-[0.8rem] pl-4 text-[#616161]"
-                  // 일단 주석처리.
-                  // readOnly={oauthProvider !== 'kakao'}
+                  readOnly={oauthProvider !== 'kakao'}
                 />
                 <button
                   className="absolute top-1/2 right-4 flex h-7 w-[4.375rem] -translate-y-1/2 items-center justify-center rounded-[3.125rem] bg-[color:var(--color-button)] text-[0.625rem] font-semibold text-white hover:bg-[color:var(--color-button-hover)] active:bg-[color:var(--color-button-pressed)]"
@@ -347,7 +334,6 @@ const UserInfoStep = ({ onNext }: UserInfoStepProps) => {
               <span className="font-semibold">인증번호</span>
               <div className="relative flex items-center justify-between">
                 <input
-                  key={shakeKey}
                   {...register('verifyNum')}
                   placeholder="XXXXXX"
                   className={`w-full rounded-[0.625rem] border py-[0.8rem] pl-4 text-[#616161] ${

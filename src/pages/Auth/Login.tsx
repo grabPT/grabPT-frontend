@@ -45,9 +45,6 @@ const Login = () => {
                 원하는 가격에, 원하는 방식으로 시작하는 나만의 운동 플렛폼
               </span>
             </div>
-
-            {/* 각 소셜 로그인 버튼 이건 나중에 로직 추가 에정 */}
-            {/* 이태석: 무슨 로직이요? */}
             <div className="mt-[8.81rem] flex flex-col items-center justify-center rounded-[1.25rem]">
               <div className="flex w-full flex-col gap-4 whitespace-pre">
                 <div className="flex items-center justify-center">

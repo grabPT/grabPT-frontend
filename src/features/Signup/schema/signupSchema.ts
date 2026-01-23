@@ -16,12 +16,12 @@ export const userInfoSchema = z.object({
       },
     ),
   address: z.string().min(1, { message: '주소를 입력해주세요.' }),
-  specAddress: z.string().min(1, { message: '주소를 입력해주세요.' }),
+  specAddress: z.string().min(1, { message: '상세 주소를 입력해주세요.' }),
   verifyNum: z.string().min(1, { message: '인증번호를 입력하세요.' }),
 });
 
 export const proInfoSchema = z.object({
-  center: z.string().min(1, { message: '활동 센터 이름을 입력해주세요.' }),
+  center: z.string().min(1, { message: '활동 센터명을 입력해주세요.' }),
   age: z.coerce.number().min(1, { message: '나이를 입력해주세요.' }),
   career: z.coerce.number({ message: '경력(년)을 입력해주세요.' }),
   gender: z.coerce.number(),

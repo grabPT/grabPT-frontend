@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import Profile from '@/assets/images/HeaderProfile.png';
 import Box from '@/components/Box';
+import ProfileImage from '@/components/ProfileImage';
 import { urlFor } from '@/constants/routes';
 import type { suggestListItemtype } from '@/features/SuggestList/types/getSuggestListType';
 import { cn } from '@/libs/cn';
@@ -20,18 +21,15 @@ const MySuggestListItem = ({ suggest }: MySuggestListItemProps) => {
   return (
     <Box
       height="h-[75px]"
-      onClick={() => navigate(urlFor.requestDetail(suggest.requestionId))}
+      onClick={() => navigate(urlFor.suggestDetail(suggest.suggestionId))}
       className="cursor-pointer"
       width="w-[700px]"
     >
       <div className="flex w-full items-center justify-between pr-4 pl-3">
         <div className="flex gap-2.5">
-          <img
-            src={profileImage}
-            alt="제안서를 받은 요청자의 프로필이미지"
-            className="h-[50px] w-[50px] rounded-full object-cover"
-          />
-
+          <div className="h-[50px] w-[50px] overflow-hidden rounded-full">
+            <ProfileImage src={profileImage} alt={'제안서를 받은 요청자의 프로필 이미지'} />
+          </div>
           <div className="text-sm font-medium">
             <p className="text-base font-semibold">{suggest.userNickname} 님께 제안</p>
             <span>{suggest.sessionCount}회</span>

@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ZodError, z } from 'zod';
+import { ZodError } from 'zod';
 
 import AppLogo from '@/assets/images/AppLogo.png';
 import Button from '@/components/Button';
@@ -30,9 +30,18 @@ import {
   usePostProSignatureFile,
   usePostUserSignatureFile,
 } from '@/features/Contract/hooks/usePostSignatureFile';
+import {
+  contractProInfoSchema,
+  contractUserInfoSchema,
+} from '@/features/Contract/schema/contractSchema';
 import type { proInfoType, userInfoType } from '@/features/Contract/types/postContractType';
+import {
+  extractProBodyFromForm,
+  extractUserBodyFromForm,
+} from '@/features/Contract/utils/contractForm';
 import { useRoleStore } from '@/store/useRoleStore';
 import { dataURLtoFile } from '@/utils/dataURLtoFile';
+import { toFieldErrorMap } from '@/utils/toFieldErrorMap';
 
 export {};
 
@@ -40,86 +49,6 @@ declare global {
   interface Window {
     IMP: any; // 필요하다면 정확한 타입으로 교체 가능
   }
-}
-
-// Zod 스키마 정의
-const userInfoSchema = z.object({
-  name: z.string().min(1, '이름을 입력해주세요'),
-  birth: z.string().min(1, '생년월일을 입력해주세요'),
-  phoneNumber: z.string().min(1, '전화번호를 입력해주세요'),
-  location: z.string().min(1, '주소를 입력해주세요'),
-  // ✅ enum: readonly 튜플 + 에러 메시지
-  gender: z.enum(['MALE', 'FEMALE'] as const, { error: '성별을 선택해주세요' }),
-  // 또는: gender: z.enum(['MALE', 'FEMALE'] as const, '성별을 선택해주세요'),
-});
-
-const toFieldErrorMap = (e: ZodError): Record<string, string> => {
-  // 타입 명시: string[] | undefined
-  const fieldErrors = e.flatten().fieldErrors as Record<string, string[] | undefined>;
-  const out: Record<string, string> = {};
-
-  for (const [k, arr] of Object.entries(fieldErrors)) {
-    if (Array.isArray(arr) && arr.length > 0 && arr[0]) {
-      out[k] = arr[0]; // 첫 메시지만 사용
-    }
-  }
-  return out;
-};
-
-const proInfoSchema = userInfoSchema
-  .extend({
-    startDate: z.string().min(1, '시작일을 입력해주세요'),
-    expireDate: z.string().min(1, '계약 종료일을 입력해주세요'),
-  })
-  .refine(
-    (data) => {
-      if (!data.startDate || !data.expireDate) return true; // 개별 필드 검증에서 처리
-      return new Date(data.expireDate) > new Date(data.startDate);
-    },
-    {
-      message: '계약 종료일은 시작일보다 뒤여야 합니다',
-      path: ['expireDate'],
-    },
-  );
-
-function extractUserBodyFromForm(form: HTMLFormElement | null): userInfoType | null {
-  if (!form) return null;
-  const fd = new FormData(form);
-  const name = String(fd.get('name') ?? '').trim();
-  const birthRaw = String(fd.get('birth') ?? '').trim();
-  const phoneNumber = String(fd.get('phoneNumber') ?? '').trim();
-  const location = String(fd.get('location') ?? '').trim();
-  const genderRaw = String(fd.get('gender') ?? '')
-    .trim()
-    .toUpperCase();
-
-  const gender: 'MALE' | 'FEMALE' | null =
-    genderRaw === 'MALE' || genderRaw === 'FEMALE' ? (genderRaw as any) : null;
-
-  const birth: string | null = birthRaw.length ? birthRaw : null;
-
-  return { name, birth, phoneNumber, gender, location };
-}
-
-function extractProBodyFromForm(form: HTMLFormElement | null): proInfoType | null {
-  if (!form) return null;
-  const fd = new FormData(form);
-  const name = String(fd.get('name') ?? '').trim();
-  const birthRaw = String(fd.get('birth') ?? '').trim();
-  const phoneNumber = String(fd.get('phoneNumber') ?? '').trim();
-  const location = String(fd.get('location') ?? '').trim();
-  const genderRaw = String(fd.get('gender') ?? '')
-    .trim()
-    .toUpperCase();
-  const startDate = String(fd.get('startDate') ?? '').trim();
-  const expireDate = String(fd.get('expireDate') ?? '').trim();
-
-  const gender: 'MALE' | 'FEMALE' | null =
-    genderRaw === 'MALE' || genderRaw === 'FEMALE' ? (genderRaw as any) : null;
-
-  const birth: string | null = birthRaw.length ? birthRaw : null;
-
-  return { name, birth, phoneNumber, gender, location, startDate, expireDate };
 }
 
 // 계약서 작성페이지입니다.
@@ -313,7 +242,7 @@ const ContractFormPage = () => {
   // ✅ 사용자 정보 검증 함수
   const validateUserInfo = (body: userInfoType): boolean => {
     try {
-      userInfoSchema.parse({
+      contractUserInfoSchema.parse({
         name: body.name || '',
         birth: body.birth || '',
         phoneNumber: body.phoneNumber || '',
@@ -333,7 +262,7 @@ const ContractFormPage = () => {
   // ✅ 전문가 정보 검증 함수
   const validateProInfo = (body: proInfoType): boolean => {
     try {
-      proInfoSchema.parse({
+      contractProInfoSchema.parse({
         name: body.name || '',
         birth: body.birth || '',
         phoneNumber: body.phoneNumber || '',
@@ -462,11 +391,11 @@ const ContractFormPage = () => {
       {
         onSuccess: (response) => {
           const { IMP } = window;
-          IMP.init('imp05656377');
+          IMP.init(import.meta.env.VITE_PORTONE_IMP_KEY); // 가맹점 식별코드
           const order = response.result;
           const body = {
-            pg: 'html5_inicis.INIpayTest',
-            pay_method: 'card',
+            pg: import.meta.env.VITE_PORTONE_PG, // 결제대행사
+            pay_method: import.meta.env.VITE_PORTONE_PAY_METHOD, // 결제수단
             merchant_uid: order.order_uid,
             name: order.item_name,
             amount: order.payment_price,
@@ -613,19 +542,22 @@ const ContractFormPage = () => {
           </p>
 
           <div className={`grid w-full ${showCancel ? 'grid-cols-2 gap-3' : ''}`}>
+            {/* TODO: 취소 버튼 로직 어떻게 할 지, 현재 뒤로가기만 되어있는데 이러면 계약서 페이지 접근이 안됨 */}
             {showCancel && (
-              <Button width="w-full" disabled={uploading}>
+              <Button width="w-full" disabled={uploading} onClick={() => navigate(-1)}>
                 취소
               </Button>
             )}
-            <Button
-              width="w-full"
-              onClick={userComplete && proComplete && !isPro ? handleSuccess : handleSubmit}
-              disabled={primaryDisabled}
-              className={primaryFullWidth ? 'col-span-2' : undefined}
-            >
-              {primaryLabel}
-            </Button>
+            {showCancel && (
+              <Button
+                width="w-full"
+                onClick={userComplete && proComplete && !isPro ? handleSuccess : handleSubmit}
+                disabled={primaryDisabled}
+                className={primaryFullWidth ? 'col-span-2' : undefined}
+              >
+                {primaryLabel}
+              </Button>
+            )}
           </div>
         </div>
       </section>

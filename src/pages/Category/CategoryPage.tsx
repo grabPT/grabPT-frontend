@@ -21,6 +21,7 @@ export default function CategoryPage() {
   const handleSelect = (type: SportItem) => {
     setSelected(type);
     navigate(urlFor.categoryDetail(type.slug)); // /category/tennis 등
+    setSelected(null); // 선택 초기화
   };
 
   // 이거 왜 이렇게 되어있는 걸까요

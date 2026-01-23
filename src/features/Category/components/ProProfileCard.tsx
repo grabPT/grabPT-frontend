@@ -1,3 +1,4 @@
+import ProfileImage from '@/components/ProfileImage';
 import StarRating from '@/components/StarRating';
 
 interface ProProfileCardProps {
@@ -10,7 +11,6 @@ interface ProProfileCardProps {
 
 /**
  * 프로슬라이더에 쓰이는 카드 컴포넌트
- * todo: 이미지없을때 처리해주세요
  */
 const ProProfileCard = ({
   imageUrl,
@@ -22,7 +22,9 @@ const ProProfileCard = ({
   return (
     <div className="h-[370px] w-[280px] scale-[1] cursor-pointer overflow-hidden rounded-2xl bg-white shadow-[4px_4px_10px_rgba(0,0,0,0.25)] transition-transform duration-200 hover:scale-[1.02]">
       {/* 상단 이미지 영역 */}
-      <img src={imageUrl} alt={`${name} 프로필`} className="h-[270px] w-full object-cover" />
+      <div className="h-[270px] w-full bg-[#D9D9D9] object-cover">
+        <ProfileImage src={imageUrl} alt={`${name} 프로필`} />
+      </div>
 
       {/* 하단 텍스트 박스 */}
       <div className="flex flex-col gap-[10px] rounded-br-[10px] rounded-bl-[10px] px-[10px] pt-[13px] pb-[13px]">
@@ -43,10 +45,14 @@ const ProProfileCard = ({
 
         {/* 별점 + 점수 */}
         <div className="flex items-center gap-[2px]">
-          <StarRating rating={rating} size={20} />
-          {/* <p className="text-[6px] leading-[8.4px] font-semibold text-black not-italic">
-            ({rating.toFixed(1)})
-          </p> */}
+          {/* TODO: 디자인 점검해보기 */}
+          {rating === 0 ? (
+            <span className="inline-flex items-center gap-1 rounded-full bg-[#F2F6FF] px-2.5 py-1 text-[11px] font-semibold text-[#013EFB]">
+              NEW <span className="font-medium text-[#697077]">신규 트레이너</span>
+            </span>
+          ) : (
+            <StarRating rating={rating} size={20} />
+          )}
         </div>
       </div>
     </div>
