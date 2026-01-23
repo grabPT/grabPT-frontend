@@ -71,9 +71,9 @@ const RealtimeMatchingStatus = ({ categoryType }: RealtimeMatchingStatusProps) =
         </div>
       ) : (
         <div className="3xl:grid-cols-4 mt-6 grid grid-cols-1 gap-x-8 gap-y-8 md:grid-cols-2 xl:grid-cols-3">
-          {matchingList
-            .slice(0, cardCount)
-            .map((match, idx) => <MatchingStatusCard key={idx} match={match} />)}
+          {matchingList.slice(0, cardCount).map((match, idx) => (
+            <MatchingStatusCard key={idx} match={match} />
+          ))}
         </div>
       )}
 

@@ -8,7 +8,6 @@ export type RequestCardProps = {
   memo: string;
 };
 
-
 // 메인 페이지 요청서 슬라이더에서 사용하는 타입
 export type RequestSliderItemType = {
   requestId: number;

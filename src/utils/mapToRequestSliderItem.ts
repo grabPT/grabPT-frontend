@@ -1,5 +1,5 @@
-import type { RequestSliderItemType } from '@/features/home/types/request';
 import type { RequestsListItemType } from '@/features/Requests/types/getRequestsListType';
+import type { RequestSliderItemType } from '@/features/home/types/request';
 import type { MyRequestListItemType } from '@/types/getMyRequestListResponse';
 
 // USER용 슬라이더 매핑
