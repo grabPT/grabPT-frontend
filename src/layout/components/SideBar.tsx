@@ -1,19 +1,17 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import clsx from 'clsx';
 import { NavLink, useNavigate } from 'react-router-dom';
 
-import Alert from '@/assets/images/Alert.png';
-import Chat from '@/assets/images/Chat.png';
+import XIcon from '@/assets/icons/XIcon';
 import HeaderProfile from '@/assets/images/HeaderProfile.png';
 import Button from '@/components/Button';
 import ProfileImage from '@/components/ProfileImage';
-import ROUTES from '@/constants/routes';
+import ROUTES, { urlFor } from '@/constants/routes';
+import { SPORTS } from '@/constants/sports';
 import { useLogout } from '@/features/Signup/hooks/useLogout';
 import { useGetUserInfo } from '@/hooks/useGetUserInfo';
-import { useAlarmStore } from '@/store/useAlarmStore';
 import { useRoleStore } from '@/store/useRoleStore';
-import { useUnreadStore } from '@/store/useUnreadStore';
 import { decodeBase64Utf8 } from '@/utils/decodeBaseUtf8';
 
 interface SideBarProps {
@@ -24,13 +22,13 @@ interface SideBarProps {
 const SideBar = ({ isOpen, onClose }: SideBarProps) => {
   const navigate = useNavigate();
   const { role, isLoggedIn } = useRoleStore();
-  const unreadCount = useUnreadStore((s) => s.unreadCount);
-  const alarmCount = useAlarmStore((s) => s.alarmCount);
   const { data: myInfo } = useGetUserInfo();
   const profileImage = myInfo?.profileImageUrl ?? HeaderProfile;
 
   const { mutate: logout } = useLogout();
   const stage = import.meta.env.VITE_STAGE;
+
+  const [isCategoryOpen, setIsCategoryOpen] = useState(false);
 
   // Logout logic replication
   const handleLogout = () => {
@@ -55,7 +53,7 @@ const SideBar = ({ isOpen, onClose }: SideBarProps) => {
     },
     { label: '트레이너 찾기', path: '/나중에설정' },
     { label: '내지역 센터', path: '/나중에설정' },
-    { label: '카테고리', path: ROUTES.CATEGORY.ROOT },
+    // Category is handled separately
   ];
 
   /* Prevent scrolling when sidebar is open */
@@ -88,21 +86,12 @@ const SideBar = ({ isOpen, onClose }: SideBarProps) => {
           isOpen ? 'translate-x-0' : 'translate-x-full',
         )}
       >
-        <div className="flex h-full flex-col p-6">
+        <div className="scrollbar-hide flex h-full flex-col overflow-y-auto p-6">
           {/* Close Button */}
           <div className="flex justify-end">
-            <button onClick={onClose} className="p-2 text-gray-500 hover:text-black">
+            <button onClick={onClose} className="cursor-pointer p-2 text-gray-500 hover:text-black">
               {/* X Icon */}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={2}
-                stroke="currentColor"
-                className="h-8 w-8"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
+              <XIcon className="h-8 w-8" />
             </button>
           </div>
 
@@ -116,47 +105,11 @@ const SideBar = ({ isOpen, onClose }: SideBarProps) => {
                   </div>
                   <div>
                     <span className="text-lg font-bold text-gray-800">
-                      {myInfo?.userName || '회원님'}
+                      {myInfo?.userNickname} 님
                     </span>
                     <div className="text-sm text-gray-500">
                       {role === 'PRO' ? '전문가' : '일반 회원'}
                     </div>
-                  </div>
-                </div>
-
-                <div className="mt-2 flex gap-4">
-                  {/* Chat Icon */}
-                  <div
-                    className="relative cursor-pointer"
-                    onClick={() => {
-                      navigate(ROUTES.CHAT.ROOT);
-                      onClose();
-                    }}
-                  >
-                    <img src={Chat} alt="채팅" className="h-8 w-8" />
-                    {unreadCount > 0 && (
-                      <div className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white">
-                        {unreadCount > 99 ? '99+' : unreadCount}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Alarm Icon (Placeholder for now as dropdown is complex logic) */}
-                  <div
-                    className="relative cursor-pointer"
-                    //   onClick={() => { /* Toggle Alarm Dropdown or navigate? For now just visual */ }}
-                  >
-                    <img
-                      src={Alert}
-                      alt="알림"
-                      className="h-8 w-8 opacity-50"
-                      title="알림 기능은 모바일에서 준비중입니다."
-                    />
-                    {alarmCount !== null && alarmCount > 0 && (
-                      <div className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white">
-                        {alarmCount > 99 ? '99+' : alarmCount}
-                      </div>
-                    )}
                   </div>
                 </div>
               </div>
@@ -183,8 +136,8 @@ const SideBar = ({ isOpen, onClose }: SideBarProps) => {
                 to={path}
                 className={({ isActive }) =>
                   clsx(
-                    'hover:text-primary text-xl font-bold transition-colors',
-                    isActive ? 'text-black' : 'text-gray-400',
+                    'text-xl font-bold text-black transition-colors',
+                    isActive ? 'opacity-100' : 'opacity-100', // Always black/visible as requested
                   )
                 }
                 onClick={onClose}
@@ -192,6 +145,43 @@ const SideBar = ({ isOpen, onClose }: SideBarProps) => {
                 {label}
               </NavLink>
             ))}
+
+            {/* Category Toggle */}
+            <div>
+              <div
+                className="flex cursor-pointer items-center justify-between text-xl font-bold text-black"
+                onClick={() => setIsCategoryOpen(!isCategoryOpen)}
+              >
+                <span>카테고리</span>
+                <XIcon
+                  className={clsx(
+                    'h-5 w-5 transition-transform duration-300',
+                    isCategoryOpen ? 'rotate-90' : 'rotate-45',
+                  )}
+                />
+              </div>
+
+              {/* Category Sub-items */}
+              <div
+                className={clsx(
+                  'overflow-hidden transition-all duration-300 ease-in-out',
+                  isCategoryOpen ? 'mt-4 max-h-[500px] opacity-100' : 'max-h-0 opacity-0',
+                )}
+              >
+                <div className="ml-1 flex flex-col gap-3 border-l-2 border-gray-100 pl-4">
+                  {SPORTS.map((sport) => (
+                    <NavLink
+                      key={sport.id}
+                      to={urlFor.categoryDetail(sport.slug)}
+                      className="text-base font-medium text-gray-600 active:text-black"
+                      onClick={onClose}
+                    >
+                      {sport.label}
+                    </NavLink>
+                  ))}
+                </div>
+              </div>
+            </div>
           </nav>
 
           <hr className="my-6 border-gray-200" />
@@ -200,7 +190,7 @@ const SideBar = ({ isOpen, onClose }: SideBarProps) => {
           {isLoggedIn && (
             <div className="flex flex-col gap-4">
               <div
-                className="cursor-pointer text-base font-medium text-gray-600 hover:text-black"
+                className="cursor-pointer text-base font-medium text-black"
                 onClick={() => {
                   navigate(role === 'PRO' ? ROUTES.MYPAGE.PRO : ROUTES.MYPAGE.USER);
                   onClose();
@@ -209,7 +199,7 @@ const SideBar = ({ isOpen, onClose }: SideBarProps) => {
                 내 정보
               </div>
               <div
-                className="cursor-pointer text-base font-medium text-gray-600 hover:text-black"
+                className="cursor-pointer text-base font-medium text-black"
                 onClick={() => {
                   navigate(role === 'PRO' ? ROUTES.PRO_SETTLEMENT : ROUTES.USER_SETTLEMENT);
                   onClose();
@@ -218,7 +208,7 @@ const SideBar = ({ isOpen, onClose }: SideBarProps) => {
                 {role === 'PRO' ? '정산 현황' : '결제 내역'}
               </div>
               <div
-                className="cursor-pointer text-base font-medium text-gray-600 hover:text-black"
+                className="cursor-pointer text-base font-medium text-red-500"
                 onClick={handleLogout}
               >
                 로그아웃

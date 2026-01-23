@@ -92,7 +92,7 @@ const Dashboard = ({ userInfo }: DashboardProps) => {
     formState: { isDirty, isSubmitting, errors },
   } = useForm<FormValues>({
     mode: 'onChange',
-    defaultValues: { nickname: userInfo?.userNickName ?? '' },
+    defaultValues: { nickname: userInfo?.userNickname ?? '' },
   });
 
   const watchedNickname = watch('nickname');
@@ -100,13 +100,13 @@ const Dashboard = ({ userInfo }: DashboardProps) => {
   // 닉네임 변경 시 검증 상태
   useEffect(() => {
     if (!isEdit) return;
-    if ((watchedNickname?.trim() ?? '') === (userInfo?.userNickName ?? '')) {
+    if ((watchedNickname?.trim() ?? '') === (userInfo?.userNickname ?? '')) {
       setNicknameVerified(true);
       clearErrors('nickname');
     } else {
       setNicknameVerified(false);
     }
-  }, [watchedNickname, isEdit, userInfo?.userNickName, clearErrors]);
+  }, [watchedNickname, isEdit, userInfo?.userNickname, clearErrors]);
 
   const { mutate: checkNickname, isPending: isChecking, reset: resetCheck } = useCheckNickname();
 
@@ -118,7 +118,7 @@ const Dashboard = ({ userInfo }: DashboardProps) => {
       setNicknameVerified(false);
       return;
     }
-    if (nickname === (userInfo?.userNickName ?? '')) {
+    if (nickname === (userInfo?.userNickname ?? '')) {
       setNicknameVerified(true);
       clearErrors('nickname');
       return;
@@ -148,7 +148,7 @@ const Dashboard = ({ userInfo }: DashboardProps) => {
   const imageDirty = !!profileImageFile;
 
   const onSubmit = (values: FormValues) => {
-    if (values.nickname.trim() !== (userInfo?.userNickName ?? '') && !nicknameVerified) {
+    if (values.nickname.trim() !== (userInfo?.userNickname ?? '') && !nicknameVerified) {
       setError('nickname', { type: 'validate', message: '닉네임 중복 확인을 완료해주세요.' });
       return;
     }
@@ -167,7 +167,7 @@ const Dashboard = ({ userInfo }: DashboardProps) => {
 
   const handleEnterEdit = () => {
     setIsEdit(true);
-    reset({ nickname: userInfo?.userNickName ?? '' });
+    reset({ nickname: userInfo?.userNickname ?? '' });
     setAddressDirty(false);
     setNicknameVerified(true);
     clearErrors('nickname');
@@ -175,7 +175,7 @@ const Dashboard = ({ userInfo }: DashboardProps) => {
 
   const handleCancel = () => {
     setIsEdit(false);
-    reset({ nickname: userInfo?.userNickName ?? '' });
+    reset({ nickname: userInfo?.userNickname ?? '' });
     setAddressDirty(false);
     setNicknameVerified(true);
     clearErrors('nickname');
@@ -183,7 +183,7 @@ const Dashboard = ({ userInfo }: DashboardProps) => {
     setProfileImageFile(undefined);
   };
 
-  const nicknameChanged = (watchedNickname?.trim() ?? '') !== (userInfo?.userNickName ?? '');
+  const nicknameChanged = (watchedNickname?.trim() ?? '') !== (userInfo?.userNickname ?? '');
   const canSubmit =
     (isDirty || addressDirty || imageDirty) &&
     !isSubmitting &&
@@ -335,7 +335,7 @@ const Dashboard = ({ userInfo }: DashboardProps) => {
                     </p>
                   </div>
                 ) : (
-                  <div className="h-[24px] w-[300px] rounded-[10px]">{userInfo?.userNickName}</div>
+                  <div className="h-[24px] w-[300px] rounded-[10px]">{userInfo?.userNickname}</div>
                 )}
               </li>
 

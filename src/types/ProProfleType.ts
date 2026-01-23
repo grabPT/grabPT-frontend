@@ -26,7 +26,7 @@ export type ProProfileType = {
   userId: number;
   profileImageUrl: string;
   userName: string;
-  userNickName: string;
+  userNickname: string;
   centerName: string;
   categoryName: string;
   averageRating: number;
@@ -41,7 +41,7 @@ export type ProProfileType = {
 
 export type ProProfileWithUserIdType = {
   userId: number;
-  userNickName: string;
+  userNickname: string;
   profileImageUrl: string;
   proCenterDescription: string | null;
   categoryName: string;

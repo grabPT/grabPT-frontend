@@ -73,7 +73,7 @@ export const ProDetailInfo = () => {
           className="h-[11.25rem] w-[11.25rem] rounded-full"
         />
         <div className="flex flex-col items-center justify-center">
-          <span className="font-roboto text-[2rem] font-semibold">{profileData?.userNickName}</span>
+          <span className="font-roboto text-[2rem] font-semibold">{profileData?.userNickname}</span>
           <span className="font-inter text-[0.875rem] font-semibold text-[#003EFB]">
             {profileData?.centerName}
           </span>
