@@ -1,6 +1,9 @@
+import { useNavigate } from 'react-router-dom';
+
 import Banner from '@/components/Banner';
 import ProfileCard from '@/components/ProfileCard';
 import RealtimeMatchingStatus from '@/components/RealtimeMatchingStatus';
+import ROUTES from '@/constants/routes';
 import { SPORTS } from '@/constants/sports';
 import { useGetMatchingRequestsList } from '@/features/Requests/hooks/useGetMyRequestsList';
 import RequestSlider from '@/features/home/components/UserRequestSlider';
@@ -10,6 +13,7 @@ import type { SportsSlugType } from '@/types/SportsType';
 import { mapProRequestToSliderItem } from '@/utils/mapToRequestSliderItem';
 
 const ProMainPage = () => {
+  const navigate = useNavigate();
   const { isLoggedIn, role } = useRoleStore();
 
   // 전문가가 자신의 프로필 조회 훅
@@ -29,17 +33,42 @@ const ProMainPage = () => {
 
   const mappedRequests = requests?.content?.map(mapProRequestToSliderItem) ?? [];
 
-  // todo: 이쁘게 만들어주세요
-  if (isError || !profileData) return <div>에러 발생</div>;
-
+  // 에러 또는 프로필 데이터가 없을 때
+  const hasProfileError = isError || !profileData;
   return (
     <section className="mt-[70px] mb-[140px] flex flex-col items-center">
       {/* 상단 텍스트랑 프로필카드 */}
       <h1 className="text-[40px] font-bold">
-        안녕하세요! {profileData?.userName} <span className="text-button">전문가</span>님!
+        안녕하세요!{' '}
+        {hasProfileError ? (
+          '전문가'
+        ) : (
+          <>
+            {profileData?.userName} <span className="text-button">전문가</span>
+          </>
+        )}
+        님!
       </h1>
       <div className="mt-[66px]">
-        <ProfileCard profileData={profileData} />
+        {hasProfileError ? (
+          <div className="relative">
+            {/* 블러 처리된 프로필 카드 */}
+            <div className="pointer-events-none blur-sm">
+              <ProfileCard profileData={undefined} />
+            </div>
+            {/* 오버레이 버튼 */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <button
+                onClick={() => navigate(ROUTES.MYPAGE.PRO)}
+                className="cursor-pointer rounded-xl bg-[#003EFB] px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-[#0030c5]"
+              >
+                프로필 정보를 채워주세요!
+              </button>
+            </div>
+          </div>
+        ) : (
+          <ProfileCard profileData={profileData} />
+        )}
       </div>
 
       {/* 요청서 슬라이더 */}
