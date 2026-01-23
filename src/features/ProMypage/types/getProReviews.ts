@@ -36,6 +36,6 @@ export type proReviewList = {
   content: string;
   reviewee: string;
   revieweeId: number;
-  imageURL: string;
+  revieweeImageURL: string;
   centerName: string;
 };
