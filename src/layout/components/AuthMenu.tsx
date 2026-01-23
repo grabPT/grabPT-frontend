@@ -60,11 +60,11 @@ function AuthMenu({ onOpenSidebar }: AuthMenuProps) {
   }, []);
 
   return (
-    <div className="flex min-w-40 items-center justify-end gap-5">
+    <div className="flex items-center justify-end gap-3 sm:min-w-40 sm:gap-5">
       {isLoggedIn ? (
         <>
           {/* 채팅 + 알림 (Always visible) */}
-          <div className="relative flex h-[21px] gap-[21px]" ref={alarmRef}>
+          <div className="relative flex h-[21px] gap-3 sm:gap-5" ref={alarmRef}>
             <div className="relative">
               {unreadCount > 0 && (
                 <div className="absolute bottom-3 left-3 z-[3000] rounded-full bg-red-500 px-1.5 text-center text-[12px] text-white">

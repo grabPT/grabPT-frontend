@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 
-import HamburgerIcon from '@/assets/icons/HamburgerIcon';
 import LogoWithTextSVG from '@/assets/images/LogoWithTextSVG';
 import AuthMenu from '@/layout/components/AuthMenu';
 import Navbar from '@/layout/components/Navbar';
@@ -46,7 +45,7 @@ const Header = () => {
           scrolled && 'border-b border-gray-300 bg-white/90 backdrop-blur-sm',
         )}
       >
-        <Link to={'/'} className="min-w-40 pb-1">
+        <Link to={'/'} className="pb-1 sm:min-w-40">
           <LogoWithTextSVG />
         </Link>
 

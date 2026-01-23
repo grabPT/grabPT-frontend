@@ -14,11 +14,7 @@ const HamburgerIcon = ({ className, strokeWidth }: HamburgerIconProps) => (
     stroke="currentColor"
     className={cn('h-5 w-5', className)}
   >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-    />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M1 6.75h18M1 12h18M1 17.25h18" />
   </svg>
 );
 
