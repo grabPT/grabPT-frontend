@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
-import z from 'zod';
 
 import Button from '@/components/Button';
 import CheckedButton from '@/components/CheckedButton';
@@ -124,31 +123,41 @@ const RequestDetailPage = () => {
       containerRef?.current?.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     } else if (isEditing) {
-      handleSubmit((formData) => {
-        if (isWriter?.isEdit) {
-          editRequest(
-            {
-              requestionId: -1,
-              body: {
-                ...formData,
-                location: data?.location ?? '',
-                categoryId: data?.categoryId ?? 0,
+      handleSubmit(
+        (formData) => {
+          if (isWriter?.isEdit) {
+            editRequest(
+              {
+                requestionId,
+                body: {
+                  ...formData,
+                  location: data?.location ?? '',
+                  categoryId: data?.categoryId ?? 0,
+                },
               },
-            },
-
-            {
-              onError: async () => {
-                //실패시 롤백
-                if (originalValuesRef.current) {
-                  reset(originalValuesRef.current);
-                }
-                await refetch();
+              {
+                onSuccess: async () => {
+                  await refetch();
+                  setIsEditing(false);
+                },
+                onError: async () => {
+                  //실패시 롤백
+                  if (originalValuesRef.current) {
+                    reset(originalValuesRef.current);
+                  }
+                  await refetch();
+                },
               },
-            },
-          );
-        }
-      })();
-      setIsEditing(false);
+            );
+          }
+        },
+        (errors) => {
+          const firstError = Object.values(errors)[0];
+          if (firstError?.message) {
+            alert(firstError.message);
+          }
+        },
+      )();
       containerRef?.current?.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
@@ -191,14 +200,6 @@ const RequestDetailPage = () => {
     setValue('purpose', next);
   };
 
-  try {
-    // 검증 통과 → 제출 가능
-  } catch (err) {
-    if (err instanceof z.ZodError) {
-      console.log(err); // 각 필드별 에러 메시지 접근 가능
-      alert(err.message); // 첫 번째 에러 메시지 alert
-    }
-  }
   return (
     <section className="flex flex-col items-center py-6">
       {isWriter?.isEdit ? <Tabs items={TabItems} width="w-[400px]" /> : <div></div>}
@@ -220,11 +221,14 @@ const RequestDetailPage = () => {
         <section>
           <span className="mr-3">{category}</span>
           <span className="text-lg font-semibold">{data?.location}</span>
-
-          <div className="mt-5 flex items-center">
+          {/* 가격 및 횟수 */}
+          <div className="mt-5 flex items-end">
             <input
               type="number"
-              {...register('sessionCount', { valueAsNumber: true })}
+              {...register('sessionCount', {
+                valueAsNumber: true,
+                setValueAs: (v) => Number(v) || 0,
+              })}
               aria-label="희망 PT 횟수"
               className="mr-1.5 h-12 w-[85px] rounded-xl border-2 border-[#BABABA] pl-3.5 text-center text-2xl text-[#9F9F9F]"
               readOnly={!isEdit || !isEditing}
@@ -233,12 +237,15 @@ const RequestDetailPage = () => {
             <span className="mr-5">회</span>
             <input
               type="number"
-              {...register('price', { valueAsNumber: true })}
+              {...register('price', { valueAsNumber: true, setValueAs: (v) => Number(v) || 0 })}
               aria-label="희망 PT 가격"
               className="mr-1.5 h-12 w-[260px] rounded-xl border-2 border-[#BABABA] px-8 text-end text-2xl text-[#9F9F9F]"
               readOnly={!isEdit || !isEditing}
             />
             <span className="mr-5">원</span>
+            {(errors.price || errors.sessionCount) && (
+              <p className="text-[1rem] font-semibold text-red-500">{errors.price?.message}</p>
+            )}
           </div>
         </section>
 
