@@ -547,10 +547,11 @@ const ContractFormPage = () => {
                 취소
               </Button>
             )}
-            {!primaryDisabled && (
+            {showCancel && (
               <Button
                 width="w-full"
                 onClick={userComplete && proComplete && !isPro ? handleSuccess : handleSubmit}
+                disabled={primaryDisabled}
                 className={primaryFullWidth ? 'col-span-2' : undefined}
               >
                 {primaryLabel}
