@@ -1,6 +1,6 @@
 import imageCompression from 'browser-image-compression';
 
-import { privateInstance } from '@/libs/axios';
+import { multipartInstance } from '@/libs/axios';
 
 // 파일 압축 함수
 async function compressFiles(files: File[]) {
@@ -62,14 +62,9 @@ export const postProCertifications = async (
   console.log('📄 FormData newImages count:', formData.getAll('newImages').length);
 
   // ✅ boundary는 axios가 자동 세팅
-  const response = await privateInstance.post(
+  const response = await multipartInstance.post(
     `/mypage/pro/certification?request=${encodeURIComponent(JSON.stringify(requestPayload))}`,
     formData,
-    {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    },
   );
 
   console.log('=== POST 요청 응답 ===');

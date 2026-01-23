@@ -1,6 +1,6 @@
 import { END_POINT } from '@/constants/endPoints';
 import type { sendMessageRequestDto } from '@/features/Chat/hooks/useChatRoomSocket';
-import { privateInstance } from '@/libs/axios';
+import { multipartInstance } from '@/libs/axios';
 import type { CommonResponseDto } from '@/types/commonResponseDto';
 
 export type postFileRequestDto = {
@@ -18,10 +18,7 @@ export const postFile = async ({
   form.append('file', file, file.name);
 
   try {
-    const { data } = await privateInstance.post(END_POINT.CHAT.upload(roomId), form, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-      withCredentials: true,
-    });
+    const { data } = await multipartInstance.post(END_POINT.CHAT.upload(roomId), form);
 
     return data as postFileResponseDto;
   } catch (error) {
