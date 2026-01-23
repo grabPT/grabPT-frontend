@@ -35,6 +35,7 @@ const FillDetailStep: ForwardRefRenderFunction<{ submit: () => Promise<boolean> 
     setValue,
   } = useForm<RequestDetailStepDto>({
     mode: 'onChange',
+    reValidateMode: 'onChange',
     resolver: zodResolver(detailInfoSchema),
     defaultValues: {
       purpose: detailInfo.purpose ?? [],
@@ -62,8 +63,12 @@ const FillDetailStep: ForwardRefRenderFunction<{ submit: () => Promise<boolean> 
             console.log('updated:', updated);
             resolve(true);
           },
-          () => {
+          (errors) => {
             resolve(false); // 유효성 검증 실패 시 false 반환
+            const firstError = Object.values(errors)[0];
+            if (firstError?.message) {
+              alert(firstError.message);
+            }
           },
         )();
       }),
