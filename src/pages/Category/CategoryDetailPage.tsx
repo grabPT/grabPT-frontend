@@ -23,8 +23,7 @@ const CategoryDetailPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const sport = SPORTS.find((s) => s.slug === slug);
 
-  // 위치 정보가져오기 => 유저정보가 있다면 받아오면 안됩니다 !!
-  // todo: 조건부실행 (로그인상태라면 받아오면 안됨)
+  // 위치 정보가져오기(유저 정보 없을때만)
   const { address, loading, error } = useGeolocation(role === 'GUEST');
 
   // 유저정보

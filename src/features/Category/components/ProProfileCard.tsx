@@ -11,7 +11,6 @@ interface ProProfileCardProps {
 
 /**
  * 프로슬라이더에 쓰이는 카드 컴포넌트
- * todo: 이미지없을때 처리해주세요
  */
 const ProProfileCard = ({
   imageUrl,
@@ -23,7 +22,6 @@ const ProProfileCard = ({
   return (
     <div className="h-[370px] w-[280px] scale-[1] cursor-pointer overflow-hidden rounded-2xl bg-white shadow-[4px_4px_10px_rgba(0,0,0,0.25)] transition-transform duration-200 hover:scale-[1.02]">
       {/* 상단 이미지 영역 */}
-      {/* TODO: 여기 들어갈 기본 프로필 이미지 없음 */}
       <div className="h-[270px] w-full bg-[#D9D9D9] object-cover">
         <ProfileImage src={imageUrl} alt={`${name} 프로필`} />
       </div>

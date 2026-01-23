@@ -34,7 +34,6 @@ const useGeolocation = (enabled: boolean): GeoLocationResult => {
         setLongitude(longitude);
 
         // 카카오 주소 변환 요청
-        // 카카오 주소 변환 요청
         try {
           const url = `https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${longitude}&y=${latitude}&input_coord=WGS84`;
           const headers = {
