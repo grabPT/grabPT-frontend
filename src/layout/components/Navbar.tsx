@@ -29,7 +29,7 @@ const Navbar = () => {
   const hasActive = menuList.some(({ path }) => path === location.pathname);
 
   return (
-    <nav className="z-50 flex max-w-2xl flex-1 items-center justify-between">
+    <nav className="z-50 hidden max-w-2xl flex-1 grid-cols-4 items-center md:grid">
       {menuList.map(({ label, path }) => {
         const isCategory = label === '카테고리';
         const isActive = location.pathname === path;
@@ -37,7 +37,7 @@ const Navbar = () => {
         return (
           <div
             key={label}
-            className="relative flex h-[70px] w-[126px] items-center justify-center"
+            className="relative flex h-[70px] w-full items-center justify-center"
             onMouseLeave={() => isCategory && setIsOpenCategoryDropdown(false)}
           >
             <NavLink

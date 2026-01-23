@@ -2,8 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import Alert from '@/assets/images/Alert.png';
-import Chat from '@/assets/images/Chat.png';
+import Alert from '@/assets/icons/AlarmIcon.svg';
+import Chat from '@/assets/icons/ChatIcon.svg';
+import HamburgerIcon from '@/assets/icons/HamburgerIcon';
 import HeaderProfile from '@/assets/images/HeaderProfile.png';
 import Button from '@/components/Button';
 import ProfileImage from '@/components/ProfileImage';
@@ -15,7 +16,11 @@ import { useAlarmStore } from '@/store/useAlarmStore';
 import { useRoleStore } from '@/store/useRoleStore';
 import { useUnreadStore } from '@/store/useUnreadStore';
 
-function AuthMenu() {
+interface AuthMenuProps {
+  onOpenSidebar: () => void;
+}
+
+function AuthMenu({ onOpenSidebar }: AuthMenuProps) {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -55,10 +60,10 @@ function AuthMenu() {
   }, []);
 
   return (
-    <div className="flex min-w-30 items-center">
+    <div className="flex min-w-40 items-center justify-end gap-5">
       {isLoggedIn ? (
-        <div className="flex h-full items-center gap-5">
-          {/* 채팅 + 알림 */}
+        <>
+          {/* 채팅 + 알림 (Always visible) */}
           <div className="relative flex h-[21px] gap-[21px]" ref={alarmRef}>
             <div className="relative">
               {unreadCount > 0 && (
@@ -93,25 +98,41 @@ function AuthMenu() {
             )}
           </div>
 
-          {/* 프로필 */}
-          <div className="relative flex h-full items-center" ref={profileRef}>
-            <div className="h-11 w-11 overflow-hidden rounded-full">
+          {/* 프로필 (Desktop Only) */}
+          <div className="relative hidden h-full items-center md:flex" ref={profileRef}>
+            <div
+              className="h-11 w-11 cursor-pointer overflow-hidden rounded-full"
+              onClick={() => setIsOpenProfileDropdown((prev) => !prev)}
+            >
               <ProfileImage src={profileImage} alt={'프로필'} />
             </div>
             {isOpenProfileDropdown && (
-              <div className="absolute top-full right-0">
+              <div className="absolute top-12 right-0">
                 <ProfileDropdown />
               </div>
             )}
           </div>
-        </div>
+
+          {/* Hamburger (Mobile Only) */}
+          <button className="flex cursor-pointer md:hidden" onClick={onOpenSidebar}>
+            <HamburgerIcon className="h-7 w-7" />
+          </button>
+        </>
       ) : (
-        <div
-          className="flex h-full w-[96px] items-center justify-center"
-          onClick={() => nav(ROUTES.AUTH.LOGIN)}
-        >
-          <Button>로그인</Button>
-        </div>
+        <>
+          {/* 로그인 버튼 (Desktop Only) */}
+          <div
+            className="hidden h-full w-[96px] items-center justify-center md:flex"
+            onClick={() => nav(ROUTES.AUTH.LOGIN)}
+          >
+            <Button>로그인</Button>
+          </div>
+
+          {/* Hamburger (Mobile Only) */}
+          <button className="flex cursor-pointer md:hidden" onClick={onOpenSidebar}>
+            <HamburgerIcon className="h-7 w-7" />
+          </button>
+        </>
       )}
     </div>
   );

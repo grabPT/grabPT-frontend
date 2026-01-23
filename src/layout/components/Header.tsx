@@ -3,13 +3,16 @@ import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 
+import HamburgerIcon from '@/assets/icons/HamburgerIcon';
 import LogoWithTextSVG from '@/assets/images/LogoWithTextSVG';
 import AuthMenu from '@/layout/components/AuthMenu';
 import Navbar from '@/layout/components/Navbar';
+import SideBar from '@/layout/components/SideBar';
 import useScrollStore from '@/store/useScrollStore';
 
 const Header = () => {
   const [scrolled, setScrolled] = useState<boolean>(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
 
   const { containerRef } = useScrollStore();
 
@@ -36,20 +39,24 @@ const Header = () => {
   }, [containerRef]);
 
   return (
-    <header
-      className={clsx(
-        'relative z-20 flex min-h-[70px] items-center justify-between px-10',
-        scrolled && 'border-b border-gray-300 bg-white/90 backdrop-blur-sm',
-      )}
-    >
-      <Link to={'/'} className="min-w-30 pb-1">
-        <LogoWithTextSVG />
-      </Link>
+    <>
+      <header
+        className={clsx(
+          'relative z-20 flex min-h-[70px] items-center justify-between px-4 lg:px-10',
+          scrolled && 'border-b border-gray-300 bg-white/90 backdrop-blur-sm',
+        )}
+      >
+        <Link to={'/'} className="min-w-40 pb-1">
+          <LogoWithTextSVG />
+        </Link>
 
-      <Navbar />
+        <Navbar />
 
-      <AuthMenu />
-    </header>
+        <AuthMenu onOpenSidebar={() => setIsSidebarOpen(true)} />
+      </header>
+
+      <SideBar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+    </>
   );
 };
 
