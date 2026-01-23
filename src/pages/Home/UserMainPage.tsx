@@ -6,12 +6,12 @@ import RealtimeMatchingStatus from '@/components/RealtimeMatchingStatus';
 import { SPORTS } from '@/constants/sports';
 import UserSearchSection from '@/features/home/components/UserSearchSection';
 import RequestSlider from '@/features/home/components/UserRequestSlider';
-import type { RequestSliderItemType } from '@/features/home/types/request';
 import { useGetMyRequestsList } from '@/hooks/useGetMyRequestsList';
 import { useGetUserInfo } from '@/hooks/useGetUserInfo';
 import { useRoleStore } from '@/store/useRoleStore';
 import type { SportsSlugType } from '@/types/SportsType';
 import { getRandomSportSlug } from '@/utils/getRandomSportSlug';
+import { mapMyRequestToSliderItem } from '@/utils/mapToRequestSliderItem';
 
 /**
  * 사용자 메인 페이지
@@ -24,20 +24,7 @@ const UserMainPage = () => {
   const { data: userData } = useGetUserInfo(isLoggedIn && role === 'USER');
   const userLocation = `${userData?.address?.[0]?.city ?? ''} ${userData?.address?.[0]?.district ?? ''} ${userData?.address?.[0]?.street ?? ''}`;
 
-  // MyRequestListItemType → RequestSliderItemType 매핑
-  const mappedRequests: RequestSliderItemType[] =
-    requests?.content?.map((r) => ({
-      requestId: r.requestionId,
-      availableDays: r.availableDays,
-      availableTimes: r.availableTimes,
-      categoryName: r.categoryName,
-      content: r.content,
-      status: r.matchingStatus,
-      imageURL: r.profileImageURL,
-      proProfileId: r.proId ?? undefined,
-      proNickname: r.proNickname ?? undefined,
-      canWriteReview: r.isWriteReview,
-    })) ?? [];
+  const mappedRequests = requests?.content?.map(mapMyRequestToSliderItem) ?? [];
 
   const matched = SPORTS.find((s) => s.slug === userData?.categoryName);
 

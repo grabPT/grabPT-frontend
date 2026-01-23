@@ -4,10 +4,10 @@ import RealtimeMatchingStatus from '@/components/RealtimeMatchingStatus';
 import { SPORTS } from '@/constants/sports';
 import { useGetMatchingRequestsList } from '@/features/Requests/hooks/useGetMyRequestsList';
 import RequestSlider from '@/features/home/components/UserRequestSlider';
-import type { RequestSliderItemType } from '@/features/home/types/request';
 import { useProProfileQuery } from '@/hooks/useGetProProfile';
 import { useRoleStore } from '@/store/useRoleStore';
 import type { SportsSlugType } from '@/types/SportsType';
+import { mapProRequestToSliderItem } from '@/utils/mapToRequestSliderItem';
 
 const ProMainPage = () => {
   const { isLoggedIn, role } = useRoleStore();
@@ -27,18 +27,7 @@ const ProMainPage = () => {
     isLoggedIn && role === 'PRO',
   );
 
-  // RequestsListItemType → RequestSliderItemType 매핑
-  const mappedRequests: RequestSliderItemType[] =
-    requests?.content?.map((r) => ({
-      requestId: r.requestionId,
-      availableDays: r.availableDays,
-      availableTimes: r.availableTimes,
-      categoryName: r.categoryName,
-      content: r.content,
-      status: r.matchingStatus,
-      nickname: r.userNickname,
-      userProfileImageUrl: r.profileImageUrl,
-    })) ?? [];
+  const mappedRequests = requests?.content?.map(mapProRequestToSliderItem) ?? [];
 
   // todo: 이쁘게 만들어주세요
   if (isError || !profileData) return <div>에러 발생</div>;
