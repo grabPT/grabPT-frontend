@@ -33,16 +33,24 @@ const UserSettlementPage = () => {
               </div>
             </div>
             <hr className="my-4 h-[0.09375rem] w-[55rem] border border-[#B3B3B3]" />
-            <div className="mt-[1.56rem] flex flex-col items-center justify-center gap-[1.56rem]">
-              {settlementList?.payments.content.map((payment, idx) => {
-                return <UserPaymentsCard key={idx} data={payment} />;
-              })}
-            </div>
-            {/* 페이지네이션 */}
-            {total > 1 && (
-              <div className="mt-8">
-                <Pagination total={total} page={page} onChange={setPage} />
+            {!settlementList?.payments.content || settlementList.payments.content.length === 0 ? (
+              <div className="mt-[1.56rem] flex h-[200px] w-[55rem] items-center justify-center rounded-xl border border-gray-200 bg-gray-50">
+                <p className="text-lg font-medium text-gray-500">아직 결제 내역이 없어요 💳</p>
               </div>
+            ) : (
+              <>
+                <div className="mt-[1.56rem] flex flex-col items-center justify-center gap-[1.56rem]">
+                  {settlementList.payments.content.map((payment, idx) => {
+                    return <UserPaymentsCard key={idx} data={payment} />;
+                  })}
+                </div>
+                {/* 페이지네이션 */}
+                {total > 1 && (
+                  <div className="mt-8">
+                    <Pagination total={total} page={page} onChange={setPage} />
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>

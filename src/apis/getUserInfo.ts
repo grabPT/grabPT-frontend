@@ -14,7 +14,7 @@ export interface Address {
 
 export interface UserInfo {
   userId: number;
-  userNickName: string;
+  userNickname: string;
   userName: string;
   address: Address[];
   email: string;

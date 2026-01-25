@@ -67,25 +67,34 @@ const ProSettlementPage = () => {
               </div>
             </div>
             <hr className="my-4 h-[0.09375rem] w-[55rem] border border-[#B3B3B3]" />
-            <div className="mt-[1.56rem] flex flex-col items-center justify-center gap-[1.56rem]">
-              {settlementList?.memberPayments.content.map((payment, idx) => {
-                return (
-                  <PaymentsCard
-                    key={idx}
-                    earnedAmount={payment.earnedAmount}
-                    memberName={payment.memberName}
-                    paymentAmount={payment.paymentAmount}
-                    paymentDate={payment.paymentDate}
-                    ptCount={payment.ptCount}
-                  />
-                );
-              })}
-            </div>
-            {/* 페이지네이션 */}
-            {total > 1 && (
-              <div className="mt-8">
-                <Pagination total={total} page={page} onChange={setPage} />
+            {!settlementList?.memberPayments.content ||
+            settlementList.memberPayments.content.length === 0 ? (
+              <div className="mt-[1.56rem] flex h-[200px] w-[55rem] items-center justify-center rounded-xl border border-gray-200 bg-gray-50">
+                <p className="text-lg font-medium text-gray-500">아직 회원 결제 내역이 없어요 💳</p>
               </div>
+            ) : (
+              <>
+                <div className="mt-[1.56rem] flex flex-col items-center justify-center gap-[1.56rem]">
+                  {settlementList.memberPayments.content.map((payment, idx) => {
+                    return (
+                      <PaymentsCard
+                        key={idx}
+                        earnedAmount={payment.earnedAmount}
+                        memberName={payment.memberName}
+                        paymentAmount={payment.paymentAmount}
+                        paymentDate={payment.paymentDate}
+                        ptCount={payment.ptCount}
+                      />
+                    );
+                  })}
+                </div>
+                {/* 페이지네이션 */}
+                {total > 1 && (
+                  <div className="mt-8">
+                    <Pagination total={total} page={page} onChange={setPage} />
+                  </div>
+                )}
+              </>
             )}
             <button
               className="mt-8 h-[2.625rem] w-[11rem] rounded-[0.625rem] bg-[#003EFB] text-[0.875rem] font-semibold text-white"

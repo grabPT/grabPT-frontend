@@ -131,6 +131,7 @@ export const END_POINT = {
 
   REVIEWS: {
     reviews: '/reviews',
+    delete: (reviewId: number) => `/reviews/${reviewId}`,
   },
   PAYMENT: {
     paymentCallbalck: '/paymentCallback',
