@@ -24,7 +24,6 @@ function Layout() {
 
   return (
     <div className="flex h-screen flex-col">
-      {/* 스크롤 여부를 Header로 전달 */}
       <Header />
 
       <section
