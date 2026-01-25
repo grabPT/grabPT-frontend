@@ -28,6 +28,10 @@ export const QUERY_KEYS = {
     params.page,
   ],
   proReviews: (params: getProReviewsRequest) => ['ProReviews', params.page, params.size],
+  REVIEW: {
+    pro: ['ProReviews'] as const,
+    proByUserId: ['ProReviewsByUserId'] as const,
+  },
   certificationList: () => ['certification'],
   suggestList: (params: getSuggestListRequestDto) => ['suggestList', params.page],
   CHAT: {
