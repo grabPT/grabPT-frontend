@@ -21,8 +21,6 @@ const ProCertifications = () => {
   // ✅ 새로운 파일만 관리하는 상태 (새로 추가된 것들만)
   const [newFiles, setNewFiles] = useState<File[]>([]);
 
-  console.log('newFiles:', newFiles);
-
   const queryClient = useQueryClient();
   const { data } = useGetProCertifications();
   const certifications = useMemo(
@@ -37,8 +35,6 @@ const ProCertifications = () => {
       setNewFiles([]); // 새로운 파일 배열 초기화
     }
   }, [certifications]);
-
-  console.log('certificationList:', certificationList);
 
   const handleEditClick = () => {
     setIsEditMode(!isEditMode);
@@ -112,7 +108,6 @@ const ProCertifications = () => {
       { existingCertifications, newCertifications, files: filesToUpload },
       {
         onSuccess: () => {
-          console.log('자격 사항 저장 성공');
           queryClient.invalidateQueries({ queryKey: ['pro-certifications'] });
           setIsEditMode(false);
         },
@@ -178,9 +173,6 @@ const ProCertifications = () => {
               if (compressedFile) {
                 setNewFiles((prev) => [...prev, compressedFile]);
               }
-
-              console.log('새 자격증 추가됨:', newCert);
-              console.log('새 파일 추가됨:', compressedFile);
             }}
           />
         )}

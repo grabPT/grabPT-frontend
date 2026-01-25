@@ -8,9 +8,10 @@ import { onErrorImage } from '@/utils/onErrorImage';
 interface ChatTextProps {
   chat: messageType;
   imageUrl: string;
+  onLoad?: () => void;
 }
 
-export const ChatText = ({ chat, imageUrl }: ChatTextProps) => {
+export const ChatText = ({ chat, imageUrl, onLoad }: ChatTextProps) => {
   const { userId } = useRoleStore();
   const isMe = chat.senderId === userId;
   const isImage = chat.messageType === 'IMAGE';
@@ -48,6 +49,7 @@ export const ChatText = ({ chat, imageUrl }: ChatTextProps) => {
             decoding="async"
             referrerPolicy="no-referrer"
             onError={onErrorImage}
+            onLoad={onLoad}
             className="h-auto max-h-[60vh] w-full rounded-md object-contain"
           />
         </a>

@@ -1,11 +1,11 @@
 import { cn } from '@/libs/cn';
 
-interface HamburgerIconProps {
+interface XIconProps {
   className?: string;
   strokeWidth?: number;
 }
 
-const HamburgerIcon = ({ className, strokeWidth }: HamburgerIconProps) => (
+const XIcon = ({ className, strokeWidth }: XIconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
@@ -14,8 +14,8 @@ const HamburgerIcon = ({ className, strokeWidth }: HamburgerIconProps) => (
     stroke="currentColor"
     className={cn('h-5 w-5', className)}
   >
-    <path strokeLinecap="round" strokeLinejoin="round" d="M1 6.75h18M1 12h18M1 17.25h18" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
   </svg>
 );
 
-export default HamburgerIcon;
+export default XIcon;

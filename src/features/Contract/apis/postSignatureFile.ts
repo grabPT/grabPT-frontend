@@ -1,5 +1,5 @@
 import { END_POINT } from '@/constants/endPoints';
-import { privateInstance } from '@/libs/axios';
+import { multipartInstance } from '@/libs/axios';
 import type { CommonResponseDto } from '@/types/commonResponseDto';
 
 export type PostSignatureFileRequestDto = {
@@ -19,13 +19,9 @@ export async function postUserSignatureFile({
   const form = new FormData();
   form.append('file', file, file.name);
 
-  const { data } = await privateInstance.post(
+  const { data } = await multipartInstance.post(
     END_POINT.CONTRACTS.uploadUserSign(contractId),
     form,
-    {
-      headers: { 'Content-Type': 'multipart/form-data' },
-      withCredentials: true,
-    },
   );
   return data as PostSignatureFileResponseDto;
 }
@@ -38,9 +34,9 @@ export async function postProSignatureFile({
   const form = new FormData();
   form.append('file', file, file.name);
 
-  const { data } = await privateInstance.post(END_POINT.CONTRACTS.uploadProSign(contractId), form, {
-    headers: { 'Content-Type': 'multipart/form-data' },
-    withCredentials: true,
-  });
+  const { data } = await multipartInstance.post(
+    END_POINT.CONTRACTS.uploadProSign(contractId),
+    form,
+  );
   return data as PostSignatureFileResponseDto;
 }

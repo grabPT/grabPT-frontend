@@ -1,29 +1,59 @@
-// Header.tsx
+import { useEffect, useState } from 'react';
+
+import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 
-import AppLogo from '@/assets/images/AppLogo.png';
+import LogoWithTextSVG from '@/assets/images/LogoWithTextSVG';
 import AuthMenu from '@/layout/components/AuthMenu';
 import Navbar from '@/layout/components/Navbar';
+import SideBar from '@/layout/components/SideBar';
+import useScrollStore from '@/store/useScrollStore';
 
-interface HeaderProps {
-  scrolled?: boolean;
-}
+const Header = () => {
+  const [scrolled, setScrolled] = useState<boolean>(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
 
-function Header({ scrolled }: HeaderProps) {
+  const { containerRef } = useScrollStore();
+
+  useEffect(() => {
+    const scrollElement = containerRef?.current;
+    if (!scrollElement) return;
+
+    let ticking = false;
+
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setScrolled(scrollElement.scrollTop > 0);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    scrollElement.addEventListener('scroll', handleScroll);
+    return () => {
+      scrollElement.removeEventListener('scroll', handleScroll);
+    };
+  }, [containerRef]);
+
   return (
-    <header
-      className={`relative z-20 flex min-h-[70px] justify-between px-10 transition-colors ${
-        scrolled ? 'border-b border-gray-300 bg-white/90 backdrop-blur-sm' : ''
-      }`}
-    >
-      <Link className="h-full w-[118px] px-[9px] pt-3" to={'/'}>
-        <img src={AppLogo} alt="AppLogo" className="object-contain" />
-      </Link>
+    <>
+      <header className={clsx(scrolled && 'border-b border-gray-300 bg-white/90 backdrop-blur-sm')}>
+        <div className="layout-container relative z-20 flex min-h-[55px] items-center justify-between sm:min-h-[70px]">
+          <Link to={'/'} className="pb-1 sm:min-w-40">
+            <LogoWithTextSVG />
+          </Link>
 
-      <Navbar />
-      <AuthMenu />
-    </header>
+          <Navbar />
+
+          <AuthMenu onOpenSidebar={() => setIsSidebarOpen(true)} />
+        </div>
+      </header>
+
+      <SideBar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+    </>
   );
-}
+};
 
 export default Header;

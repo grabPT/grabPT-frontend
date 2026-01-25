@@ -20,10 +20,6 @@ const Navbar = () => {
       path:
         role === 'PRO' ? ROUTES.MATCHING_STATUS.REQUESTS.ROOT : ROUTES.MATCHING_STATUS.REQUESTS.NEW,
     },
-    //   {
-    //   label: isPro ? '매칭 현황' : '요청서 작성',
-    //   path: isPro ? ROUTES.MATCHING_STATUS.ROOT : ROUTES.MATCHING_STATUS.REQUESTS.NEW,
-    // },
     { label: '트레이너 찾기', path: '/나중에설정' },
     { label: '내지역 센터', path: '/나중에설정' },
     { label: '카테고리', path: ROUTES.CATEGORY.ROOT },
@@ -33,7 +29,7 @@ const Navbar = () => {
   const hasActive = menuList.some(({ path }) => path === location.pathname);
 
   return (
-    <nav className="xs:gap-[30px] absolute top-0 left-1/2 z-50 flex -translate-x-1/2 items-center sm:gap-0 md:gap-8 lg:gap-24">
+    <nav className="z-50 hidden max-w-2xl flex-1 grid-cols-4 items-center md:grid">
       {menuList.map(({ label, path }) => {
         const isCategory = label === '카테고리';
         const isActive = location.pathname === path;
@@ -41,7 +37,7 @@ const Navbar = () => {
         return (
           <div
             key={label}
-            className="relative flex h-[70px] w-[126px] items-center justify-center"
+            className="relative flex h-[70px] w-full items-center justify-center"
             onMouseLeave={() => isCategory && setIsOpenCategoryDropdown(false)}
           >
             <NavLink
@@ -49,7 +45,7 @@ const Navbar = () => {
               to={path}
               end={path === '/'}
               className={clsx(
-                'relative flex items-center justify-center font-extrabold transition-colors sm:text-sm md:text-base lg:text-[18px]',
+                'relative flex items-center justify-center text-base font-extrabold transition-colors',
                 'after:absolute after:top-full after:left-1/2 after:mt-1 after:-translate-x-1/2',
                 'after:h-0.5 after:w-0 after:bg-current after:transition-[width] after:duration-300 after:content-[""]',
                 'hover:after:w-[120%]',
@@ -58,6 +54,7 @@ const Navbar = () => {
             >
               {label}
             </NavLink>
+
             {/* 드롭다운을 해당 메뉴 아래에 가운데 정렬로 붙임 */}
             {isCategory && isOpenCategoryDropdown && (
               <div className="absolute top-full left-1/2 z-10 -translate-x-1/2">

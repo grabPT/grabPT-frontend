@@ -1,4 +1,5 @@
 import { multipartInstance } from '@/libs/axios';
+import { compressImage } from '@/utils/imageCompression';
 
 export interface MypageAddressPayload {
   city: string;
@@ -38,8 +39,10 @@ export const patchMyPage = async (payload: MyPagePatchPayload) => {
 
   // @RequestPart(value="image", required=false)
   if (payload.profileImageFile) {
-    fd.append('image', payload.profileImageFile);
+    const compressed = await compressImage(payload.profileImageFile, { maxSizeMB: 0.5 });
+    fd.append('image', compressed, compressed.name);
   }
+
   const { data } = await multipartInstance.patch('/mypage', fd);
   return data;
 };
