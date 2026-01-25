@@ -40,7 +40,7 @@ const Header = () => {
   return (
     <>
       <header className={clsx(scrolled && 'border-b border-gray-300 bg-white/90 backdrop-blur-sm')}>
-        <div className="max-w-8xl relative z-20 mx-auto flex min-h-[55px] items-center justify-between px-4 sm:min-h-[70px] lg:px-10">
+        <div className="layout-container relative z-20 flex min-h-[55px] items-center justify-between sm:min-h-[70px]">
           <Link to={'/'} className="pb-1 sm:min-w-40">
             <LogoWithTextSVG />
           </Link>
