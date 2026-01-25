@@ -22,15 +22,17 @@ import type {
 //     retry: 2, //2번까지 재시도
 //   });
 
-//트레이너에게 온 요청 현황
-export const useGetMatchingRequestsList = (params: getRequestsListRequestDto) =>
+// 트레이너에게 온 요청 현황
+export const useGetMatchingRequestsList = (
+  params: getRequestsListRequestDto,
+  enabled: boolean = true,
+) =>
   useQuery<getRequestsListResponseDto, Error, getRequestsListResultType>({
     queryKey: QUERY_KEYS.matcingRequestsList(params),
     queryFn: () => getMatcingRequestsList(params),
-    // todo: 프로일떄만 요청 가능하게
-    enabled: Boolean(params),
+    enabled: enabled && Boolean(params),
     select: (res) => res.result,
     staleTime: 5_000, // 5 초 동안 fresh = 실시간이라서
     gcTime: 300_000, // 5 분 뒤 캐시 정리
-    retry: 2, //2번까지 재시도
+    retry: 2, // 2번까지 재시도
   });

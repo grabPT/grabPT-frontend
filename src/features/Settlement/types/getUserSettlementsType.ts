@@ -12,15 +12,13 @@ export type getUserSettlementsResultType = {
     totalPages: number;
     totalElements: number;
     size: number;
-    content: [
-      {
-        contractId: number;
-        userName: string;
-        ptCount: number;
-        paymentAmount: number;
-        paymentDate: number[]; // [year, month, day, hour, minute, second, nanos]
-      },
-    ];
+    content: {
+      contractId: number;
+      userName: string;
+      ptCount: number;
+      paymentAmount: number;
+      paymentDate: number[]; // [year, month, day, hour, minute, second, nanos]
+    }[];
     number: number;
     sort: {
       empty: boolean;

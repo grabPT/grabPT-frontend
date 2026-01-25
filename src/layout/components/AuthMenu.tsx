@@ -5,7 +5,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Alert from '@/assets/icons/AlarmIcon.svg';
 import Chat from '@/assets/icons/ChatIcon.svg';
 import HamburgerIcon from '@/assets/icons/HamburgerIcon';
-import HeaderProfile from '@/assets/images/HeaderProfile.png';
 import Button from '@/components/Button';
 import ProfileImage from '@/components/ProfileImage';
 import ROUTES from '@/constants/routes';
@@ -30,8 +29,8 @@ function AuthMenu({ onOpenSidebar }: AuthMenuProps) {
   const unreadCount = useUnreadStore((s) => s.unreadCount);
   const alarmCount = useAlarmStore((s) => s.alarmCount);
 
-  const { data: myInfo } = useGetUserInfo();
-  const profileImage = myInfo?.profileImageUrl ?? HeaderProfile;
+  const { data } = useGetUserInfo();
+
   const nav = useNavigate();
 
   // ✅ ref 정의
@@ -104,7 +103,7 @@ function AuthMenu({ onOpenSidebar }: AuthMenuProps) {
               className="h-11 w-11 cursor-pointer overflow-hidden rounded-full"
               onClick={() => setIsOpenProfileDropdown((prev) => !prev)}
             >
-              <ProfileImage src={profileImage} alt={'프로필'} />
+              <ProfileImage src={data?.profileImageUrl} alt={'프로필'} />
             </div>
             {isOpenProfileDropdown && (
               <div className="absolute top-12 right-0">

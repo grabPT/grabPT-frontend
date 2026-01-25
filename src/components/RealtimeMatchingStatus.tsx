@@ -20,7 +20,6 @@ interface RealtimeMatchingStatusProps {
 /**
  * 실시간 매칭 현황
  * categoryType을 넘겨받아 실시간 매칭 현황을 조회합니다
- * todo: 매칭현황 없을 떄 아무것도 안 보임. ui 처리도 해주세요
  */
 const RealtimeMatchingStatus = ({ categoryType }: RealtimeMatchingStatusProps) => {
   const navigate = useNavigate();
@@ -64,11 +63,19 @@ const RealtimeMatchingStatus = ({ categoryType }: RealtimeMatchingStatusProps) =
         <span className="text-button">{categoryLabel}</span> 실시간 매칭 현황
       </h2>
 
-      <div className="3xl:grid-cols-4 mt-6 grid grid-cols-1 gap-x-8 gap-y-8 md:grid-cols-2 xl:grid-cols-3">
-        {matchingList
-          ?.slice(0, cardCount)
-          .map((match, idx) => <MatchingStatusCard key={idx} match={match} />)}
-      </div>
+      {!matchingList || matchingList.length === 0 ? (
+        <div className="flex h-[230px] items-center justify-center rounded-xl border border-gray-200 bg-gray-50">
+          <p className="text-lg font-medium text-gray-500">
+            아직 {categoryLabel} 매칭 현황이 없어요 🏋️
+          </p>
+        </div>
+      ) : (
+        <div className="3xl:grid-cols-4 mt-6 grid grid-cols-1 gap-x-8 gap-y-8 md:grid-cols-2 xl:grid-cols-3">
+          {matchingList.slice(0, cardCount).map((match, idx) => (
+            <MatchingStatusCard key={idx} match={match} />
+          ))}
+        </div>
+      )}
 
       {/* 오른쪽 아래 정렬 */}
       {/* todo: 전문가면 요청서 작성 버튼 안 보여야 함 */}
