@@ -157,6 +157,16 @@ export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
     readWhenEnter(roomId);
   }, [readWhenEnter, roomId, scrollToBottom]);
 
+  // 이미지 로드 시 스크롤 보정
+  const handleImageLoad = useCallback(() => {
+    // 이미 바닥 근처라면, 이미지가 로딩되어 길어졌을 때도 바닥 유지
+    // 혹은 초기 로딩 시점(아직 스크롤 전) 등을 고려해야 함
+    // 여기서는 "바닥 근처"면 강제 스크롤
+    if (isAtBottom) {
+      scrollToBottom();
+    }
+  }, [isAtBottom, scrollToBottom]);
+
   // 6) 렌더
   return (
     <div className="flex h-full flex-col pb-40">
@@ -213,7 +223,7 @@ export const ChatInfo = ({ roomId, name, img }: ChatInfoProps) => {
 
             return (
               <div key={item.id} className="flex flex-col items-center gap-2">
-                <ChatText chat={item.message} imageUrl={img} />
+                <ChatText chat={item.message} imageUrl={img} onLoad={handleImageLoad} />
               </div>
             );
           })}

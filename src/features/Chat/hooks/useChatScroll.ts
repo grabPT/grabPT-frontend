@@ -94,6 +94,7 @@ export const useChatScroll = (
   useEffect(() => {
     lastRequestedCursorRef.current = null;
     setDidInitialScroll(false);
+    setIsAtBottom(true);
   }, [roomId]);
 
   return {
