@@ -60,8 +60,8 @@ const AuthCallback = () => {
         userIdRaw = Number(params.get('user_id'));
       } else {
         // 배포에선 쿠키에서 decode
-        roleRaw = decodeCookie('ROLE');
-        userIdRaw = Number(decodeCookie('USER_ID'));
+        roleRaw = decodeCookie('role');
+        userIdRaw = Number(decodeCookie('userId'));
         // 쿠키는 1차 task 끝나고 다시 다듬어봅시다 에러전부 해결되면 main에 병합 후 ~
       }
       //유저 정보 없으면 에러 처리
