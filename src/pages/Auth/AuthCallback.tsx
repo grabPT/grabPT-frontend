@@ -101,11 +101,11 @@ const AuthCallback = () => {
         setUnReadCount(0);
       }
 
-      // 3.리다이렉트
-      if (roleRaw === ROLES.PRO) {
-        navigate(ROUTES.HOME.PRO);
-      } else {
+      // 3.리다이렉트 => roleRaw가 undefined거나 잘못된 값일 때 ROOT로 리다렉하도록 변경
+      if (roleRaw !== ROLES.PRO) {
         navigate(ROUTES.HOME.ROOT);
+      } else {
+        navigate(ROUTES.HOME.PRO);
       }
     };
 
