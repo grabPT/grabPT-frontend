@@ -60,14 +60,16 @@ const AuthCallback = () => {
         userIdRaw = Number(params.get('user_id'));
       } else {
         // 배포에선 쿠키에서 decode
+        // 디버깅용 로그
         roleRaw = decodeCookie('role');
         userIdRaw = Number(decodeCookie('userId'));
-        // 쿠키는 1차 task 끝나고 다시 다듬어봅시다 에러전부 해결되면 main에 병합 후 ~
       }
-      //유저 정보 없으면 에러 처리
-      if (roleRaw == null || isNaN(userIdRaw)) {
-        alert('로그인 중 에러가 발생했습니다. 다시 시도해주세요.');
-        console.error(`유저 정보가 존재하지 않습니다. roleRaw: ${roleRaw} userIdRaw: ${userIdRaw}`);
+
+      // 유저 정보 없으면 에러 처리
+      // roleRaw가 빈 문자열이거나 null일 때, userIdRaw가 0이거나 NaN일 때 필터링
+      if (!roleRaw || !userIdRaw || isNaN(userIdRaw)) {
+        alert('로그인 정보를 불러올 수 없습니다. 다시 시도해주세요.');
+        console.error(`유저 정보가 유효하지 않습니다. roleRaw: ${roleRaw} userIdRaw: ${userIdRaw}`);
         navigate(ROUTES.HOME.ROOT);
         return;
       }
@@ -99,11 +101,11 @@ const AuthCallback = () => {
         setUnReadCount(0);
       }
 
-      // 3.리다이렉트
-      if (roleRaw === ROLES.PRO) {
-        navigate(ROUTES.HOME.PRO);
-      } else {
+      // 3.리다이렉트 => roleRaw가 undefined거나 잘못된 값일 때 ROOT로 리다렉하도록 변경
+      if (roleRaw !== ROLES.PRO) {
         navigate(ROUTES.HOME.ROOT);
+      } else {
+        navigate(ROUTES.HOME.PRO);
       }
     };
 
