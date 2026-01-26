@@ -21,6 +21,6 @@ export const getProCertifications = async (): Promise<getProCertificationRespons
     );
     return response.data;
   } catch (error) {
-    throw Error('axios 에러');
+    throw error as Error;
   }
 };

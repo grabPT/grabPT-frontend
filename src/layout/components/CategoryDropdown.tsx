@@ -13,7 +13,7 @@ const CategoryDropdown = () => {
           {SPORTS.map((sport, idx) => (
             <Link
               to={urlFor.categoryDetail(sport.slug)}
-              className="text-base leading-[normal] font-normal"
+              className="transform text-base leading-[normal] font-normal transition-all duration-200 hover:scale-105 hover:font-bold"
               key={idx}
             >
               {sport.label}

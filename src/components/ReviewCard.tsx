@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
-import Profile from '@/assets/images/HeaderProfile.png';
 import Box from '@/components/Box';
+import ProfileImage from '@/components/ProfileImage';
 import { Skeleton } from '@/components/Skeleton';
 import StarRating from '@/components/StarRating';
 import { ROLES } from '@/constants/roles';
@@ -44,12 +44,8 @@ const ReviewCard = ({
         {/* 상단 정보 */}
         <div className="flex gap-[11px]">
           {/* 아바타 */}
-          <div>
-            <img
-              src={imageURL ?? Profile}
-              alt="profile"
-              className="h-[47px] w-[47px] rounded-full"
-            />
+          <div className="h-12 w-12 overflow-hidden rounded-full">
+            <ProfileImage src={imageURL} alt={'프로필'} />
           </div>
 
           <div className="flex flex-col">
