@@ -35,7 +35,7 @@ const UserReviews = () => {
                 proNickName={rv.reviewee}
                 centerName={rv.centerName}
                 proId={rv.revieweeId}
-                imageURL={rv.profileImageUrl}
+                imageURL={rv.profileImageURL}
               />
             ))
           ) : (

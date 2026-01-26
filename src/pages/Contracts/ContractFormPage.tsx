@@ -159,6 +159,8 @@ const ContractFormPage = () => {
     contractDate: contractAny,
   });
 
+  console.log('시발', proComplete);
+
   // ✅ 편집 가능 여부
   const canEditUser = !isPro && !userComplete;
   const canEditPro = isPro && !proComplete;
@@ -548,16 +550,15 @@ const ContractFormPage = () => {
                 취소
               </Button>
             )}
-            {showCancel && (
-              <Button
-                width="w-full"
-                onClick={userComplete && proComplete && !isPro ? handleSuccess : handleSubmit}
-                disabled={primaryDisabled}
-                className={primaryFullWidth ? 'col-span-2' : undefined}
-              >
-                {primaryLabel}
-              </Button>
-            )}
+
+            <Button
+              width="w-full"
+              onClick={userComplete && proComplete && !isPro ? handleSuccess : handleSubmit}
+              disabled={primaryDisabled}
+              className={primaryFullWidth ? 'col-span-2' : undefined}
+            >
+              {primaryLabel}
+            </Button>
           </div>
         </div>
       </section>

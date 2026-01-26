@@ -29,7 +29,7 @@ function AuthMenu({ onOpenSidebar }: AuthMenuProps) {
   const unreadCount = useUnreadStore((s) => s.unreadCount);
   const alarmCount = useAlarmStore((s) => s.alarmCount);
 
-  const { data } = useGetUserInfo();
+  const { data } = useGetUserInfo(isLoggedIn);
 
   const nav = useNavigate();
 

@@ -30,6 +30,6 @@ export type getMyReviewsListItemType = {
   centerName?: string;
   reviewee?: string;
   revieweeId?: number;
-  profileImageUrl?: string;
+  profileImageURL?: string;
 };
 export type getMyReviewsListResponseDto = CommonResponseDto<getMyReviewsListResultType>;
