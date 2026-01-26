@@ -1,7 +1,11 @@
-import { decodeBase64Utf8 } from '@/utils/decodeBaseUtf8';
-
 export function decodeCookie(name: string) {
-  const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-  const value = match ? match[2] : '';
-  return decodeBase64Utf8(value);
+  const cookies = document.cookie.split(';');
+  for (let i = 0; i < cookies.length; i++) {
+    const cookie = cookies[i].trim();
+    if (cookie.startsWith(name + '=')) {
+      const value = cookie.substring(name.length + 1);
+      return decodeURIComponent(value);
+    }
+  }
+  return '';
 }

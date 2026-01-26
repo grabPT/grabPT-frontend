@@ -61,11 +61,8 @@ const AuthCallback = () => {
       } else {
         // 배포에선 쿠키에서 decode
         // 디버깅용 로그
-        console.log('Cookie check:', document.cookie);
         roleRaw = decodeCookie('role');
         userIdRaw = Number(decodeCookie('userId'));
-        console.log(`Parsed Cookie - role: ${roleRaw}, userId: ${userIdRaw}`);
-        alert(`Parsed Cookie - role: ${roleRaw}, userId: ${userIdRaw}`);
       }
 
       // 유저 정보 없으면 에러 처리
