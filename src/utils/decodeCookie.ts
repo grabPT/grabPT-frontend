@@ -1,10 +1,11 @@
-import { decodeBase64Utf8 } from '@/utils/decodeBaseUtf8';
-
 export function decodeCookie(name: string) {
-  const getCookieValue = (name: string) => {
-    const match = document.cookie.split('; ').find((row) => row.startsWith(name + '='));
-    return match ? match.split('=')[1] : '';
-  };
-
-  return decodeBase64Utf8(getCookieValue(name));
+  const cookies = document.cookie.split(';');
+  for (let i = 0; i < cookies.length; i++) {
+    const cookie = cookies[i].trim();
+    if (cookie.startsWith(name + '=')) {
+      const value = cookie.substring(name.length + 1);
+      return decodeURIComponent(value);
+    }
+  }
+  return '';
 }
