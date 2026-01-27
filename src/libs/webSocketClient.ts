@@ -1,16 +1,24 @@
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 
+import { useRoleStore } from '@/store/useRoleStore';
+
 export function createStompClient() {
+  const isLoggedIn = useRoleStore.getState().isLoggedIn;
+  if (!isLoggedIn) return;
+
   const accessToken = localStorage.getItem('accessToken');
 
-  if (!accessToken) return;
-
   const client = new Client({
-    webSocketFactory: () => new SockJS(import.meta.env.VITE_SERVER_API_URL + '/ws-connect'),
-    connectHeaders: {
-      Authorization: `Bearer ${accessToken}`,
-    },
+    webSocketFactory: () =>
+      new SockJS(import.meta.env.VITE_SERVER_API_URL + '/ws-connect', null, {
+        withCredentials: true,
+      } as any),
+    connectHeaders: accessToken
+      ? {
+          Authorization: `Bearer ${accessToken}`,
+        }
+      : {},
     reconnectDelay: 3000,
     onConnect: () => console.log('[STOMP] connected'),
     onStompError: (frame) =>
