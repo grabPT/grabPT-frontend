@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@plugin "tailwindcss-animate";
 
 /* ───────── 1) 디자인 토큰 (@theme) ───────── */
 @theme {

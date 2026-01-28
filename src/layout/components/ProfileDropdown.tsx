@@ -3,6 +3,7 @@ import { memo, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Box from '@/components/Box';
+import { confirm } from '@/components/ConfirmModal';
 import ROUTES from '@/constants/routes';
 import { useLogout } from '@/features/Signup/hooks/useLogout';
 import { useRoleStore } from '@/store/useRoleStore';
@@ -50,8 +51,11 @@ function ProfileDropdown() {
   }, [navigate, isPro]);
 
   /* isPro 변동 시에만 재계산 */
-  const handleLogout = useCallback(() => {
-    logout({ refreshToken });
+  const handleLogout = useCallback(async () => {
+    const result = await confirm('로그아웃 하시겠습니까?', '로그아웃', '취소');
+    if (result) {
+      logout({ refreshToken });
+    }
   }, [logout, refreshToken]);
 
   const items = useMemo<Item[]>(
