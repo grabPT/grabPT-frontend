@@ -34,7 +34,7 @@ const SuggestFormPage = () => {
     requestAnimationFrame(() => {
       if (errors.price || errors.sessionCount) {
         amountRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      return;
+        return;
       }
       if (errors.message) {
         messageRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -98,7 +98,10 @@ const SuggestFormPage = () => {
     }
   };
   return (
-    <section ref={amountRef} className="flex w-full flex-col items-center gap-12 scroll-smooth py-12 text-2xl font-extrabold scroll-smooth">
+    <section
+      ref={amountRef}
+      className="flex w-full flex-col items-center gap-12 scroll-smooth py-12 text-2xl font-extrabold"
+    >
       {/* 헤더 */}
       <div className="flex items-center gap-3">
         <img

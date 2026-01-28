@@ -1,7 +1,7 @@
-import { type ForwardRefRenderFunction, forwardRef, useImperativeHandle } from 'react';
+import { type ForwardRefRenderFunction, forwardRef, useImperativeHandle, useRef } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import { type FieldErrors, useForm } from 'react-hook-form';
 
 import CheckedButton from '@/components/CheckedButton';
 import CommentBox from '@/components/CommentBox';
@@ -50,6 +50,23 @@ const FillDetailStep: ForwardRefRenderFunction<{ submit: () => Promise<boolean> 
     },
   });
 
+  //제안서 스크롤 ref
+  const userGenderRef = useRef<HTMLDivElement | null>(null);
+  const availableDaysRef = useRef<HTMLDivElement | null>(null);
+
+  const scrollToError = (errors: FieldErrors<RequestDetailStepDto>) => {
+    requestAnimationFrame(() => {
+      if (errors.purpose || errors.ageGroup || errors.userGender || errors.proGender) {
+        userGenderRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+      if (errors.startDate || errors.availableDays || errors.availableTimes) {
+        availableDaysRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+    });
+  };
+
   useImperativeHandle(ref, () => ({
     submit: () =>
       new Promise((resolve) => {
@@ -69,6 +86,7 @@ const FillDetailStep: ForwardRefRenderFunction<{ submit: () => Promise<boolean> 
             if (firstError?.message) {
               alert(firstError.message);
             }
+            scrollToError(errors);
           },
         )();
       }),
@@ -150,7 +168,7 @@ const FillDetailStep: ForwardRefRenderFunction<{ submit: () => Promise<boolean> 
       </section>
 
       {/* 2. 연령대 */}
-      <section>
+      <section ref={userGenderRef}>
         <div className="flex items-end gap-3">
           <h1>
             수강생의{' '}
@@ -235,7 +253,7 @@ const FillDetailStep: ForwardRefRenderFunction<{ submit: () => Promise<boolean> 
       </section>
 
       {/* 6. 가능 요일 */}
-      <section>
+      <section ref={availableDaysRef}>
         <div className="flex items-end gap-3">
           <h1>
             가능<span className={errors.availableDays ? 'text-red-500' : 'text-button'}>요일</span>

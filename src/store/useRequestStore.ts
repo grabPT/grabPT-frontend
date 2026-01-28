@@ -33,16 +33,14 @@ const initialState = {
 
 export const useRequestStore = create<RequestState>((set, get) => ({
   ...initialState,
-  
+
   setSportsTypeInfo: (info) =>
     set((state) => ({ sportsTypeInfo: { ...state.sportsTypeInfo, ...info } })),
-    
-  setPriceInfo: (info) => 
-    set((state) => ({ priceInfo: { ...state.priceInfo, ...info } })),
-    
-  setDetailInfo: (info) => 
-    set((state) => ({ detailInfo: { ...state.detailInfo, ...info } })),
-    
+
+  setPriceInfo: (info) => set((state) => ({ priceInfo: { ...state.priceInfo, ...info } })),
+
+  setDetailInfo: (info) => set((state) => ({ detailInfo: { ...state.detailInfo, ...info } })),
+
   getRequestInfo: () => {
     const state = get();
     return {
@@ -61,6 +59,6 @@ export const useRequestStore = create<RequestState>((set, get) => ({
       etcPurposeContent: state.detailInfo.etcPurposeContent,
     };
   },
-  
+
   resetRequest: () => set(initialState),
 }));
