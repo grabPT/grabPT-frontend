@@ -22,7 +22,7 @@ const ProReviews = () => {
             {reviews?.content.map((rv, idx) => (
               <div key={idx}>
                 <ReviewCard
-                  imageURL={rv.revieweeImageURL}
+                  imageURL={rv.imageURL}
                   name={rv.reviewer}
                   location={rv.location}
                   rating={rv.rating}
