@@ -38,15 +38,20 @@ export const detailInfoSchema = z.object({
 });
 
 export const patchRequestSchema = detailInfoSchema.extend({
-  price: z
-    .number({ message: '횟수와 가격을 입력해주세요.' })
-    .refine((val) => !isNaN(val) && val >= 1, {
-      message: '횟수와 가격은 1 이상이어야 합니다.',
-    }),
   sessionCount: z
     .number({ message: '횟수와 가격을 입력해주세요.' })
     .refine((val) => !isNaN(val) && val >= 1, {
-      message: '횟수와 가격은 1 이상이어야 합니다.',
+      message: '횟수는 1회 이상이어야 합니다.',
+    }),
+  price: z
+    .number({ message: '횟수와 가격을 입력해주세요.' })
+    .refine((val) => !isNaN(val) && val >= 100, {
+      message: '회당 가격은 100원 이상이어야 합니다.',
     }),
   categoryId: z.number().min(1, { message: '운동 카테고리를 받아오는데 실패했습니다.' }),
+});
+
+export const priceStepSchema = patchRequestSchema.pick({
+  price: true,
+  sessionCount: true,
 });

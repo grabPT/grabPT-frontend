@@ -8,10 +8,10 @@ export type RequestDetailStepDto = {
   purpose: Purpose[];
   etcPurposeContent?: string; //사용자가 목적에 '기타'를 선택할 경우 input 값을 포함시켜 전송해야함
   ageGroup: AgeGroup | null;
-  userGender: Gender | '';
+  userGender: '' | Gender;
   availableDays: Day[];
   availableTimes: TimeSlot[];
-  proGender: Gender | '';
+  proGender: '' | Gender;
   startDate: string;
   content: string;
 };
