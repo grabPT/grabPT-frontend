@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
+import LoadingMuscle from '@/components/LoadingMuscle';
 import ROUTES from '@/constants/routes';
 import BackBtn from '@/features/Signup/assets/BackBtn.svg';
 import AgreementStep from '@/features/Signup/components/AgreementStep';
@@ -22,8 +23,8 @@ const Signup = () => {
   const navigate = useNavigate();
   const { role, setUserInfo, setOauthId, setOauthProvider, setUserName } = useSignupStore();
   const [step, setStep] = useState<number>(0);
-  const { mutate: userSignup } = useUserSignup();
-  const { mutate: proSignup } = useProSignup();
+  const { mutate: userSignup, isPending: isUserPending } = useUserSignup();
+  const { mutate: proSignup, isPending: isProPending } = useProSignup();
 
   const handleNext = () => {
     if (role === 2 && step === 2) {
@@ -145,6 +146,7 @@ const Signup = () => {
       {step === 3 && <ProInfoStep onNext={handleNext} />}
       {step === 4 && <SportsTypeStep onNext={handleNext} />}
       {step === 5 && <NickNameStep onNext={handleNext} />}
+      {(isUserPending || isProPending) && <LoadingMuscle />}
     </div>
   );
 };
