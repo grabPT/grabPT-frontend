@@ -7,7 +7,7 @@ import type {
   SmsSendRequestDto,
   SmsVerifyRequestDto,
 } from '@/features/Signup/types/Auth';
-import { multipartInstance, publicInstance } from '@/libs/axios';
+import { multipartInstance, privateInstance, publicInstance } from '@/libs/axios';
 import type { CommonResponseDto } from '@/types/commonResponseDto';
 
 export const postUserSignup = async (
@@ -71,7 +71,7 @@ export const getCheckNickname = async (nickname: string): Promise<CommonResponse
   return data;
 };
 export const postLogout = async (body: LogoutDto): Promise<CommonResponseDto<string>> => {
-  const { data } = await publicInstance.post(END_POINT.AUTH.LOGOUT, body);
+  const { data } = await privateInstance.post(END_POINT.AUTH.LOGOUT, body);
   return data;
 };
 

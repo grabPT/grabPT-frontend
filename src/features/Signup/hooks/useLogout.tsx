@@ -21,7 +21,7 @@ export const useLogout = () => {
   const navigate = useNavigate();
   return useMutation<CommonResponseDto<string>, Error, LogoutDto>({
     mutationFn: postLogout,
-    onSettled: (data) => {
+    onSettled: () => {
       // 개발 및 스테이징 환경에서만 로컬 스토리지 정리
       if (
         import.meta.env.VITE_STAGE === 'development' ||
@@ -29,8 +29,12 @@ export const useLogout = () => {
       ) {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
+      } else {
+        const cookies = ['role', 'userId', 'accessToken', 'refreshToken', 'JSESSIONID'];
+        cookies.forEach((cookie) => {
+          document.cookie = `${cookie}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+        });
       }
-      console.log('로그아웃 요청 성공:', data);
 
       resetAuth();
       resetAlarm();

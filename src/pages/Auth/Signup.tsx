@@ -13,6 +13,7 @@ import UserTypeStep from '@/features/Signup/components/UserTypeStep';
 import { useProSignup } from '@/features/Signup/hooks/useProSignup';
 import { useUserSignup } from '@/features/Signup/hooks/useUserSignup';
 import { useSignupStore } from '@/store/useSignupStore';
+import { decodeCookie } from '@/utils/decodeCookie';
 
 /**
  * 회원가입페이지
@@ -20,18 +21,6 @@ import { useSignupStore } from '@/store/useSignupStore';
 const Signup = () => {
   const navigate = useNavigate();
   const { role, setUserInfo, setOauthId, setOauthProvider, setUserName } = useSignupStore();
-
-  // 🔍 URL 파라미터 확인용 테스트 코드
-  useEffect(() => {
-    console.log('📍 Signup Page Loaded');
-    console.log('🔗 Full URL:', window.location.href);
-    console.log('❓ Search Params:', window.location.search);
-    const params = new URLSearchParams(window.location.search);
-    params.forEach((value, key) => {
-      console.log(`   👉 ${key}:`, value);
-    });
-  }, []);
-
   const [step, setStep] = useState<number>(0);
   const { mutate: userSignup } = useUserSignup();
   const { mutate: proSignup } = useProSignup();
@@ -58,24 +47,39 @@ const Signup = () => {
       setStep((prev) => prev - 1);
     }
   };
-  // 수정: 서버에서 URL 파라미터로 넘겨주는 값 처리
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const paramOauthId = params.get('oauthId') || '';
-    const paramOauthProvider = params.get('oauthProvider') || '';
-    const paramEmail = params.get('oauthEmail') || ''; // 수정: email -> oauthEmail
-    const paramUsername = params.get('oauthName') || ''; // 수정: name -> oauthName
 
-    // URL 파라미터를 우선사용
+  useEffect(() => {
+    const stage = import.meta.env.VITE_STAGE;
+    let paramOauthId = '';
+    let paramOauthProvider = '';
+    let paramEmail = '';
+    let paramUsername = '';
+
+    if (stage === 'development' || stage === 'staging') {
+      const params = new URLSearchParams(window.location.search);
+      paramOauthId = params.get('oauthId') || '';
+      paramOauthProvider = params.get('oauthProvider') || '';
+      paramEmail = params.get('oauthEmail') || '';
+      paramUsername = params.get('oauthName') || '';
+    } else {
+      // 배포 환경: 쿠키에서 값 추출
+      // decodeCookie 유틸이 decodeURIComponent를 포함하고 있으므로 인코딩된 값도 처리됨
+      paramOauthId = decodeCookie('oauthId');
+      paramOauthProvider = decodeCookie('oauthProvider');
+      paramEmail = decodeCookie('oauthEmail');
+      paramUsername = decodeCookie('oauthName');
+    }
+
     setOauthId(paramOauthId);
     setOauthProvider(paramOauthProvider);
     setUserName(paramUsername);
 
-    // 이메일 처리
+    // provider가 카카오고 email이 비어있으면
     if (paramOauthProvider !== 'kakao' && paramEmail !== '') {
       setUserInfo({ email: paramEmail });
     }
   }, [setOauthId, setOauthProvider, setUserName, setUserInfo]);
+
   // 회원가입 완료 로직
   useEffect(() => {
     if (step === 6) {
@@ -87,7 +91,11 @@ const Signup = () => {
           },
           {
             onSuccess: () => {
-              navigate(ROUTES.AUTH.LOGIN);
+              navigate(ROUTES.AUTH.LOGIN, {
+                state: {
+                  toastMessage: '회원가입에 성공하였습니다! 다시 로그인해주세요',
+                },
+              });
             },
             onError: (err) => {
               alert('회원가입에 실패하였습니다. 다시 시도해주세요.');
@@ -104,7 +112,11 @@ const Signup = () => {
           },
           {
             onSuccess: () => {
-              navigate(ROUTES.AUTH.LOGIN);
+              navigate(ROUTES.AUTH.LOGIN, {
+                state: {
+                  toastMessage: '회원가입에 성공하였습니다! 다시 로그인해주세요',
+                },
+              });
             },
             onError: (err) => {
               alert('회원가입에 실패하였습니다. 다시 시도해주세요.');

@@ -59,8 +59,6 @@ const AuthCallback = () => {
         roleRaw = params.get('role');
         userIdRaw = Number(params.get('user_id'));
       } else {
-        // 배포에선 쿠키에서 decode
-        // 디버깅용 로그
         roleRaw = decodeCookie('role');
         userIdRaw = Number(decodeCookie('userId'));
       }

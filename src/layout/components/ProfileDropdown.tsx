@@ -38,6 +38,7 @@ function ProfileDropdown() {
     const match = document.cookie.split('; ').find((row) => row.startsWith('REFRESH_TOKEN' + '='));
     refreshToken = match ? match.split('=')[1] : '';
   }
+
   const navigateToMyInfo = useCallback(() => {
     if (isPro) navigate(ROUTES.MYPAGE.PRO);
     else navigate(ROUTES.MYPAGE.USER);
