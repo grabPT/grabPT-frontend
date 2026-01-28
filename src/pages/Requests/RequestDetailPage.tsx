@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import { type FieldErrors, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import Button from '@/components/Button';
@@ -43,6 +43,21 @@ const RequestDetailPage = () => {
   const [isEditing, setIsEditing] = useState(false);
   //제안서 작성하기 버튼 누를 시 suggestStore의 requestionId를 업데이트하고 suggestFormPage에서 받아쓰기
 
+  //제안서 스크롤 ref
+  const availableDaysRef = useRef<HTMLDivElement | null>(null);
+
+  const scrollToError = (errors: FieldErrors<Omit<RequestRequestDto, 'location'>>) => {
+    requestAnimationFrame(() => {
+      if (errors.price || errors.sessionCount || errors.purpose) {
+        containerRef?.current?.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+      if (errors.startDate || errors.availableDays || errors.availableTimes) {
+        availableDaysRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+    });
+  };
   // api연결 시 isWriter 함수로 변경 (요청서의 작성자 id === 현재 유저 id)
   const { data: isWriter } = useGetCanEditRequest(requestionId);
   const isEdit = isWriter?.isEdit;
@@ -153,12 +168,12 @@ const RequestDetailPage = () => {
         },
         (errors) => {
           const firstError = Object.values(errors)[0];
+          scrollToError(errors);
           if (firstError?.message) {
             alert(firstError.message);
           }
         },
       )();
-      containerRef?.current?.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
   /* 목적(다중) */
@@ -384,7 +399,7 @@ const RequestDetailPage = () => {
         </section>
 
         {/* 6. 가능 요일 */}
-        <section>
+        <section ref={availableDaysRef}>
           <div className="flex items-end gap-3">
             <h1>
               가능
