@@ -42,9 +42,21 @@ export const useLogout = () => {
 
       //microTask를 통해 role을 먼저 바꾸고 navigate 진행 -> 여기서 role storage만 guest 상태로 재생성
       if (typeof queueMicrotask === 'function') {
-        queueMicrotask(() => navigate(ROUTES.HOME.ROOT, { replace: true }));
+        queueMicrotask(() =>
+          navigate(ROUTES.HOME.ROOT, {
+            replace: true,
+            state: { toastMessage: '로그아웃되었습니다.' },
+          }),
+        );
       } else {
-        setTimeout(() => navigate(ROUTES.HOME.ROOT, { replace: true }), 0);
+        setTimeout(
+          () =>
+            navigate(ROUTES.HOME.ROOT, {
+              replace: true,
+              state: { toastMessage: '로그아웃되었습니다.' },
+            }),
+          0,
+        );
       }
     },
     onError: (error) => {
