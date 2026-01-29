@@ -2,67 +2,42 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { createPortal } from 'react-dom';
 
-interface ConfirmState {
-  isOpen: boolean;
-  message: string;
-  confirmText: string;
-  cancelText: string;
-  resolver: ((value: boolean) => void) | null;
-}
-
-const initialState: ConfirmState = {
-  isOpen: false,
-  message: '',
-  confirmText: '확인',
-  cancelText: '취소',
-  resolver: null,
-};
-
-let confirmFunction:
-  | ((message: string, confirmText: string, cancelText: string) => Promise<boolean>)
-  | null = null;
-
-/**
- * 이 함수 갖다 쓰시면 됩니다
- * 사용법 : confirm("메세지", "확인 버튼 텍스트", "취소 버튼 텍스트")
- * import { confirm } from '@/components/ConfirmModal';
- * const result = await confirm('정말 삭제하시겠습니까?', '삭제', '취소');
- * if (result) {
- *   // 할려던 로직
- * }
- * profileDropdwon의 로그아웃 참고 ㄱㄱ
- * async await 필수 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
- */
-export const confirm = (
-  message: string,
-  confirmText: string = '확인',
-  cancelText: string = '취소',
-): Promise<boolean> => {
-  if (!confirmFunction) {
-    console.warn('GlobalConfirmModal is not mounted');
-    return Promise.resolve(false);
-  }
-  return confirmFunction(message, confirmText, cancelText);
-};
+import { type ConfirmState, initialState, setConfirmFunction } from '@/utils/confirmModalUtils';
 
 const ConfirmModal = () => {
   const [state, setState] = useState<ConfirmState>(initialState);
   const confirmButtonRef = useRef<HTMLButtonElement>(null);
   const cancelButtonRef = useRef<HTMLButtonElement>(null);
+  const resolverRef = useRef<((value: boolean) => void) | null>(null);
 
   // 컴포넌트가 마운트되면 confirmFunction을 이 컴포넌트의 setState와 연결
   useEffect(() => {
-    confirmFunction = (message, confirmText, cancelText) => {
+    setConfirmFunction((message, confirmText, cancelText) => {
       return new Promise((resolve) => {
+        resolverRef.current = resolve;
         setState({
           isOpen: true,
           message,
           confirmText,
           cancelText,
-          resolver: resolve,
         });
       });
+    });
+
+    return () => {
+      setConfirmFunction(async () => {
+        console.warn('GlobalConfirmModal instance unmounted');
+        return false;
+      });
     };
+  }, []);
+
+  const handleClose = useCallback((result: boolean) => {
+    if (resolverRef.current) {
+      resolverRef.current(result); // await 하고 있는 곳에 결과(true/false) 전달
+      resolverRef.current = null;
+    }
+    setState(initialState); // 모달 초기화
   }, []);
 
   // 모달 열릴 때 포커스 및 단축키 설정
@@ -92,17 +67,7 @@ const ConfirmModal = () => {
         window.removeEventListener('keydown', handleKeyDown);
       };
     }
-  }, [state.isOpen]);
-
-  const handleClose = useCallback(
-    (result: boolean) => {
-      if (state.resolver) {
-        state.resolver(result); // await 하고 있는 곳에 결과(true/false) 전달
-      }
-      setState(initialState); // 모달 초기화
-    },
-    [state.resolver],
-  );
+  }, [state.isOpen, handleClose]);
 
   // 모달이 닫혀있으면 렌더링 X
   if (!state.isOpen) return null;

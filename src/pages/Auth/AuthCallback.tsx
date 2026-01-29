@@ -20,8 +20,6 @@ import { decodeCookie } from '@/utils/decodeCookie';
  * @params : access_token,refresh_token,role,user_id
  */
 const AuthCallback = () => {
-  alert('스탑');
-
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -114,7 +112,7 @@ const AuthCallback = () => {
     };
 
     processAuthAndFetch();
-  }, [navigate, setRole, setUserId, setAlarmCount, setUnReadCount, queryClient]);
+  }, [navigate, setRole, setUserId, setProfileImage, setAlarmCount, setUnReadCount, queryClient]);
   return <LoadingMuscle />;
 };
 

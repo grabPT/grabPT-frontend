@@ -3,10 +3,10 @@ import { memo, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Box from '@/components/Box';
-import { confirm } from '@/components/ConfirmModal';
 import ROUTES from '@/constants/routes';
 import { useLogout } from '@/features/Signup/hooks/useLogout';
 import { useRoleStore } from '@/store/useRoleStore';
+import { confirm } from '@/utils/confirmModalUtils';
 import { decodeBase64Utf8 } from '@/utils/decodeBaseUtf8';
 
 type Item = {
