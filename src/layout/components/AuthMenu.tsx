@@ -8,7 +8,6 @@ import HamburgerIcon from '@/assets/icons/HamburgerIcon';
 import Button from '@/components/Button';
 import ProfileImage from '@/components/ProfileImage';
 import ROUTES from '@/constants/routes';
-import { useGetUserInfo } from '@/hooks/useGetUserInfo';
 import AlarmDropdown from '@/layout/components/AlarmDropdown';
 import ProfileDropdown from '@/layout/components/ProfileDropdown';
 import { useAlarmStore } from '@/store/useAlarmStore';
@@ -23,13 +22,11 @@ function AuthMenu({ onOpenSidebar }: AuthMenuProps) {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { isLoggedIn } = useRoleStore();
+  const { isLoggedIn, profileImage } = useRoleStore();
   const [isOpenProfileDropdown, setIsOpenProfileDropdown] = useState(false);
   const [isOpenAlarmDropdown, setIsOpenAlarmDropdown] = useState(false);
   const unreadCount = useUnreadStore((s) => s.unreadCount);
   const alarmCount = useAlarmStore((s) => s.alarmCount);
-
-  const { data } = useGetUserInfo(isLoggedIn);
 
   const nav = useNavigate();
 
@@ -103,7 +100,7 @@ function AuthMenu({ onOpenSidebar }: AuthMenuProps) {
               className="h-11 w-11 cursor-pointer overflow-hidden rounded-full"
               onClick={() => setIsOpenProfileDropdown((prev) => !prev)}
             >
-              <ProfileImage src={data?.profileImageUrl} alt={'프로필'} />
+              <ProfileImage src={profileImage} alt={'프로필'} />
             </div>
             {isOpenProfileDropdown && (
               <div className="absolute top-12 right-0">

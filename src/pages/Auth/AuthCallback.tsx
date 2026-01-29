@@ -24,7 +24,7 @@ const AuthCallback = () => {
   const queryClient = useQueryClient();
 
   // 유저정보 store불러옴 셋팅 위해서
-  const { setRole, setUserId } = useRoleStore();
+  const { setRole, setUserId, setProfileImage } = useRoleStore();
 
   // 소켓연결
   const setAlarmCount = useAlarmStore((state) => state.setAlarmCount);
@@ -37,6 +37,7 @@ const AuthCallback = () => {
 
       let roleRaw: string | null = null;
       let userIdRaw: number | null = null;
+      let profileImageRaw: string | null = null;
 
       // 로컬 서버, 개발 서버는 파라미터로 받고 로컬스토리지에 저장
       // 실제 배포 서버는 쿠키로 받아서 set Cookie - 확인 못했음 아직
@@ -58,11 +59,11 @@ const AuthCallback = () => {
         // 로컬,개발서버에선 params에서
         roleRaw = params.get('role');
         userIdRaw = Number(params.get('user_id'));
+        profileImageRaw = params.get('profile_image');
       } else {
-        // 배포에선 쿠키에서 decode
-        // 디버깅용 로그
         roleRaw = decodeCookie('role');
         userIdRaw = Number(decodeCookie('userId'));
+        profileImageRaw = decodeCookie('profileImage');
       }
 
       // 유저 정보 없으면 에러 처리
@@ -77,6 +78,7 @@ const AuthCallback = () => {
       // 스토어 최신화
       setRole(roleRaw as Role);
       setUserId(userIdRaw);
+      setProfileImage(profileImageRaw);
 
       // 2.fetchQuery를 사용하여 알람, 안읽은수 api 날리고 스토어 최신화
       // 내가 이런 코드를 썼었네..;;
@@ -110,7 +112,7 @@ const AuthCallback = () => {
     };
 
     processAuthAndFetch();
-  }, [navigate, setRole, setUserId, setAlarmCount, setUnReadCount, queryClient]);
+  }, [navigate, setRole, setUserId, setProfileImage, setAlarmCount, setUnReadCount, queryClient]);
   return <LoadingMuscle />;
 };
 

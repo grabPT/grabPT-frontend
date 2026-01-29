@@ -6,6 +6,7 @@ import Box from '@/components/Box';
 import ROUTES from '@/constants/routes';
 import { useLogout } from '@/features/Signup/hooks/useLogout';
 import { useRoleStore } from '@/store/useRoleStore';
+import { confirm } from '@/utils/confirmModalUtils';
 import { decodeBase64Utf8 } from '@/utils/decodeBaseUtf8';
 
 type Item = {
@@ -27,17 +28,18 @@ const DropdownItem = memo(function DropdownItem({ label, onClick }: Item) {
 
 function ProfileDropdown() {
   const navigate = useNavigate();
+
   const { role } = useRoleStore();
   const isPro = role === 'PRO';
+
   const { mutate: logout } = useLogout();
+  let refreshToken: string = '';
+
   const stage = import.meta.env.VITE_STAGE;
-  let refreshToken: string;
   if (stage == 'development' || stage == 'staging') {
     refreshToken = decodeBase64Utf8(localStorage.getItem('refreshToken'));
-  } else {
-    const match = document.cookie.split('; ').find((row) => row.startsWith('REFRESH_TOKEN' + '='));
-    refreshToken = match ? match.split('=')[1] : '';
   }
+
   const navigateToMyInfo = useCallback(() => {
     if (isPro) navigate(ROUTES.MYPAGE.PRO);
     else navigate(ROUTES.MYPAGE.USER);
@@ -49,9 +51,11 @@ function ProfileDropdown() {
   }, [navigate, isPro]);
 
   /* isPro 변동 시에만 재계산 */
-  const handleLogout = useCallback(() => {
-    alert(`로그아웃:${refreshToken}`);
-    logout({ refreshToken });
+  const handleLogout = useCallback(async () => {
+    const result = await confirm('로그아웃 하시겠습니까?', '로그아웃', '취소');
+    if (result) {
+      logout({ refreshToken });
+    }
   }, [logout, refreshToken]);
 
   const items = useMemo<Item[]>(
