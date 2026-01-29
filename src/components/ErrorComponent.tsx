@@ -10,7 +10,7 @@ export default function ErrorComponent() {
     <div
       role="status"
       aria-busy="true"
-      className="fixed bottom-0 z-[9999] flex h-[calc(100dvh-70px)] w-full flex-col items-center justify-center bg-white"
+      className="fixed bottom-0 z-40 flex h-[calc(100dvh-70px)] w-full flex-col items-center justify-center bg-white"
     >
       <JsonLottie src={errorUrl} className="h-48" loop />
       <h2 className="mt-8 text-center text-2xl font-extrabold italic">Error</h2>

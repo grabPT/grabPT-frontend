@@ -6,7 +6,9 @@ import type { Role } from '@/types/Role';
 interface AuthState {
   role: Role | null;
   userId: number | null;
+  profileImage: string | null;
   setUserId: (id: number) => void;
+  setProfileImage: (image: string | null) => void; // 이미지 업데이트
   setRole: (role: Role) => void;
   isLoggedIn: boolean;
   resetAuth: () => void;
@@ -17,9 +19,13 @@ export const useRoleStore = create<AuthState>()(
     (set) => ({
       role: 'GUEST',
       userId: null,
+      profileImage: null,
       isLoggedIn: false,
       setUserId(id: number) {
         set({ userId: id });
+      },
+      setProfileImage(image: string | null) {
+        set({ profileImage: image });
       },
       setRole: (role: Role) =>
         set({
@@ -30,6 +36,7 @@ export const useRoleStore = create<AuthState>()(
         set({
           role: 'GUEST',
           userId: null,
+          profileImage: null,
           isLoggedIn: false,
         }),
     }),
