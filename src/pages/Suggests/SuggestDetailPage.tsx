@@ -4,11 +4,11 @@ import { postCreateChatRoom } from '@/apis/postCreateChatRoom';
 import Button from '@/components/Button';
 import ProfileImage from '@/components/ProfileImage';
 import ROUTES, { urlFor } from '@/constants/routes';
+import { useGetDetailRequest } from '@/features/Request/hooks/useGetDetailRequest';
 import { useGetSuggestDetail } from '@/features/SuggestDetail/hooks/useGetSuggestDetail';
 import { usePostMatching } from '@/features/SuggestDetail/hooks/usePostMatching';
 import { useRoleStore } from '@/store/useRoleStore';
 import { onErrorImage } from '@/utils/onErrorImage';
-import { useGetDetailRequest } from '@/features/Request/hooks/useGetDetailRequest';
 
 // 제안서 상세페이지
 const SuggestDetailPage = () => {
@@ -19,8 +19,8 @@ const SuggestDetailPage = () => {
 
   const { data: suggestion, error, isError, isLoading } = useGetSuggestDetail(suggestionId);
   //매칭 완료 요청서일 경우 버튼 못 누르게
-  const {data: requestionDetail} = useGetDetailRequest(suggestion?.requestionId || 0);
-  const isMatched = requestionDetail?.isMatched
+  const { data: requestionDetail } = useGetDetailRequest(suggestion?.requestionId || 0);
+  const isMatched = requestionDetail?.isMatched;
   const canClick = !isMatched && userId !== suggestion?.proId;
   //요청, 제안 변동 사항, 총 금액 계산
   const sessionCountDiffer = Math.round(
@@ -202,7 +202,7 @@ const SuggestDetailPage = () => {
         </div>
       </div>
       {/* 스토어에서 가져온 회원 id와 제안서 proId가 같을 경우 전문가 -> 버튼 사용 불가 */}
-       {isMatched && (
+      {isMatched && (
         <div className="mt-8 flex justify-center">
           <span className="rounded-full bg-green-100 px-4 py-2 text-green-700">
             매칭이 완료된 요청서입니다

@@ -7,7 +7,6 @@ import type { suggestListForRequestItemType } from '@/features/SuggestListForReq
 
 interface SuggestListItemProps {
   suggest: suggestListForRequestItemType;
-
 }
 
 const SuggestListItem = ({ suggest }: SuggestListItemProps) => {
