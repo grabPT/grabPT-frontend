@@ -10,6 +10,10 @@ import { buildRoutes } from './routes/builder';
 import { routesManifest } from './routes/manifest';
 
 export default function App() {
+  useEffect(() => {
+    console.log('Environment Variables:', import.meta.env);
+  }, []);
+
   const init = useStompStore((s) => s.init);
   const teardown = useStompStore((s) => s.teardown);
 

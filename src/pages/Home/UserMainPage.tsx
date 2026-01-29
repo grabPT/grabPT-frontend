@@ -1,3 +1,7 @@
+import { useEffect } from 'react';
+
+import toast from 'react-hot-toast';
+import { useLocation, useNavigate } from 'react-router-dom';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 
@@ -18,6 +22,17 @@ import { mapMyRequestToSliderItem } from '@/utils/mapToRequestSliderItem';
  */
 const UserMainPage = () => {
   const { isLoggedIn, role } = useRoleStore();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (location.state?.toastMessage) {
+      toast.success(location.state.toastMessage);
+      // 토스트 메시지 출력 후 state 초기화 (새로고침 시 재출력 방지)
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location.state, location.pathname, navigate]);
+
   const { data: requests } = useGetMyRequestsList({ page: 1, size: 40 }, isLoggedIn);
 
   // 비로그인 또는 GUEST일 경우 useGetUserInfo 호출하지 않음

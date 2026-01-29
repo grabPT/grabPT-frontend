@@ -1,4 +1,7 @@
-import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+
+import toast from 'react-hot-toast';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import AppLogo from '@/assets/images/AppLogo.png';
 import LoginBgLogo from '@/features/Login/assets/LoginBgLogo.svg';
@@ -12,6 +15,16 @@ import SignupLogo from '@/features/Signup/assets/SignupLogo.png';
 const Login = () => {
   const navigate = useNavigate();
   const navigateToBack = () => navigate(-1);
+
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.toastMessage) {
+      toast.success(location.state.toastMessage);
+
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location.state, navigate, location.pathname]);
 
   return (
     <div className="relative flex h-dvh w-full items-center justify-center bg-gradient-to-bl from-[#8CAFFF] to-[#FFFFFF]">

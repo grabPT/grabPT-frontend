@@ -68,6 +68,7 @@ export type LogoutDto = {
 };
 
 export type EmailCheckResponseDto = {
-  isDuplicated: boolean;
+  // 수정 : isDuplicated로 우리가 해놓은 거 같은데 response가 duplicate라 일단 이렇게 했습니다
+  duplicate: boolean;
   oauthProvider: string | null;
 };
