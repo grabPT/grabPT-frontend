@@ -65,6 +65,17 @@
   html {
     font-family: var(--font-sans);
   }
+  /* type=number 화살표 제거 */
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type='number'] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
 }
 
 /* 각 페이지별 좌우여백. 전체페이지를 덮는 div 하위에서 사용하셔야 가운데정렬 됩니다 */
