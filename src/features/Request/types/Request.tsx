@@ -43,4 +43,5 @@ export type RequestDetailPageResponseDto = {
   etcPurposeContent: string; // 기타 목적
   userNickname: string;
   profileImageUrl: string;
+  isMatched: boolean;
 };

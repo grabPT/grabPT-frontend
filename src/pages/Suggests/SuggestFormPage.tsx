@@ -45,6 +45,13 @@ const SuggestFormPage = () => {
       }
     });
   };
+  //횟수 가격 숫자 변동 방지용 유틸 함수
+  const toSafeInt = (v: unknown) => {
+    const n = typeof v === 'number' ? v : Number(v);
+    return Number.isFinite(n) ? Math.trunc(n) : undefined;
+  };
+  const clampMin = (n: number, min: number) => (n < min ? min : n);
+
   //유효성 검사
   const {
     register,
@@ -85,12 +92,11 @@ const SuggestFormPage = () => {
         },
         {
           onSuccess: (res) => {
-            console.log('내가 요청에 담은 정보', newSuggestInfo);
             containerRef?.current?.scrollTo({ top: 0, behavior: 'smooth' });
             navigate(urlFor.suggestDetail(res.result.suggestionId));
           },
           onError: (err) => {
-            console.error('ㅌ중 오류가 발생하였습니다.', err);
+            console.error('제안서 작성 중 오류가 발생하였습니다.', err);
             containerRef?.current?.scrollTo({ top: 0, behavior: 'smooth' });
           },
         },
@@ -169,13 +175,24 @@ const SuggestFormPage = () => {
               aria-label="희망 PT 횟수"
               readOnly={mode === 'accept'}
               {...register('sessionCount', {
-                valueAsNumber: true,
-                setValueAs: (v) => Number(v) || 0,
+                setValueAs: (v) => {
+                  if (v === '' || v === null || v === undefined) return undefined;
+                  const n = Number(v);
+                  return Number.isFinite(n) ? Math.trunc(n) : undefined;
+                },
               })}
               className={clsx(
                 'mr-1.5 h-12 w-[85px] rounded-xl border-2 border-[#BABABA] pl-3.5 text-center text-2xl font-normal text-[#9F9F9F] disabled:bg-gray-100',
                 mode === 'custom' && 'text-black',
               )}
+              onBlur={() => {
+                const n = toSafeInt(watch('sessionCount'));
+                if (n === undefined) return;
+                setValue('sessionCount', clampMin(n, 1), {
+                  shouldValidate: true,
+                  shouldDirty: true,
+                });
+              }}
             />
             <span className="mr-5">회</span>
             <input
@@ -183,17 +200,28 @@ const SuggestFormPage = () => {
               aria-label="희망 PT 가격"
               readOnly={mode === 'accept'}
               {...register('price', {
-                valueAsNumber: true,
                 setValueAs: (v) => {
-                  if (v === '' || v === null || v === undefined) return 0;
-                  const num = Number(v);
-                  return isNaN(num) ? 0 : num;
+                  if (v === '' || v === null || v === undefined) return undefined;
+                  const n = Number(v);
+                  return Number.isFinite(n) ? Math.trunc(n) : undefined;
                 },
               })}
               className={clsx(
                 'mr-1.5 h-12 w-[260px] rounded-xl border-2 border-[#BABABA] px-8 text-end text-2xl font-normal text-[#9F9F9F] disabled:bg-gray-100',
                 mode === 'custom' && 'text-black',
               )}
+              onBlur={() => {
+                const n = toSafeInt(watch('price'));
+                if (n === undefined) return;
+                // 100 미만은 보정하지 않음 -> 스키마에서 에러
+                if (n < 100) {
+                  setValue('price', n, { shouldValidate: true, shouldDirty: true });
+                  return;
+                }
+                // 100 이상일 때만 100원 단위 내림
+                const fixed = Math.floor(n / 100) * 100;
+                setValue('price', fixed, { shouldValidate: true, shouldDirty: true });
+              }}
             />
             <span className="mr-5">원</span>
           </div>
