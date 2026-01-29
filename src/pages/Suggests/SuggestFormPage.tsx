@@ -90,7 +90,7 @@ const SuggestFormPage = () => {
             navigate(urlFor.suggestDetail(res.result.suggestionId));
           },
           onError: (err) => {
-            console.error('제안서 작성 중 오류가 발생하였습니다.', err);
+            console.error('ㅌ중 오류가 발생하였습니다.', err);
             containerRef?.current?.scrollTo({ top: 0, behavior: 'smooth' });
           },
         },

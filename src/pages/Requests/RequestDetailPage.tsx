@@ -45,7 +45,11 @@ const RequestDetailPage = () => {
 
   //제안서 스크롤 ref
   const availableDaysRef = useRef<HTMLDivElement | null>(null);
-
+  const scrollToTop = () => {
+    requestAnimationFrame(() => {
+      containerRef?.current?.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  };
   const scrollToError = (errors: FieldErrors<Omit<RequestRequestDto, 'location'>>) => {
     requestAnimationFrame(() => {
       if (errors.price || errors.sessionCount || errors.purpose) {
@@ -154,6 +158,7 @@ const RequestDetailPage = () => {
                 onSuccess: async () => {
                   await refetch();
                   setIsEditing(false);
+                  scrollToTop();
                 },
                 onError: async () => {
                   //실패시 롤백
@@ -240,21 +245,18 @@ const RequestDetailPage = () => {
           <div className="mt-5 flex items-end">
             <input
               type="number"
-              {...register('sessionCount', {
-                valueAsNumber: true,
-                setValueAs: (v) => Number(v) || 0,
-              })}
+              {...register('sessionCount', { valueAsNumber: true })}
               aria-label="희망 PT 횟수"
-              className="mr-1.5 h-12 w-[85px] rounded-xl border-2 border-[#BABABA] pl-3.5 text-center text-2xl text-[#9F9F9F]"
+              className={`mr-1.5 h-12 w-[85px] rounded-xl border-2 border-[#BABABA] pl-3.5 text-center text-2xl ${isEditing ? 'border-[#BABABA] text-[#9F9F9F]' : 'border-black text-black'}`}
               readOnly={!isEdit || !isEditing}
             />
 
             <span className="mr-5">회</span>
             <input
               type="number"
-              {...register('price', { valueAsNumber: true, setValueAs: (v) => Number(v) || 0 })}
+              {...register('price', { valueAsNumber: true })}
               aria-label="희망 PT 가격"
-              className="mr-1.5 h-12 w-[260px] rounded-xl border-2 border-[#BABABA] px-8 text-end text-2xl text-[#9F9F9F]"
+              className={`mr-1.5 h-12 w-[260px] rounded-xl border-2 border-[#BABABA] px-8 text-end text-2xl ${isEditing ? 'border-[#BABABA] text-[#9F9F9F]' : 'border-black text-black'}`}
               readOnly={!isEdit || !isEditing}
             />
             <span className="mr-5">원</span>
