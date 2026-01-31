@@ -4,6 +4,7 @@ import { postCreateChatRoom } from '@/apis/postCreateChatRoom';
 import Button from '@/components/Button';
 import ProfileImage from '@/components/ProfileImage';
 import ROUTES, { urlFor } from '@/constants/routes';
+import { useGetDetailRequest } from '@/features/Request/hooks/useGetDetailRequest';
 import { useGetSuggestDetail } from '@/features/SuggestDetail/hooks/useGetSuggestDetail';
 import { usePostMatching } from '@/features/SuggestDetail/hooks/usePostMatching';
 import { useRoleStore } from '@/store/useRoleStore';
@@ -17,6 +18,20 @@ const SuggestDetailPage = () => {
   const { userId } = useRoleStore();
 
   const { data: suggestion, error, isError, isLoading } = useGetSuggestDetail(suggestionId);
+  //매칭 완료 요청서일 경우 버튼 못 누르게
+  const { data: requestionDetail } = useGetDetailRequest(suggestion?.requestionId || 0);
+  const isMatched = requestionDetail?.isMatched;
+  const canClick = !isMatched && userId !== suggestion?.proId;
+  //요청, 제안 변동 사항, 총 금액 계산
+  const sessionCountDiffer = Math.round(
+    (suggestion?.suggestionSessionCount ?? 0) - (suggestion?.requestionSessionCount ?? 0),
+  );
+  const priceDiffer = Math.round(
+    (suggestion?.suggestedPrice ?? 0) - (suggestion?.requestedPrice ?? 0),
+  );
+  const finalPrice = Math.round(
+    (suggestion?.suggestedPrice ?? 0) * (suggestion?.suggestionSessionCount ?? 0),
+  );
 
   const navigateToProProfile = () => navigate(urlFor.proDetail(suggestion?.proId));
 
@@ -89,33 +104,74 @@ const SuggestDetailPage = () => {
       )}
       <div className="mt-12 flex w-full flex-col gap-12 text-2xl font-extrabold">
         <div>
-          <span className="text-button">제안 가격</span>
-          <div className="relative mt-5 flex w-fit items-center">
-            <input
-              type="number"
-              value={suggestion?.sessionCount}
-              aria-label="제안 PT 횟수"
-              readOnly
-              className="mr-1.5 h-12 w-[85px] rounded-xl border-2 border-[#BABABA] pl-3.5 text-center text-2xl text-[#9F9F9F]"
-            />
-            <span className="mr-5">회</span>
-            <input
-              type="number"
-              value={suggestion?.suggestedPrice}
-              aria-label="제안 PT 가격"
-              readOnly
-              className="mr-1.5 h-12 w-[260px] rounded-xl border-2 border-[#BABABA] px-8 text-end text-2xl text-[#9F9F9F]"
-            />
-            <span className="mr-5">원</span>
-
-            {suggestion?.isDiscounted && (
-              <p className="absolute top-full right-0 mt-1 mr-5 text-sm font-extrabold text-[#FF0000]">
-                - {suggestion.discountAmount}원
-              </p>
-            )}
+          <span>요청한</span>
+          <span className="text-button"> 가격</span>
+          <div className="mt-5 space-y-6">
+            {/* 횟수와 단가 - 그리드 레이아웃 */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="rounded-xl bg-gradient-to-br from-blue-50 to-blue-100 p-4">
+                <p className="mb-2 text-sm font-semibold text-gray-600">요청 PT 횟수</p>
+                <p className="text-3xl font-bold text-blue-600">
+                  {suggestion?.requestionSessionCount}회
+                </p>
+              </div>
+              <div className="rounded-xl bg-gradient-to-br from-blue-50 to-blue-100 p-4">
+                <p className="mb-2 text-sm font-semibold text-gray-600">회당 가격</p>
+                <p className="text-3xl font-bold text-blue-600">
+                  {suggestion?.requestedPrice.toLocaleString()}원
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 
+        <div>
+          <span>제안 받은</span>
+          <span className="text-button"> 가격</span>
+          <div className="mt-5 space-y-6">
+            {/* 횟수와 단가 - 그리드 레이아웃 */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="rounded-xl bg-gradient-to-br from-blue-50 to-blue-100 p-4">
+                <p className="mb-2 text-sm font-semibold text-gray-600">PT 횟수</p>
+                <p className="text-3xl font-bold text-blue-600">
+                  {suggestion?.suggestionSessionCount}회
+                </p>
+              </div>
+              <div className="rounded-xl bg-gradient-to-br from-blue-50 to-blue-100 p-4">
+                <p className="mb-2 text-sm font-semibold text-gray-600">회당 가격</p>
+                <p className="text-3xl font-bold text-blue-600">
+                  {suggestion?.suggestedPrice.toLocaleString()}원
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 할인 및 총액 정보 박스 */}
+        <div className="rounded-2xl border-2 border-[#E5E5E5] bg-[#F8F9FA] p-6">
+          {/* 요청 금액 */}
+          <div className="mb-3 flex items-center justify-between">
+            <span className="text-xl font-semibold text-[#666666]">횟수 변동</span>
+            <span className="text-xl text-[#999999]">{sessionCountDiffer.toLocaleString()}회</span>
+          </div>
+
+          {/* 제안 금액 */}
+          <div className="mb-3 flex items-center justify-between">
+            <span className="text-xl font-semibold text-[#666666]">회당 가격 변동</span>
+            <span className="text-xl text-[#999999]">{priceDiffer.toLocaleString()}원</span>
+          </div>
+
+          {/* 구분선 */}
+          <div className="my-4 border-t-2 border-[#DDDDDD]"></div>
+
+          {/* 총 금액 */}
+          <div className="flex items-center justify-between">
+            <span className="text-2xl font-extrabold text-[#21272A]">최종 결제 금액</span>
+            <span className="text-3xl font-extrabold text-[#0066FF]">
+              {finalPrice.toLocaleString()}원
+            </span>
+          </div>
+        </div>
         <div>
           <span>
             제안 <span className="text-button">상세 설명</span>
@@ -146,7 +202,14 @@ const SuggestDetailPage = () => {
         </div>
       </div>
       {/* 스토어에서 가져온 회원 id와 제안서 proId가 같을 경우 전문가 -> 버튼 사용 불가 */}
-      {userId !== suggestion?.proId && (
+      {isMatched && (
+        <div className="mt-8 flex justify-center">
+          <span className="rounded-full bg-green-100 px-4 py-2 text-green-700">
+            매칭이 완료된 요청서입니다
+          </span>
+        </div>
+      )}
+      {canClick && (
         <Button width="w-96" className="mt-18" onClick={매칭수락}>
           매칭 수락
         </Button>

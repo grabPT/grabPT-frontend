@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import React from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -11,6 +10,7 @@ import SelectPriceStep from '@/features/Request/components/SelectPriceStep';
 import SelectSportStep from '@/features/Request/components/SelectSportStep';
 import useStepParam from '@/features/Request/hooks/UseStepParam';
 import { usePostRequest } from '@/features/Request/hooks/usePostRequest';
+import { priceStepSchema } from '@/features/Request/schemas/requestSchema';
 import { useGetUserInfo } from '@/hooks/useGetUserInfo';
 import { useRequestStore } from '@/store/useRequestStore';
 
@@ -29,6 +29,7 @@ type StepComponentType =
 const RequestFormPage = () => {
   const [isError, setIsError] = useState<boolean>(false);
   const navigate = useNavigate();
+
   /* step 관리 훅 */
   const { step, next, isLast } = useStepParam(3);
 
@@ -37,9 +38,20 @@ const RequestFormPage = () => {
 
   //api 연결 + 유효성 검사
   const { mutateAsync: requestSend } = usePostRequest();
-  const { sportsTypeInfo } = useRequestStore();
-  const { setPriceInfo } = useRequestStore();
+  //스토어에서 필요한 정보들 가져오기
+  const sportsTypeInfo = useRequestStore((s) => s.sportsTypeInfo);
+  const priceInfo = useRequestStore((s) => s.priceInfo);
+  const setPriceInfo = useRequestStore((s) => s.setPriceInfo);
+  const resetRequest = useRequestStore((s) => s.resetRequest);
   const { data: userInfo, isPending } = useGetUserInfo();
+  const [priceError, setPriceError] = useState<string | null>(null);
+
+  //페이지 진입 시 스토어 초기화
+  useEffect(() => {
+    resetRequest();
+    setPriceError(null);
+    setIsError(false);
+  }, [resetRequest]);
 
   useEffect(() => {
     if (isPending) return;
@@ -56,6 +68,20 @@ const RequestFormPage = () => {
     if (step === 1) {
       if (sportsTypeInfo?.categoryId == 0) {
         alert('운동 종목을 선택해주세요');
+        return;
+      }
+    }
+    if (step == 2) {
+      const parsed = priceStepSchema.safeParse({
+        price: priceInfo.price,
+        sessionCount: priceInfo.sessionCount,
+      });
+      if (!parsed.success) {
+        const message = parsed.error.issues[0]?.message ?? '가격 정보를 확인해주세요';
+        setPriceError(message);
+        setIsError(true);
+        setTimeout(() => setIsError(false), 1000);
+        alert(message);
         return;
       }
     }
@@ -76,6 +102,7 @@ const RequestFormPage = () => {
       };
       try {
         const data = await requestSend(payload);
+        console.log('Request successful:', data);
         //응답으로 받은 requestionId를 바로 사용
         const id = data.result.requestRequestionId;
         // 성공 시 이동
@@ -87,12 +114,24 @@ const RequestFormPage = () => {
       return;
     }
     next();
-  }, [step, isLast, sportsTypeInfo?.categoryId, navigate, requestSend, next]);
+  }, [
+    step,
+    isLast,
+    next,
+    sportsTypeInfo?.categoryId,
+    priceInfo.price,
+    priceInfo.sessionCount,
+    requestSend,
+    navigate,
+  ]);
 
   return (
     <div className="box-border flex flex-col items-center py-[100px] text-center">
       {step === 3 ? <FillDetailStep ref={fillDetailRef} /> : <StepComponent />}
-      <div className="mt-12">
+      <div className="relative mt-12">
+        <div className="absolute -top-8 w-[26rem] text-center">
+          {step === 2 && priceError && <span className="text-sm text-red-600">{priceError}</span>}
+        </div>
         <Button
           onClick={handleNext}
           width="w-[26rem]"
