@@ -9,7 +9,10 @@ export type suggestDetailType = {
   userId: number;
   suggestedPrice: number;
   requestedPrice: number;
-  discountAmount: number;
+  discountedPrice: number;
+  suggestionSessionCount: number;
+  requestionSessionCount: number;
+  discountedSessionCount: number;
   isDiscounted: true;
   message: string;
   location: string;
