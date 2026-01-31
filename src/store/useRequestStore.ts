@@ -11,30 +11,36 @@ interface RequestState {
   setSportsTypeInfo: (info: Partial<SportsTypeStepDto>) => void;
   setPriceInfo: (info: Partial<RequestPriceStepDto>) => void;
   setDetailInfo: (info: Partial<RequestDetailStepDto>) => void;
+  resetRequest: () => void;
+  getRequestInfo: () => any;
 }
 
-export const useRequestStore = create<
-  RequestState & {
-    getRequestInfo: () => any;
-  }
->((set, get) => ({
+const initialState = {
   sportsTypeInfo: { categoryId: 0 },
   priceInfo: { price: 20000, sessionCount: 20, location: '' },
   detailInfo: {
     purpose: [],
     ageGroup: null,
-    userGender: '',
+    userGender: '' as const,
     availableDays: [],
     availableTimes: [],
-    proGender: '',
+    proGender: '' as const,
     startDate: '',
     content: '',
     etcPurposeContent: '',
   },
+};
+
+export const useRequestStore = create<RequestState>((set, get) => ({
+  ...initialState,
+
   setSportsTypeInfo: (info) =>
     set((state) => ({ sportsTypeInfo: { ...state.sportsTypeInfo, ...info } })),
+
   setPriceInfo: (info) => set((state) => ({ priceInfo: { ...state.priceInfo, ...info } })),
+
   setDetailInfo: (info) => set((state) => ({ detailInfo: { ...state.detailInfo, ...info } })),
+
   getRequestInfo: () => {
     const state = get();
     return {
@@ -53,4 +59,6 @@ export const useRequestStore = create<
       etcPurposeContent: state.detailInfo.etcPurposeContent,
     };
   },
+
+  resetRequest: () => set(initialState),
 }));

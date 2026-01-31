@@ -21,6 +21,7 @@ const SelectPriceStep = () => {
     district,
     street,
   );
+  const unitPrice = Number(avgPrice?.result?.avgUnitPrice);
 
   /** 총액 계산 */
   const total = useMemo(() => price * sessionCount, [price, sessionCount]);
@@ -108,13 +109,19 @@ const SelectPriceStep = () => {
 
         {/* 안내 문구 ------------------------------------------- */}
         <p className="text-xs">
-          <span className="font-semibold text-blue-600">{priceInfo.location}</span> 의 평균
-          <span className="font-semibold text-red-600"> {sport?.label}</span>PT가격은&nbsp;
-          1회당&nbsp;
-          <span className="font-semibold text-red-600">
-            {Number(avgPrice?.result.avgUnitPrice).toLocaleString()}원
-          </span>{' '}
-          입니다.
+          {Number.isFinite(unitPrice) ? (
+            <>
+              <span className="font-semibold text-blue-600">{priceInfo.location}</span> 의 평균
+              <span className="font-semibold text-red-600"> {sport?.label}</span> PT 가격은 1회당{' '}
+              <span className="font-semibold">{unitPrice.toLocaleString()}원</span>입니다.
+            </>
+          ) : (
+            <>
+              <span className="font-semibold text-blue-600">{priceInfo.location}</span> 의 평균
+              <span className="font-semibold text-red-600"> {sport?.label}</span> PT 가격 정보를
+              불러올 수 없습니다.
+            </>
+          )}
         </p>
 
         {/* 총액 ----------------------------------------------- */}

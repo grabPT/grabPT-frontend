@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import { type FieldErrors, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import Button from '@/components/Button';
@@ -43,15 +43,49 @@ const RequestDetailPage = () => {
   const [isEditing, setIsEditing] = useState(false);
   //제안서 작성하기 버튼 누를 시 suggestStore의 requestionId를 업데이트하고 suggestFormPage에서 받아쓰기
 
+  //제안서 스크롤 ref
+  const availableDaysRef = useRef<HTMLDivElement | null>(null);
+  const scrollToTop = () => {
+    requestAnimationFrame(() => {
+      containerRef?.current?.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  };
+  const scrollToError = (errors: FieldErrors<Omit<RequestRequestDto, 'location'>>) => {
+    requestAnimationFrame(() => {
+      if (errors.price || errors.sessionCount || errors.purpose) {
+        containerRef?.current?.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+      if (errors.startDate || errors.availableDays || errors.availableTimes) {
+        availableDaysRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+    });
+  };
+  //횟수 가격 숫자 변동 방지용 유틸 함수
+  const toSafeInt = (v: unknown) => {
+    const n = typeof v === 'number' ? v : Number(v);
+    return Number.isFinite(n) ? Math.trunc(n) : undefined;
+  };
+  const clampMin = (n: number, min: number) => (n < min ? min : n);
+
+  //가격 유틸 함수
+  const formatWon = (v: unknown) => {
+    const n = typeof v === 'number' ? v : Number(v);
+    return Number.isFinite(n) ? n.toLocaleString() : '';
+  };
+
   // api연결 시 isWriter 함수로 변경 (요청서의 작성자 id === 현재 유저 id)
   const { data: isWriter } = useGetCanEditRequest(requestionId);
   const isEdit = isWriter?.isEdit;
-
   const TabItems: TabItem[] = [
     { label: '정보', to: urlFor.requestDetail(requestionId) },
     { label: '제안 목록', to: urlFor.requestSuggests(requestionId) },
   ];
   const { data, refetch } = useGetDetailRequest(requestionId);
+  const isMatched = data?.isMatched;
+  const canClick = (role === 'PRO' || isWriter?.isEdit) && !isMatched;
+
   const {
     register,
     watch,
@@ -60,7 +94,7 @@ const RequestDetailPage = () => {
     setValue,
     getValues,
     reset,
-  } = useForm<Omit<RequestRequestDto, 'location'>>({
+  } = useForm<Omit<RequestRequestDto, 'location' | 'isMatched'>>({
     mode: 'onChange',
     resolver: zodResolver(patchRequestSchema),
     defaultValues: {
@@ -131,6 +165,7 @@ const RequestDetailPage = () => {
                 requestionId,
                 body: {
                   ...formData,
+                  price: Math.floor((formData.price ?? 0) / 100) * 100, //가격 정보 100원 단위로 조정
                   location: data?.location ?? '',
                   categoryId: data?.categoryId ?? 0,
                 },
@@ -139,6 +174,7 @@ const RequestDetailPage = () => {
                 onSuccess: async () => {
                   await refetch();
                   setIsEditing(false);
+                  scrollToTop();
                 },
                 onError: async () => {
                   //실패시 롤백
@@ -153,12 +189,12 @@ const RequestDetailPage = () => {
         },
         (errors) => {
           const firstError = Object.values(errors)[0];
+          scrollToError(errors);
           if (firstError?.message) {
             alert(firstError.message);
           }
         },
       )();
-      containerRef?.current?.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
   /* 목적(다중) */
@@ -225,27 +261,60 @@ const RequestDetailPage = () => {
           <div className="mt-5 flex items-end">
             <input
               type="number"
-              {...register('sessionCount', {
-                valueAsNumber: true,
-                setValueAs: (v) => Number(v) || 0,
-              })}
+              {...register('sessionCount', { valueAsNumber: true })}
+              onBlur={() => {
+                const n = toSafeInt(getValues('sessionCount'));
+                if (n === undefined) {
+                  setValue('sessionCount', 0, { shouldValidate: true, shouldDirty: true });
+                  return;
+                }
+                setValue('sessionCount', clampMin(n, 1), {
+                  shouldValidate: true,
+                  shouldDirty: true,
+                });
+              }}
               aria-label="희망 PT 횟수"
-              className="mr-1.5 h-12 w-[85px] rounded-xl border-2 border-[#BABABA] pl-3.5 text-center text-2xl text-[#9F9F9F]"
+              className={`mr-1.5 h-12 w-[85px] rounded-xl border-2 border-[#BABABA] pl-3.5 text-center text-2xl ${
+                isEditing ? 'border-[#BABABA] text-[#9F9F9F]' : 'text-black'
+              }`}
               readOnly={!isEdit || !isEditing}
             />
 
             <span className="mr-5">회</span>
-            <input
-              type="number"
-              {...register('price', { valueAsNumber: true, setValueAs: (v) => Number(v) || 0 })}
-              aria-label="희망 PT 가격"
-              className="mr-1.5 h-12 w-[260px] rounded-xl border-2 border-[#BABABA] px-8 text-end text-2xl text-[#9F9F9F]"
-              readOnly={!isEdit || !isEditing}
-            />
-            <span className="mr-5">원</span>
-            {(errors.price || errors.sessionCount) && (
-              <p className="text-[1rem] font-semibold text-red-500">{errors.price?.message}</p>
+            {/* 가격 */}
+            {!isEditing ? (
+              // 보기 모드: 콤마 표시 + readOnly
+              <input
+                type="text"
+                value={formatWon(watch('price'))}
+                aria-label="희망 PT 가격"
+                className={`mr-1.5 h-12 w-[260px] rounded-xl border-2 border-[#BABABA] px-8 text-end text-2xl ${
+                  isEditing ? 'border-[#BABABA] text-[#9F9F9F]' : 'text-black'
+                }`}
+                readOnly
+              />
+            ) : (
+              // 수정 모드: 숫자 입력(콤마 없음) + 값 변형 없음
+              <input
+                type="number"
+                {...register('price', { valueAsNumber: true })}
+                onBlur={() => {
+                  const n = toSafeInt(getValues('price'));
+                  if (n === undefined) {
+                    setValue('price', 0, { shouldValidate: true, shouldDirty: true });
+                    return;
+                  }
+                  const fixed = clampMin(Math.floor(n / 100) * 100, 100);
+                  setValue('price', fixed, { shouldValidate: true, shouldDirty: true });
+                }}
+                aria-label="희망 PT 가격"
+                className={`mr-1.5 h-12 w-[260px] rounded-xl border-2 border-[#BABABA] px-8 text-end text-2xl ${
+                  isEditing ? 'border-[#BABABA] text-[#9F9F9F]' : 'text-black'
+                }`}
+                readOnly={!isEdit || !isEditing}
+              />
             )}
+            <span className="mr-5">원</span>
           </div>
         </section>
 
@@ -384,7 +453,7 @@ const RequestDetailPage = () => {
         </section>
 
         {/* 6. 가능 요일 */}
-        <section>
+        <section ref={availableDaysRef}>
           <div className="flex items-end gap-3">
             <h1>
               가능
@@ -451,8 +520,15 @@ const RequestDetailPage = () => {
           />
         </section>
       </section>
+      {isMatched && (
+        <div className="mt-8 flex justify-center">
+          <span className="rounded-full bg-green-100 px-4 py-2 text-green-700">
+            매칭이 완료된 요청서입니다
+          </span>
+        </div>
+      )}
 
-      {(role === 'PRO' || isWriter?.isEdit) && (
+      {canClick && (
         <Button width="w-[425px]" className="my-16" onClick={handleButton}>
           {role === 'PRO' ? '제안서 작성' : !isEditing ? '수정하기' : '수정 완료'}
         </Button>
