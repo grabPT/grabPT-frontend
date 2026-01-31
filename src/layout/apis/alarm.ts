@@ -1,11 +1,24 @@
 import { END_POINT } from '@/constants/endPoints';
-import type { getAlarmListResponseDto, postAlarmReadResponseDto } from '@/layout/types/alarmType';
+import type {
+  getAllAlarmListResponseDto,
+  getUnreadAlarmListResponseDto,
+  postAlarmReadResponseDto,
+} from '@/layout/types/alarmType';
 import { privateInstance } from '@/libs/axios';
 
-export const getAlarmList = async (): Promise<getAlarmListResponseDto> => {
+export const getAllAlarmList = async (): Promise<getAllAlarmListResponseDto> => {
   try {
-    const response = await privateInstance.get(END_POINT.ALARM.list, { withCredentials: true });
-    console.log(response);
+    const response = await privateInstance.get(END_POINT.ALARM.allList);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw Error('axios 에러');
+  }
+};
+
+export const getUnreadAlarmList = async (): Promise<getUnreadAlarmListResponseDto> => {
+  try {
+    const response = await privateInstance.get(END_POINT.ALARM.unreadList);
     return response.data;
   } catch (error) {
     console.error(error);

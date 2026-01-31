@@ -6,6 +6,7 @@ import type { getProReviewsRequest } from '@/features/ProMypage/types/getProRevi
 import type { getRequestsListRequestDto } from '@/features/Requests/types/getRequestsListType';
 import type { getSuggestListRequestDto } from '@/features/SuggestList/types/getSuggestListType';
 import type { getSuggestListForRequestRequestDto } from '@/features/SuggestListForRequest/types/getSuggestListForRequestType';
+import type { getAllAlarmListRequestDto } from '@/layout/types/alarmType';
 
 export const QUERY_KEYS = {
   realtimeMatching: (category: string) => ['realtimeMatching', category] as const,
@@ -39,7 +40,11 @@ export const QUERY_KEYS = {
     list: (parmas: getChatRoomListRequestDto) => ['chatList', parmas.keyword],
     messages: (params: getMessagesRequestDto) => ['messages', params.roomId, params.cursor],
   },
-  alarm: ['alarm'],
+  ALARM: {
+    index: ['alarm'] as const,
+    allList: (params: getAllAlarmListRequestDto) => ['alarm', params.page, params.size] as const,
+    unreadList: ['alarm', 'unread'] as const,
+  },
   unreadCount: ['unreadCount'],
   matcingRequestsList: (params: getRequestsListRequestDto) => [
     'matchingreqeustsList',

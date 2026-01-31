@@ -11,6 +11,42 @@ export type alarmType = {
   isRead: boolean;
 };
 
-export type getAlarmListResponseDto = CommonResponseDto<alarmType[]>;
+export type getAllAlarmListResultType = {
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  content: alarmType[];
+  number: number;
+  sort: {
+    empty: boolean;
+    sorted: boolean;
+    unsorted: boolean;
+  };
+  numberOfElements: number;
+  pageable: {
+    offset: number;
+    sort: {
+      empty: boolean;
+      sorted: boolean;
+      unsorted: boolean;
+    };
+    pageNumber: number;
+    pageSize: number;
+    paged: boolean;
+    unpaged: boolean;
+  };
+  first: boolean;
+  last: boolean;
+  empty: boolean;
+};
+
+export type getAllAlarmListRequestDto = {
+  page: number;
+  size: number;
+};
+
+export type getAllAlarmListResponseDto = CommonResponseDto<getAllAlarmListResultType>;
+
+export type getUnreadAlarmListResponseDto = CommonResponseDto<alarmType[]>;
 
 export type postAlarmReadResponseDto = CommonResponseDto<alarmType>;
