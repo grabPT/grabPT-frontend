@@ -200,6 +200,7 @@ function attachAuthInterceptor(instance: AxiosInstance) {
         .finally(() => {
           // 7. 상태 초기화 (Flag Off)
           isRefreshing = false;
+          useGlobalLoadingStore.getState().setLoading(false);
         });
     },
   );
