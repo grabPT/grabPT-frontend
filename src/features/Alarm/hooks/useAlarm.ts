@@ -8,12 +8,16 @@ export const useGetAllAlarmList = (size: number) => {
   return useInfiniteQuery({
     queryKey: QUERY_KEYS.ALARM.infinite(size),
     queryFn: ({ pageParam }) => getAllAlarmList({ page: pageParam, size }),
-    initialPageParam: 0,
+    initialPageParam: 1,
     getNextPageParam: (lastPage) => {
       if (lastPage.result.last) return undefined;
-      return lastPage.result.pageable.pageNumber + 1;
+      // API 응답은 0-based, 요청은 1-based이므로 다음 페이지는 응답값 + 2
+      return lastPage.result.pageable.pageNumber + 2;
     },
     retry: 2,
+    staleTime: 1000 * 60 * 1, // 1분
+    gcTime: 1000 * 60 * 5, // 5분
+    refetchOnWindowFocus: false,
   });
 };
 
