@@ -1,3 +1,4 @@
+import type { getAllAlarmListRequestDto } from '@/features/Alarm/types/alarmType';
 import type { getChatRoomListRequestDto } from '@/features/Chat/types/getChatRoomListType';
 import type { getMessagesRequestDto } from '@/features/Chat/types/getMessagesType';
 import type { getMyInfoListRequestDto } from '@/features/Mypage/types/getMyRequestsListRequestDto';
@@ -6,7 +7,6 @@ import type { getProReviewsRequest } from '@/features/ProMypage/types/getProRevi
 import type { getRequestsListRequestDto } from '@/features/Requests/types/getRequestsListType';
 import type { getSuggestListRequestDto } from '@/features/SuggestList/types/getSuggestListType';
 import type { getSuggestListForRequestRequestDto } from '@/features/SuggestListForRequest/types/getSuggestListForRequestType';
-import type { getAllAlarmListRequestDto } from '@/layout/types/alarmType';
 
 export const QUERY_KEYS = {
   realtimeMatching: (category: string) => ['realtimeMatching', category] as const,
@@ -43,6 +43,7 @@ export const QUERY_KEYS = {
   ALARM: {
     index: ['alarm'] as const,
     allList: (params: getAllAlarmListRequestDto) => ['alarm', params.page, params.size] as const,
+    infinite: (size: number) => ['alarm', 'infinite', size] as const,
     unreadList: ['alarm', 'unread'] as const,
   },
   unreadCount: ['unreadCount'],

@@ -108,6 +108,9 @@ const UserSettlementPage = createLazyComponent(
 // 채팅
 const Chat = createLazyComponent(() => import('@/pages/Chat/Chat'));
 
+// 알림
+const AlarmPage = createLazyComponent(() => import('@/pages/Alarm/AlarmPage'));
+
 /**
  * 권한 메모
  * - guestOnly: 로그인 상태면 진입 차단 (예: 로그인/회원가입 페이지)
@@ -147,6 +150,13 @@ export const routesManifest: AppRoute[] = [
         path: ROUTES.HOME.PRO,
         element: <ProMainPage />,
         roles: ['PRO'],
+        errorElement: <ErrorComponent />,
+      },
+      // 알림 페이지
+      {
+        path: ROUTES.ALARM,
+        element: withFallback(<AlarmPage />),
+        roles: ['USER', 'PRO'],
         errorElement: <ErrorComponent />,
       },
 

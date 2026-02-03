@@ -2,18 +2,14 @@ import { useEffect } from 'react';
 
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
+import AlarmController from '@/features/Alarm/controller/AlarmController';
 import UnreadCountController from '@/features/Chat/controller/UnreadCountController';
-import AlarmController from '@/layout/controller/AlarmController';
 import { useStompStore } from '@/store/useStompStore';
 
 import { buildRoutes } from './routes/builder';
 import { routesManifest } from './routes/manifest';
 
 export default function App() {
-  useEffect(() => {
-    console.log('Environment Variables:', import.meta.env);
-  }, []);
-
   const init = useStompStore((s) => s.init);
   const teardown = useStompStore((s) => s.teardown);
 
