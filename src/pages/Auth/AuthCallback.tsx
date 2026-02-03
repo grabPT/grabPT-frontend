@@ -8,7 +8,7 @@ import LoadingMuscle from '@/components/LoadingMuscle';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { ROLES } from '@/constants/roles';
 import ROUTES from '@/constants/routes';
-import { getAlarmList } from '@/layout/apis/alarm';
+import { getUnreadAlarmList } from '@/features/Alarm/apis/alarm';
 import { useAlarmStore } from '@/store/useAlarmStore';
 import { useRoleStore } from '@/store/useRoleStore';
 import { useUnreadStore } from '@/store/useUnreadStore';
@@ -85,8 +85,8 @@ const AuthCallback = () => {
       try {
         const [alarmResponse, unreadResponse] = await Promise.all([
           queryClient.fetchQuery({
-            queryKey: QUERY_KEYS.alarm,
-            queryFn: getAlarmList,
+            queryKey: QUERY_KEYS.ALARM.unreadList,
+            queryFn: getUnreadAlarmList,
           }),
           queryClient.fetchQuery({
             queryKey: QUERY_KEYS.unreadCount,

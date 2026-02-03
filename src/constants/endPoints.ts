@@ -101,7 +101,8 @@ export const END_POINT = {
 
   ALARM: {
     read: (alarmId: number) => `/api/alarm/${alarmId}/read`,
-    list: '/api/alarmList',
+    allList: '/api/allAlarmList',
+    unreadList: '/api/unreadAlarmList',
   },
 
   SETTLEMENT: { settlement: '/api/trainer/dashboard', user_settlement: '/api/user/dashboard' },
