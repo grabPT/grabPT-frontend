@@ -1,7 +1,11 @@
 import axios, { type AxiosError, type AxiosInstance, type AxiosRequestConfig } from 'axios';
 
 import { END_POINT } from '@/constants/endPoints';
+import ROUTES from '@/constants/routes';
 import { postReissue } from '@/features/Signup/apis/auth';
+import { useGlobalLoadingStore } from '@/store/useGlobalLoadingStore';
+import { performClientLogout } from '@/utils/clientLogout';
+import { confirm } from '@/utils/confirmModalUtils';
 
 // --------------------------------------------------------------------------
 // 1. 타입 확장 & 설정 (Types & Config)
@@ -103,7 +107,7 @@ function processQueue(error: any) {
 function attachAuthInterceptor(instance: AxiosInstance) {
   instance.interceptors.response.use(
     (response) => response, // 성공 시 그대로 통과
-    async (error: AxiosError) => {
+    (error: AxiosError) => {
       const originalRequest = error.config as AxiosRequestConfig;
       const status = error.response?.status;
 
@@ -119,44 +123,84 @@ function attachAuthInterceptor(instance: AxiosInstance) {
       }
 
       // --- [여기부터 401 핸들링 시작] ---
+
+      // 1. 이미 다른 요청이 갱신 중이라면? -> 큐에 넣고 대기
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          retryQueue.push({ resolve, reject, config: originalRequest });
+        });
+      }
+
       originalRequest._retry = true; // 재시도 플래그 설정 (무한루프 방지)
+      isRefreshing = true; // 갱신 시작 (Flag On)
+      useGlobalLoadingStore.getState().setLoading(true); // 로딩 시작
 
-      try {
-        // 1. 이미 다른 요청이 갱신 중이라면? -> 큐에 넣고 대기
-        if (isRefreshing) {
-          return new Promise((resolve, reject) => {
-            retryQueue.push({ resolve, reject, config: originalRequest });
-          });
-        }
+      // 유틸리티 함수: 지연 (Backoff)
+      const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+      const MAX_REISSUE_RETRIES = 3;
 
-        // 2. 내가 첫 401이라면? -> 갱신 시작 (Flag On)
-        isRefreshing = true;
+      let reissueError: any = null;
 
-        // 3. 토큰 갱신 요청
-        const { result } = await postReissue();
+      // 3. 토큰 갱신 시도 (재시도 로직 포함)
+      const tryReissue = async () => {
+        for (let attempt = 1; attempt <= MAX_REISSUE_RETRIES; attempt++) {
+          try {
+            // 3. 토큰 갱신 요청
+            const { result } = await postReissue();
 
-        // 개발/스테이징 환경: 응답 받은 토큰 스토리지 갱신
-        if (STAGE === 'development' || STAGE === 'staging') {
-          if (result) {
-            localStorage.setItem('accessToken', result.accessToken);
-            localStorage.setItem('refreshToken', result.refreshToken);
+            // 개발/스테이징 환경: 응답 받은 토큰 스토리지 갱신
+            if (STAGE === 'development' || STAGE === 'staging') {
+              if (result) {
+                localStorage.setItem('accessToken', result.accessToken);
+                localStorage.setItem('refreshToken', result.refreshToken);
+              }
+            }
+
+            // 4. 갱신 성공! -> 큐에 쌓인 요청들 처리
+            processQueue(null);
+
+            // 5. 내 요청(첫 401)도 재시도
+            return privateInstance(originalRequest);
+          } catch (err) {
+            reissueError = err;
+            // 마지막 시도가 아니면 잠시 대기 (예: 1초)
+            if (attempt < MAX_REISSUE_RETRIES) {
+              await wait(1000);
+            }
           }
         }
+        // 루프를 다 돌았는데도 실패한 경우
+        throw reissueError;
+      };
 
-        // 4. 갱신 성공! -> 큐에 쌓인 요청들 처리
-        processQueue(null);
+      return tryReissue()
+        .catch(async (err) => {
+          // 6. 갱신 실패! -> 큐에 쌓인 요청들 전부 에러 처리. 여기서 로딩 종료해야 모달 떴을 때 로딩ui 사라짐
+          processQueue(err);
+          useGlobalLoadingStore.getState().setLoading(false);
 
-        // 5. 내 요청(첫 401)도 재시도
-        return privateInstance(originalRequest);
-      } catch (refreshError) {
-        // 6. 갱신 실패! -> 큐에 쌓인 요청들 전부 에러 처리
-        processQueue(refreshError);
-        // 필요 시 여기서 로그아웃 처리 가능
-        return Promise.reject(refreshError);
-      } finally {
-        // 7. 상태 초기화 (Flag Off)
-        isRefreshing = false;
-      }
+          // --- 로그인할지 메인갈지 선택 ---
+          const isLogin = await confirm(
+            '세션이 만료되었습니다. 다시 로그인하시겠습니까?',
+            '로그인',
+            '메인으로',
+          );
+
+          // 로그아웃처리를 먼저하면 라우터가 리다렉시켜버림;; 여기서 따로따로 해야 하는 듯
+          if (isLogin) {
+            performClientLogout();
+            window.location.href = ROUTES.AUTH.LOGIN;
+          } else {
+            performClientLogout();
+            window.location.href = ROUTES.HOME.ROOT;
+          }
+
+          return Promise.reject(err);
+        })
+        .finally(() => {
+          // 7. 상태 초기화 (Flag Off)
+          isRefreshing = false;
+        });
     },
   );
 }
