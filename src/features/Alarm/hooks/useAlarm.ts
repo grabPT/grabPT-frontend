@@ -14,9 +14,8 @@ export const useGetAllAlarmList = (size: number) => {
       // API 응답은 0-based, 요청은 1-based이므로 다음 페이지는 응답값 + 2
       return lastPage.result.pageable.pageNumber + 2;
     },
+    gcTime: 0, // 알람페이지 진입마다 새로 받아오기
     retry: 2,
-    staleTime: 1000 * 60 * 1, // 1분
-    gcTime: 1000 * 60 * 5, // 5분
     refetchOnWindowFocus: false,
   });
 };

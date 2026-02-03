@@ -1,3 +1,4 @@
+import ChevronArrowIcon from '@/assets/icons/ChevronArrowIcon';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import AlarmSkeleton from '@/features/Alarm/components/AlarmSkeleton';
 import { useGetAllAlarmList } from '@/features/Alarm/hooks/useAlarm';
@@ -10,7 +11,7 @@ const AlarmPage = () => {
   const alarmList = data?.pages.flatMap((page) => page.result.content);
 
   return (
-    <div className="layout-container py-section-sm min-h-screen">
+    <div className="layout-sm-container py-section-sm min-h-screen">
       <h1 className="mb-6 text-2xl font-bold">전체 알림</h1>
 
       {isLoading ? (
@@ -35,21 +36,10 @@ const AlarmPage = () => {
               ) : (
                 <button
                   onClick={() => fetchNextPage()}
-                  className="group flex w-full flex-col items-center justify-center gap-1 border-t border-gray-100 py-4 text-gray-400 hover:bg-gray-50 hover:text-gray-600"
+                  className="flex w-full items-center justify-center gap-1 border-t border-gray-100 py-4 text-gray-400 hover:bg-gray-50 hover:text-gray-600"
                 >
                   <span className="text-sm">더 보기</span>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-5 w-5 transition-transform group-hover:translate-y-1"
-                  >
-                    <polyline points="6 9 12 15 18 9" />
-                  </svg>
+                  <ChevronArrowIcon direction="down" className="h-5 w-5" />
                 </button>
               )}
             </div>
