@@ -5,9 +5,9 @@ import fileImage from '@/assets/images/FileImage.svg';
 import PaymentImage from '@/assets/images/PaymentImage.svg';
 import SuccessImage from '@/assets/images/SuccessImage.svg';
 import textImage from '@/assets/images/TextImage.svg';
+import { usePatchReadAlarm } from '@/features/Alarm/hooks/useAlarm';
+import type { alarmType } from '@/features/Alarm/types/alarmType';
 import { useTimeAgo } from '@/hooks/useTimaAgo';
-import { usePatchReadAlarm } from '@/layout/hooks/useAlarm';
-import type { alarmType } from '@/layout/types/alarmType';
 
 interface AlarmDropdownItemProps {
   alarm: alarmType;

@@ -1,3 +1,4 @@
+import type { getAllAlarmListRequestDto } from '@/features/Alarm/types/alarmType';
 import type { getChatRoomListRequestDto } from '@/features/Chat/types/getChatRoomListType';
 import type { getMessagesRequestDto } from '@/features/Chat/types/getMessagesType';
 import type { getMyInfoListRequestDto } from '@/features/Mypage/types/getMyRequestsListRequestDto';
@@ -39,7 +40,12 @@ export const QUERY_KEYS = {
     list: (parmas: getChatRoomListRequestDto) => ['chatList', parmas.keyword],
     messages: (params: getMessagesRequestDto) => ['messages', params.roomId, params.cursor],
   },
-  alarm: ['alarm'],
+  ALARM: {
+    index: ['alarm'] as const,
+    allList: (params: getAllAlarmListRequestDto) => ['alarm', params.page, params.size] as const,
+    infinite: (size: number) => ['alarm', 'infinite', size] as const,
+    unreadList: ['alarm', 'unread'] as const,
+  },
   unreadCount: ['unreadCount'],
   matcingRequestsList: (params: getRequestsListRequestDto) => [
     'matchingreqeustsList',

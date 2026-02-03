@@ -12,6 +12,8 @@ const ROUTES = {
 
   OAUTH: '/auth/callback',
 
+  ALARM: '/alarm',
+
   CHAT: {
     ROOT: '/chat',
   },
