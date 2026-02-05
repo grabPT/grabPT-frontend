@@ -9,6 +9,7 @@ import { ReviewFormModal } from '@/components/ReviewFormModal';
 import { urlFor } from '@/constants/routes';
 import UserRequestHeader from '@/features/Requests/components/UserRequestHeader';
 import { useRoleStore } from '@/store/useRoleStore';
+import { MATCH_STATUS_UI, type MatchStatusType } from '@/types/RealtimeMatchingType';
 import { TIME_SLOT_LABELS } from '@/types/ReqeustsType';
 import type { Tags } from '@/types/Tags';
 
@@ -21,7 +22,7 @@ interface RequestCardInMainProps {
   text: string;
   id: number;
   profileImg?: string;
-  isMatched: boolean;
+  matchStatus?: MatchStatusType;
   proProfileId?: number;
   proNickname?: string;
   canWriteReview?: boolean;
@@ -35,7 +36,7 @@ const RequestCardInMain = ({
   id,
   profileImg,
   proProfileId,
-  isMatched,
+  matchStatus,
   proNickname,
   canWriteReview,
 }: RequestCardInMainProps) => {
@@ -43,6 +44,9 @@ const RequestCardInMain = ({
   const [modalOpen, setModalOpen] = useState(false);
   const { role } = useRoleStore();
   const isPro = role === 'PRO';
+  const status: MatchStatusType = matchStatus ?? 'WAITING';
+  const { color: matchColor, text: matchText } = MATCH_STATUS_UI[status];
+
   useEffect(() => {
     const { body } = document;
     if (!body) return;
@@ -72,15 +76,10 @@ const RequestCardInMain = ({
       )}
     >
       <div className="flex items-center justify-end">
-        <div
-          className={clsx(
-            'h-[13px] w-[13px] rounded-full',
-            isMatched ? 'bg-[#4CAF50]' : 'bg-[#FF8A00]',
-          )}
-        />
+        <div className={clsx('h-[13px] w-[13px] rounded-full', matchColor)} />
         {/* 상태 텍스트 */}
         <p className="font-pretendard ml-[6px] text-[12px] leading-[16.8px] font-medium text-[#000]">
-          {isMatched ? '매칭 성공' : '대기중'}
+          {matchText}
         </p>
       </div>
       <UserRequestHeader nickName={name} location={location} profileImg={profileImg} />

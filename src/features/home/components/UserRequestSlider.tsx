@@ -173,7 +173,7 @@ const UserRequestSlider = ({ title, requests, location, name }: RequestSliderPro
                     categoryName: r.categoryName,
                   }}
                   text={r.content ?? ''}
-                  isMatched={r.status === 'MATCHED'}
+                  matchStatus={r.status}
                   proProfileId={r.proProfileId}
                   proNickname={r.proNickname || ''}
                   canWriteReview={r.canWriteReview}

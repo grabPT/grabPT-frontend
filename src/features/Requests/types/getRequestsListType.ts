@@ -24,8 +24,6 @@ export type RequestsListItemType = {
   availableTimes: TimeSlot[];
   categoryName: string;
   userNickname: string;
-  // requestLocation: Address[];
-  // matchStatus: MatchStatusType; 중복 주석 처리
 };
 
 export type getRequestsListResultType = {

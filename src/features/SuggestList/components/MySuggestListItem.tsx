@@ -8,6 +8,7 @@ import ProfileImage from '@/components/ProfileImage';
 import { urlFor } from '@/constants/routes';
 import type { suggestListItemtype } from '@/features/SuggestList/types/getSuggestListType';
 import { cn } from '@/libs/cn';
+import { MATCH_STATUS_UI } from '@/types/RealtimeMatchingType';
 
 interface MySuggestListItemProps {
   suggest: suggestListItemtype;
@@ -16,7 +17,8 @@ interface MySuggestListItemProps {
 const MySuggestListItem = ({ suggest }: MySuggestListItemProps) => {
   const profileImage = suggest.profileImageUrl || Profile;
   const navigate = useNavigate();
-  const isMatched = suggest.matchingStatus === 'MATCHED';
+  const matchStatus = suggest.matchingStatus || 'WAITING';
+  const { color: matchColor, text: matchText } = MATCH_STATUS_UI[matchStatus];
 
   return (
     <Box
@@ -39,13 +41,8 @@ const MySuggestListItem = ({ suggest }: MySuggestListItemProps) => {
         </div>
 
         <div className="flex items-center">
-          <span className="text-sm text-gray-500">{isMatched ? '매칭 완료' : '대기 중'}</span>
-          <div
-            className={clsx(
-              `ml-2 h-3 w-3 rounded-full`,
-              isMatched ? 'bg-[#4CAF50]' : 'bg-[#FF8A00]',
-            )}
-          />
+          <span className="text-sm text-gray-500">{matchText}</span>
+          <div className={clsx(`ml-2 h-3 w-3 rounded-full`, matchColor)} />
         </div>
       </div>
     </Box>
