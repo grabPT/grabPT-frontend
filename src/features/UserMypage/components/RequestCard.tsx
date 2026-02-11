@@ -219,14 +219,14 @@ const RequestCard = ({
               {/* 버튼 */}
               <div className="grid grid-cols-2 gap-4">
                 <Button
-                  className="bg-gray-300 text-gray-900 transition-all duration-300 hover:bg-gray-400"
+                  className="bg-gray-300 transition-all duration-300 hover:bg-gray-400"
                   onClick={() => setModalOpen(false)}
                   width="w-full"
                 >
                   취소
                 </Button>
                 <Button
-                  className="transition-all duration-300"
+                  className="bg-red-400 text-red-900 transition-all duration-300 hover:bg-red-500 "
                   onClick={handleDeleteRequest}
                   width="w-full"
                 >

@@ -13,7 +13,7 @@ const UserReviews = () => {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      {/* ✅ 스켈레톤 UI */}
+      {/* 스켈레톤 UI */}
       {isPending && (
         <div className="mt-[50px] flex w-[800px] flex-col items-center gap-[30px]">
           {Array.from({ length: 5 }).map((_, idx) => (
