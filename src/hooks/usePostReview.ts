@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
 
 import { postReview } from '@/apis/postReview';
 import type { postReviewRequestDto } from '@/features/home/types/reviews';
@@ -7,11 +8,11 @@ import type { CommonResponseDto } from '@/types/commonResponseDto';
 export const usePostReview = () => {
   return useMutation<CommonResponseDto<string>, Error, postReviewRequestDto>({
     mutationFn: (data: postReviewRequestDto) => postReview(data),
-    onSuccess: (data) => {
-      console.log('리뷰 작성 요청 성공:', data);
+    onSuccess: () => {
+      toast.success('리뷰 작성이 완료되었습니다');
     },
-    onError: (error) => {
-      console.error('리뷰 작성 요청 실패:', error);
+    onError: () => {
+      toast.error('리뷰 작성에 실패했습니다');
     },
   });
 };

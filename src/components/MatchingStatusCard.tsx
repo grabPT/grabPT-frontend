@@ -10,7 +10,7 @@ interface MatchingStatusCardProps {
 // RealtimeMatchingStatus.tsx에 쓰이는 카드 컴포넌트입니다
 const MatchingStatusCard = ({ match }: MatchingStatusCardProps) => {
   const status = match.matchingStatus;
-const { color:matchColor, text:matchText } = MATCH_STATUS_UI[status];
+  const { color: matchColor, text: matchText } = MATCH_STATUS_UI[status];
 
   return (
     <div className="flex h-[48px] w-full items-center justify-between">
@@ -28,12 +28,7 @@ const { color:matchColor, text:matchText } = MATCH_STATUS_UI[status];
           </p>
         </div>
         {/* 상태 점 */}
-        <div
-          className={clsx(
-            'ml-[7px] h-[13px] w-[13px] rounded-full',
-            matchColor,
-          )}
-        />
+        <div className={clsx('ml-[7px] h-[13px] w-[13px] rounded-full', matchColor)} />
         {/* 상태 텍스트 */}
         <p className="font-pretendard ml-[6px] text-[12px] leading-[16.8px] font-medium text-[#000]">
           {matchText}

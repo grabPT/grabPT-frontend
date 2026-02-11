@@ -126,10 +126,9 @@ const RequestCardInMain = ({
             }}
           >
             <div
-              className="mx-auto my-auto flex w-[min(92vw,520px)] flex-col justify-center rounded-xl bg-white p-6 shadow-xl"
+              className="mx-auto my-auto flex w-[min(92vw,520px)] flex-col justify-center rounded-xl shadow-xl"
               onClick={(e) => e.stopPropagation()}
             >
-              <h3 className="mr-auto mb-3 text-lg font-semibold">리뷰 작성</h3>
               <ReviewFormModal
                 proName={proNickname ?? '전문가'}
                 proId={proProfileId || 999}

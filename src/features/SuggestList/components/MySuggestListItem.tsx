@@ -17,9 +17,11 @@ interface MySuggestListItemProps {
 const MySuggestListItem = ({ suggest }: MySuggestListItemProps) => {
   const profileImage = suggest.profileImageUrl || Profile;
   const navigate = useNavigate();
-  const matchStatus = suggest.matchingStatus || 'WAITING';
+  const matchStatus =
+    suggest.matchingStatus && suggest.matchingStatus in MATCH_STATUS_UI
+      ? suggest.matchingStatus
+      : 'MATCHED';
   const { color: matchColor, text: matchText } = MATCH_STATUS_UI[matchStatus];
-
   return (
     <Box
       height="h-[75px]"
@@ -42,7 +44,7 @@ const MySuggestListItem = ({ suggest }: MySuggestListItemProps) => {
 
         <div className="flex items-center">
           <span className="text-sm text-gray-500">{matchText}</span>
-          <div className={clsx(`ml-2 h-3 w-3 rounded-full`, matchColor)} />
+          <div className={clsx(`ml-2 h-3 w-3 rounded-full ${matchColor}`)} />
         </div>
       </div>
     </Box>
