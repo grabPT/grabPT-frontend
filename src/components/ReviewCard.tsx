@@ -113,7 +113,7 @@ const ReviewCardSkeleton = () => {
     <Box.Skeleton width="w-[600px]" height="h-[214px]">
       <div className="relative flex w-full flex-col p-4">
         {/* 상단 */}
-        <div className="flex gap-4 mb-5">
+        <div className="mb-5 flex gap-4">
           <Skeleton className="h-14 w-14 rounded-full" />
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2">

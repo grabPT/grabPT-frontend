@@ -226,7 +226,7 @@ const RequestCard = ({
                   취소
                 </Button>
                 <Button
-                  className="bg-red-400 text-red-900 transition-all duration-300 hover:bg-red-500 "
+                  className="bg-red-400 text-red-900 transition-all duration-300 hover:bg-red-500"
                   onClick={handleDeleteRequest}
                   width="w-full"
                 >
