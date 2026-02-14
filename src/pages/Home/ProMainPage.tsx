@@ -6,7 +6,7 @@ import RealtimeMatchingStatus from '@/components/RealtimeMatchingStatus';
 import ROUTES from '@/constants/routes';
 import { SPORTS } from '@/constants/sports';
 import { useGetMatchingRequestsList } from '@/features/Requests/hooks/useGetMyRequestsList';
-import RequestSlider from '@/features/home/components/UserRequestSlider';
+import RequestSlider from '@/features/home/components/RequestSlider';
 import { useProProfileQuery } from '@/hooks/useGetProProfile';
 import { useRoleStore } from '@/store/useRoleStore';
 import type { SportsSlugType } from '@/types/SportsType';

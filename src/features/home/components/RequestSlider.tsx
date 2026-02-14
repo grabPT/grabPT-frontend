@@ -6,7 +6,7 @@ import 'slick-carousel/slick/slick.css';
 
 import HeaderProfile from '@/assets/images/HeaderProfile.png';
 import { NextArrow, PrevArrow } from '@/features/home/components/CustomArrow';
-import RequestCardInMain from '@/features/home/components/RequestCard';
+import RequestCardInMain from '@/features/home/components/RequestCardInMain';
 import type { RequestSliderItemType } from '@/features/home/types/request';
 import { useRoleStore } from '@/store/useRoleStore';
 
@@ -20,7 +20,7 @@ interface RequestSliderProps {
 /**
  * 사용자 요청서 슬라이더
  */
-const UserRequestSlider = ({ title, requests, location, name }: RequestSliderProps) => {
+const RequestSlider = ({ title, requests, location, name }: RequestSliderProps) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isSliderReady, setIsSliderReady] = useState(false);
   const { role } = useRoleStore();
@@ -187,4 +187,4 @@ const UserRequestSlider = ({ title, requests, location, name }: RequestSliderPro
   );
 };
 
-export default UserRequestSlider;
+export default RequestSlider;
