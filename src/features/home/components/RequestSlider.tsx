@@ -1,14 +1,24 @@
 import { useEffect, useRef, useState } from 'react';
 
+import { useNavigate } from 'react-router-dom';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 
 import HeaderProfile from '@/assets/images/HeaderProfile.png';
+import ROUTES from '@/constants/routes';
 import { NextArrow, PrevArrow } from '@/features/home/components/CustomArrow';
 import RequestCardInMain from '@/features/home/components/RequestCardInMain';
 import type { RequestSliderItemType } from '@/features/home/types/request';
 import { useRoleStore } from '@/store/useRoleStore';
+
+const getSlidesToShow = (width: number) => {
+  if (width < 720) return 1;
+  if (width < 1024) return 2;
+  if (width < 1440) return 2;
+  if (width < 1820) return 3;
+  return 4;
+};
 
 interface RequestSliderProps {
   title: string;
@@ -21,10 +31,56 @@ interface RequestSliderProps {
  * 사용자 요청서 슬라이더
  */
 const RequestSlider = ({ title, requests, location, name }: RequestSliderProps) => {
+  const navigate = useNavigate();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isSliderReady, setIsSliderReady] = useState(false);
+  const [slidesToShowNow, setSlidesToShowNow] = useState(getSlidesToShow(window.innerWidth));
   const { role } = useRoleStore();
   const sliderRef = useRef<Slider>(null);
+
+  // 요청서 페이지로 이동하는 함수
+  const handleNavigate = () => {
+    if (role === 'USER') {
+      //상대경로 적용 안됨 -> 절대 경로 사용
+      navigate(`${ROUTES.MYPAGE.USER}/${ROUTES.MYPAGE.USER_TABS.REQUEST_LIST}`);
+    } else if (role === 'PRO') {
+      navigate(ROUTES.MATCHING_STATUS.REQUESTS.ROOT);
+    }
+  };
+
+  const totalSlides = requests?.slice(0, 12).length ?? 0;
+
+  //마지막 슬라이드 계산
+  const lastStartIndex = Math.max(0, totalSlides - slidesToShowNow);
+  const isAtEnd = currentSlide >= lastStartIndex;
+
+  // 슬라이더 초기화 및 리사이즈 처리
+  useEffect(() => {
+    const handleResize = () => {
+      setSlidesToShowNow(getSlidesToShow(window.innerWidth));
+      sliderRef.current?.slickGoTo(0);
+    };
+
+    // 초기 로드 시 슬라이더 준비 상태로 설정
+    const timer = setTimeout(() => {
+      setIsSliderReady(true);
+      sliderRef.current?.slickGoTo(0);
+    }, 100);
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  // 데이터 변경 시 슬라이더 리셋
+  useEffect(() => {
+    if (isSliderReady && sliderRef.current) {
+      setCurrentSlide(0);
+      sliderRef.current.slickGoTo(0);
+    }
+  }, [requests, isSliderReady]);
 
   const settings = {
     dots: true,
@@ -41,7 +97,7 @@ const RequestSlider = ({ title, requests, location, name }: RequestSliderProps) 
     afterChange: (current: number) => {
       setCurrentSlide(current);
     },
-    nextArrow: <NextArrow />,
+    nextArrow: <NextArrow isAtEnd={isAtEnd} onEndClick={handleNavigate} role={role} />,
     prevArrow: currentSlide === 0 ? undefined : <PrevArrow />,
     responsive: [
       {
@@ -80,53 +136,6 @@ const RequestSlider = ({ title, requests, location, name }: RequestSliderProps) 
       },
     ],
   };
-
-  // 슬라이더 초기화 및 리사이즈 처리
-  useEffect(() => {
-    const handleResize = () => {
-      if (sliderRef.current) {
-        sliderRef.current.slickGoTo(0); // 리사이즈 시 첫 번째 슬라이드로
-      }
-    };
-
-    // 초기 로드 시 슬라이더 준비 상태로 설정
-    const timer = setTimeout(() => {
-      setIsSliderReady(true);
-      if (sliderRef.current) {
-        sliderRef.current.slickGoTo(0);
-      }
-    }, 100);
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      clearTimeout(timer);
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
-  // 데이터 변경 시 슬라이더 리셋
-  useEffect(() => {
-    if (isSliderReady && sliderRef.current) {
-      setCurrentSlide(0);
-      sliderRef.current.slickGoTo(0);
-    }
-  }, [requests, isSliderReady]);
-
-  // 기존의 자동 클릭 로직 제거 또는 수정
-  useEffect(() => {
-    if (!isSliderReady) return;
-
-    const timer = setTimeout(() => {
-      if (sliderRef.current) {
-        // 자동으로 prev 클릭하는 대신, 첫 번째 슬라이드로 확실히 이동
-        sliderRef.current.slickGoTo(0);
-        console.log('슬라이더 첫 번째로 이동 ✅');
-      }
-    }, 200);
-
-    return () => clearTimeout(timer);
-  }, [isSliderReady]);
 
   if (!isSliderReady) {
     return (
