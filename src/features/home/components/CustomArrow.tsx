@@ -1,7 +1,8 @@
 // SlickArrows.tsx
+import { useState } from 'react';
+
 import ArrowRight from '@/features/home/assets/icons/ArrowRight';
 import type { Role } from '@/types/Role';
-import { useState } from 'react';
 
 interface ArrowProps {
   className?: string;
@@ -11,7 +12,7 @@ interface ArrowProps {
 interface NextArrowProps extends ArrowProps {
   isAtEnd?: boolean;
   onEndClick?: () => void;
-  role : Role | null;
+  role: Role | null;
 }
 
 export const PrevArrow = ({ onClick }: ArrowProps) => (
@@ -32,7 +33,7 @@ export const NextArrow = ({ onClick, isAtEnd, onEndClick, role }: NextArrowProps
       onMouseLeave={() => setHovered(false)}
     >
       {isAtEnd && hovered && (
-        <div className="absolute left-[60px] top-1/2 -translate-y-1/2 whitespace-nowrap rounded-full border border-gray-200 bg-white px-3 py-1 text-sm font-semibold text-gray-700 shadow">
+        <div className="absolute top-1/2 left-[60px] -translate-y-1/2 rounded-full border border-gray-200 bg-white px-3 py-1 text-sm font-semibold whitespace-nowrap text-gray-700 shadow">
           {text}
         </div>
       )}
