@@ -12,7 +12,7 @@ interface ArrowProps {
 interface NextArrowProps extends ArrowProps {
   isAtEnd?: boolean;
   onEndClick?: () => void;
-  role: Role | null;
+  role?: Role | null;
 }
 
 export const PrevArrow = ({ onClick }: ArrowProps) => (
