@@ -12,13 +12,7 @@ import RequestCardInMain from '@/features/home/components/RequestCardInMain';
 import type { RequestSliderItemType } from '@/features/home/types/request';
 import { useRoleStore } from '@/store/useRoleStore';
 
-const getSlidesToShow = (width: number) => {
-  if (width < 720) return 1;
-  if (width < 1024) return 2;
-  if (width < 1440) return 2;
-  if (width < 1820) return 3;
-  return 4;
-};
+import { BREAKPOINT_MEDIA_QUERIES, getSlidesToShow } from '../utils/sliderUtils';
 
 interface RequestSliderProps {
   title: string;
@@ -34,7 +28,9 @@ const RequestSlider = ({ title, requests, location, name }: RequestSliderProps) 
   const navigate = useNavigate();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isSliderReady, setIsSliderReady] = useState(false);
-  const [slidesToShowNow, setSlidesToShowNow] = useState(getSlidesToShow(window.innerWidth));
+
+  const [slidesToShowNow, setSlidesToShowNow] = useState(1);
+
   const { role } = useRoleStore();
   const sliderRef = useRef<Slider>(null);
 
@@ -56,21 +52,23 @@ const RequestSlider = ({ title, requests, location, name }: RequestSliderProps) 
 
   // 슬라이더 초기화 및 리사이즈 처리
   useEffect(() => {
+    setSlidesToShowNow(getSlidesToShow());
+
     const handleResize = () => {
-      setSlidesToShowNow(getSlidesToShow(window.innerWidth));
+      setSlidesToShowNow(getSlidesToShow());
       sliderRef.current?.slickGoTo(0);
     };
 
-    // 초기 로드 시 슬라이더 준비 상태로 설정
+    BREAKPOINT_MEDIA_QUERIES.forEach((mq) => mq.addEventListener('change', handleResize));
+
     const timer = setTimeout(() => {
       setIsSliderReady(true);
       sliderRef.current?.slickGoTo(0);
     }, 100);
 
-    window.addEventListener('resize', handleResize);
     return () => {
+      BREAKPOINT_MEDIA_QUERIES.forEach((mq) => mq.removeEventListener('change', handleResize));
       clearTimeout(timer);
-      window.removeEventListener('resize', handleResize);
     };
   }, []);
 
@@ -109,7 +107,15 @@ const RequestSlider = ({ title, requests, location, name }: RequestSliderProps) 
         },
       },
       {
-        breakpoint: 1440,
+        breakpoint: 1536,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          initialSlide: 0, // 반응형에서도 초기 슬라이드 명시
+        },
+      },
+      {
+        breakpoint: 1280,
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1,
@@ -126,7 +132,7 @@ const RequestSlider = ({ title, requests, location, name }: RequestSliderProps) 
         },
       },
       {
-        breakpoint: 720,
+        breakpoint: 768,
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
@@ -139,7 +145,7 @@ const RequestSlider = ({ title, requests, location, name }: RequestSliderProps) 
 
   if (!isSliderReady) {
     return (
-      <section className="3xl:w-[1480px] flex flex-col gap-9 sm:w-[720px] md:w-[820px] lg:w-[920px] xl:w-[1080px] 2xl:w-[1280px]">
+      <section className="3xl:w-[1820px] flex flex-col gap-9 sm:w-[640px] md:w-[768px] lg:w-[1024px] xl:w-[1280px] 2xl:w-[1536px]">
         <h2 className="font-pretendard ml-[10px] text-[30px] leading-[100%] font-extrabold tracking-[0%] sm:text-[24px] lg:text-[30px]">
           {title}
         </h2>
@@ -149,19 +155,19 @@ const RequestSlider = ({ title, requests, location, name }: RequestSliderProps) 
   }
 
   return (
-    <section className="3xl:w-[1480px] flex flex-col gap-9 sm:w-[720px] md:w-[820px] lg:w-[920px] xl:w-[1080px] 2xl:w-[1280px]">
+    <section className="3xl:w-[1820px] flex flex-col gap-9 sm:w-[640px] md:w-[768px] lg:w-[1024px] xl:w-[1280px] 2xl:w-[1536px]">
       <h2 className="font-pretendard ml-[10px] text-[30px] leading-[100%] font-extrabold tracking-[0%] sm:text-[24px] lg:text-[30px]">
         {title}
       </h2>
 
       {requests?.length === 0 ? (
-        // ✅ 요청서 없을 때
+        // 요청서 없을 때
         <div className="flex h-[230px] items-center justify-center rounded-xl border border-gray-200 bg-gray-50">
           <p className="text-lg font-medium text-gray-500">아직 작성하신 요청서가 없어요 📝</p>
         </div>
       ) : (
-        // ✅ 요청서 있을 때
-        <div className="slider-container 3xl:w-[1480px] relative mx-auto mb-[4px] sm:w-[720px] md:w-[920px] lg:w-[720px] xl:w-[1080px] 2xl:w-[1280px]">
+        // 요청서 있을 때
+        <div className="slider-container 3xl:w-[1820px] relative mx-auto mb-[4px] sm:w-[640px] md:w-[768px] lg:w-[1024px] xl:w-[1280px] 2xl:w-[1536px]">
           <Slider ref={sliderRef} {...settings}>
             {requests?.slice(0, 12).map((r, i) => (
               <div key={`${r.requestId}-${i}`} className="h-[400px] px-4">

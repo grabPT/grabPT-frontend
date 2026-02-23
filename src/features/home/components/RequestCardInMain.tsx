@@ -91,19 +91,19 @@ const RequestCardInMain = ({
       <div
         className={clsx(
           'w-full rounded-md border border-blue-600/10 bg-[#f0f7ff]',
-          canWriteReview && !isPro ? 'h-[140px]' : 'h-[200px]',
+          !canWriteReview && !isPro ? 'h-[140px]' : 'h-[200px]',
         )}
       >
         <p
           className={clsx(
             'p-1.5 text-[12px] text-[#525252]',
-            canWriteReview && !isPro ? 'line-clamp-4' : 'line-clamp-6',
+            !canWriteReview && !isPro ? 'line-clamp-4' : 'line-clamp-6',
           )}
         >
           {text}
         </p>
       </div>
-      {canWriteReview && !isPro && (
+      {!canWriteReview && !isPro && (
         <Button
           className="z-10"
           type="button"
