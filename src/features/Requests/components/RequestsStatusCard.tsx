@@ -5,6 +5,7 @@ import { urlFor } from '@/constants/routes';
 import UserRequestHeader from '@/features/Requests/components/UserRequestHeader';
 import type { RequestsListItemType } from '@/features/Requests/types/getRequestsListType';
 import { cn } from '@/libs/cn';
+import { MATCH_STATUS_UI } from '@/types/RealtimeMatchingType';
 
 /*
 전문가 요청현황 조회 시
@@ -18,7 +19,8 @@ interface RequestsStatusCardProps {
 
 const RequestsStatusCard = ({ request }: RequestsStatusCardProps) => {
   const navigate = useNavigate();
-  const isMatched = request.matchingStatus === 'MATCHED';
+  const matchStatus = request.matchingStatus || 'WAITING';
+  const { color: matchColor, text: matchText } = MATCH_STATUS_UI[matchStatus];
   const navigateToRequestDetail = (requestionId: number) =>
     navigate(urlFor.requestDetail(requestionId));
   console.log('요청서아이디', request.requestionId);
@@ -37,10 +39,8 @@ const RequestsStatusCard = ({ request }: RequestsStatusCardProps) => {
         <span className="text-sm text-gray-700">{request.sessionCount}회</span>
         <span className="text-gray-400">|</span>
         <span className="text-sm text-gray-700">{request.requestedPrice.toLocaleString()}원</span>
-        <div
-          className={`ml-2 h-3 w-3 rounded-full ${isMatched ? 'bg-green-500' : 'bg-orange-400'}`}
-        ></div>
-        <span className="text-sm text-gray-500">{isMatched ? '매칭 완료' : '매칭 중'}</span>
+        <div className={`ml-2 h-3 w-3 rounded-full ${matchColor}`}></div>
+        <span className="text-sm text-gray-500">{matchText}</span>
       </div>
     </div>
   );

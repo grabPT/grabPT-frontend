@@ -5,7 +5,7 @@ import type {
   RequestResponseDto,
 } from '@/features/Request/types/Request';
 import { privateInstance } from '@/libs/axios';
-import type { CanEditResponse } from '@/types/CanEditRespinse';
+import type { CanEditResponse } from '@/types/CanEditResponse';
 import type { CommonResponseDto } from '@/types/commonResponseDto';
 
 export const postRequest = async (
