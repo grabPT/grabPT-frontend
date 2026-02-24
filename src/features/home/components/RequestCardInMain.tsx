@@ -9,6 +9,7 @@ import { ReviewFormModal } from '@/components/ReviewFormModal';
 import { urlFor } from '@/constants/routes';
 import UserRequestHeader from '@/features/Requests/components/UserRequestHeader';
 import { useRoleStore } from '@/store/useRoleStore';
+import { MATCH_STATUS_UI, type MatchStatusType } from '@/types/RealtimeMatchingType';
 import { TIME_SLOT_LABELS } from '@/types/ReqeustsType';
 import type { Tags } from '@/types/Tags';
 
@@ -21,7 +22,7 @@ interface RequestCardInMainProps {
   text: string;
   id: number;
   profileImg?: string;
-  isMatched: boolean;
+  matchStatus?: MatchStatusType;
   proProfileId?: number;
   proNickname?: string;
   canWriteReview?: boolean;
@@ -35,7 +36,7 @@ const RequestCardInMain = ({
   id,
   profileImg,
   proProfileId,
-  isMatched,
+  matchStatus,
   proNickname,
   canWriteReview,
 }: RequestCardInMainProps) => {
@@ -43,6 +44,9 @@ const RequestCardInMain = ({
   const [modalOpen, setModalOpen] = useState(false);
   const { role } = useRoleStore();
   const isPro = role === 'PRO';
+  const status: MatchStatusType = matchStatus ?? 'WAITING';
+  const { color: matchColor, text: matchText } = MATCH_STATUS_UI[status];
+
   useEffect(() => {
     const { body } = document;
     if (!body) return;
@@ -67,20 +71,15 @@ const RequestCardInMain = ({
     <div
       onClick={() => navigate(urlFor.requestDetail(id))}
       className={clsx(
-        'flex h-[340px] max-w-[340px] cursor-pointer flex-col gap-[12px] rounded-xl px-[10px] py-[15px] shadow-[4px_4px_10px_rgba(0,0,0,0.25)] lg:w-[320px] xl:w-[320px] 2xl:w-[340px]',
+        'mx-auto flex h-[340px] w-[300px] w-full max-w-[340px] cursor-pointer flex-col gap-[12px] rounded-xl px-[10px] py-[15px] shadow-[4px_4px_10px_rgba(0,0,0,0.25)] lg:w-[320px] xl:w-[320px] 2xl:w-[340px]',
         !modalOpen && 'transition-transform duration-200 hover:scale-[1.02]',
       )}
     >
       <div className="flex items-center justify-end">
-        <div
-          className={clsx(
-            'h-[13px] w-[13px] rounded-full',
-            isMatched ? 'bg-[#4CAF50]' : 'bg-[#FF8A00]',
-          )}
-        />
+        <div className={clsx('h-[13px] w-[13px] rounded-full', matchColor)} />
         {/* 상태 텍스트 */}
         <p className="font-pretendard ml-[6px] text-[12px] leading-[16.8px] font-medium text-[#000]">
-          {isMatched ? '매칭 성공' : '대기중'}
+          {matchText}
         </p>
       </div>
       <UserRequestHeader nickName={name} location={location} profileImg={profileImg} />
@@ -127,10 +126,9 @@ const RequestCardInMain = ({
             }}
           >
             <div
-              className="mx-auto my-auto flex w-[min(92vw,520px)] flex-col justify-center rounded-xl bg-white p-6 shadow-xl"
+              className="mx-auto my-auto flex w-[min(92vw,520px)] flex-col justify-center rounded-xl shadow-xl"
               onClick={(e) => e.stopPropagation()}
             >
-              <h3 className="mr-auto mb-3 text-lg font-semibold">리뷰 작성</h3>
               <ReviewFormModal
                 proName={proNickname ?? '전문가'}
                 proId={proProfileId || 999}

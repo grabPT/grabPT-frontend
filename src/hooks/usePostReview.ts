@@ -7,11 +7,8 @@ import type { CommonResponseDto } from '@/types/commonResponseDto';
 export const usePostReview = () => {
   return useMutation<CommonResponseDto<string>, Error, postReviewRequestDto>({
     mutationFn: (data: postReviewRequestDto) => postReview(data),
-    onSuccess: (data) => {
-      console.log('리뷰 작성 요청 성공:', data);
-    },
-    onError: (error) => {
-      console.error('리뷰 작성 요청 실패:', error);
+    onError: (err) => {
+      console.error('리뷰 작성에 실패했습니다', err);
     },
   });
 };

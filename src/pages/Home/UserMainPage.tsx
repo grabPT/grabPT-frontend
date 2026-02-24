@@ -8,7 +8,7 @@ import 'slick-carousel/slick/slick.css';
 import Banner from '@/components/Banner';
 import RealtimeMatchingStatus from '@/components/RealtimeMatchingStatus';
 import { SPORTS } from '@/constants/sports';
-import RequestSlider from '@/features/home/components/UserRequestSlider';
+import RequestSlider from '@/features/home/components/RequestSlider';
 import UserSearchSection from '@/features/home/components/UserSearchSection';
 import { useGetMyRequestsList } from '@/hooks/useGetMyRequestsList';
 import { useGetUserInfo } from '@/hooks/useGetUserInfo';
