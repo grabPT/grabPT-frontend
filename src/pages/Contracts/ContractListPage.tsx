@@ -1,6 +1,9 @@
 import { useState } from 'react';
 
-import ProfileImage from '@/components/ProfileImage';
+import { TransactionInfoCard } from '@/components/TransactionInfoCard';
+import ContractCompletedIcon from '@/features/Contract/assets/ContractCompletedIcon.svg';
+import ContractDraftIcon from '@/features/Contract/assets/ContractDraftIcon.svg';
+import ContractListInfoCard from '@/features/Contract/components/ContractListInfoCard';
 import { useGetContractList } from '@/features/Contract/hooks/useGetContractList';
 import { useRoleStore } from '@/store/useRoleStore';
 
@@ -12,7 +15,8 @@ const ContractListPage = () => {
   const filters = ['전체', '진행중', '완료'];
 
   const contractList = data?.contracts.content || [];
-
+  const formattedActive = `${(data?.totalActiveContracts ?? 0).toLocaleString('ko-KR')}건`;
+  const formattedCompleted = `${(data?.totalCompletedContracts ?? 0).toLocaleString('ko-KR')}명`;
   const filtered = contractList.filter((c) => {
     const isStatusMatch =
       (filter === '진행중' && c.matchingStatus === 'MATCHED') ||
@@ -38,29 +42,18 @@ const ContractListPage = () => {
 
           {/* ── 요약 카드 2개 ── */}
           <div className="flex w-[55rem] flex-col items-center justify-center gap-6">
-            {[
-              {
-                label: '작성중인 계약서',
-                value: `${data?.totalActiveContracts || 0}건`,
-                desc: '현재 진행 중인 계약',
-              },
-              {
-                label: '완료된 계약서',
-                value: `${data?.totalCompletedContracts || 0}건`,
-                desc: '종료된 계약',
-              },
-            ].map((card) => (
-              <div
-                key={card.label}
-                className="flex h-[6.0625rem] w-[55rem] items-center justify-between rounded-[0.625rem] bg-[#E6ECFF] px-6"
-              >
-                <div className="flex flex-col gap-1">
-                  <span className="text-[0.875rem] font-semibold">{card.label}</span>
-                  <span className="text-[1.5rem] font-bold text-[#003EFB]">{card.value}</span>
-                </div>
-                <span className="text-[0.8125rem] text-[#616161]">{card.desc}</span>
-              </div>
-            ))}
+            <div className="flex w-[55rem] flex-col items-center justify-center gap-6">
+              <TransactionInfoCard
+                title="작성 중인 계약서"
+                content={formattedActive}
+                img={ContractDraftIcon}
+              />
+              <TransactionInfoCard
+                title="완료된 계약서"
+                content={formattedCompleted}
+                img={ContractCompletedIcon}
+              />
+            </div>
           </div>
         </div>
 
@@ -120,36 +113,7 @@ const ContractListPage = () => {
                       key={index}
                       className="flex w-[55rem] items-center text-[0.875rem] text-[#222]"
                     >
-                      {/* 회원 정보 */}
-                      <div className="flex flex-1 items-center justify-center gap-2">
-                        <ProfileImage src={c?.profileImageUrl} alt="프로필 이미지" />
-                        <span className="font-medium">{c.userNickname}</span>
-                      </div>
-
-                      {/* 계약 상태 */}
-                      <div className="flex-1 text-center">
-                        <span className="inline-block rounded-[1rem] px-[0.85rem] py-1 text-[0.8125rem] font-bold">
-                          {c.matchingStatus === 'MATCHED'
-                            ? '완료'
-                            : c.matchingStatus === 'MATCHING'
-                              ? '진행중'
-                              : '대기'}
-                        </span>
-                      </div>
-
-                      {/* 계약 금액 */}
-                      <div className="flex-1 text-center font-semibold">
-                        {(c.contractPrice * c.sessionCount).toLocaleString()}원
-                      </div>
-
-                      {/* 계약 기간 */}
-                      <div className="flex-1 text-center leading-[1.6] text-[#616161]">
-                        <div>{c.startDate}</div>
-                        <div>~ {c.expireDate}</div>
-                      </div>
-
-                      {/* PT 횟수 */}
-                      <div className="flex-1 text-center font-semibold">{c.sessionCount}회</div>
+                      <ContractListInfoCard contract={c} />
                     </div>
                   );
                 })}
