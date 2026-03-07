@@ -1,10 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
-import type { getContractListRequestDto, getContractListResponseDto, getContractListResult,  } from '../types/getContractListType';
-import { getContractList } from '../apis/getContractList';
+
 import { QUERY_KEYS } from '@/constants/queryKeys';
 
+import { getContractList } from '../apis/getContractList';
+import type {
+  getContractListRequestDto,
+  getContractListResponseDto,
+  getContractListResult,
+} from '../types/getContractListType';
 
-export const useGetContractList = (params:getContractListRequestDto) => {
+export const useGetContractList = (params: getContractListRequestDto) => {
   return useQuery<getContractListResponseDto, Error, getContractListResult>({
     queryKey: QUERY_KEYS.contractList(params),
     queryFn: () => getContractList(params),

@@ -95,7 +95,7 @@ const SuggestFormPage = createLazyComponent(() => import('@/pages/Suggests/Sugge
 const SuggestDetailPage = createLazyComponent(() => import('@/pages/Suggests/SuggestDetailPage'));
 
 // 계약/정산
-const ContractListPage = createLazyComponent(()=> import(`@/pages/Contracts/ContractListPage`))
+const ContractListPage = createLazyComponent(() => import(`@/pages/Contracts/ContractListPage`));
 const ContractFormPage = createLazyComponent(() => import('@/pages/Contracts/ContractFormPage'));
 const ContractDetailPage = createLazyComponent(
   () => import('@/pages/Contracts/ContractDetailPage'),

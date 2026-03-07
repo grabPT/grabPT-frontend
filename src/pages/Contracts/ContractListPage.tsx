@@ -14,7 +14,7 @@ const ContractListPage = () => {
   const contractList = data?.contracts.content || [];
 
   const filtered = contractList.filter((c) => {
-    const isStatusMatch = 
+    const isStatusMatch =
       (filter === '진행중' && c.matchingStatus === 'MATCHED') ||
       (filter === '완료' && c.matchingStatus === 'COMPLETED');
     const matchFilter = filter === '전체' || isStatusMatch;
@@ -23,7 +23,6 @@ const ContractListPage = () => {
     const matchSearch = !search || c.userNickname.toLowerCase().includes(query);
     return matchFilter && matchSearch;
   });
-
 
   return (
     <section className="my-[66px]">
@@ -40,8 +39,16 @@ const ContractListPage = () => {
           {/* ── 요약 카드 2개 ── */}
           <div className="flex w-[55rem] flex-col items-center justify-center gap-6">
             {[
-              { label: '작성중인 계약서', value: `${data?.totalActiveContracts || 0}건`, desc: '현재 진행 중인 계약' },
-              { label: '완료된 계약서', value: `${data?.totalCompletedContracts || 0}건`, desc: '종료된 계약' },
+              {
+                label: '작성중인 계약서',
+                value: `${data?.totalActiveContracts || 0}건`,
+                desc: '현재 진행 중인 계약',
+              },
+              {
+                label: '완료된 계약서',
+                value: `${data?.totalCompletedContracts || 0}건`,
+                desc: '종료된 계약',
+              },
             ].map((card) => (
               <div
                 key={card.label}
