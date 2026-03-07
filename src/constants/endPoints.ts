@@ -112,6 +112,9 @@ export const END_POINT = {
     CUSTOMORDER: {
       customOrder: '/customOrder',
     },
+
+    // 계약서 목록 조회
+    list: '/contract/list',
     // 계약서 생성 및 저장
 
     submitPdf: (contractId: number) => `/contract/${contractId}/submit`,

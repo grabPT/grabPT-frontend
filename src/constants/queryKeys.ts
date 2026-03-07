@@ -1,6 +1,7 @@
 import type { getAllAlarmListRequestDto } from '@/features/Alarm/types/alarmType';
 import type { getChatRoomListRequestDto } from '@/features/Chat/types/getChatRoomListType';
 import type { getMessagesRequestDto } from '@/features/Chat/types/getMessagesType';
+import type { getContractListRequestDto } from '@/features/Contract/types/getContractListType';
 import type { getMyInfoListRequestDto } from '@/features/Mypage/types/getMyRequestsListRequestDto';
 import type { getProReviewsRequestByUserId } from '@/features/ProDetail/types/getReviewsByUserId';
 import type { getProReviewsRequest } from '@/features/ProMypage/types/getProReviews';
@@ -53,6 +54,7 @@ export const QUERY_KEYS = {
     params.page,
     params.size,
   ],
+  contractList: (params: getContractListRequestDto) => ['contractList', params.role, params.userId],
   settlementList: (params: number) => ['settlementList', params],
   // …다른 키들
 };

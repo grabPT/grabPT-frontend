@@ -1,6 +1,6 @@
 import type { CommonResponseDto } from '@/types/commonResponseDto';
 
-export type MatchStatusType = 'MATCHING' | 'MATCHED' | 'WAITING' | 'CLOSED';
+export type MatchStatusType = 'MATCHING' | 'MATCHED' | 'WAITING' | 'CLOSED' | 'COMPLETED';
 
 //상태에 따른 UI
 export const MATCH_STATUS_UI: Record<
@@ -26,6 +26,11 @@ export const MATCH_STATUS_UI: Record<
     color: 'bg-gray-300',
     text: '만료됨',
     placeholder: '만료된 요청서입니다',
+  },
+  COMPLETED: {
+    color: 'bg-[#7C3AED]',
+    text: '결제 완료',
+    placeholder: '결제가 완료된 요청서입니다',
   },
 };
 
