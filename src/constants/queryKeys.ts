@@ -54,7 +54,13 @@ export const QUERY_KEYS = {
     params.page,
     params.size,
   ],
-  contractList: (params: getContractListRequestDto) => ['contractList', params.role, params.userId],
+  contractList: (params: getContractListRequestDto) => [
+    'contractList',
+    params.role,
+    params.userId,
+    params.page,
+    params.size,
+  ],
   settlementList: (params: number) => ['settlementList', params],
   // …다른 키들
 };

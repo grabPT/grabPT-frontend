@@ -1,31 +1,44 @@
 import { useState } from 'react';
 
+import Pagination from '@/components/Pagination';
 import { TransactionInfoCard } from '@/components/TransactionInfoCard';
 import ContractCompletedIcon from '@/features/Contract/assets/ContractCompletedIcon.svg';
 import ContractDraftIcon from '@/features/Contract/assets/ContractDraftIcon.svg';
 import ContractListInfoCard from '@/features/Contract/components/ContractListInfoCard';
 import { useGetContractList } from '@/features/Contract/hooks/useGetContractList';
 import { useRoleStore } from '@/store/useRoleStore';
+import type { PaymentStatusType } from '@/types/PaymentStatusType';
+
+const PAGE_SIZE = 5;
 
 const ContractListPage = () => {
-  const [filter, setFilter] = useState('전체');
+  const [page, setPage] = useState(1);
+  const [filter, setFilter] = useState<PaymentStatusType>();
   const [search, setSearch] = useState('');
   const { role, userId } = useRoleStore();
-  const { data } = useGetContractList({ role, userId });
-  const filters = ['전체', '진행중', '완료'];
+  const { data } = useGetContractList({
+    role,
+    userId,
+    paymentStatus: filter,
+    page,
+    size: PAGE_SIZE,
+  });
+  const total = data?.contracts.totalPages ?? 1;
+
+  const FILTER_OPTIONS: { label: string; value: PaymentStatusType | undefined }[] = [
+    { label: '전체', value: undefined },
+    { label: '진행중', value: 'READY' },
+    { label: '완료', value: 'OK' },
+  ];
 
   const contractList = data?.contracts.content || [];
   const formattedActive = `${(data?.totalActiveContracts ?? 0).toLocaleString('ko-KR')}건`;
-  const formattedCompleted = `${(data?.totalCompletedContracts ?? 0).toLocaleString('ko-KR')}명`;
-  const filtered = contractList.filter((c) => {
-    const isStatusMatch =
-      (filter === '진행중' && c.matchingStatus === 'MATCHED') ||
-      (filter === '완료' && c.matchingStatus === 'COMPLETED');
-    const matchFilter = filter === '전체' || isStatusMatch;
+  const formattedCompleted = `${(data?.totalCompletedContracts ?? 0).toLocaleString('ko-KR')}건`;
 
+  // 검색 필터링 (paymentStatus 필터는 서버에서 처리)
+  const filtered = contractList.filter((c) => {
     const query = search.toLowerCase();
-    const matchSearch = !search || c.userNickname.toLowerCase().includes(query);
-    return matchFilter && matchSearch;
+    return !search || c.userNickname.toLowerCase().includes(query);
   });
 
   return (
@@ -67,17 +80,20 @@ const ContractListPage = () => {
             {/* 필터 + 검색 */}
             <div className="mb-5 flex items-center justify-between">
               <div className="flex gap-2">
-                {filters.map((f) => (
+                {FILTER_OPTIONS.map((f) => (
                   <button
-                    key={f}
-                    onClick={() => setFilter(f)}
+                    key={f.label}
+                    onClick={() => {
+                      setFilter(f.value);
+                      setPage(1);
+                    }}
                     className={`cursor-pointer rounded-[0.625rem] border-2 px-4 py-[0.4rem] text-[0.875rem] font-semibold ${
-                      filter === f
+                      filter === f.value
                         ? 'border-[#003EFB] bg-[#003EFB] text-[#fff]'
                         : 'border-[#BDBDBD] bg-[#fff] text-[#616161]'
                     }`}
                   >
-                    {f}
+                    {f.label}
                   </button>
                 ))}
               </div>
@@ -106,19 +122,19 @@ const ContractListPage = () => {
                 조회된 계약서가 없어요 📋
               </div>
             ) : (
-              <div className="mt-[1.56rem] flex flex-col gap-[1.56rem]">
-                {filtered?.map((c, index) => {
+              <div className="flex flex-col gap-[1.56rem]">
+                {filtered?.map((c) => {
                   return (
-                    <div
-                      key={index}
-                      className="flex w-[55rem] items-center text-[0.875rem] text-[#222]"
-                    >
+                    <div key={c.contractId}>
                       <ContractListInfoCard contract={c} />
                     </div>
                   );
                 })}
               </div>
             )}
+          </div>
+          <div className="mt-8">
+            <Pagination total={total} page={page} onChange={setPage} scrollToTop={false} />
           </div>
         </div>
       </div>

@@ -313,20 +313,18 @@ export const routesManifest: AppRoute[] = [
         element: withFallback(<ContractListPage />),
         roles: ['USER', 'PRO'],
         errorElement: <ErrorComponent />,
-        children: [
-          {
-            path: ROUTES.CONTRACTS.NEW,
-            element: withFallback(<ContractFormPage />),
-            roles: ['USER', 'PRO'],
-            errorElement: <ErrorComponent />,
-          },
-          {
-            path: ROUTES.CONTRACTS.DETAIL,
-            element: withFallback(<ContractDetailPage />),
-            roles: ['USER', 'PRO'],
-            errorElement: <ErrorComponent />,
-          },
-        ],
+      },
+      {
+        path: ROUTES.CONTRACTS.NEW,
+        element: withFallback(<ContractFormPage />),
+        roles: ['USER', 'PRO'],
+        errorElement: <ErrorComponent />,
+      },
+      {
+        path: ROUTES.CONTRACTS.DETAIL,
+        element: withFallback(<ContractDetailPage />),
+        roles: ['USER', 'PRO'],
+        errorElement: <ErrorComponent />,
       },
 
       // 정산 (lazy)

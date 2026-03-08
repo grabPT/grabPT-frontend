@@ -1,4 +1,4 @@
-import type { MatchStatusType } from '@/types/RealtimeMatchingType';
+import type { PaymentStatusType } from '@/types/PaymentStatusType';
 import type { Role } from '@/types/Role';
 import type { SortType } from '@/types/SortType';
 import type { CommonResponseDto } from '@/types/commonResponseDto';
@@ -6,6 +6,9 @@ import type { CommonResponseDto } from '@/types/commonResponseDto';
 export type getContractListRequestDto = {
   role: Role | null;
   userId: number | null;
+  paymentStatus?: PaymentStatusType;
+  page: number;
+  size: number;
 };
 
 export type getContractListResult = {
@@ -36,9 +39,10 @@ export type PageContractListDto = {
 };
 
 export type getContractListItem = {
+  contractId: number;
   userNickname: string;
   profileImageUrl: string;
-  matchingStatus: MatchStatusType;
+  paymentStatus: PaymentStatusType;
   sessionCount: number;
   contractPrice: number;
   startDate: string;
