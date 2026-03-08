@@ -58,6 +58,7 @@ export const QUERY_KEYS = {
     'contractList',
     params.role,
     params.userId,
+    params.paymentStatus,
     params.page,
     params.size,
   ],

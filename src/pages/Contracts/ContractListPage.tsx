@@ -35,7 +35,6 @@ const ContractListPage = () => {
   const formattedActive = `${(data?.totalActiveContracts ?? 0).toLocaleString('ko-KR')}건`;
   const formattedCompleted = `${(data?.totalCompletedContracts ?? 0).toLocaleString('ko-KR')}건`;
 
-  // 검색 필터링 (paymentStatus 필터는 서버에서 처리)
   const filtered = contractList.filter((c) => {
     const query = search.toLowerCase();
     return !search || c.userNickname.toLowerCase().includes(query);
