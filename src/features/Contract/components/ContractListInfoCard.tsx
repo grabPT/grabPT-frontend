@@ -15,7 +15,7 @@ const ContractListInfoCard = ({ contract }: { contract: getContractListItem }) =
   return (
     <div
       onClick={() => navigate(navigateUrl)}
-      className="flex w-[55rem] cursor-pointer items-center rounded-xl bg-[#fff] px-2 py-2 text-[0.875rem] text-[#222] transition-all duration-200 hover:scale-[1.02] hover:shadow-[4px_4px_10px_rgba(0,0,0,0.25)]"
+      className="flex h-[4rem] w-[55rem] cursor-pointer items-center rounded-xl bg-[#fff] px-2 text-[0.875rem] text-[#222] transition-all duration-200 hover:scale-[1.02] hover:shadow-[4px_4px_10px_rgba(0,0,0,0.25)]"
     >
       <div className="flex flex-1 items-center justify-center gap-2">
         <div className="h-10 w-10 overflow-hidden rounded-full">
@@ -38,18 +38,20 @@ const ContractListInfoCard = ({ contract }: { contract: getContractListItem }) =
       </div>
 
       {/* 계약 금액 */}
-      <div className="flex-1 text-center font-semibold">
+      <div className="flex flex-1 items-center justify-center font-semibold">
         {(contract.contractPrice * contract.sessionCount).toLocaleString()}원
       </div>
 
       {/* 계약 기간 */}
-      <div className="flex-1 text-center leading-[1.6] text-[#616161]">
+      <div className="flex flex-1 flex-col items-center justify-center leading-[1.4] text-[#616161]">
         <div>{contract.startDate}</div>
         <div>~ {contract.expireDate}</div>
       </div>
 
       {/* PT 횟수 */}
-      <div className="flex-1 text-center font-semibold">{contract.sessionCount}회</div>
+      <div className="flex flex-1 items-center justify-center font-semibold">
+        {contract.sessionCount}회
+      </div>
     </div>
   );
 };

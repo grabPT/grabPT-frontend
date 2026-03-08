@@ -76,7 +76,7 @@ const ContractListPage = () => {
             <h2 className="text-[2.5rem] font-semibold">계약서 목록</h2>
           </div>
 
-          <div className="flex w-[55rem] flex-col">
+          <div className="flex min-h-[534px] w-[55rem] flex-col">
             {/* 필터 + 검색 */}
             <div className="mb-5 flex items-center justify-between">
               <div className="flex gap-2">
@@ -133,7 +133,7 @@ const ContractListPage = () => {
               </div>
             )}
           </div>
-          <div className="mt-8">
+          <div>
             <Pagination total={total} page={page} onChange={setPage} scrollToTop={false} />
           </div>
         </div>
