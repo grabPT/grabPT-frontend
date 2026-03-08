@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
 
 import ProfileImage from '@/components/ProfileImage';
@@ -24,8 +25,14 @@ const ContractListInfoCard = ({ contract }: { contract: getContractListItem }) =
       </div>
 
       {/* 계약 상태 */}
-      <div className="flex-1 text-center">
-        <span className="inline-block rounded-[1rem] px-[0.85rem] py-1 text-[0.8125rem] font-bold">
+      <div className="flex flex-1 items-center justify-center gap-2">
+        <div
+          className={clsx(
+            'h-3 w-3 rounded-full',
+            contract.paymentStatus === 'OK' ? 'bg-[#4CAF50]' : 'bg-[#FF8A00]',
+          )}
+        />
+        <span className="text-[0.8125rem] font-bold">
           {contract.paymentStatus === 'OK' ? '완료' : '진행중'}
         </span>
       </div>
