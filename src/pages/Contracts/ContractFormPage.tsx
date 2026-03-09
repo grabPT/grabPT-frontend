@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
@@ -40,6 +40,7 @@ import {
   extractUserBodyFromForm,
 } from '@/features/Contract/utils/contractForm';
 import { useRoleStore } from '@/store/useRoleStore';
+import { confirm } from '@/utils/confirmModalUtils';
 import { dataURLtoFile } from '@/utils/dataURLtoFile';
 import { toFieldErrorMap } from '@/utils/toFieldErrorMap';
 
@@ -50,6 +51,13 @@ declare global {
     IMP: any; // 필요하다면 정확한 타입으로 교체 가능
   }
 }
+
+type ContractProgressStep =
+  | 'USER_FILLING'
+  | 'USER_WAITING_PRO'
+  | 'PRO_FILLING'
+  | 'PRO_DONE'
+  | 'READY_TO_PAY';
 
 // 계약서 작성페이지입니다.
 const ContractFormPage = () => {
@@ -173,36 +181,52 @@ const ContractFormPage = () => {
   const { mutate: postPayment } = usePostPaymentCallback();
   const uploading = uploadingUser || uploadingPro || uploadingUserInfo || uploadingProInfo;
 
-  // ─────────────────────────────────────────────────────────────
-  // 버튼/레이아웃 상태 결정 (기존 로직 유지)
-  let showCancel = true;
-  let primaryDisabled = uploading;
-  let primaryLabel = uploading ? '업로드 중…' : '작성 완료';
-  let primaryFullWidth = false;
+  const contractProgressStep = useMemo<ContractProgressStep>(() => {
+    if (!isPro) {
+      if (!userComplete) return 'USER_FILLING';
+      if (!proComplete) return 'USER_WAITING_PRO';
+      return 'READY_TO_PAY';
+    }
 
-  if (!isPro) {
-    // USER 화면 규칙
-    if (userComplete && !proComplete) {
-      // 사용자 완료, 전문가 미완료 → 잠금 + 버튼 비활성 + w-full
-      showCancel = false;
-      primaryDisabled = true;
-      primaryFullWidth = true;
-    } else if (userComplete && proComplete) {
-      // 양측 완료 → 잠금 + 결제 버튼 활성 + w-full
-      showCancel = false;
-      primaryDisabled = false;
-      primaryLabel = '계약서 제출 및 결제';
-      primaryFullWidth = true;
-    }
-  } else {
-    // PRO 화면 규칙
-    if (proComplete) {
-      // 전문가 완료 → 잠금 + 버튼 비활성 + w-full
-      showCancel = false;
-      primaryDisabled = true;
-      primaryFullWidth = true;
-    }
-  }
+    if (!proComplete) return 'PRO_FILLING';
+    return 'PRO_DONE';
+  }, [isPro, proComplete, userComplete]);
+
+  const primaryLabel = uploading
+    ? '저장 중…'
+    : {
+        USER_FILLING: '회원 정보 작성 완료',
+        PRO_FILLING: '전문가 정보 작성 완료',
+        READY_TO_PAY: '계약서 제출 및 결제',
+      }[contractProgressStep as 'USER_FILLING' | 'PRO_FILLING' | 'READY_TO_PAY'];
+
+  const progressMessage = {
+    USER_FILLING: '회원 정보와 서명을 입력하면 다음 단계로 넘어갑니다.',
+    USER_WAITING_PRO: '회원 작성이 완료되었습니다. 전문가가 작성하면 결제를 진행할 수 있습니다.',
+    PRO_FILLING: '전문가 정보, 계약 기간, 서명을 입력하면 계약서 작성이 완료됩니다.',
+    PRO_DONE: '전문가 작성이 완료되었습니다. 회원 결제 후 계약이 제출됩니다.',
+    READY_TO_PAY: '양측 작성이 완료되었습니다. 계약서를 제출하고 결제를 진행하세요.',
+  }[contractProgressStep];
+
+  const showSubmit =
+    contractProgressStep === 'USER_FILLING' ||
+    contractProgressStep === 'PRO_FILLING' ||
+    contractProgressStep === 'READY_TO_PAY';
+  const primaryDisabled =
+    uploading || contractProgressStep === 'USER_WAITING_PRO' || contractProgressStep === 'PRO_DONE';
+
+  const handleCancel = useCallback(async () => {
+    const result = await confirm(
+      '계약서 작성을 취소하시겠습니까?\n취소 시 해당 요청과 제안 내역이 삭제됩니다.',
+      '삭제',
+      '취소',
+    );
+
+    if (!result) return;
+
+    // TODO: 계약서 삭제 API 연결
+    navigate(ROUTES.CONTRACTS.ROOT);
+  }, [navigate]);
 
   // ─────────────────────────────────────────────────────────────
   // ✅ disabledAgree 파생값 계산 + effect로 동기화
@@ -541,29 +565,26 @@ const ContractFormPage = () => {
             {format(new Date(), 'yyyy년 M월 d일', { locale: ko })}
           </p>
 
-          <div className={`grid w-full ${showCancel ? 'grid-cols-2 gap-3' : ''}`}>
-            {/* TODO: 취소 버튼 로직 어떻게 할 지, 현재 뒤로가기만 되어있는데 이러면 계약서 페이지 접근이 안됨 */}
-            {showCancel && (
-              <Button width="w-full" disabled={uploading} onClick={() => navigate(-1)}>
-                취소
+          <div className={'flex w-full items-center justify-center gap-3'}>
+            <Button width=" w-full" disabled={uploading} onClick={handleCancel}>
+              취소
+            </Button>
+
+            {showSubmit && (
+              <Button
+                width="w-full"
+                onClick={userComplete && proComplete && !isPro ? handleSuccess : handleSubmit}
+                disabled={primaryDisabled}
+                className={'col-span-2'}
+              >
+                {primaryLabel}
               </Button>
             )}
-
-            <Button
-              width="w-full"
-              onClick={userComplete && proComplete && !isPro ? handleSuccess : handleSubmit}
-              disabled={primaryDisabled}
-              className={primaryFullWidth ? 'col-span-2' : undefined}
-            >
-              {primaryLabel}
-            </Button>
           </div>
         </div>
       </section>
 
-      <p className="text-xl font-semibold">
-        *회원과 전문가 모두 작성완료 상태가 되어야 제출 및 결제가 가능합니다.
-      </p>
+      <p className="text-xl font-semibold">* {progressMessage}</p>
     </section>
   );
 };
