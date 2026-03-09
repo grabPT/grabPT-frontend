@@ -18,6 +18,7 @@ import InformationCard from '@/features/Contract/components/InformationCard';
 import ServiceInformationForm from '@/features/Contract/components/ServiceInformationForm';
 import SignatureBox from '@/features/Contract/components/SignatureBox';
 import UserInformationForm from '@/features/Contract/components/UserInformationForm';
+import { useDeleteContract } from '@/features/Contract/hooks/useDeleteContract';
 import { useGetContractInfo } from '@/features/Contract/hooks/useGetContractInfo';
 import {
   usePostContractProInfo,
@@ -98,6 +99,13 @@ const ContractFormPage = () => {
     if (contract?.startDate) setStartDate(contract.startDate);
     if (contract?.expireDate) setContractDate(contract.expireDate);
   }, [contract?.startDate, contract?.expireDate]);
+  // 계약서가 'READY' 상태가 아니면 작성 페이지 접근 불가(이미 결제됨 or 만료 시F)
+  useEffect(() => {
+    if (contract?.paymentStatus !== 'READY') {
+      alert('결제가 완료되었거나 만료된 계약서입니다. 계약서 목록 페이지로 이동합니다.');
+      navigate(ROUTES.CONTRACTS.ROOT, { replace: true });
+    }
+  }, [contract?.paymentStatus, navigate]);
 
   // ✅ 기본값 구성
   const userDefaults = useMemo<userInfoType | undefined>(() => {
@@ -179,6 +187,9 @@ const ContractFormPage = () => {
   const { mutate: createPdf } = usePostContractPdf();
   const { mutate: postOrder } = usePostCustomOrder();
   const { mutate: postPayment } = usePostPaymentCallback();
+  // 계약서 삭제 훅
+  const { mutate: deleteContract } = useDeleteContract();
+
   const uploading = uploadingUser || uploadingPro || uploadingUserInfo || uploadingProInfo;
 
   const contractProgressStep = useMemo<ContractProgressStep>(() => {
@@ -221,12 +232,11 @@ const ContractFormPage = () => {
       '삭제',
       '취소',
     );
-
-    if (!result) return;
-
-    // TODO: 계약서 삭제 API 연결
-    navigate(ROUTES.CONTRACTS.ROOT);
-  }, [navigate]);
+    if (result) {
+      deleteContract(contractId);
+    }
+    return;
+  }, [deleteContract, contractId]);
 
   // ─────────────────────────────────────────────────────────────
   // ✅ disabledAgree 파생값 계산 + effect로 동기화

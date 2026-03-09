@@ -61,6 +61,7 @@ export const QUERY_KEYS = {
     params.paymentStatus,
     params.page,
     params.size,
+    params.nickname,
   ],
   settlementList: (params: number) => ['settlementList', params],
   // …다른 키들

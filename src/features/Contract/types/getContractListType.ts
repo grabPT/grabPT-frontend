@@ -7,6 +7,7 @@ export type getContractListRequestDto = {
   role: Role | null;
   userId: number | null;
   paymentStatus?: PaymentStatusType;
+  nickname?: string | null;
   page: number;
   size: number;
 };

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Pagination from '@/components/Pagination';
 import { TransactionInfoCard } from '@/components/TransactionInfoCard';
@@ -14,14 +14,28 @@ const PAGE_SIZE = 5;
 const ContractListPage = () => {
   const [page, setPage] = useState(1);
   const [filter, setFilter] = useState<PaymentStatusType>();
-  const [search, setSearch] = useState('');
+  const [nicknameInput, setNicknameInput] = useState('');
+  const [nicknameQuery, setNicknameQuery] = useState<string>();
   const { role, userId } = useRoleStore();
+
+  // 닉네임 입력이 변경될 때마다 300ms 딜레이 후에 nicknameQuery 업데이트
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      const trimmedNickname = nicknameInput.trim();
+      setNicknameQuery(trimmedNickname || undefined);
+      setPage(1);
+    }, 300);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [nicknameInput]);
+
   const { data } = useGetContractList({
     role,
     userId,
     paymentStatus: filter,
     page,
     size: PAGE_SIZE,
+    nickname: nicknameQuery,
   });
   const total = data?.contracts.totalPages ?? 1;
 
@@ -30,16 +44,8 @@ const ContractListPage = () => {
     { label: '진행중', value: 'READY' },
     { label: '완료', value: 'OK' },
   ];
-
-  const contractList = data?.contracts.content || [];
   const formattedActive = `${(data?.totalActiveContracts ?? 0).toLocaleString('ko-KR')}건`;
   const formattedCompleted = `${(data?.totalCompletedContracts ?? 0).toLocaleString('ko-KR')}건`;
-
-  const filtered = contractList.filter((c) => {
-    const query = search.toLowerCase();
-    return !search || c.userNickname.toLowerCase().includes(query);
-  });
-
   return (
     <section className="my-[66px]">
       <div className="flex w-full flex-col items-center">
@@ -97,8 +103,8 @@ const ContractListPage = () => {
                 ))}
               </div>
               <input
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                value={nicknameInput}
+                onChange={(e) => setNicknameInput(e.target.value)}
                 placeholder="사용자 검색"
                 className="w-[13rem] rounded-[0.625rem] border border-[#BDBDBD] px-4 py-2 text-[0.875rem] text-[#616161] outline-none"
               />
@@ -116,13 +122,13 @@ const ContractListPage = () => {
             <hr className="my-4 w-[55rem] border-t border-[#B3B3B3]" />
 
             {/* 계약 행 */}
-            {filtered?.length === 0 ? (
+            {data?.contracts.content.length === 0 ? (
               <div className="mt-[1.56rem] flex h-[200px] w-[55rem] items-center justify-center rounded-xl border border-[#E0E0E0] bg-[#FAFAFA] text-[1.0625rem] font-medium text-[#9E9E9E]">
                 조회된 계약서가 없어요 📋
               </div>
             ) : (
               <div className="flex flex-col gap-[1.56rem]">
-                {filtered?.map((c) => {
+                {data?.contracts.content.map((c) => {
                   return (
                     <div key={c.contractId}>
                       <ContractListInfoCard contract={c} />
