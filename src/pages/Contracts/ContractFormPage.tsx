@@ -88,7 +88,7 @@ const ContractFormPage = () => {
   const userFormRef = useRef<HTMLFormElement>(null);
   const proFormRef = useRef<HTMLFormElement>(null);
 
-  const { data: contract } = useGetContractInfo(contractId);
+  const { data: contract, isFetched } = useGetContractInfo(contractId);
 
   // 시작일/유효기간 상태 (전문가만 편집)
   const [startDate, setStartDate] = useState<string>('');
@@ -99,13 +99,15 @@ const ContractFormPage = () => {
     if (contract?.startDate) setStartDate(contract.startDate);
     if (contract?.expireDate) setContractDate(contract.expireDate);
   }, [contract?.startDate, contract?.expireDate]);
-  // 계약서가 'READY' 상태가 아니면 작성 페이지 접근 불가(이미 결제됨 or 만료 시F)
+  // 결제 완료 또는 취소/만료된 계약서는 작성 페이지 접근 불가
   useEffect(() => {
-    if (contract?.paymentStatus !== 'READY') {
+    if (!isFetched || !contract) return;
+
+    if (contract.paymentStatus === 'OK' || contract.paymentStatus === 'CANCEL') {
       alert('결제가 완료되었거나 만료된 계약서입니다. 계약서 목록 페이지로 이동합니다.');
       navigate(ROUTES.CONTRACTS.ROOT, { replace: true });
     }
-  }, [contract?.paymentStatus, navigate]);
+  }, [contract, isFetched, navigate]);
 
   // ✅ 기본값 구성
   const userDefaults = useMemo<userInfoType | undefined>(() => {
