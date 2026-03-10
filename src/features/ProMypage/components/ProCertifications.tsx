@@ -9,7 +9,7 @@ import {
   MyProfileEditButton,
   MyProfileEditCancelButton,
   MyProfileEditSaveButton,
-} from '@/components/myProfileEditButton';
+} from '@/components/MyProfileEditButton';
 import { useGetProCertifications } from '@/hooks/useGetProCertifications';
 import { usePostCertifications } from '@/hooks/usePostCertifications';
 

@@ -14,7 +14,6 @@ export const getSuggestListForRequest = async (
       END_POINT.REQUESTS.SUGGESTS_FOR_REQUESTS(params.requestionId),
       { params },
     );
-    console.log('ㅇㅇ');
     return data;
   } catch (e) {
     throw e as Error;
