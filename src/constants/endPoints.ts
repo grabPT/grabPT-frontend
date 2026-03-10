@@ -145,7 +145,7 @@ export const END_POINT = {
   MATCHING: {
     matching: '/matching',
   },
-  
+
   PRICE: {
     avgPrice: '/price/avg-per-session',
   },
