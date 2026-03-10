@@ -137,12 +137,15 @@ export const END_POINT = {
     reviews: '/reviews',
     delete: (reviewId: number) => `/reviews/${reviewId}`,
   },
+
   PAYMENT: {
     paymentCallbalck: '/paymentCallback',
   },
+
   MATCHING: {
     matching: '/matching',
   },
+  
   PRICE: {
     avgPrice: '/price/avg-per-session',
   },
