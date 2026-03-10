@@ -6,6 +6,7 @@ interface IPaymentCard {
   paymentAmount: number;
   paymentDate: number[]; // [year, month, day, hour, minute, second, nanos]
   ptCount: number;
+  contractId: number;
 }
 
 // ✅ 날짜 포맷 함수 (24시간제, yyyy/MM/dd HH:mm:ss)
@@ -29,6 +30,7 @@ export const PaymentsCard = ({
   paymentAmount,
   paymentDate,
   ptCount,
+  //  contractId, 잘못 추가했는데 혹시 필요할까봐 놔둠
 }: IPaymentCard) => {
   return (
     <div className="flex h-[3.75rem] w-[55rem] items-center rounded-[0.625rem] text-[0.8rem] font-semibold shadow-[4px_4px_10px_rgba(0,0,0,0.25)]">

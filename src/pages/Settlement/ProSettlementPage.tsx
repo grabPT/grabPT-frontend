@@ -88,6 +88,7 @@ const ProSettlementPage = () => {
                         paymentAmount={payment.paymentAmount}
                         paymentDate={payment.paymentDate}
                         ptCount={payment.ptCount}
+                        contractId={payment.contractId}
                       />
                     );
                   })}
