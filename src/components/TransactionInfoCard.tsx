@@ -1,9 +1,9 @@
-interface ITransactionInfoCard {
+interface TransactionInfoCardProps {
   title: string;
   content: string;
   img: string;
 }
-export const TransactionInfoCard = ({ title, content, img }: ITransactionInfoCard) => {
+export const TransactionInfoCard = ({ title, content, img }: TransactionInfoCardProps) => {
   return (
     <div className="flex h-[6.0625rem] w-full items-center justify-between rounded-[0.625rem] bg-[#E6ECFF] p-5">
       <div className="flex flex-col items-start justify-center gap-3">

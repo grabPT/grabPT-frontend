@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import Pagination from '@/components/Pagination';
 import { TransactionInfoCard } from '@/components/TransactionInfoCard';
@@ -6,6 +6,7 @@ import ContractCompletedIcon from '@/features/Contract/assets/ContractCompletedI
 import ContractDraftIcon from '@/features/Contract/assets/ContractDraftIcon.svg';
 import ContractListInfoCard from '@/features/Contract/components/ContractListInfoCard';
 import { useGetContractList } from '@/features/Contract/hooks/useGetContractList';
+import { useDebounce } from '@/hooks/useDebounce';
 import { useRoleStore } from '@/store/useRoleStore';
 import type { PaymentStatusType } from '@/types/PaymentStatusType';
 
@@ -19,16 +20,16 @@ const ContractListPage = () => {
   const { role, userId } = useRoleStore();
 
   // 닉네임 입력이 변경될 때마다 300ms 딜레이 후에 nicknameQuery 업데이트
-  useEffect(() => {
-    const timeoutId = window.setTimeout(() => {
-      const trimmedNickname = nicknameInput.trim();
-      setNicknameQuery(trimmedNickname || undefined);
-      setPage(1);
-    }, 300);
+  const debouncedSearch = useDebounce((nickname: string) => {
+    const trimmedNickname = nickname.trim();
+    setNicknameQuery(trimmedNickname || undefined);
+    setPage(1);
+  }, 300);
 
-    return () => window.clearTimeout(timeoutId);
-  }, [nicknameInput]);
-
+  const handleFilter = (value: PaymentStatusType | undefined) => {
+    setFilter(value);
+    setPage(1);
+  };
   const { data } = useGetContractList({
     role,
     userId,
@@ -88,10 +89,7 @@ const ContractListPage = () => {
                 {FILTER_OPTIONS.map((f) => (
                   <button
                     key={f.label}
-                    onClick={() => {
-                      setFilter(f.value);
-                      setPage(1);
-                    }}
+                    onClick={() => handleFilter(f.value)}
                     className={`cursor-pointer rounded-[0.625rem] border-2 px-4 py-[0.4rem] text-[0.875rem] font-semibold ${
                       filter === f.value
                         ? 'border-[#003EFB] bg-[#003EFB] text-[#fff]'
@@ -104,7 +102,11 @@ const ContractListPage = () => {
               </div>
               <input
                 value={nicknameInput}
-                onChange={(e) => setNicknameInput(e.target.value)}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setNicknameInput(value);
+                  debouncedSearch(value);
+                }}
                 placeholder="사용자 검색"
                 className="w-[13rem] rounded-[0.625rem] border border-[#BDBDBD] px-4 py-2 text-[0.875rem] text-[#616161] outline-none"
               />
@@ -122,18 +124,14 @@ const ContractListPage = () => {
             <hr className="my-4 w-[55rem] border-t border-[#B3B3B3]" />
 
             {/* 계약 행 */}
-            {data?.contracts.content.length === 0 ? (
+            {data?.contracts.content?.length === 0 ? (
               <div className="mt-[1.56rem] flex h-[200px] w-[55rem] items-center justify-center rounded-xl border border-[#E0E0E0] bg-[#FAFAFA] text-[1.0625rem] font-medium text-[#9E9E9E]">
                 조회된 계약서가 없어요 📋
               </div>
             ) : (
               <div className="flex flex-col gap-[1.56rem]">
-                {data?.contracts.content.map((c) => {
-                  return (
-                    <div key={c.contractId}>
-                      <ContractListInfoCard contract={c} />
-                    </div>
-                  );
+                {data?.contracts.content?.map((c) => {
+                  return <ContractListInfoCard key={c.contractId} contract={c} />;
                 })}
               </div>
             )}

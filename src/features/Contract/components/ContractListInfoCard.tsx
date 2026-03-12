@@ -3,8 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import ProfileImage from '@/components/ProfileImage';
 import { urlFor } from '@/constants/routes';
-
-import type { getContractListItem } from '../types/getContractListType';
+import type { getContractListItem } from '@/features/Contract/types/getContractListType';
 
 const ContractListInfoCard = ({ contract }: { contract: getContractListItem }) => {
   const navigate = useNavigate();
