@@ -44,6 +44,11 @@ import type { proInfoType, userInfoType } from '@/features/Contract/types/postCo
 import {
   extractProBodyFromForm,
   extractUserBodyFromForm,
+  getInitialSignUrl,
+  isFilledPro,
+  isFilledUser,
+  toProDefaults,
+  toUserDefaults,
 } from '@/features/Contract/utils/contractForm';
 import { useRoleStore } from '@/store/useRoleStore';
 import { confirm } from '@/utils/confirmModalUtils';
@@ -90,13 +95,14 @@ const ContractFormPage = () => {
 
   // 시작일/유효기간 상태 (전문가만 편집)
   const [startDate, setStartDate] = useState<string>('');
-  const [contractDate, setContractDate] = useState<string>('');
+  const [expireDate, setExpireDate] = useState<string>('');
 
   // 서버 데이터 들어오면 초기화
   useEffect(() => {
     if (contract?.startDate) setStartDate(contract.startDate);
-    if (contract?.expireDate) setContractDate(contract.expireDate);
+    if (contract?.expireDate) setExpireDate(contract.expireDate);
   }, [contract?.startDate, contract?.expireDate]);
+
   // 결제 완료 또는 취소/만료된 계약서는 작성 페이지 접근 불가
   useEffect(() => {
     if (!isFetched || !contract) return;
@@ -107,59 +113,17 @@ const ContractFormPage = () => {
     }
   }, [contract, isFetched, navigate]);
 
-  // ✅ 기본값 구성
-  const userDefaults = useMemo<userInfoType | undefined>(() => {
-    const u = contract?.userInfo;
-    if (!u) return undefined;
-    return {
-      name: u.name ?? '',
-      birth: u.birth ?? null,
-      phoneNumber: u.phoneNumber ?? '',
-      gender: u.gender ?? null,
-      location: u.location ?? '',
-    };
-  }, [contract]);
+  //  기본값 구성
+  const userDefaults = useMemo(() => {
+    return toUserDefaults(contract?.userInfo);
+  }, [contract?.userInfo]);
 
-  const proDefaults = useMemo<userInfoType | undefined>(() => {
-    const p = contract?.proInfo;
-    if (!p) return undefined;
-    return {
-      name: p.name ?? '',
-      birth: p.birth ?? null,
-      phoneNumber: p.phoneNumber ?? '',
-      gender: p.gender ?? null,
-      location: p.location ?? '',
-    };
-  }, [contract]);
+  const proDefaults = useMemo(() => {
+    return toProDefaults(contract?.proInfo);
+  }, [contract?.proInfo]);
 
-  const userInitialSignUrl = contract?.userInfo?.signImageUrl || null;
-  const proInitialSignUrl = contract?.proInfo?.signImageUrl || null;
-
-  // ✅ 모든 필드 + 서명이 채워졌는지 판별
-  const isFilledUser = (defs?: userInfoType | undefined, sign?: string | null) =>
-    !!defs &&
-    !!defs.name &&
-    !!defs.birth &&
-    !!defs.phoneNumber &&
-    !!defs.gender &&
-    !!defs.location &&
-    !!sign;
-
-  // 전문가 완료: 기본 정보 + 날짜 2개 + 서명
-  const isFilledPro = (
-    defs?: userInfoType | undefined,
-    sign?: string | null,
-    dates?: { startDate?: string; contractDate?: string },
-  ) =>
-    !!defs &&
-    !!defs.name &&
-    !!defs.birth &&
-    !!defs.phoneNumber &&
-    !!defs.gender &&
-    !!defs.location &&
-    !!dates?.startDate &&
-    !!dates?.contractDate &&
-    !!sign;
+  const userInitialSignUrl = getInitialSignUrl(contract?.userInfo?.signImageUrl);
+  const proInitialSignUrl = getInitialSignUrl(contract?.proInfo?.signImageUrl);
 
   // 서명은 서버초기/로컬 업로드 둘 다 고려
   const userSignAny = userInitialSignUrl ?? memberSignUrl;
@@ -167,7 +131,7 @@ const ContractFormPage = () => {
 
   // 날짜도 서버초기/로컬 입력 둘 다 고려
   const startAny = startDate || contract?.startDate || '';
-  const contractAny = contractDate || contract?.expireDate || '';
+  const contractAny = expireDate || contract?.expireDate || '';
 
   const userComplete = isFilledUser(userDefaults, userSignAny);
   const proComplete = isFilledPro(proDefaults, proSignAny, {
@@ -175,7 +139,7 @@ const ContractFormPage = () => {
     contractDate: contractAny,
   });
 
-  // ✅ 편집 가능 여부
+  //  편집 가능 여부
   const canEditUser = !isPro && !userComplete;
   const canEditPro = isPro && !proComplete;
 
@@ -186,10 +150,12 @@ const ContractFormPage = () => {
   const { mutate: uploadProSign, isPending: uploadingPro } = usePostProSignatureFile();
   const { mutate: createPdf } = usePostContractPdf();
   const { mutate: postOrder } = usePostCustomOrder();
-  const { mutate: postPayment } = usePostPaymentCallback();
+  const { mutateAsync: postPayment } = usePostPaymentCallback();
+
   // 계약서 삭제 훅
   const { mutate: deleteContract } = useDeleteContract();
 
+  // 업로드 상태 계산
   const uploading = uploadingUser || uploadingPro || uploadingUserInfo || uploadingProInfo;
 
   const contractProgressStep = useMemo(
@@ -207,12 +173,14 @@ const ContractFormPage = () => {
     contractProgressStep === 'USER_FILLING' ||
     contractProgressStep === 'PRO_FILLING' ||
     contractProgressStep === 'READY_TO_PAY';
+
   const primaryDisabled =
     uploading || contractProgressStep === 'USER_WAITING_PRO' || contractProgressStep === 'PRO_DONE';
 
+  //계약서 취소(삭제) 핸들러
   const handleCancel = async () => {
     const result = await confirm(
-      '계약서 작성을 취소하시겠습니까?\n취소 시 해당 요청과 제안 내역이 삭제됩니다.',
+      '계약서 작성을 취소하시겠습니까?\n취소 시 회원의 해당 요청과 제안 내역이 삭제됩니다.',
       '삭제',
       '취소',
     );
@@ -257,7 +225,7 @@ const ContractFormPage = () => {
     };
   }, []);
 
-  // ✅ 사용자 정보 검증 함수
+  // 사용자 정보 검증 함수
   const validateUserInfo = (body: userInfoType): boolean => {
     try {
       contractUserInfoSchema.parse({
@@ -500,9 +468,9 @@ const ContractFormPage = () => {
                   data={contract}
                   isPro={isPro}
                   startDate={startDate}
-                  contractDate={contractDate}
+                  contractDate={expireDate}
                   onChangeStartDate={setStartDate}
-                  onChangeContractDate={setContractDate}
+                  onChangeContractDate={setExpireDate}
                 />
               </InformationCard>
             </div>
@@ -523,7 +491,6 @@ const ContractFormPage = () => {
             checked={isAgree}
             onChange={handleAgree}
             aria-label="고객 요청 수락"
-            defaultChecked={disabledAgree}
             disabled={disabledAgree}
           />
           <p className="text-base font-normal">(필수) 개인정보 수집,이용에 동의합니다</p>

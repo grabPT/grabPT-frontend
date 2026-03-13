@@ -32,6 +32,9 @@ const SuggestDetailPage = () => {
   const finalPrice = Math.round(
     (suggestion?.suggestedPrice ?? 0) * (suggestion?.suggestionSessionCount ?? 0),
   );
+  const sessionCountDifferText =
+    sessionCountDiffer === 0 ? '없음' : `${sessionCountDiffer.toLocaleString()}회`;
+  const priceDifferText = priceDiffer === 0 ? '없음' : `${priceDiffer.toLocaleString()}원`;
 
   const navigateToProProfile = () => navigate(urlFor.proDetail(suggestion?.proId));
 
@@ -88,7 +91,7 @@ const SuggestDetailPage = () => {
         <div className="h-[300px] w-[300px] overflow-hidden rounded-full object-cover">
           <ProfileImage src={suggestion?.profileImageUrl} alt="트레이너 프로필" />
         </div>
-        <span className="mt-5 text-4xl font-bold text-[#21272A]">{suggestion?.userNickname}</span>
+        <span className="mt-5 text-4xl font-bold text-gray-900">{suggestion?.userNickname}</span>
         <span className="text-button text-sm font-semibold">{suggestion?.centerName}</span>
       </div>
       {/* 스토어에서 가져온 회원 id와 제안서 proId가 같을 경우 전문가 -> 버튼 사용 불가 */}
@@ -148,26 +151,26 @@ const SuggestDetailPage = () => {
         </div>
 
         {/* 할인 및 총액 정보 박스 */}
-        <div className="rounded-2xl border-2 border-[#E5E5E5] bg-[#F8F9FA] p-6">
+        <div className="rounded-2xl border-2 border-gray-200 bg-gray-50 p-6">
           {/* 요청 금액 */}
           <div className="mb-3 flex items-center justify-between">
-            <span className="text-xl font-semibold text-[#666666]">횟수 변동</span>
-            <span className="text-xl text-[#999999]">{sessionCountDiffer.toLocaleString()}회</span>
+            <span className="text-xl font-semibold text-gray-500">횟수 변동</span>
+            <span className="text-xl text-gray-400">{sessionCountDifferText}</span>
           </div>
 
           {/* 제안 금액 */}
           <div className="mb-3 flex items-center justify-between">
-            <span className="text-xl font-semibold text-[#666666]">회당 가격 변동</span>
-            <span className="text-xl text-[#999999]">{priceDiffer.toLocaleString()}원</span>
+            <span className="text-xl font-semibold text-gray-500">회당 가격 변동</span>
+            <span className="text-xl text-gray-400">{priceDifferText}</span>
           </div>
 
           {/* 구분선 */}
-          <div className="my-4 border-t-2 border-[#DDDDDD]"></div>
+          <div className="my-4 border-t-2 border-gray-300"></div>
 
           {/* 총 금액 */}
           <div className="flex items-center justify-between">
-            <span className="text-2xl font-extrabold text-[#21272A]">최종 결제 금액</span>
-            <span className="text-3xl font-extrabold text-[#0066FF]">
+            <span className="text-2xl font-extrabold text-gray-900">최종 결제 금액</span>
+            <span className="text-3xl font-extrabold text-blue-600">
               {finalPrice.toLocaleString()}원
             </span>
           </div>
