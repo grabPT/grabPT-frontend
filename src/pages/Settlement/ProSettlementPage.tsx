@@ -14,7 +14,7 @@ import { useGetSettlementList } from '@/features/Settlement/hooks/useGetSettleme
 
 const ProSettlementPage = () => {
   const [page, setPage] = useState(1);
-  //우선은 ui만, 추후에 api만들면 추가해여할 듯F
+  //우선은 ui만, 추후에 api만들면 추가해여할 듯
   const [bank, setBank] = useState('');
   // const [account, setAccount] = useState('');
   // const [name ,setName] = useState('');
@@ -80,17 +80,7 @@ const ProSettlementPage = () => {
               <>
                 <div className="mt-[1.56rem] flex flex-col items-center justify-center gap-[1.56rem]">
                   {settlementList.memberPayments.content.map((payment, idx) => {
-                    return (
-                      <PaymentsCard
-                        key={idx}
-                        earnedAmount={payment.earnedAmount}
-                        memberName={payment.memberName}
-                        paymentAmount={payment.paymentAmount}
-                        paymentDate={payment.paymentDate}
-                        ptCount={payment.ptCount}
-                        contractId={payment.contractId}
-                      />
-                    );
+                    return <PaymentsCard key={idx} data={payment} />;
                   })}
                 </div>
                 {/* 페이지네이션 */}

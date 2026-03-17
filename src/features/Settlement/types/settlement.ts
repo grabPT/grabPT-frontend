@@ -31,6 +31,7 @@ export type PageMemberPaymentDto = {
 
 export type SettlementListItem = {
   memberName: string;
+  imageURL?: string;
   ptCount: number;
   paymentAmount: number;
   earnedAmount: number;

@@ -15,6 +15,7 @@ export type getUserSettlementsResultType = {
     content: {
       contractId: number;
       userName: string;
+      imageURL?: string;
       ptCount: number;
       paymentAmount: number;
       paymentDate: number[]; // [year, month, day, hour, minute, second, nanos]

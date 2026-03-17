@@ -3,7 +3,6 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ZodError } from 'zod';
 
 import AppLogo from '@/assets/images/AppLogo.png';
 import Button from '@/components/Button';
@@ -18,32 +17,21 @@ import InformationCard from '@/features/Contract/components/InformationCard';
 import ServiceInformationForm from '@/features/Contract/components/ServiceInformationForm';
 import SignatureBox from '@/features/Contract/components/SignatureBox';
 import UserInformationForm from '@/features/Contract/components/UserInformationForm';
+import { useContractAccessGuard } from '@/features/Contract/hooks/useContractAccessGuard';
 import { useDeleteContract } from '@/features/Contract/hooks/useDeleteContract';
 import { useGetContractInfo } from '@/features/Contract/hooks/useGetContractInfo';
-import {
-  usePostContractProInfo,
-  usePostContractUserInfo,
-} from '@/features/Contract/hooks/usePostContractInfo';
+import { usePortOneScript } from '@/features/Contract/hooks/usePortOneScript';
 import { usePostContractPdf } from '@/features/Contract/hooks/usePostContractPdf';
 import { usePostCustomOrder } from '@/features/Contract/hooks/usePostCustomOrder';
 import { usePostPaymentCallback } from '@/features/Contract/hooks/usePostPaymentCallback';
-import {
-  usePostProSignatureFile,
-  usePostUserSignatureFile,
-} from '@/features/Contract/hooks/usePostSignatureFile';
-import {
-  contractProInfoSchema,
-  contractUserInfoSchema,
-} from '@/features/Contract/schema/contractSchema';
+import { useProInfoSubmit } from '@/features/Contract/hooks/useProInfoSubmit';
+import { useUserinfoSubmit } from '@/features/Contract/hooks/useUserInfoSubmit';
 import {
   CONTRACT_PROGRESS_MESSAGE,
   CONTRACT_PROGRESS_PRIMARY_LABEL,
   getContractProgressStep,
 } from '@/features/Contract/types/ContractProgressStep';
-import type { proInfoType, userInfoType } from '@/features/Contract/types/postContractType';
 import {
-  extractProBodyFromForm,
-  extractUserBodyFromForm,
   getInitialSignUrl,
   isFilledPro,
   isFilledUser,
@@ -52,8 +40,6 @@ import {
 } from '@/features/Contract/utils/contractForm';
 import { useRoleStore } from '@/store/useRoleStore';
 import { confirm } from '@/utils/confirmModalUtils';
-import { dataURLtoFile } from '@/utils/dataURLtoFile';
-import { toFieldErrorMap } from '@/utils/toFieldErrorMap';
 
 export {};
 
@@ -88,10 +74,14 @@ const ContractFormPage = () => {
   const isPro = role === 'PRO';
   const handleAgree = () => setIsAgree((prev) => !prev);
 
+  usePortOneScript();
+
   const userFormRef = useRef<HTMLFormElement>(null);
   const proFormRef = useRef<HTMLFormElement>(null);
 
   const { data: contract, isFetched } = useGetContractInfo(contractId);
+
+  useContractAccessGuard({ contract, isFetched });
 
   // 시작일/유효기간 상태 (전문가만 편집)
   const [startDate, setStartDate] = useState<string>('');
@@ -102,16 +92,6 @@ const ContractFormPage = () => {
     if (contract?.startDate) setStartDate(contract.startDate);
     if (contract?.expireDate) setExpireDate(contract.expireDate);
   }, [contract?.startDate, contract?.expireDate]);
-
-  // 결제 완료 또는 취소/만료된 계약서는 작성 페이지 접근 불가
-  useEffect(() => {
-    if (!isFetched || !contract) return;
-
-    if (contract.paymentStatus === 'OK' || contract.paymentStatus === 'CANCEL') {
-      alert('결제가 완료되었거나 만료된 계약서입니다. 계약서 목록 페이지로 이동합니다.');
-      navigate(ROUTES.CONTRACTS.ROOT, { replace: true });
-    }
-  }, [contract, isFetched, navigate]);
 
   //  기본값 구성
   const userDefaults = useMemo(() => {
@@ -143,20 +123,33 @@ const ContractFormPage = () => {
   const canEditUser = !isPro && !userComplete;
   const canEditPro = isPro && !proComplete;
 
-  // 업로드 훅
-  const { mutate: uploadUserInfo, isPending: uploadingUserInfo } = usePostContractUserInfo();
-  const { mutate: uploadProInfo, isPending: uploadingProInfo } = usePostContractProInfo();
-  const { mutate: uploadUserSign, isPending: uploadingUser } = usePostUserSignatureFile();
-  const { mutate: uploadProSign, isPending: uploadingPro } = usePostProSignatureFile();
   const { mutate: createPdf } = usePostContractPdf();
   const { mutate: postOrder } = usePostCustomOrder();
   const { mutateAsync: postPayment } = usePostPaymentCallback();
+  const { submit: submitUserInfo, isPending: uploadingUserInfo } = useUserinfoSubmit({
+    contractId,
+    memberSign,
+    setUserErrors,
+    onSuccess: (imageUrl) => {
+      setMemberSignUrl(imageUrl);
+      location.reload();
+    },
+  });
+  const { submit: submitProInfo, isPending: uploadingProInfo } = useProInfoSubmit({
+    contractId,
+    proSign,
+    setProErrors,
+    onSuccess: (imageUrl) => {
+      setProSignUrl(imageUrl);
+      location.reload();
+    },
+  });
 
   // 계약서 삭제 훅
   const { mutate: deleteContract } = useDeleteContract();
 
   // 업로드 상태 계산
-  const uploading = uploadingUser || uploadingPro || uploadingUserInfo || uploadingProInfo;
+  const uploading = uploadingUserInfo || uploadingProInfo;
 
   const contractProgressStep = useMemo(
     () => getContractProgressStep({ isPro, userComplete, proComplete }),
@@ -191,7 +184,7 @@ const ContractFormPage = () => {
   };
 
   // ─────────────────────────────────────────────────────────────
-  // ✅ disabledAgree 파생값 계산 + effect로 동기화
+  // disabledAgree 파생값 계산 + effect로 동기화
   // - 사용자(user) 측: userComplete이면 동의 강제(완료/대기 모두)
   // - 전문가(pro) 측: proComplete이면 동의 강제
   const forceAgree = (!isPro && userComplete) || (isPro && proComplete);
@@ -205,71 +198,7 @@ const ContractFormPage = () => {
     // forceAgree가 false가 될 때 isAgree를 강제로 false로 되돌리진 않음(기존 동작 보존)
   }, [forceAgree]);
 
-  useEffect(() => {
-    // 포트원 라이브러리 추가
-    let script = document.querySelector<HTMLScriptElement>(
-      `script[src="https://cdn.iamport.kr/v1/iamport.js"]`,
-    );
-
-    if (!script) {
-      script = document.createElement('script');
-      script.src = 'https://cdn.iamport.kr/v1/iamport.js';
-      script.async = true;
-      document.body.appendChild(script);
-    }
-    return () => {
-      // 스크립트 요소가 존재하는지 확인 후 제거
-      if (script && script.parentNode === document.body) {
-        document.body.removeChild(script);
-      }
-    };
-  }, []);
-
-  // 사용자 정보 검증 함수
-  const validateUserInfo = (body: userInfoType): boolean => {
-    try {
-      contractUserInfoSchema.parse({
-        name: body.name || '',
-        birth: body.birth || '',
-        phoneNumber: body.phoneNumber || '',
-        location: body.location || '',
-        gender: body.gender || undefined,
-      });
-      setUserErrors({});
-      return true;
-    } catch (e) {
-      if (e instanceof ZodError) {
-        setUserErrors(toFieldErrorMap(e));
-      }
-      return false;
-    }
-  };
-
-  // ✅ 전문가 정보 검증 함수
-  const validateProInfo = (body: proInfoType): boolean => {
-    try {
-      contractProInfoSchema.parse({
-        name: body.name || '',
-        birth: body.birth || '',
-        phoneNumber: body.phoneNumber || '',
-        location: body.location || '',
-        gender: body.gender || undefined,
-        startDate: body.startDate || '',
-        expireDate: body.expireDate || '',
-      });
-      setProErrors({});
-      return true;
-    } catch (e) {
-      if (e instanceof ZodError) {
-        setProErrors(toFieldErrorMap(e));
-      }
-      return false;
-    }
-  };
-
-  // ─────────────────────────────────────────────────────────────
-
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!isAgree) {
       alert('개인정보 수집·이용에 동의가 필요합니다.');
       return;
@@ -278,88 +207,14 @@ const ContractFormPage = () => {
 
     if (!isPro) {
       if (canEditUser) {
-        // 1) info 먼저 - Zod 검증 적용
-        const body = extractUserBodyFromForm(userFormRef.current);
-        if (!body) {
-          alert('회원 정보를 입력해주세요.');
-          return;
-        }
-
-        // Zod 스키마로 검증
-        if (!validateUserInfo(body)) {
-          alert('입력 정보를 확인해주세요.');
-          return;
-        }
-
-        uploadUserInfo(
-          { contractId, body },
-          {
-            onSuccess: () => {
-              // 2) sign 업로드
-              if (!memberSign) {
-                alert('회원 서명을 입력하세요.');
-                return;
-              }
-              const file = dataURLtoFile(memberSign, `member-sign-${Date.now()}.png`);
-              uploadUserSign(
-                { contractId, file },
-                {
-                  onSuccess: ({ result }) => {
-                    setMemberSignUrl(result.imageUrl);
-                    location.reload();
-                  },
-                },
-              );
-            },
-            onError: () => {
-              alert('회원 정보 업로드에 실패했습니다.');
-            },
-          },
-        );
+        await submitUserInfo(userFormRef.current);
       } else {
         // userComplete && proComplete → 결제/제출
         // TODO: 결제/제출 트리거
       }
     } else {
       if (canEditPro) {
-        // 1) info 먼저 (전문가: 날짜 포함) - Zod 검증 적용
-        const body = extractProBodyFromForm(proFormRef.current);
-        if (!body) {
-          alert('전문가 정보를 입력해주세요.');
-          return;
-        }
-
-        // Zod 스키마로 검증
-        if (!validateProInfo(body)) {
-          alert('입력 정보를 확인해주세요.');
-          return;
-        }
-
-        uploadProInfo(
-          { contractId, body },
-          {
-            onSuccess: () => {
-              // 2) sign 업로드
-              if (!proSign) {
-                alert('전문가 서명을 입력하세요.');
-                return;
-              }
-              const file = dataURLtoFile(proSign, `pro-sign-${Date.now()}.png`);
-              uploadProSign(
-                { contractId, file },
-                {
-                  onSuccess: ({ result }) => {
-                    setProSignUrl(result.imageUrl);
-                    location.reload();
-                  },
-                },
-              );
-            },
-            onError: () => {
-              alert('전문가 정보 업로드에 실패했습니다.');
-            },
-          },
-        );
+        await submitProInfo(proFormRef.current);
       }
     }
   };
