@@ -3,11 +3,13 @@ import { privateInstance, publicInstance } from '@/libs/axios';
 import type {
   getProProfileResponseDto,
   getProProfileWithUserIdResponseDto,
-} from '@/types/ProProfleType';
+} from '@/types/ProProfileType';
 
 export const getProProfile = async () => {
   try {
-    const response = await privateInstance.get<getProProfileResponseDto>('/mypage/pro');
+    const response = await privateInstance.get<getProProfileResponseDto>(
+      END_POINT.MYPROPAGE.PROFILE.profile,
+    );
     return response.data;
   } catch (error) {
     console.error(error);

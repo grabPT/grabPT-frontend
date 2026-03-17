@@ -2,17 +2,17 @@ import { useCallback, useEffect, useState } from 'react';
 
 import type { ProPricePayload, ptPriceUpdateRequestDtoList } from '@/apis/EditProProfile';
 import CommentBox from '@/components/CommentBox';
+import {
+  MyProfileEditButton,
+  MyProfileEditCancelButton,
+  MyProfileEditSaveButton,
+} from '@/components/MyProfileEditButton';
 //import ImageSlide from '@/components/ImageSlide';
 import ProfileCard from '@/components/ProfileCard';
 import ProfileImageSlide, { type SlideImage } from '@/components/ProfileImageSlide';
 import ProfilePrice from '@/components/ProfilePrice';
 import ProfilePriceInput from '@/components/ProfilePriceInput';
 import { TitleLine } from '@/components/TitleLine';
-import {
-  MyProfileEditButton,
-  MyProfileEditCancelButton,
-  MyProfileEditSaveButton,
-} from '@/components/myProfileEditButton';
 import {
   useEditPhotos,
   useEditProCenter,
@@ -21,7 +21,7 @@ import {
 } from '@/hooks/useEditProProfile';
 //import MypageSection from '@/features/Mypage/components/MypageSection';
 import { useProProfileQuery } from '@/hooks/useGetProProfile';
-import type { PtPrice } from '@/types/ProProfleType';
+import type { PtPrice } from '@/types/ProProfileType';
 
 import ProProfileSkeleton from './ui/ProProfileSkeleton';
 

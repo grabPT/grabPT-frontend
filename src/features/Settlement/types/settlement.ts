@@ -31,9 +31,11 @@ export type PageMemberPaymentDto = {
 
 export type SettlementListItem = {
   memberName: string;
+  imageURL?: string;
   ptCount: number;
   paymentAmount: number;
   earnedAmount: number;
   paymentDate: number[];
+  contractId: number;
 };
 export type getSettlementListResponse = CommonResponseDto<getSettlementListResult>;

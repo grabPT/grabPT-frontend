@@ -1,3 +1,4 @@
+import { END_POINT } from '@/constants/endPoints';
 import { multipartInstance } from '@/libs/axios';
 import { compressImage } from '@/utils/imageCompression';
 
@@ -43,6 +44,6 @@ export const patchMyPage = async (payload: MyPagePatchPayload) => {
     fd.append('image', compressed, compressed.name);
   }
 
-  const { data } = await multipartInstance.patch('/mypage', fd);
+  const { data } = await multipartInstance.patch(END_POINT.MYPAGE.ROOT, fd);
   return data;
 };

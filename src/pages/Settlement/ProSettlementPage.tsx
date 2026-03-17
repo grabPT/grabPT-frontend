@@ -5,16 +5,16 @@ import { Outlet } from 'react-router-dom';
 
 import Button from '@/components/Button';
 import Pagination from '@/components/Pagination';
+import { TransactionInfoCard } from '@/components/TransactionInfoCard';
 import accumulatedAmount from '@/features/Settlement/assets/accumulatedAmount.svg';
 import activeMembers from '@/features/Settlement/assets/activeMembers.svg';
 import paymentCount from '@/features/Settlement/assets/paymentCount.svg';
 import { PaymentsCard } from '@/features/Settlement/components/PaymentsCard';
-import { SettlementInfoCard } from '@/features/Settlement/components/SettlementInfoCard';
 import { useGetSettlementList } from '@/features/Settlement/hooks/useGetSettlement';
 
 const ProSettlementPage = () => {
   const [page, setPage] = useState(1);
-  //우선은 ui만, 추후에 api만들면 추가해여할 듯F
+  //우선은 ui만, 추후에 api만들면 추가해여할 듯
   const [bank, setBank] = useState('');
   // const [account, setAccount] = useState('');
   // const [name ,setName] = useState('');
@@ -35,13 +35,17 @@ const ProSettlementPage = () => {
             </span>
           </div>
           <div className="flex w-[55rem] flex-col items-center justify-center gap-6">
-            <SettlementInfoCard
+            <TransactionInfoCard
               title="적립 금액"
               content={formattedEarnings}
               img={accumulatedAmount}
             />
-            <SettlementInfoCard title="총 결제 건수" content={formattedOrders} img={paymentCount} />
-            <SettlementInfoCard title="활성 회원" content={formattedActive} img={activeMembers} />
+            <TransactionInfoCard
+              title="총 결제 건수"
+              content={formattedOrders}
+              img={paymentCount}
+            />
+            <TransactionInfoCard title="활성 회원" content={formattedActive} img={activeMembers} />
           </div>
         </div>
         <div className="flex flex-col items-center justify-center gap-14">
@@ -76,16 +80,7 @@ const ProSettlementPage = () => {
               <>
                 <div className="mt-[1.56rem] flex flex-col items-center justify-center gap-[1.56rem]">
                   {settlementList.memberPayments.content.map((payment, idx) => {
-                    return (
-                      <PaymentsCard
-                        key={idx}
-                        earnedAmount={payment.earnedAmount}
-                        memberName={payment.memberName}
-                        paymentAmount={payment.paymentAmount}
-                        paymentDate={payment.paymentDate}
-                        ptCount={payment.ptCount}
-                      />
-                    );
+                    return <PaymentsCard key={idx} data={payment} />;
                   })}
                 </div>
                 {/* 페이지네이션 */}

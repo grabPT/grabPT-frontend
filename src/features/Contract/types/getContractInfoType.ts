@@ -1,3 +1,4 @@
+import type { PaymentStatusType } from '@/types/PaymentStatusType';
 import type { CommonResponseDto } from '@/types/commonResponseDto';
 
 export type getContractInfoResultType = {
@@ -22,6 +23,7 @@ export type getContractInfoResultType = {
   startDate: string;
   ptLocation: string;
   expireDate: string;
+  paymentStatus: PaymentStatusType;
   status: 'MATCHED' | 'MATCHING' | 'WAITING';
   matchingId: number;
 };

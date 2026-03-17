@@ -1,5 +1,5 @@
 import type { PageableType } from '@/features/Requests/types/getRequestsListType';
-import type { Address } from '@/types/ProProfleType';
+import type { Address } from '@/types/ProProfileType';
 import type { MatchStatusType } from '@/types/RealtimeMatchingType';
 import type { TimeSlot } from '@/types/ReqeustsType';
 import type { SortType } from '@/types/SortType';

@@ -1,0 +1,148 @@
+import { useState } from 'react';
+
+import Pagination from '@/components/Pagination';
+import { TransactionInfoCard } from '@/components/TransactionInfoCard';
+import ContractCompletedIcon from '@/features/Contract/assets/ContractCompletedIcon.svg';
+import ContractDraftIcon from '@/features/Contract/assets/ContractDraftIcon.svg';
+import ContractListInfoCard from '@/features/Contract/components/ContractListInfoCard';
+import { useGetContractList } from '@/features/Contract/hooks/useGetContractList';
+import { useDebounce } from '@/hooks/useDebounce';
+import { useRoleStore } from '@/store/useRoleStore';
+import type { PaymentStatusType } from '@/types/PaymentStatusType';
+
+const PAGE_SIZE = 5;
+
+const ContractListPage = () => {
+  const [page, setPage] = useState(1);
+  const [filter, setFilter] = useState<PaymentStatusType>();
+  const [nicknameInput, setNicknameInput] = useState('');
+  const [nicknameQuery, setNicknameQuery] = useState<string>();
+  const { role, userId } = useRoleStore();
+
+  // 닉네임 입력이 변경될 때마다 300ms 딜레이 후에 nicknameQuery 업데이트
+  const debouncedSearch = useDebounce((nickname: string) => {
+    const trimmedNickname = nickname.trim();
+    setNicknameQuery(trimmedNickname || undefined);
+    setPage(1);
+  }, 300);
+
+  const handleFilter = (value: PaymentStatusType | undefined) => {
+    setFilter(value);
+    setPage(1);
+  };
+  const { data } = useGetContractList({
+    role,
+    userId,
+    paymentStatus: filter,
+    page,
+    size: PAGE_SIZE,
+    nickname: nicknameQuery,
+  });
+  const total = data?.contracts.totalPages ?? 1;
+
+  const FILTER_OPTIONS: { label: string; value: PaymentStatusType | undefined }[] = [
+    { label: '전체', value: undefined },
+    { label: '진행중', value: 'READY' },
+    { label: '완료', value: 'OK' },
+  ];
+  const formattedActive = `${(data?.totalActiveContracts ?? 0).toLocaleString('ko-KR')}건`;
+  const formattedCompleted = `${(data?.totalCompletedContracts ?? 0).toLocaleString('ko-KR')}건`;
+  return (
+    <section className="my-[66px]">
+      <div className="flex w-full flex-col items-center">
+        {/* ── 페이지 헤더 ── */}
+        <div className="flex flex-col items-center justify-center gap-14">
+          <div className="flex w-[55rem] flex-col items-start justify-center">
+            <h1 className="text-[2.5rem] font-semibold">계약 내역</h1>
+            <span className="text-[1.0625rem] font-semibold">
+              진행 중인 계약과 완료된 계약을 한눈에 확인하세요.
+            </span>
+          </div>
+
+          {/* ── 요약 카드 2개 ── */}
+          <div className="flex w-[55rem] flex-col items-center justify-center gap-6">
+            <div className="flex w-[55rem] flex-col items-center justify-center gap-6">
+              <TransactionInfoCard
+                title="작성 중인 계약서"
+                content={formattedActive}
+                img={ContractDraftIcon}
+              />
+              <TransactionInfoCard
+                title="완료된 계약서"
+                content={formattedCompleted}
+                img={ContractCompletedIcon}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* ── 계약서 목록 ── */}
+        <div className="flex flex-col items-center justify-center gap-14">
+          <div className="mt-20 w-[55rem]">
+            <h2 className="text-[2.5rem] font-semibold">계약서 목록</h2>
+          </div>
+
+          <div className="flex min-h-[534px] w-[55rem] flex-col">
+            {/* 필터 + 검색 */}
+            <div className="mb-5 flex items-center justify-between">
+              <div className="flex gap-2">
+                {FILTER_OPTIONS.map((f) => (
+                  <button
+                    key={f.label}
+                    onClick={() => handleFilter(f.value)}
+                    className={`cursor-pointer rounded-[0.625rem] border-2 px-4 py-[0.4rem] text-[0.875rem] font-semibold ${
+                      filter === f.value
+                        ? 'border-[#003EFB] bg-[#003EFB] text-[#fff]'
+                        : 'border-[#BDBDBD] bg-[#fff] text-[#616161]'
+                    }`}
+                  >
+                    {f.label}
+                  </button>
+                ))}
+              </div>
+              <input
+                value={nicknameInput}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setNicknameInput(value);
+                  debouncedSearch(value);
+                }}
+                placeholder="사용자 검색"
+                className="w-[13rem] rounded-[0.625rem] border border-[#BDBDBD] px-4 py-2 text-[0.875rem] text-[#616161] outline-none"
+              />
+            </div>
+
+            {/* 테이블 헤더 */}
+            <div className="flex w-[55rem] text-[0.875rem] font-bold text-[#222]">
+              {['계약 상대', '계약 상태', '계약 금액', '계약 기간', 'PT 횟수'].map((h) => (
+                <div key={h} className="flex-1 text-center">
+                  {h}
+                </div>
+              ))}
+            </div>
+
+            <hr className="my-4 w-[55rem] border-t border-[#B3B3B3]" />
+
+            {/* 계약 행 */}
+            {data?.contracts.content?.length === 0 ? (
+              <div className="mt-[1.56rem] flex h-[200px] w-[55rem] items-center justify-center rounded-xl border border-[#E0E0E0] bg-[#FAFAFA] text-[1.0625rem] font-medium text-[#9E9E9E]">
+                조회된 계약서가 없어요 📋
+              </div>
+            ) : (
+              <div className="flex flex-col gap-[1.56rem]">
+                {data?.contracts.content?.map((c) => {
+                  return <ContractListInfoCard key={c.contractId} contract={c} />;
+                })}
+              </div>
+            )}
+          </div>
+          <div>
+            <Pagination total={total} page={page} onChange={setPage} scrollToTop={false} />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default ContractListPage;

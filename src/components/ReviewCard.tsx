@@ -95,9 +95,11 @@ const ReviewCard = ({
 
         {/* 리뷰 내용 */}
         <div
-          className={`relative z-10 flex-1 rounded-xl border border-gray-200 bg-gradient-to-br from-gray-50 to-gray-100/50 p-4 transition-all duration-300`}
+          className={`relative z-10 max-h-[100px] flex-1 rounded-xl border border-gray-200 bg-gradient-to-br from-gray-50 to-gray-100/50 p-4 transition-all duration-300`}
         >
-          <p className="text-sm leading-relaxed font-medium text-gray-700">{content}</p>
+          <p className="line-clamp-3 text-sm leading-relaxed font-medium text-gray-700">
+            {content}
+          </p>
 
           {/* 하단 페이드 효과 */}
           <div className="absolute right-0 bottom-0 left-0 h-6 rounded-b-xl bg-gradient-to-t from-gray-100/80 to-transparent" />

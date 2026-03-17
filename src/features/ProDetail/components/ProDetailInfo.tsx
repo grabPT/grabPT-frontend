@@ -13,7 +13,7 @@ import { TitleLine } from '@/components/TitleLine';
 import ROUTES from '@/constants/routes';
 import { useGetProProfileWithUserId } from '@/hooks/useGetProProfile';
 import { useGetUserInfo } from '@/hooks/useGetUserInfo';
-import type { PtPrice } from '@/types/ProProfleType';
+import type { PtPrice } from '@/types/ProProfileType';
 
 export const ProDetailInfo = () => {
   const [photos, setPhotos] = useState<SlideImage[]>([]);
@@ -65,7 +65,7 @@ export const ProDetailInfo = () => {
   return (
     <div className="flex w-[600px] flex-col items-center justify-center">
       <div className="mt-10 flex w-full flex-col items-center justify-center gap-4">
-        {/* <img src={ProDetailBgImg} alt="전문가 프로필 뱌경화면" className="w-full" /> */}
+        {/* 전문가 프로필 사진 */}
         <div className="h-[11.25rem] w-[11.25rem] overflow-hidden rounded-full">
           <ProfileImage src={profileData?.profileImageUrl} alt="전문가 프로필 사진" />
         </div>

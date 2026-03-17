@@ -6,10 +6,11 @@ interface PaginationProps {
   total: number;
   page: number;
   onChange: (page: number) => void;
+  scrollToTop?: boolean;
 }
 
-const Pagination = ({ total, page, onChange }: PaginationProps) => {
-  useScrollToTop(page);
+const Pagination = ({ total, page, onChange, scrollToTop = true }: PaginationProps) => {
+  useScrollToTop(page, scrollToTop);
   // 유효성 보호
   if (total < 1) return null;
 

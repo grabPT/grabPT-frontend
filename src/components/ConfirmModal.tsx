@@ -72,6 +72,8 @@ const ConfirmModal = () => {
   // 모달이 닫혀있으면 렌더링 X
   if (!state.isOpen) return null;
 
+  const isDangerConfirm = state.confirmText.includes('삭제');
+
   return createPortal(
     <div className="animate-in fade-in fixed inset-0 z-[99999] flex items-center justify-center bg-black/40 backdrop-blur-sm transition-opacity duration-200">
       {/* 배경 클릭 시 취소 처리 */}
@@ -95,7 +97,11 @@ const ConfirmModal = () => {
           <button
             ref={confirmButtonRef}
             onClick={() => handleClose(true)}
-            className="bg-button hover:bg-button-hover active:bg-button-pressed rounded-lg px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors focus:ring-2 focus:ring-blue-400 focus:outline-none"
+            className={`rounded-lg px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors focus:outline-none ${
+              isDangerConfirm
+                ? 'bg-red-500 hover:bg-red-600 focus:ring-2 focus:ring-red-300 active:bg-red-700'
+                : 'bg-button hover:bg-button-hover active:bg-button-pressed focus:ring-2 focus:ring-blue-400'
+            }`}
           >
             {state.confirmText}
           </button>

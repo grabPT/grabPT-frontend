@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import StarRating from '@/components/StarRating';
 import ROUTES from '@/constants/routes';
 import { getLabelFromSlug } from '@/constants/sports';
-import type { ProProfileType } from '@/types/ProProfleType';
+import type { ProProfileType } from '@/types/ProProfileType';
 
 import ProfileImage from './ProfileImage';
 
