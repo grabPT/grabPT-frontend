@@ -255,6 +255,14 @@ const ContractFormPage = () => {
               // const verified = await verifyPayment(rsp.merchant_uid, rsp.imp_uid);
               const verified = true; // 임시
               if (verified) {
+                console.log('[ContractFormPage] contract dates before pdf create', {
+                  startDate,
+                  expireDate,
+                  contractDate: contractAny,
+                  contractStartDate: startAny,
+                  serverStartDate: contract.startDate,
+                  serverExpireDate: contract.expireDate,
+                });
                 // 1) 계약서 PDF 생성 (동기/비동기 여부에 따라 필요시 await)
                 createPdf(contractId);
                 postPayment({

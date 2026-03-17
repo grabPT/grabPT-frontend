@@ -30,6 +30,11 @@ export const useProInfoSubmit = ({
       return false;
     }
 
+    console.log('[useProInfoSubmit] contract dates before upload', {
+      startDate: body.startDate,
+      expireDate: body.expireDate,
+    });
+
     try {
       contractProInfoSchema.parse({
         name: body.name || '',
