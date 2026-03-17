@@ -45,6 +45,10 @@ function ProfileDropdown() {
     else navigate(ROUTES.MYPAGE.USER);
   }, [isPro, navigate]);
 
+  const navigateToContracts = useCallback(() => {
+    navigate(ROUTES.CONTRACTS.ROOT);
+  }, [navigate]);
+
   const navigateToSettlement = useCallback(() => {
     if (isPro) navigate(ROUTES.PRO_SETTLEMENT);
     else navigate(ROUTES.USER_SETTLEMENT);
@@ -60,11 +64,12 @@ function ProfileDropdown() {
 
   const items = useMemo<Item[]>(
     () => [
-      { label: '내정보', onClick: navigateToMyInfo },
+      { label: '내 정보', onClick: navigateToMyInfo },
+      { label: '계약서', onClick: navigateToContracts },
       { label: isPro ? '정산 현황' : '결제 내역', onClick: navigateToSettlement },
       { label: '로그아웃', onClick: handleLogout },
     ],
-    [navigateToMyInfo, isPro, navigateToSettlement, handleLogout],
+    [navigateToMyInfo, navigateToContracts, isPro, navigateToSettlement, handleLogout],
   );
 
   return (

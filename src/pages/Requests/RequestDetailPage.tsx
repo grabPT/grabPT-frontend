@@ -275,7 +275,9 @@ const RequestDetailPage = () => {
               }}
               aria-label="희망 PT 횟수"
               className={`mr-1.5 h-12 w-[85px] rounded-xl border-2 border-[#BABABA] pl-3.5 text-center text-2xl ${
-                isEditing ? 'border-[#BABABA] text-[#9F9F9F]' : 'text-black'
+                isEditing
+                  ? 'text-black focus:border-[#003efb] focus:outline-none'
+                  : 'text-[#9F9F9F]'
               }`}
               readOnly={!isEdit || !isEditing}
             />
@@ -288,9 +290,7 @@ const RequestDetailPage = () => {
                 type="text"
                 value={formatWon(watch('price'))}
                 aria-label="희망 PT 가격"
-                className={`mr-1.5 h-12 w-[260px] rounded-xl border-2 border-[#BABABA] px-8 text-end text-2xl ${
-                  isEditing ? 'border-[#BABABA] text-[#9F9F9F]' : 'text-black'
-                }`}
+                className="mr-1.5 h-12 w-[260px] rounded-xl border-2 border-[#BABABA] px-8 text-end text-2xl text-[#9F9F9F]"
                 readOnly
               />
             ) : (
@@ -308,9 +308,7 @@ const RequestDetailPage = () => {
                   setValue('price', fixed, { shouldValidate: true, shouldDirty: true });
                 }}
                 aria-label="희망 PT 가격"
-                className={`mr-1.5 h-12 w-[260px] rounded-xl border-2 border-[#BABABA] px-8 text-end text-2xl ${
-                  isEditing ? 'border-[#BABABA] text-[#9F9F9F]' : 'text-black'
-                }`}
+                className="mr-1.5 h-12 w-[260px] rounded-xl border-2 border-[#BABABA] px-8 text-end text-2xl text-black focus:border-[#003efb] focus:outline-none"
                 readOnly={!isEdit || !isEditing}
               />
             )}

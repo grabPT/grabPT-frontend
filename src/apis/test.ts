@@ -1,3 +1,4 @@
+//test용 API, 실제로는 사용하지 않음
 import { publicInstance } from '@/libs/axios';
 import type { CommonResponseDto } from '@/types/commonResponseDto';
 

@@ -71,7 +71,7 @@ const RequestCardInMain = ({
     <div
       onClick={() => navigate(urlFor.requestDetail(id))}
       className={clsx(
-        'mx-auto flex h-[340px] w-[300px] w-full max-w-[340px] cursor-pointer flex-col gap-[12px] rounded-xl px-[10px] py-[15px] shadow-[4px_4px_10px_rgba(0,0,0,0.25)] lg:w-[320px] xl:w-[320px] 2xl:w-[340px]',
+        'mx-auto flex h-[340px] w-full max-w-[340px] cursor-pointer flex-col gap-[12px] rounded-xl px-[10px] py-[15px] shadow-[4px_4px_10px_rgba(0,0,0,0.25)] lg:w-[320px] xl:w-[320px] 2xl:w-[340px]',
         !modalOpen && 'transition-transform duration-200 hover:scale-[1.02]',
       )}
     >

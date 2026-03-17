@@ -1,10 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 
+import HeaderProfile from '@/assets/images/HeaderProfile.png';
 import { urlFor } from '@/constants/routes';
 
 interface UserPaymentsCardProps {
   data: {
     contractId: number;
+    imageURL?: string;
     userName: string;
     ptCount: number;
     paymentAmount: number;
@@ -35,7 +37,8 @@ export const UserPaymentsCard = ({ data }: UserPaymentsCardProps) => {
       className="flex h-[3.75rem] w-[55rem] cursor-pointer items-center rounded-[0.625rem] text-[0.8rem] font-semibold shadow-[4px_4px_10px_rgba(0,0,0,0.25)]"
       onClick={navigateToContractDetail}
     >
-      <div className="flex-1 text-center">
+      <div className="flex flex-1 items-center gap-3">
+        <img src={data.imageURL ?? HeaderProfile} alt="프로필 이미지" className="ml-3 h-5 w-5" />
         <span>{data.userName}</span>
       </div>
       <div className="flex-1 text-center">

@@ -137,14 +137,14 @@ const RequestCard = ({
           {/* 요청 내용 */}
           <div
             className={clsx(
-              'relative flex-1 rounded-xl p-4',
+              'relative max-h-[80px] flex-1 rounded-xl p-4',
               'bg-gradient-to-br from-gray-50 to-gray-100/50',
               'border border-gray-200',
               'transition-all duration-300',
               'group-hover:border-gray-300 group-hover:shadow-inner',
             )}
           >
-            <p className="line-clamp-3 text-sm leading-relaxed font-medium text-gray-700">
+            <p className="line-clamp-2 text-sm leading-relaxed font-medium text-gray-700">
               {content}
             </p>
 

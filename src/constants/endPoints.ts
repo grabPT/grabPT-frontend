@@ -37,7 +37,7 @@ export const END_POINT = {
       reviews: `/mypage/pro/reviews`,
     },
     PROFILE: {
-      profile: '/mypage/pro/',
+      profile: '/mypage/pro',
     },
     PTPRICE: {
       ptPrice: '/mypage/pro/ptPrice',
@@ -112,11 +112,14 @@ export const END_POINT = {
     CUSTOMORDER: {
       customOrder: '/customOrder',
     },
+
+    // 계약서 목록 조회
+    list: '/contract/list',
     // 계약서 생성 및 저장
 
     submitPdf: (contractId: number) => `/contract/${contractId}/submit`,
     //이것도 조회 안됨
-    // pdfLink: (contractId: number) => `/contract/${contractId}/pdf`,
+    pdfLink: (contractId: number) => `/contract/${contractId}/pdf`,
 
     // 이건 왜 쓰인 곳이 없지
     userWrite: (contractId: number) => `/contract/${contractId}/user`,
@@ -134,11 +137,17 @@ export const END_POINT = {
     reviews: '/reviews',
     delete: (reviewId: number) => `/reviews/${reviewId}`,
   },
+
   PAYMENT: {
     paymentCallbalck: '/paymentCallback',
   },
+
   MATCHING: {
     matching: '/matching',
+  },
+
+  PRICE: {
+    avgPrice: '/price/avg-per-session',
   },
   // …필요한 도메인 계속 추가
 } as const;

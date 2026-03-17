@@ -1,3 +1,4 @@
+import { END_POINT } from '@/constants/endPoints';
 import { privateInstance } from '@/libs/axios';
 import type { CommonResponseDto } from '@/types/commonResponseDto';
 
@@ -18,7 +19,7 @@ export const getAvgPrice = async (
   street: string,
 ): Promise<GetAvgPriceResponseDto> => {
   try {
-    const { data } = await privateInstance.get<GetAvgPriceResponseDto>('/price/avg-per-session', {
+    const { data } = await privateInstance.get<GetAvgPriceResponseDto>(END_POINT.PRICE.avgPrice, {
       params: {
         categoryName,
         city,

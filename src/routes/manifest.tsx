@@ -95,6 +95,7 @@ const SuggestFormPage = createLazyComponent(() => import('@/pages/Suggests/Sugge
 const SuggestDetailPage = createLazyComponent(() => import('@/pages/Suggests/SuggestDetailPage'));
 
 // 계약/정산
+const ContractListPage = createLazyComponent(() => import(`@/pages/Contracts/ContractListPage`));
 const ContractFormPage = createLazyComponent(() => import('@/pages/Contracts/ContractFormPage'));
 const ContractDetailPage = createLazyComponent(
   () => import('@/pages/Contracts/ContractDetailPage'),
@@ -309,22 +310,21 @@ export const routesManifest: AppRoute[] = [
       // 계약 (lazy)
       {
         path: ROUTES.CONTRACTS.ROOT,
+        element: withFallback(<ContractListPage />),
         roles: ['USER', 'PRO'],
         errorElement: <ErrorComponent />,
-        children: [
-          {
-            path: ROUTES.CONTRACTS.NEW,
-            element: withFallback(<ContractFormPage />),
-            roles: ['USER', 'PRO'],
-            errorElement: <ErrorComponent />,
-          },
-          {
-            path: ROUTES.CONTRACTS.DETAIL,
-            element: withFallback(<ContractDetailPage />),
-            roles: ['USER', 'PRO'],
-            errorElement: <ErrorComponent />,
-          },
-        ],
+      },
+      {
+        path: ROUTES.CONTRACTS.NEW,
+        element: withFallback(<ContractFormPage />),
+        roles: ['USER', 'PRO'],
+        errorElement: <ErrorComponent />,
+      },
+      {
+        path: ROUTES.CONTRACTS.DETAIL,
+        element: withFallback(<ContractDetailPage />),
+        roles: ['USER', 'PRO'],
+        errorElement: <ErrorComponent />,
       },
 
       // 정산 (lazy)

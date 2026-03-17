@@ -12,7 +12,7 @@ export const useGetSuggestDetail = (suggestionId: number) => {
     queryFn: () => getSuggestDetail(suggestionId),
     enabled: Boolean(suggestionId),
     select: (res) => res.result,
-    staleTime: 0, // 5분 동안 fresh
+    staleTime: 0,
     gcTime: 300_000, // 5 분 뒤 캐시 정리
     retry: false, //2번까지 재시도
   });
